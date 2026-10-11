@@ -1,0 +1,36 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "import"],
+  "ignorePatterns": [
+    "**/tests/**",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/fixtures/**",
+    "**/*.fixture.*",
+    "**/dist/**",
+    "**/artifacts/**",
+    "**/*.generated.*",
+    "packages/core/schemas/**",
+    "examples/catalog/fixture.ts"
+  ],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "complexity": ["error", 12],
+    "import/no-cycle": "error",
+    "max-depth": ["error", 3],
+    "max-lines": ["error", { "max": 500, "skipBlankLines": true, "skipComments": true }],
+    "max-lines-per-function": ["error", { "max": 80, "skipBlankLines": true, "skipComments": true }],
+    "max-nested-callbacks": ["error", 3],
+    "no-nested-ternary": "error",
+    "no-unused-vars": "error",
+    "no-control-regex": "off",
+    "unicorn/no-new-array": "off",
+    "unicorn/no-useless-fallback-in-spread": "off",
+    "unicorn/no-useless-spread": "off"
+  },
+  "env": {
+    "builtin": true
+  }
+}

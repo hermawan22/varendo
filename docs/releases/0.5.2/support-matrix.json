@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schemaVersion": 1,
+  "product": "aeliqo",
+  "candidate": {
+    "version": "0.5.2",
+    "status": "unreleased",
+    "baseVersion": "0.4.2",
+    "compatibility": "breaking"
+  },
+  "testedToolchain": {
+    "node": { "version": "24.20.0", "status": "qualified" },
+    "pnpm": { "version": "11.24.0", "status": "qualified" },
+    "typescript": { "version": "7.0.2", "status": "qualified" },
+    "vite": { "version": "8.2.2", "status": "qualified" },
+    "playwright": { "version": "1.63.0", "status": "qualified" }
+  },
+  "frameworks": [
+    {
+      "id": "vanilla",
+      "version": "native-dom",
+      "status": "qualified",
+      "evidence": ["tests/framework-consumers/framework-tarballs.mjs", "tests/vnext/browser"]
+    },
+    {
+      "id": "lit",
+      "version": "3.3.3",
+      "status": "qualified",
+      "evidence": ["tests/framework-consumers/framework-tarballs.mjs", "tests/platform"]
+    },
+    {
+      "id": "react",
+      "version": "19.2.8",
+      "status": "qualified",
+      "evidence": ["tests/framework-consumers/framework-tarballs.mjs", "tests/vnext/browser/react.spec.ts"]
+    },
+    {
+      "id": "vue",
+      "version": "3.5.42",
+      "status": "qualified",
+      "evidence": ["tests/framework-consumers/framework-tarballs.mjs"]
+    },
+    {
+      "id": "next",
+      "version": "16.3.4",
+      "status": "qualified",
+      "evidence": ["tests/next-platform", "tests/vnext/browser/ssr.spec.ts"]
+    },
+    {
+      "id": "svelte",
+      "version": null,
+      "status": "unverified",
+      "reason": "No maintained Svelte adapter or installed consumer is in the vNext scope."
+    },
+    {
+      "id": "angular",
+      "version": null,
+      "status": "unverified",
+      "reason": "No maintained Angular adapter or installed consumer is in the vNext scope."
+    }
+  ],
+  "browsers": [
+    {
+      "id": "chromium",
+      "status": "qualified",
+      "evidence": ["tests/vnext/playwright.config.mjs", "tests/framework-consumers/framework-tarballs.mjs"]
+    },
+    {
+      "id": "firefox",
+      "status": "qualified",
+      "evidence": ["tests/vnext/playwright.config.mjs"]
+    },
+    {
+      "id": "webkit",
+      "status": "qualified",
+      "evidence": ["tests/vnext/playwright.config.mjs"]
+    },
+    {
+      "id": "native-webmcp",
+      "status": "unverified",
+      "reason": "Native WebMCP requires a separate headed browser probe and explicit capability availability."
+    }
+  ],
+  "providers": [
+    {
+      "id": "none",
+      "status": "qualified",
+      "scope": "All core, runtime, web, React, SSR, local-data, remote-data, and reference-journey paths operate without a model."
+    },
+    {
+      "id": "local-protocol-fixture",
+      "status": "protocol-only",
+      "scope": "Synthetic localhost conformance for the provider-neutral protocol.",
+      "evidence": ["tests/vnext/model-profile.test.ts", "tests/protocol-model"]
+    },
+    {
+      "id": "deepseek-flash-live-j1-j3",
+      "status": "qualified-bounded",
+      "scope": "DeepSeek deepseek-flash passed all 12 synthetic J1–J3 browser/provider/renderer cases on a tree-equivalent PR head. This qualifies only that model and corpus, not other models, providers, production workloads, or human use.",
+      "evidence": [
+        "tests/agent-evaluation/j1-j3-corpus.json",
+        "tests/agent-evaluation/live-journey-runner.mjs",
+        "docs/releases/0.5.0/evidence/deepseek-flash-j1-j3-21afcca.json"
+      ]
+    },
+    {
+      "id": "openai-compatible-live",
+      "status": "unverified",
+      "reason": "No general OpenAI-compatible provider or model profile is qualified by the bounded DeepSeek result."
+    },
+    {
+      "id": "other-hosted-providers",
+      "status": "unverified",
+      "reason": "Provider-specific quality and latency are not inferred from protocol compatibility."
+    }
+  ],
+  "workloads": [
+    {
+      "id": "playground-j1-j3",
+      "status": "qualified-bounded",
+      "scope": "The People Jakarta, Daily attendance, and Analytical workspace playground journeys exercise approved synthetic data through the real runtime and renderer without requiring a model.",
+      "evidence": [
+        "apps/site/tests/site/browser.spec.ts",
+        "tests/vnext/browser/visual-journeys.spec.ts",
+        "tests/vnext/browser/attendance.spec.ts",
+        "tests/vnext/browser/workspace.spec.ts"
+      ]
+    },
+    {
+      "id": "reference-journeys",
+      "status": "qualified-bounded",
+      "scope": "Four synthetic application journeys with real package/browser consumers.",
+      "evidence": ["tests/vnext/browser/journeys.spec.ts", "tests/vnext/journey-remote.test.ts"]
+    },
+    {
+      "id": "synthetic-paged-million-rows",
+      "status": "qualified-bounded",
+      "scope": "Bounds page/window behavior only; this is not a production database throughput claim.",
+      "evidence": ["tests/vnext/remote-data.test.ts"]
+    },
+    {
+      "id": "declared-module-scale-1000",
+      "status": "qualified-bounded",
+      "scope": "1,000 declarations with five active surfaces; measured module and update isolation.",
+      "evidence": ["tests/vnext/module-scale.test.ts", "tests/performance/vnext-workload.mjs"]
+    },
+    {
+      "id": "production-database-throughput",
+      "status": "unverified",
+      "reason": "No production database adapter or workload was profiled by this candidate."
+    },
+    {
+      "id": "unbounded-application-size",
+      "status": "unsupported-claim",
+      "reason": "Aeliqo does not promise unlimited scale or every framework/provider combination."
+    }
+  ],
+  "claims": {
+    "unlimitedScale": false,
+    "everyFramework": false,
+    "everyProvider": false,
+    "liveModelQuality": false,
+    "nativeWebMcp": false,
+    "stablePublished": false,
+    "deployed": false
+  }
+}

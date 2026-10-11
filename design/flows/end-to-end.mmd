@@ -1,0 +1,25 @@
+flowchart TD
+  U[User or application] --> L{Natural language?}
+  L -->|Yes| AI[Optional reasoning agent]
+  L -->|No: typed task| PB[Proposal boundary]
+  U -->|Direct props and controls| UI[Owned primitive and 2D UI]
+  AI --> PB
+  CAT[Authorized Catalog] --> B[Bind and validate]
+  PB --> B
+  B -->|Invalid / denied / choice / meaning / stale| F[Diagnostic and manual path]
+  B -->|Bound| K{Data required?}
+  K -->|No| PR[Existing results or form schema]
+  K -->|Yes| Q[Logical plan and capability budget]
+  Q --> EX[Application Data Contract executor]
+  EX --> R[Named Results: grain scope versions lineage]
+  R -->|Evaluate / inspect| AI
+  R --> PR
+  PR --> PC[Presentation compiler]
+  EP[Experience and environment] --> PC
+  PC --> CA[Patterns OR bounded new composition OR proposal]
+  CA --> FE[Feasibility and task-operation coverage]
+  FE --> C[Recheck read set and authority then commit]
+  C --> UI
+  UI --> IN[Typed interaction and state preservation]
+  IN -->|Local delta| UI
+  IN -->|Authorized materialization or task change| Q

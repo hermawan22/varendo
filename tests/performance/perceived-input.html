@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Varendo perceived input fixture</title>
+    <style>
+      :root { color-scheme: light; font: 16px/1.45 system-ui, sans-serif; }
+      body { margin: 0; padding: 1rem; background: #fff; color: #172033; }
+      main { display: grid; gap: 1rem; max-width: 72rem; }
+      #query { max-inline-size: 30rem; }
+      #visible-result { display: block; min-block-size: 1.5rem; font-weight: 600; }
+      #records { display: block; min-inline-size: 22rem; }
+      .fixture-note { color: #4b5563; max-inline-size: 70ch; }
+    </style>
+  </head>
+  <body>
+    <main aria-labelledby="title">
+      <h1 id="title">Varendo perceived input fixture</h1>
+      <p class="fixture-note">A direct input filters a local 100-row table. The fixture has no runtime, planner, model, or network dependency.</p>
+      <aeliqo-text-field id="query" label="Filter local rows" description="Type a character to update the visible row summary." value=""></aeliqo-text-field>
+      <output id="visible-result" aria-live="polite" aria-atomic="true">100 matching rows</output>
+      <aeliqo-table id="records" caption="Local records"></aeliqo-table>
+    </main>
+    <script type="module" src="./perceived-input.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+body { margin: 0; }
+#design-root { min-block-size: 100vh; box-sizing: border-box; padding: 2rem max(1rem, calc((100% - 64rem) / 2)); }
+header { padding-block-end: 1.5rem; border-block-end: 1px solid var(--aeliqo-color-border); }
+.eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .08em; color: var(--aeliqo-color-muted); }
+h1 { font-size: 2rem; line-height: 1.25; margin-block: .5rem; }
+h2 { font-size: 1.25rem; line-height: 1.25; margin-block: 0 1rem; }
+p { max-inline-size: 65ch; }
+section { padding-block: 1.5rem; border-block-end: 1px solid var(--aeliqo-color-border); }
+section:last-child { border: 0; }
+.preferences { display: flex; flex-wrap: wrap; gap: 1rem; margin-block-start: 1.25rem; }
+.preferences label { display: grid; gap: .25rem; }
+select { font: inherit; color: inherit; background: var(--aeliqo-color-canvas); border: 1px solid var(--aeliqo-color-border); min-block-size: 2.75rem; padding-inline: .75rem; border-radius: .25rem; }
+select:focus-visible { outline: .1875rem solid var(--aeliqo-color-focus); outline-offset: .1875rem; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.fields aeliqo-text-field { inline-size: 100%; }
+#draft-status { color: var(--aeliqo-color-muted); margin-block-end: 0; }
+@media (max-width: 40rem) { .fields { grid-template-columns: minmax(0, 1fr); } }

@@ -1,0 +1,4485 @@
+{
+  "synthetic": true,
+  "policy": {
+    "name": "unexcused-absence-demo",
+    "definition": "Eligible scheduled days exclude approved leave. Explicit absent observations count; missing observations remain unknown. Full rate is unavailable with unknown eligible observations.",
+    "grain": [
+      "employee_id",
+      "date"
+    ],
+    "period": {
+      "from": "2026-01-05",
+      "toExclusive": "2026-03-30",
+      "timezone": "Asia/Jakarta",
+      "calendar": "iso8601"
+    }
+  },
+  "employees": [
+    {
+      "id": "e1",
+      "name": "Employee 1",
+      "department": "Engineering"
+    },
+    {
+      "id": "e2",
+      "name": "Employee 2",
+      "department": "Engineering"
+    },
+    {
+      "id": "e3",
+      "name": "Employee 3",
+      "department": "Engineering"
+    },
+    {
+      "id": "e4",
+      "name": "Employee 4",
+      "department": "Engineering"
+    },
+    {
+      "id": "e5",
+      "name": "Employee 5",
+      "department": "Operations"
+    },
+    {
+      "id": "e6",
+      "name": "Employee 6",
+      "department": "Operations"
+    },
+    {
+      "id": "e7",
+      "name": "Employee 7",
+      "department": "Operations"
+    },
+    {
+      "id": "e8",
+      "name": "Employee 8",
+      "department": "Operations"
+    }
+  ],
+  "schedules": [
+    {
+      "employee_id": "e1",
+      "date": "2026-01-05"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-06"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-07"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-08"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-09"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-12"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-13"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-14"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-15"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-16"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-19"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-20"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-21"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-22"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-23"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-26"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-27"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-28"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-29"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-01-30"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-02"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-03"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-04"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-05"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-06"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-09"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-10"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-11"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-12"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-13"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-16"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-17"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-18"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-19"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-20"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-23"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-24"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-25"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-26"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-02-27"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-02"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-03"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-04"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-05"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-06"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-09"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-10"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-11"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-12"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-13"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-16"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-17"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-18"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-19"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-20"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-23"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-24"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-25"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-26"
+    },
+    {
+      "employee_id": "e1",
+      "date": "2026-03-27"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-05"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-06"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-07"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-08"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-09"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-12"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-13"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-14"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-15"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-16"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-19"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-20"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-21"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-22"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-23"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-26"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-27"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-28"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-29"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-30"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-02"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-03"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-04"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-05"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-06"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-09"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-10"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-11"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-12"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-13"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-16"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-17"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-18"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-19"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-20"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-23"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-24"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-25"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-26"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-27"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-02"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-03"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-04"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-05"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-06"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-09"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-10"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-11"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-12"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-13"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-16"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-17"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-18"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-19"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-20"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-23"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-24"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-25"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-26"
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-27"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-05"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-06"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-07"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-08"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-09"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-12"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-13"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-14"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-15"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-16"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-19"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-20"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-21"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-22"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-23"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-26"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-27"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-28"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-29"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-01-30"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-02"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-03"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-04"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-05"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-06"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-09"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-10"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-11"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-12"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-13"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-16"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-17"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-18"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-19"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-20"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-23"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-24"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-25"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-26"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-02-27"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-02"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-03"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-04"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-05"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-06"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-09"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-10"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-11"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-12"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-13"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-16"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-17"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-18"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-19"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-20"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-23"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-24"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-25"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-26"
+    },
+    {
+      "employee_id": "e3",
+      "date": "2026-03-27"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-05"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-06"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-07"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-08"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-09"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-12"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-13"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-14"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-15"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-16"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-19"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-20"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-21"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-22"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-23"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-26"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-27"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-28"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-29"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-01-30"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-02"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-03"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-04"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-05"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-06"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-09"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-10"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-11"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-12"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-13"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-16"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-17"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-18"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-19"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-20"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-23"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-24"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-25"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-26"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-02-27"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-02"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-03"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-04"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-05"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-06"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-09"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-10"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-11"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-12"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-13"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-16"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-17"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-18"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-19"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-20"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-23"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-24"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-25"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-26"
+    },
+    {
+      "employee_id": "e4",
+      "date": "2026-03-27"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-05"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-06"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-07"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-08"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-09"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-12"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-13"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-14"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-15"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-16"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-19"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-20"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-21"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-22"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-23"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-26"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-27"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-28"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-29"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-30"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-02"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-03"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-04"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-05"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-06"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-09"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-10"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-11"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-12"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-13"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-16"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-17"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-18"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-19"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-20"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-23"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-24"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-25"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-26"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-27"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-02"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-03"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-04"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-05"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-06"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-09"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-10"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-11"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-12"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-13"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-16"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-17"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-18"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-19"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-20"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-23"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-24"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-25"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-26"
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-27"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-05"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-06"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-07"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-08"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-09"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-12"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-13"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-14"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-15"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-16"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-19"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-20"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-21"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-22"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-23"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-26"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-27"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-28"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-29"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-30"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-02"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-03"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-04"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-05"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-06"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-09"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-10"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-11"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-12"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-13"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-16"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-17"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-18"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-19"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-20"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-23"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-24"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-25"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-26"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-27"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-02"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-03"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-04"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-05"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-06"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-09"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-10"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-11"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-12"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-13"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-16"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-17"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-18"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-19"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-20"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-23"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-24"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-25"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-26"
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-27"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-05"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-07"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-09"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-12"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-14"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-16"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-19"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-21"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-23"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-26"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-28"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-01-30"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-02"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-04"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-06"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-09"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-11"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-13"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-16"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-18"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-20"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-23"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-25"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-02-27"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-02"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-04"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-06"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-09"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-11"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-13"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-16"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-18"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-20"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-23"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-25"
+    },
+    {
+      "employee_id": "e7",
+      "date": "2026-03-27"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-02"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-03"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-04"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-05"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-06"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-09"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-10"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-11"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-12"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-13"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-16"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-17"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-18"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-19"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-20"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-23"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-24"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-25"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-26"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-02-27"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-02"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-03"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-04"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-05"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-06"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-09"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-10"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-11"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-12"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-13"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-16"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-17"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-18"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-19"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-20"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-23"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-24"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-25"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-26"
+    },
+    {
+      "employee_id": "e8",
+      "date": "2026-03-27"
+    }
+  ],
+  "observations": [
+    {
+      "id": "e1-2026-01-05",
+      "employee_id": "e1",
+      "date": "2026-01-05",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-06",
+      "employee_id": "e1",
+      "date": "2026-01-06",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-01-07",
+      "employee_id": "e1",
+      "date": "2026-01-07",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-08",
+      "employee_id": "e1",
+      "date": "2026-01-08",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-09",
+      "employee_id": "e1",
+      "date": "2026-01-09",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-01-12",
+      "employee_id": "e1",
+      "date": "2026-01-12",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-13",
+      "employee_id": "e1",
+      "date": "2026-01-13",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-14",
+      "employee_id": "e1",
+      "date": "2026-01-14",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-01-15",
+      "employee_id": "e1",
+      "date": "2026-01-15",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-16",
+      "employee_id": "e1",
+      "date": "2026-01-16",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-19",
+      "employee_id": "e1",
+      "date": "2026-01-19",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-01-20",
+      "employee_id": "e1",
+      "date": "2026-01-20",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-21",
+      "employee_id": "e1",
+      "date": "2026-01-21",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-22",
+      "employee_id": "e1",
+      "date": "2026-01-22",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-01-23",
+      "employee_id": "e1",
+      "date": "2026-01-23",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-26",
+      "employee_id": "e1",
+      "date": "2026-01-26",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-27",
+      "employee_id": "e1",
+      "date": "2026-01-27",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-01-28",
+      "employee_id": "e1",
+      "date": "2026-01-28",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-29",
+      "employee_id": "e1",
+      "date": "2026-01-29",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-01-30",
+      "employee_id": "e1",
+      "date": "2026-01-30",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-02-02",
+      "employee_id": "e1",
+      "date": "2026-02-02",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-03",
+      "employee_id": "e1",
+      "date": "2026-02-03",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-04",
+      "employee_id": "e1",
+      "date": "2026-02-04",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-02-05",
+      "employee_id": "e1",
+      "date": "2026-02-05",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-06",
+      "employee_id": "e1",
+      "date": "2026-02-06",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-09",
+      "employee_id": "e1",
+      "date": "2026-02-09",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-02-10",
+      "employee_id": "e1",
+      "date": "2026-02-10",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-11",
+      "employee_id": "e1",
+      "date": "2026-02-11",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-12",
+      "employee_id": "e1",
+      "date": "2026-02-12",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-02-13",
+      "employee_id": "e1",
+      "date": "2026-02-13",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-16",
+      "employee_id": "e1",
+      "date": "2026-02-16",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-17",
+      "employee_id": "e1",
+      "date": "2026-02-17",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-02-18",
+      "employee_id": "e1",
+      "date": "2026-02-18",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-19",
+      "employee_id": "e1",
+      "date": "2026-02-19",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-20",
+      "employee_id": "e1",
+      "date": "2026-02-20",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-02-23",
+      "employee_id": "e1",
+      "date": "2026-02-23",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-24",
+      "employee_id": "e1",
+      "date": "2026-02-24",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-25",
+      "employee_id": "e1",
+      "date": "2026-02-25",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-02-26",
+      "employee_id": "e1",
+      "date": "2026-02-26",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-02-27",
+      "employee_id": "e1",
+      "date": "2026-02-27",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-02",
+      "employee_id": "e1",
+      "date": "2026-03-02",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-03-03",
+      "employee_id": "e1",
+      "date": "2026-03-03",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-04",
+      "employee_id": "e1",
+      "date": "2026-03-04",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-05",
+      "employee_id": "e1",
+      "date": "2026-03-05",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-03-06",
+      "employee_id": "e1",
+      "date": "2026-03-06",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-09",
+      "employee_id": "e1",
+      "date": "2026-03-09",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-10",
+      "employee_id": "e1",
+      "date": "2026-03-10",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-03-11",
+      "employee_id": "e1",
+      "date": "2026-03-11",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-12",
+      "employee_id": "e1",
+      "date": "2026-03-12",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-13",
+      "employee_id": "e1",
+      "date": "2026-03-13",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-03-16",
+      "employee_id": "e1",
+      "date": "2026-03-16",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-17",
+      "employee_id": "e1",
+      "date": "2026-03-17",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-18",
+      "employee_id": "e1",
+      "date": "2026-03-18",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-03-19",
+      "employee_id": "e1",
+      "date": "2026-03-19",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-20",
+      "employee_id": "e1",
+      "date": "2026-03-20",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-23",
+      "employee_id": "e1",
+      "date": "2026-03-23",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-03-24",
+      "employee_id": "e1",
+      "date": "2026-03-24",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-25",
+      "employee_id": "e1",
+      "date": "2026-03-25",
+      "status": "present"
+    },
+    {
+      "id": "e1-2026-03-26",
+      "employee_id": "e1",
+      "date": "2026-03-26",
+      "status": "absent"
+    },
+    {
+      "id": "e1-2026-03-27",
+      "employee_id": "e1",
+      "date": "2026-03-27",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-05",
+      "employee_id": "e2",
+      "date": "2026-01-05",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-01-06",
+      "employee_id": "e2",
+      "date": "2026-01-06",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-07",
+      "employee_id": "e2",
+      "date": "2026-01-07",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-08",
+      "employee_id": "e2",
+      "date": "2026-01-08",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-09",
+      "employee_id": "e2",
+      "date": "2026-01-09",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-01-12",
+      "employee_id": "e2",
+      "date": "2026-01-12",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-13",
+      "employee_id": "e2",
+      "date": "2026-01-13",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-14",
+      "employee_id": "e2",
+      "date": "2026-01-14",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-15",
+      "employee_id": "e2",
+      "date": "2026-01-15",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-01-16",
+      "employee_id": "e2",
+      "date": "2026-01-16",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-19",
+      "employee_id": "e2",
+      "date": "2026-01-19",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-20",
+      "employee_id": "e2",
+      "date": "2026-01-20",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-21",
+      "employee_id": "e2",
+      "date": "2026-01-21",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-01-22",
+      "employee_id": "e2",
+      "date": "2026-01-22",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-23",
+      "employee_id": "e2",
+      "date": "2026-01-23",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-26",
+      "employee_id": "e2",
+      "date": "2026-01-26",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-27",
+      "employee_id": "e2",
+      "date": "2026-01-27",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-01-28",
+      "employee_id": "e2",
+      "date": "2026-01-28",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-29",
+      "employee_id": "e2",
+      "date": "2026-01-29",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-01-30",
+      "employee_id": "e2",
+      "date": "2026-01-30",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-02",
+      "employee_id": "e2",
+      "date": "2026-02-02",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-02-03",
+      "employee_id": "e2",
+      "date": "2026-02-03",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-04",
+      "employee_id": "e2",
+      "date": "2026-02-04",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-05",
+      "employee_id": "e2",
+      "date": "2026-02-05",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-06",
+      "employee_id": "e2",
+      "date": "2026-02-06",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-02-09",
+      "employee_id": "e2",
+      "date": "2026-02-09",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-10",
+      "employee_id": "e2",
+      "date": "2026-02-10",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-11",
+      "employee_id": "e2",
+      "date": "2026-02-11",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-12",
+      "employee_id": "e2",
+      "date": "2026-02-12",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-02-13",
+      "employee_id": "e2",
+      "date": "2026-02-13",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-16",
+      "employee_id": "e2",
+      "date": "2026-02-16",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-17",
+      "employee_id": "e2",
+      "date": "2026-02-17",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-18",
+      "employee_id": "e2",
+      "date": "2026-02-18",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-02-19",
+      "employee_id": "e2",
+      "date": "2026-02-19",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-20",
+      "employee_id": "e2",
+      "date": "2026-02-20",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-23",
+      "employee_id": "e2",
+      "date": "2026-02-23",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-24",
+      "employee_id": "e2",
+      "date": "2026-02-24",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-02-25",
+      "employee_id": "e2",
+      "date": "2026-02-25",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-26",
+      "employee_id": "e2",
+      "date": "2026-02-26",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-02-27",
+      "employee_id": "e2",
+      "date": "2026-02-27",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-02",
+      "employee_id": "e2",
+      "date": "2026-03-02",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-03-03",
+      "employee_id": "e2",
+      "date": "2026-03-03",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-04",
+      "employee_id": "e2",
+      "date": "2026-03-04",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-05",
+      "employee_id": "e2",
+      "date": "2026-03-05",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-06",
+      "employee_id": "e2",
+      "date": "2026-03-06",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-03-09",
+      "employee_id": "e2",
+      "date": "2026-03-09",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-10",
+      "employee_id": "e2",
+      "date": "2026-03-10",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-11",
+      "employee_id": "e2",
+      "date": "2026-03-11",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-12",
+      "employee_id": "e2",
+      "date": "2026-03-12",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-03-13",
+      "employee_id": "e2",
+      "date": "2026-03-13",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-16",
+      "employee_id": "e2",
+      "date": "2026-03-16",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-17",
+      "employee_id": "e2",
+      "date": "2026-03-17",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-18",
+      "employee_id": "e2",
+      "date": "2026-03-18",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-03-19",
+      "employee_id": "e2",
+      "date": "2026-03-19",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-20",
+      "employee_id": "e2",
+      "date": "2026-03-20",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-23",
+      "employee_id": "e2",
+      "date": "2026-03-23",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-24",
+      "employee_id": "e2",
+      "date": "2026-03-24",
+      "status": "absent"
+    },
+    {
+      "id": "e2-2026-03-25",
+      "employee_id": "e2",
+      "date": "2026-03-25",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-26",
+      "employee_id": "e2",
+      "date": "2026-03-26",
+      "status": "present"
+    },
+    {
+      "id": "e2-2026-03-27",
+      "employee_id": "e2",
+      "date": "2026-03-27",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-05",
+      "employee_id": "e3",
+      "date": "2026-01-05",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-06",
+      "employee_id": "e3",
+      "date": "2026-01-06",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-07",
+      "employee_id": "e3",
+      "date": "2026-01-07",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-08",
+      "employee_id": "e3",
+      "date": "2026-01-08",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-09",
+      "employee_id": "e3",
+      "date": "2026-01-09",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-01-12",
+      "employee_id": "e3",
+      "date": "2026-01-12",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-13",
+      "employee_id": "e3",
+      "date": "2026-01-13",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-14",
+      "employee_id": "e3",
+      "date": "2026-01-14",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-15",
+      "employee_id": "e3",
+      "date": "2026-01-15",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-16",
+      "employee_id": "e3",
+      "date": "2026-01-16",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-01-19",
+      "employee_id": "e3",
+      "date": "2026-01-19",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-20",
+      "employee_id": "e3",
+      "date": "2026-01-20",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-21",
+      "employee_id": "e3",
+      "date": "2026-01-21",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-22",
+      "employee_id": "e3",
+      "date": "2026-01-22",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-23",
+      "employee_id": "e3",
+      "date": "2026-01-23",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-01-26",
+      "employee_id": "e3",
+      "date": "2026-01-26",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-27",
+      "employee_id": "e3",
+      "date": "2026-01-27",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-28",
+      "employee_id": "e3",
+      "date": "2026-01-28",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-29",
+      "employee_id": "e3",
+      "date": "2026-01-29",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-01-30",
+      "employee_id": "e3",
+      "date": "2026-01-30",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-02-02",
+      "employee_id": "e3",
+      "date": "2026-02-02",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-03",
+      "employee_id": "e3",
+      "date": "2026-02-03",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-04",
+      "employee_id": "e3",
+      "date": "2026-02-04",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-05",
+      "employee_id": "e3",
+      "date": "2026-02-05",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-06",
+      "employee_id": "e3",
+      "date": "2026-02-06",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-02-09",
+      "employee_id": "e3",
+      "date": "2026-02-09",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-10",
+      "employee_id": "e3",
+      "date": "2026-02-10",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-11",
+      "employee_id": "e3",
+      "date": "2026-02-11",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-12",
+      "employee_id": "e3",
+      "date": "2026-02-12",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-13",
+      "employee_id": "e3",
+      "date": "2026-02-13",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-02-16",
+      "employee_id": "e3",
+      "date": "2026-02-16",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-17",
+      "employee_id": "e3",
+      "date": "2026-02-17",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-18",
+      "employee_id": "e3",
+      "date": "2026-02-18",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-19",
+      "employee_id": "e3",
+      "date": "2026-02-19",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-20",
+      "employee_id": "e3",
+      "date": "2026-02-20",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-02-23",
+      "employee_id": "e3",
+      "date": "2026-02-23",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-24",
+      "employee_id": "e3",
+      "date": "2026-02-24",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-25",
+      "employee_id": "e3",
+      "date": "2026-02-25",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-26",
+      "employee_id": "e3",
+      "date": "2026-02-26",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-02-27",
+      "employee_id": "e3",
+      "date": "2026-02-27",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-03-02",
+      "employee_id": "e3",
+      "date": "2026-03-02",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-03",
+      "employee_id": "e3",
+      "date": "2026-03-03",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-04",
+      "employee_id": "e3",
+      "date": "2026-03-04",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-05",
+      "employee_id": "e3",
+      "date": "2026-03-05",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-06",
+      "employee_id": "e3",
+      "date": "2026-03-06",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-03-09",
+      "employee_id": "e3",
+      "date": "2026-03-09",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-10",
+      "employee_id": "e3",
+      "date": "2026-03-10",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-11",
+      "employee_id": "e3",
+      "date": "2026-03-11",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-12",
+      "employee_id": "e3",
+      "date": "2026-03-12",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-13",
+      "employee_id": "e3",
+      "date": "2026-03-13",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-03-16",
+      "employee_id": "e3",
+      "date": "2026-03-16",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-17",
+      "employee_id": "e3",
+      "date": "2026-03-17",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-18",
+      "employee_id": "e3",
+      "date": "2026-03-18",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-19",
+      "employee_id": "e3",
+      "date": "2026-03-19",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-20",
+      "employee_id": "e3",
+      "date": "2026-03-20",
+      "status": "absent"
+    },
+    {
+      "id": "e3-2026-03-23",
+      "employee_id": "e3",
+      "date": "2026-03-23",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-24",
+      "employee_id": "e3",
+      "date": "2026-03-24",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-25",
+      "employee_id": "e3",
+      "date": "2026-03-25",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-26",
+      "employee_id": "e3",
+      "date": "2026-03-26",
+      "status": "present"
+    },
+    {
+      "id": "e3-2026-03-27",
+      "employee_id": "e3",
+      "date": "2026-03-27",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-01-05",
+      "employee_id": "e4",
+      "date": "2026-01-05",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-06",
+      "employee_id": "e4",
+      "date": "2026-01-06",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-07",
+      "employee_id": "e4",
+      "date": "2026-01-07",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-08",
+      "employee_id": "e4",
+      "date": "2026-01-08",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-09",
+      "employee_id": "e4",
+      "date": "2026-01-09",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-01-12",
+      "employee_id": "e4",
+      "date": "2026-01-12",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-13",
+      "employee_id": "e4",
+      "date": "2026-01-13",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-14",
+      "employee_id": "e4",
+      "date": "2026-01-14",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-15",
+      "employee_id": "e4",
+      "date": "2026-01-15",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-16",
+      "employee_id": "e4",
+      "date": "2026-01-16",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-19",
+      "employee_id": "e4",
+      "date": "2026-01-19",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-01-20",
+      "employee_id": "e4",
+      "date": "2026-01-20",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-21",
+      "employee_id": "e4",
+      "date": "2026-01-21",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-22",
+      "employee_id": "e4",
+      "date": "2026-01-22",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-23",
+      "employee_id": "e4",
+      "date": "2026-01-23",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-26",
+      "employee_id": "e4",
+      "date": "2026-01-26",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-27",
+      "employee_id": "e4",
+      "date": "2026-01-27",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-01-28",
+      "employee_id": "e4",
+      "date": "2026-01-28",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-29",
+      "employee_id": "e4",
+      "date": "2026-01-29",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-01-30",
+      "employee_id": "e4",
+      "date": "2026-01-30",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-02",
+      "employee_id": "e4",
+      "date": "2026-02-02",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-03",
+      "employee_id": "e4",
+      "date": "2026-02-03",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-04",
+      "employee_id": "e4",
+      "date": "2026-02-04",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-02-05",
+      "employee_id": "e4",
+      "date": "2026-02-05",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-06",
+      "employee_id": "e4",
+      "date": "2026-02-06",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-09",
+      "employee_id": "e4",
+      "date": "2026-02-09",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-10",
+      "employee_id": "e4",
+      "date": "2026-02-10",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-11",
+      "employee_id": "e4",
+      "date": "2026-02-11",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-12",
+      "employee_id": "e4",
+      "date": "2026-02-12",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-02-13",
+      "employee_id": "e4",
+      "date": "2026-02-13",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-16",
+      "employee_id": "e4",
+      "date": "2026-02-16",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-17",
+      "employee_id": "e4",
+      "date": "2026-02-17",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-18",
+      "employee_id": "e4",
+      "date": "2026-02-18",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-19",
+      "employee_id": "e4",
+      "date": "2026-02-19",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-20",
+      "employee_id": "e4",
+      "date": "2026-02-20",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-02-23",
+      "employee_id": "e4",
+      "date": "2026-02-23",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-24",
+      "employee_id": "e4",
+      "date": "2026-02-24",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-25",
+      "employee_id": "e4",
+      "date": "2026-02-25",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-26",
+      "employee_id": "e4",
+      "date": "2026-02-26",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-02-27",
+      "employee_id": "e4",
+      "date": "2026-02-27",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-02",
+      "employee_id": "e4",
+      "date": "2026-03-02",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-03-03",
+      "employee_id": "e4",
+      "date": "2026-03-03",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-04",
+      "employee_id": "e4",
+      "date": "2026-03-04",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-05",
+      "employee_id": "e4",
+      "date": "2026-03-05",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-06",
+      "employee_id": "e4",
+      "date": "2026-03-06",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-09",
+      "employee_id": "e4",
+      "date": "2026-03-09",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-10",
+      "employee_id": "e4",
+      "date": "2026-03-10",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-03-11",
+      "employee_id": "e4",
+      "date": "2026-03-11",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-12",
+      "employee_id": "e4",
+      "date": "2026-03-12",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-13",
+      "employee_id": "e4",
+      "date": "2026-03-13",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-16",
+      "employee_id": "e4",
+      "date": "2026-03-16",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-17",
+      "employee_id": "e4",
+      "date": "2026-03-17",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-18",
+      "employee_id": "e4",
+      "date": "2026-03-18",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-03-19",
+      "employee_id": "e4",
+      "date": "2026-03-19",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-20",
+      "employee_id": "e4",
+      "date": "2026-03-20",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-23",
+      "employee_id": "e4",
+      "date": "2026-03-23",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-24",
+      "employee_id": "e4",
+      "date": "2026-03-24",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-25",
+      "employee_id": "e4",
+      "date": "2026-03-25",
+      "status": "present"
+    },
+    {
+      "id": "e4-2026-03-26",
+      "employee_id": "e4",
+      "date": "2026-03-26",
+      "status": "absent"
+    },
+    {
+      "id": "e4-2026-03-27",
+      "employee_id": "e4",
+      "date": "2026-03-27",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-05",
+      "employee_id": "e5",
+      "date": "2026-01-05",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-06",
+      "employee_id": "e5",
+      "date": "2026-01-06",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-07",
+      "employee_id": "e5",
+      "date": "2026-01-07",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-08",
+      "employee_id": "e5",
+      "date": "2026-01-08",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-09",
+      "employee_id": "e5",
+      "date": "2026-01-09",
+      "status": "absent"
+    },
+    {
+      "id": "e5-2026-01-12",
+      "employee_id": "e5",
+      "date": "2026-01-12",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-13",
+      "employee_id": "e5",
+      "date": "2026-01-13",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-14",
+      "employee_id": "e5",
+      "date": "2026-01-14",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-15",
+      "employee_id": "e5",
+      "date": "2026-01-15",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-16",
+      "employee_id": "e5",
+      "date": "2026-01-16",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-19",
+      "employee_id": "e5",
+      "date": "2026-01-19",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-20",
+      "employee_id": "e5",
+      "date": "2026-01-20",
+      "status": "absent"
+    },
+    {
+      "id": "e5-2026-01-21",
+      "employee_id": "e5",
+      "date": "2026-01-21",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-22",
+      "employee_id": "e5",
+      "date": "2026-01-22",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-23",
+      "employee_id": "e5",
+      "date": "2026-01-23",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-26",
+      "employee_id": "e5",
+      "date": "2026-01-26",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-27",
+      "employee_id": "e5",
+      "date": "2026-01-27",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-28",
+      "employee_id": "e5",
+      "date": "2026-01-28",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-01-29",
+      "employee_id": "e5",
+      "date": "2026-01-29",
+      "status": "absent"
+    },
+    {
+      "id": "e5-2026-01-30",
+      "employee_id": "e5",
+      "date": "2026-01-30",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-02",
+      "employee_id": "e5",
+      "date": "2026-02-02",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-03",
+      "employee_id": "e5",
+      "date": "2026-02-03",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-04",
+      "employee_id": "e5",
+      "date": "2026-02-04",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-05",
+      "employee_id": "e5",
+      "date": "2026-02-05",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-06",
+      "employee_id": "e5",
+      "date": "2026-02-06",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-09",
+      "employee_id": "e5",
+      "date": "2026-02-09",
+      "status": "absent"
+    },
+    {
+      "id": "e5-2026-02-10",
+      "employee_id": "e5",
+      "date": "2026-02-10",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-11",
+      "employee_id": "e5",
+      "date": "2026-02-11",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-12",
+      "employee_id": "e5",
+      "date": "2026-02-12",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-13",
+      "employee_id": "e5",
+      "date": "2026-02-13",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-16",
+      "employee_id": "e5",
+      "date": "2026-02-16",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-17",
+      "employee_id": "e5",
+      "date": "2026-02-17",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-18",
+      "employee_id": "e5",
+      "date": "2026-02-18",
+      "status": "absent"
+    },
+    {
+      "id": "e5-2026-02-19",
+      "employee_id": "e5",
+      "date": "2026-02-19",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-20",
+      "employee_id": "e5",
+      "date": "2026-02-20",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-23",
+      "employee_id": "e5",
+      "date": "2026-02-23",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-24",
+      "employee_id": "e5",
+      "date": "2026-02-24",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-25",
+      "employee_id": "e5",
+      "date": "2026-02-25",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-26",
+      "employee_id": "e5",
+      "date": "2026-02-26",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-02-27",
+      "employee_id": "e5",
+      "date": "2026-02-27",
+      "status": "absent"
+    },
+    {
+      "id": "e5-2026-03-02",
+      "employee_id": "e5",
+      "date": "2026-03-02",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-03",
+      "employee_id": "e5",
+      "date": "2026-03-03",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-04",
+      "employee_id": "e5",
+      "date": "2026-03-04",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-05",
+      "employee_id": "e5",
+      "date": "2026-03-05",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-06",
+      "employee_id": "e5",
+      "date": "2026-03-06",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-09",
+      "employee_id": "e5",
+      "date": "2026-03-09",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-10",
+      "employee_id": "e5",
+      "date": "2026-03-10",
+      "status": "absent"
+    },
+    {
+      "id": "e5-2026-03-11",
+      "employee_id": "e5",
+      "date": "2026-03-11",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-12",
+      "employee_id": "e5",
+      "date": "2026-03-12",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-13",
+      "employee_id": "e5",
+      "date": "2026-03-13",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-16",
+      "employee_id": "e5",
+      "date": "2026-03-16",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-17",
+      "employee_id": "e5",
+      "date": "2026-03-17",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-18",
+      "employee_id": "e5",
+      "date": "2026-03-18",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-19",
+      "employee_id": "e5",
+      "date": "2026-03-19",
+      "status": "absent"
+    },
+    {
+      "id": "e5-2026-03-20",
+      "employee_id": "e5",
+      "date": "2026-03-20",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-23",
+      "employee_id": "e5",
+      "date": "2026-03-23",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-24",
+      "employee_id": "e5",
+      "date": "2026-03-24",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-25",
+      "employee_id": "e5",
+      "date": "2026-03-25",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-26",
+      "employee_id": "e5",
+      "date": "2026-03-26",
+      "status": "present"
+    },
+    {
+      "id": "e5-2026-03-27",
+      "employee_id": "e5",
+      "date": "2026-03-27",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-05",
+      "employee_id": "e6",
+      "date": "2026-01-05",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-06",
+      "employee_id": "e6",
+      "date": "2026-01-06",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-07",
+      "employee_id": "e6",
+      "date": "2026-01-07",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-08",
+      "employee_id": "e6",
+      "date": "2026-01-08",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-09",
+      "employee_id": "e6",
+      "date": "2026-01-09",
+      "status": "absent"
+    },
+    {
+      "id": "e6-2026-01-12",
+      "employee_id": "e6",
+      "date": "2026-01-12",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-13",
+      "employee_id": "e6",
+      "date": "2026-01-13",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-14",
+      "employee_id": "e6",
+      "date": "2026-01-14",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-15",
+      "employee_id": "e6",
+      "date": "2026-01-15",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-16",
+      "employee_id": "e6",
+      "date": "2026-01-16",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-19",
+      "employee_id": "e6",
+      "date": "2026-01-19",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-20",
+      "employee_id": "e6",
+      "date": "2026-01-20",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-21",
+      "employee_id": "e6",
+      "date": "2026-01-21",
+      "status": "absent"
+    },
+    {
+      "id": "e6-2026-01-22",
+      "employee_id": "e6",
+      "date": "2026-01-22",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-23",
+      "employee_id": "e6",
+      "date": "2026-01-23",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-26",
+      "employee_id": "e6",
+      "date": "2026-01-26",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-27",
+      "employee_id": "e6",
+      "date": "2026-01-27",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-28",
+      "employee_id": "e6",
+      "date": "2026-01-28",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-29",
+      "employee_id": "e6",
+      "date": "2026-01-29",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-01-30",
+      "employee_id": "e6",
+      "date": "2026-01-30",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-02",
+      "employee_id": "e6",
+      "date": "2026-02-02",
+      "status": "absent"
+    },
+    {
+      "id": "e6-2026-02-03",
+      "employee_id": "e6",
+      "date": "2026-02-03",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-04",
+      "employee_id": "e6",
+      "date": "2026-02-04",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-05",
+      "employee_id": "e6",
+      "date": "2026-02-05",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-06",
+      "employee_id": "e6",
+      "date": "2026-02-06",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-09",
+      "employee_id": "e6",
+      "date": "2026-02-09",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-10",
+      "employee_id": "e6",
+      "date": "2026-02-10",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-11",
+      "employee_id": "e6",
+      "date": "2026-02-11",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-12",
+      "employee_id": "e6",
+      "date": "2026-02-12",
+      "status": "absent"
+    },
+    {
+      "id": "e6-2026-02-13",
+      "employee_id": "e6",
+      "date": "2026-02-13",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-16",
+      "employee_id": "e6",
+      "date": "2026-02-16",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-17",
+      "employee_id": "e6",
+      "date": "2026-02-17",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-18",
+      "employee_id": "e6",
+      "date": "2026-02-18",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-19",
+      "employee_id": "e6",
+      "date": "2026-02-19",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-20",
+      "employee_id": "e6",
+      "date": "2026-02-20",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-23",
+      "employee_id": "e6",
+      "date": "2026-02-23",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-24",
+      "employee_id": "e6",
+      "date": "2026-02-24",
+      "status": "absent"
+    },
+    {
+      "id": "e6-2026-02-25",
+      "employee_id": "e6",
+      "date": "2026-02-25",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-26",
+      "employee_id": "e6",
+      "date": "2026-02-26",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-02-27",
+      "employee_id": "e6",
+      "date": "2026-02-27",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-02",
+      "employee_id": "e6",
+      "date": "2026-03-02",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-03",
+      "employee_id": "e6",
+      "date": "2026-03-03",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-04",
+      "employee_id": "e6",
+      "date": "2026-03-04",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-05",
+      "employee_id": "e6",
+      "date": "2026-03-05",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-06",
+      "employee_id": "e6",
+      "date": "2026-03-06",
+      "status": "absent"
+    },
+    {
+      "id": "e6-2026-03-09",
+      "employee_id": "e6",
+      "date": "2026-03-09",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-10",
+      "employee_id": "e6",
+      "date": "2026-03-10",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-11",
+      "employee_id": "e6",
+      "date": "2026-03-11",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-12",
+      "employee_id": "e6",
+      "date": "2026-03-12",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-13",
+      "employee_id": "e6",
+      "date": "2026-03-13",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-16",
+      "employee_id": "e6",
+      "date": "2026-03-16",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-17",
+      "employee_id": "e6",
+      "date": "2026-03-17",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-18",
+      "employee_id": "e6",
+      "date": "2026-03-18",
+      "status": "absent"
+    },
+    {
+      "id": "e6-2026-03-19",
+      "employee_id": "e6",
+      "date": "2026-03-19",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-20",
+      "employee_id": "e6",
+      "date": "2026-03-20",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-23",
+      "employee_id": "e6",
+      "date": "2026-03-23",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-24",
+      "employee_id": "e6",
+      "date": "2026-03-24",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-25",
+      "employee_id": "e6",
+      "date": "2026-03-25",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-26",
+      "employee_id": "e6",
+      "date": "2026-03-26",
+      "status": "present"
+    },
+    {
+      "id": "e6-2026-03-27",
+      "employee_id": "e6",
+      "date": "2026-03-27",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-05",
+      "employee_id": "e7",
+      "date": "2026-01-05",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-07",
+      "employee_id": "e7",
+      "date": "2026-01-07",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-09",
+      "employee_id": "e7",
+      "date": "2026-01-09",
+      "status": "absent"
+    },
+    {
+      "id": "e7-2026-01-12",
+      "employee_id": "e7",
+      "date": "2026-01-12",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-14",
+      "employee_id": "e7",
+      "date": "2026-01-14",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-16",
+      "employee_id": "e7",
+      "date": "2026-01-16",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-19",
+      "employee_id": "e7",
+      "date": "2026-01-19",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-21",
+      "employee_id": "e7",
+      "date": "2026-01-21",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-23",
+      "employee_id": "e7",
+      "date": "2026-01-23",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-26",
+      "employee_id": "e7",
+      "date": "2026-01-26",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-28",
+      "employee_id": "e7",
+      "date": "2026-01-28",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-01-30",
+      "employee_id": "e7",
+      "date": "2026-01-30",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-02",
+      "employee_id": "e7",
+      "date": "2026-02-02",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-04",
+      "employee_id": "e7",
+      "date": "2026-02-04",
+      "status": "absent"
+    },
+    {
+      "id": "e7-2026-02-06",
+      "employee_id": "e7",
+      "date": "2026-02-06",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-09",
+      "employee_id": "e7",
+      "date": "2026-02-09",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-11",
+      "employee_id": "e7",
+      "date": "2026-02-11",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-13",
+      "employee_id": "e7",
+      "date": "2026-02-13",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-16",
+      "employee_id": "e7",
+      "date": "2026-02-16",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-18",
+      "employee_id": "e7",
+      "date": "2026-02-18",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-20",
+      "employee_id": "e7",
+      "date": "2026-02-20",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-23",
+      "employee_id": "e7",
+      "date": "2026-02-23",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-25",
+      "employee_id": "e7",
+      "date": "2026-02-25",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-02-27",
+      "employee_id": "e7",
+      "date": "2026-02-27",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-02",
+      "employee_id": "e7",
+      "date": "2026-03-02",
+      "status": "absent"
+    },
+    {
+      "id": "e7-2026-03-04",
+      "employee_id": "e7",
+      "date": "2026-03-04",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-06",
+      "employee_id": "e7",
+      "date": "2026-03-06",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-09",
+      "employee_id": "e7",
+      "date": "2026-03-09",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-11",
+      "employee_id": "e7",
+      "date": "2026-03-11",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-13",
+      "employee_id": "e7",
+      "date": "2026-03-13",
+      "status": "absent"
+    },
+    {
+      "id": "e7-2026-03-16",
+      "employee_id": "e7",
+      "date": "2026-03-16",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-18",
+      "employee_id": "e7",
+      "date": "2026-03-18",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-20",
+      "employee_id": "e7",
+      "date": "2026-03-20",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-23",
+      "employee_id": "e7",
+      "date": "2026-03-23",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-25",
+      "employee_id": "e7",
+      "date": "2026-03-25",
+      "status": "present"
+    },
+    {
+      "id": "e7-2026-03-27",
+      "employee_id": "e7",
+      "date": "2026-03-27",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-02",
+      "employee_id": "e8",
+      "date": "2026-02-02",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-03",
+      "employee_id": "e8",
+      "date": "2026-02-03",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-04",
+      "employee_id": "e8",
+      "date": "2026-02-04",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-05",
+      "employee_id": "e8",
+      "date": "2026-02-05",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-06",
+      "employee_id": "e8",
+      "date": "2026-02-06",
+      "status": "absent"
+    },
+    {
+      "id": "e8-2026-02-09",
+      "employee_id": "e8",
+      "date": "2026-02-09",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-10",
+      "employee_id": "e8",
+      "date": "2026-02-10",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-11",
+      "employee_id": "e8",
+      "date": "2026-02-11",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-12",
+      "employee_id": "e8",
+      "date": "2026-02-12",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-13",
+      "employee_id": "e8",
+      "date": "2026-02-13",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-16",
+      "employee_id": "e8",
+      "date": "2026-02-16",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-17",
+      "employee_id": "e8",
+      "date": "2026-02-17",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-18",
+      "employee_id": "e8",
+      "date": "2026-02-18",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-19",
+      "employee_id": "e8",
+      "date": "2026-02-19",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-20",
+      "employee_id": "e8",
+      "date": "2026-02-20",
+      "status": "absent"
+    },
+    {
+      "id": "e8-2026-02-23",
+      "employee_id": "e8",
+      "date": "2026-02-23",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-24",
+      "employee_id": "e8",
+      "date": "2026-02-24",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-25",
+      "employee_id": "e8",
+      "date": "2026-02-25",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-26",
+      "employee_id": "e8",
+      "date": "2026-02-26",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-02-27",
+      "employee_id": "e8",
+      "date": "2026-02-27",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-02",
+      "employee_id": "e8",
+      "date": "2026-03-02",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-03",
+      "employee_id": "e8",
+      "date": "2026-03-03",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-04",
+      "employee_id": "e8",
+      "date": "2026-03-04",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-05",
+      "employee_id": "e8",
+      "date": "2026-03-05",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-06",
+      "employee_id": "e8",
+      "date": "2026-03-06",
+      "status": "absent"
+    },
+    {
+      "id": "e8-2026-03-09",
+      "employee_id": "e8",
+      "date": "2026-03-09",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-10",
+      "employee_id": "e8",
+      "date": "2026-03-10",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-11",
+      "employee_id": "e8",
+      "date": "2026-03-11",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-12",
+      "employee_id": "e8",
+      "date": "2026-03-12",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-13",
+      "employee_id": "e8",
+      "date": "2026-03-13",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-16",
+      "employee_id": "e8",
+      "date": "2026-03-16",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-17",
+      "employee_id": "e8",
+      "date": "2026-03-17",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-18",
+      "employee_id": "e8",
+      "date": "2026-03-18",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-19",
+      "employee_id": "e8",
+      "date": "2026-03-19",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-20",
+      "employee_id": "e8",
+      "date": "2026-03-20",
+      "status": "absent"
+    },
+    {
+      "id": "e8-2026-03-23",
+      "employee_id": "e8",
+      "date": "2026-03-23",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-24",
+      "employee_id": "e8",
+      "date": "2026-03-24",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-25",
+      "employee_id": "e8",
+      "date": "2026-03-25",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-26",
+      "employee_id": "e8",
+      "date": "2026-03-26",
+      "status": "present"
+    },
+    {
+      "id": "e8-2026-03-27",
+      "employee_id": "e8",
+      "date": "2026-03-27",
+      "status": "present"
+    }
+  ],
+  "leave": [
+    {
+      "employee_id": "e2",
+      "date": "2026-01-05",
+      "approved": true
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-01-28",
+      "approved": true
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-02-20",
+      "approved": true
+    },
+    {
+      "employee_id": "e2",
+      "date": "2026-03-17",
+      "approved": true
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-05",
+      "approved": true
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-01-28",
+      "approved": true
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-02-20",
+      "approved": true
+    },
+    {
+      "employee_id": "e5",
+      "date": "2026-03-17",
+      "approved": true
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-05",
+      "approved": true
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-01-28",
+      "approved": true
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-02-20",
+      "approved": true
+    },
+    {
+      "employee_id": "e6",
+      "date": "2026-03-17",
+      "approved": true
+    }
+  ]
+}

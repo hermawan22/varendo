@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Varendo standalone performance fixture</title>
+    <style>
+      :root { color-scheme: light; font: 16px/1.45 system-ui, sans-serif; }
+      body { margin: 0; padding: 1rem; background: #fff; color: #172033; }
+      main { display: grid; gap: 1rem; max-width: 72rem; }
+      aeliqo-table { display: block; min-width: 22rem; }
+    </style>
+  </head>
+  <body>
+    <main aria-labelledby="title">
+      <h1 id="title">Varendo standalone performance fixture</h1>
+      <p>One input and one table render a bounded 100-row fixture.</p>
+      <section id="fixture" aria-label="Standalone performance fixture"></section>
+    </main>
+    <script type="module" src="./standalone.ts"></script>
+  </body>
+</html>

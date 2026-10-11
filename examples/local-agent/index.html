@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Varendo local agent</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Varendo · local example</p>
+        <h1>Your People directory, with an agent</h1>
+        <p>
+          Connect an MCP client using the configuration printed in your terminal. The application owns the data, allowed
+          views, and authority.
+        </p>
+      </header>
+      <section aria-labelledby="session-heading">
+        <h2 id="session-heading">Browser session</h2>
+        <p id="status" role="status">Starting the local session…</p>
+        <button id="disconnect" type="button" disabled>Disconnect</button>
+        <button id="reconnect" type="button" hidden>Start a new session</button>
+        <p>Try this in your MCP client: <strong>Show People as cards.</strong></p>
+      </section>
+      <section aria-labelledby="people-heading">
+        <h2 id="people-heading">People</h2>
+        <div id="region"></div>
+      </section>
+      <section aria-labelledby="prompt-heading">
+        <h2 id="prompt-heading">Optional server model</h2>
+        <p id="model-status">Checking server model configuration…</p>
+        <form id="prompt-form">
+          <label for="prompt">Prompt</label
+          ><textarea id="prompt" maxlength="4000" rows="3" disabled>Show People as cards.</textarea>
+          <button id="send" type="submit" disabled>Send to local agent</button>
+        </form>
+        <p id="receipt" role="status"></p>
+      </section>
+      <footer>
+        <a href="https://hermawan22.github.io/varendo/agents/mcp/">MCP guide</a> ·
+        <a href="https://hermawan22.github.io/varendo/agents/byok/">Model configuration</a>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

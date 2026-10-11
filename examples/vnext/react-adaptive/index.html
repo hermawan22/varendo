@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <button id="narrow" type="button">Narrow host</button>
+    <button id="fail-next" type="button">Fail next view load</button>
+    <button id="remove-wide" type="button">Remove wide view</button>
+    <button id="hold-loads" type="button">Hold view loads</button>
+    <button id="rerender" type="button">Rerender host</button>
+    <button id="release-load" type="button">Release one view load</button>
+    <button id="mount-initial-lazy" type="button">Mount initial lazy view</button>
+    <button id="unmount-host" type="button">Unmount host</button>
+    <output id="load-count" aria-label="View load count">0</output>
+    <output id="initial-load-count" aria-label="Initial view load count">0</output>
+    <output id="listener-count" aria-label="Active surface listeners">0</output>
+    <div id="host" style="width: 800px"><div id="root"></div></div>
+    <div id="initial-lazy-root"></div>
+    <div id="portal-target"></div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

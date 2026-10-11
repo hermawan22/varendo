@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schemaVersion": 1,
+  "product": "varendo",
+  "candidate": {
+    "version": "0.1.0",
+    "status": "candidate",
+    "baseVersion": null,
+    "compatibility": "breaking",
+    "upstreamVersion": "0.7.1"
+  },
+  "testedToolchain": {
+    "node": {
+      "version": "24.20.0",
+      "status": "source-checks-passed",
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    "pnpm": {
+      "version": "11.24.0",
+      "status": "source-checks-passed",
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    "typescript": {
+      "version": "7.0.2",
+      "status": "source-checks-passed",
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    "vite": {
+      "version": "8.2.2",
+      "status": "source-checks-passed",
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    "playwright": {
+      "version": "1.63.0",
+      "status": "source-checks-passed",
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    }
+  },
+  "frameworks": [
+    {
+      "id": "vanilla",
+      "version": "native-dom",
+      "status": "source-checks-passed",
+      "evidence": [
+        "tests/framework-consumers/framework-tarballs.mjs",
+        "tests/vnext/browser"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "lit",
+      "version": "3.3.3",
+      "status": "source-checks-passed",
+      "evidence": [
+        "tests/framework-consumers/framework-tarballs.mjs",
+        "tests/platform"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "react",
+      "version": "19.2.8",
+      "status": "source-checks-passed",
+      "evidence": [
+        "tests/framework-consumers/framework-tarballs.mjs",
+        "tests/vnext/browser/react.spec.ts"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "vue",
+      "version": "3.5.42",
+      "status": "source-checks-passed",
+      "evidence": [
+        "tests/framework-consumers/framework-tarballs.mjs"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "next",
+      "version": "16.3.8",
+      "status": "source-checks-passed",
+      "evidence": [
+        "tests/next-platform",
+        "tests/vnext/browser/ssr.spec.ts"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "svelte",
+      "version": null,
+      "status": "unverified",
+      "reason": "No maintained Svelte adapter or installed consumer is in the maintained test scope."
+    },
+    {
+      "id": "angular",
+      "version": null,
+      "status": "unverified",
+      "reason": "No maintained Angular adapter or installed consumer is in the maintained test scope."
+    }
+  ],
+  "browsers": [
+    {
+      "id": "chromium",
+      "status": "source-checks-passed",
+      "evidence": [
+        "tests/vnext/playwright.config.mjs",
+        "tests/framework-consumers/framework-tarballs.mjs"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "firefox",
+      "status": "source-checks-passed",
+      "evidence": [
+        "tests/vnext/playwright.config.mjs"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "webkit",
+      "status": "source-checks-passed",
+      "evidence": [
+        "tests/vnext/playwright.config.mjs"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "native-webmcp",
+      "status": "source-checks-passed",
+      "scope": "Experimental native discovery, invocation, component/workspace/page rendering and reset cleanup. Requires the browser capability to be enabled; it is not baseline browser availability.",
+      "focusedEvidence": {
+        "status": "passed",
+        "browser": "Chromium",
+        "version": "153.0.8010.12",
+        "flag": "WebMCPTesting",
+        "exactSourceAcceptance": "aad7d3f384f8492ab3d87d98b75bdf842e160afa (native adapter); component/workspace/page journey verified on the tree committed at bfcb20fe95e1d42569dc0f2b45c3256d21c9fbdc."
+      },
+      "evidence": [
+        "apps/site/tests/site/webmcp-native.spec.ts",
+        "apps/site/tests/site/webmcp-native.playwright.config.mjs",
+        "tests/protocol-webmcp/native-probe.mjs"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    }
+  ],
+  "providers": [
+    {
+      "id": "none",
+      "status": "source-checks-passed",
+      "scope": "All core, runtime, web, React, SSR, local-data, remote-data, and reference-journey paths operate without a model.",
+      "evidence": [
+        "tests/framework-consumers/framework-tarballs.mjs",
+        "tests/consumers/adaptation-tarballs.mjs",
+        "tests/vnext"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "local-protocol-fixture",
+      "status": "source-checks-passed",
+      "scope": "Synthetic localhost conformance for the provider-neutral protocol.",
+      "evidence": [
+        "tests/vnext/model-profile.test.ts",
+        "tests/protocol-model"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "standalone-mcp",
+      "status": "source-checks-passed",
+      "scope": "Provider-neutral local HTTP and stdio tool transport, with optional server-owned ToolModelPort adapters. Deterministic model fixtures do not qualify a hosted model.",
+      "evidence": [
+        "tests/local-agent/consumer.mjs",
+        "tests/local-agent/standalone.test.mjs",
+        "tests/protocol-mcp/mcp.test.ts"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "openai-compatible-live",
+      "status": "unverified",
+      "reason": "No current-source live provider/model profile is qualified. Protocol compatibility does not establish model quality."
+    },
+    {
+      "id": "other-hosted-providers",
+      "status": "unverified",
+      "reason": "Provider-specific quality and latency are not inferred from protocol compatibility."
+    }
+  ],
+  "workloads": [
+    {
+      "id": "component-workspace-page",
+      "status": "source-checks-passed",
+      "scope": "One mounted Region adapts between registered components, multi-result workspaces and page layouts with application-owned header/sidebar views. State continuity, guarded draft exits and forced revocation are covered by the recorded source checks; final release receipts bind the published source.",
+      "evidence": [
+        "tests/consumers/adaptation-tarballs.mjs",
+        "tests/runtime-presentation/browser/app-continuity.spec.ts",
+        "tests/runtime-presentation/browser/app-draft-exit.spec.ts",
+        "tests/runtime-presentation/runtime-render-transaction.test.ts",
+        "tests/vnext/page-pattern.test.ts"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "playground-j1-j3",
+      "status": "source-checks-passed",
+      "scope": "The People Jakarta, Daily attendance, and Analytical workspace playground journeys exercise approved synthetic data through the real runtime and renderer without requiring a model.",
+      "evidence": [
+        "apps/site/tests/site/browser.spec.ts",
+        "tests/vnext/browser/visual-journeys.spec.ts",
+        "tests/vnext/browser/attendance.spec.ts",
+        "tests/vnext/browser/workspace.spec.ts"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "reference-journeys",
+      "status": "source-checks-passed",
+      "scope": "Four synthetic application journeys with real package/browser consumers.",
+      "evidence": [
+        "tests/vnext/browser/journeys.spec.ts",
+        "tests/vnext/journey-remote.test.ts"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "synthetic-paged-million-rows",
+      "status": "source-checks-passed",
+      "scope": "Bounds page/window behavior only; this is not a production database throughput claim.",
+      "evidence": [
+        "tests/vnext/remote-data.test.ts"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "declared-module-scale-1000",
+      "status": "source-checks-passed",
+      "scope": "1,000 declarations with five active surfaces; measured module and update isolation.",
+      "evidence": [
+        "tests/vnext/module-scale.test.ts",
+        "tests/performance/vnext-workload.mjs"
+      ],
+      "qualificationScope": "Recorded local or diagnostic source checks; final release acceptance is separate."
+    },
+    {
+      "id": "production-database-throughput",
+      "status": "unverified",
+      "reason": "No production database adapter or workload was profiled by this candidate."
+    },
+    {
+      "id": "unbounded-application-size",
+      "status": "unsupported-claim",
+      "reason": "Varendo does not promise unlimited scale or every framework/provider combination."
+    }
+  ],
+  "claims": {
+    "unlimitedScale": false,
+    "everyFramework": false,
+    "everyProvider": false,
+    "liveModelQuality": false,
+    "nativeWebMcp": true,
+    "stablePublished": false,
+    "deployed": false
+  },
+  "acceptance": {
+    "status": "source-checks-recorded",
+    "sourceRevision": null,
+    "scope": "This file records observed revisions; it does not certify its own enclosing commit. Publication requires a full same-SHA main-push quality run. Publication and deployment receipts are external to the source snapshot.",
+    "record": "docs/STATUS.md",
+    "releaseReceipts": "https://github.com/hermawan22/varendo/releases/tag/v0.1.0",
+    "historicalMatrix": "docs/releases/0.5.2/support-matrix.json"
+  },
+  "snapshotScope": "Prepublication source qualification. Candidate metadata and publication/deployment flags describe this source snapshot; use the versioned release receipts and public /version endpoint for live publication and deployment identity."
+}

@@ -1,0 +1,36 @@
+import {
+  AeliqoTextFieldElement,
+  AeliqoTextAreaElement,
+  AeliqoNumberFieldElement,
+  AeliqoCheckboxElement,
+  AeliqoRadioGroupElement,
+  AeliqoSwitchElement,
+  AeliqoSelectElement,
+  AeliqoComboboxElement,
+  AeliqoDateFieldElement,
+  AeliqoDateRangeElement,
+  AeliqoSliderElement,
+  AeliqoSearchFieldElement,
+  AeliqoFileInputElement,
+  AeliqoFieldGroupElement,
+  AeliqoFormElement,
+} from './input/index.js';
+import type { ElementRegistration } from './register-elements.js';
+
+export const registrations: readonly ElementRegistration[] = [
+  { name: 'aeliqo-text-field', constructor: AeliqoTextFieldElement },
+  { name: 'aeliqo-text-area', constructor: AeliqoTextAreaElement },
+  { name: 'aeliqo-number-field', constructor: AeliqoNumberFieldElement },
+  { name: 'aeliqo-checkbox', constructor: AeliqoCheckboxElement },
+  { name: 'aeliqo-radio-group', constructor: AeliqoRadioGroupElement },
+  { name: 'aeliqo-switch', constructor: AeliqoSwitchElement },
+  { name: 'aeliqo-select', constructor: AeliqoSelectElement },
+  { name: 'aeliqo-combobox', constructor: AeliqoComboboxElement },
+  { name: 'aeliqo-date-field', constructor: AeliqoDateFieldElement },
+  { name: 'aeliqo-date-range', constructor: AeliqoDateRangeElement },
+  { name: 'aeliqo-slider', constructor: AeliqoSliderElement },
+  { name: 'aeliqo-search-field', constructor: AeliqoSearchFieldElement },
+  { name: 'aeliqo-file-input', constructor: AeliqoFileInputElement },
+  { name: 'aeliqo-field-group', constructor: AeliqoFieldGroupElement },
+  { name: 'aeliqo-form', constructor: AeliqoFormElement },
+];

@@ -1,0 +1,84 @@
+{
+  "name": "@varendo/core",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hermawan22/varendo.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "description": "Pure Varendo semantic UI contracts and compilation",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "schemas",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schema": {
+      "types": "./dist/contracts/schemas.d.ts",
+      "import": "./dist/contracts/schemas.js"
+    },
+    "./contracts": {
+      "types": "./dist/contracts/index.d.ts",
+      "import": "./dist/contracts/index.js"
+    },
+    "./app": {
+      "types": "./dist/app/index.d.ts",
+      "import": "./dist/app/index.js"
+    },
+    "./features": {
+      "types": "./dist/features/index.d.ts",
+      "import": "./dist/features/index.js"
+    },
+    "./expressions": {
+      "types": "./dist/expressions/index.d.ts",
+      "import": "./dist/expressions/index.js"
+    },
+    "./semantics": {
+      "types": "./dist/semantics/index.d.ts",
+      "import": "./dist/semantics/index.js"
+    },
+    "./query": {
+      "types": "./dist/query/index.d.ts",
+      "import": "./dist/query/index.js"
+    },
+    "./interaction": {
+      "types": "./dist/interaction/index.d.ts",
+      "import": "./dist/interaction/index.js"
+    },
+    "./presentation": {
+      "types": "./dist/presentation/index.d.ts",
+      "import": "./dist/presentation/index.js"
+    },
+    "./plot": {
+      "types": "./dist/contracts/plot/index.d.ts",
+      "import": "./dist/contracts/plot/index.js"
+    },
+    "./visualization": {
+      "types": "./dist/contracts/visualization/index.d.ts",
+      "import": "./dist/contracts/visualization/index.js"
+    },
+    "./agent": {
+      "types": "./dist/contracts/agent/index.d.ts",
+      "import": "./dist/contracts/agent/index.js"
+    },
+    "./schemas/*": "./schemas/*"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/generate-schemas.mjs"
+  },
+  "dependencies": {
+    "zod": "4.5.4"
+  }
+}

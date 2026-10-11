@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Attendance UI</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 system-ui;
+      }
+      main {
+        max-width: 72rem;
+        margin: auto;
+        padding: 1rem;
+      }
+      button {
+        min-height: 44px;
+        font: inherit;
+        margin: 0.25rem;
+      }
+      #workspace {
+        min-width: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 id="pg-result-title">Attendance UI</h1>
+      <button id="component">One component</button>
+      <button id="overview">Workspace</button>
+      <button id="page">Entire page</button>
+      <p id="status" role="status">Loading</p>
+      <div id="workspace"></div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

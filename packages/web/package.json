@@ -1,0 +1,426 @@
+{
+  "name": "@varendo/web",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hermawan22/varendo.git",
+    "directory": "packages/web"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Varendo's shared Lit web elements",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": [
+    "./dist/register.js",
+    "./dist/server.js"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./app": {
+      "types": "./dist/app/index.d.ts",
+      "import": "./dist/app/index.js"
+    },
+    "./recipes": {
+      "types": "./dist/recipes/index.d.ts",
+      "import": "./dist/recipes/index.js"
+    },
+    "./register": {
+      "types": "./dist/register.d.ts",
+      "import": "./dist/register.js"
+    },
+    "./events": {
+      "types": "./dist/events.d.ts",
+      "import": "./dist/events.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    },
+    "./table": {
+      "types": "./dist/elements/aeliqo-table.d.ts",
+      "import": "./dist/elements/aeliqo-table.js"
+    },
+    "./chart": {
+      "types": "./dist/elements/aeliqo-chart.d.ts",
+      "import": "./dist/elements/aeliqo-chart.js"
+    },
+    "./styles": {
+      "types": "./dist/styles/index.d.ts",
+      "import": "./dist/styles/index.js"
+    },
+    "./region": {
+      "types": "./dist/region/index.d.ts",
+      "import": "./dist/region/index.js"
+    },
+    "./foundation": {
+      "types": "./dist/foundation/index.d.ts",
+      "import": "./dist/foundation/index.js"
+    },
+    "./foundation/manifest": {
+      "types": "./dist/foundation/manifest.d.ts",
+      "import": "./dist/foundation/manifest.js"
+    },
+    "./button": {
+      "types": "./dist/foundation/button.d.ts",
+      "import": "./dist/foundation/button.js"
+    },
+    "./icon-button": {
+      "types": "./dist/foundation/icon-button.d.ts",
+      "import": "./dist/foundation/icon-button.js"
+    },
+    "./link": {
+      "types": "./dist/foundation/link.d.ts",
+      "import": "./dist/foundation/link.js"
+    },
+    "./text": {
+      "types": "./dist/foundation/text.d.ts",
+      "import": "./dist/foundation/text.js"
+    },
+    "./heading": {
+      "types": "./dist/foundation/heading.d.ts",
+      "import": "./dist/foundation/heading.js"
+    },
+    "./badge": {
+      "types": "./dist/foundation/badge.d.ts",
+      "import": "./dist/foundation/badge.js"
+    },
+    "./avatar": {
+      "types": "./dist/foundation/avatar.d.ts",
+      "import": "./dist/foundation/avatar.js"
+    },
+    "./separator": {
+      "types": "./dist/foundation/separator.d.ts",
+      "import": "./dist/foundation/separator.js"
+    },
+    "./surface": {
+      "types": "./dist/foundation/surface.d.ts",
+      "import": "./dist/foundation/surface.js"
+    },
+    "./stack": {
+      "types": "./dist/foundation/stack.d.ts",
+      "import": "./dist/foundation/stack.js"
+    },
+    "./grid": {
+      "types": "./dist/foundation/grid.d.ts",
+      "import": "./dist/foundation/grid.js"
+    },
+    "./split-pane": {
+      "types": "./dist/foundation/split-pane.d.ts",
+      "import": "./dist/foundation/split-pane.js"
+    },
+    "./scroll-area": {
+      "types": "./dist/foundation/scroll-area.d.ts",
+      "import": "./dist/foundation/scroll-area.js"
+    },
+    "./plot": {
+      "types": "./dist/plot/index.d.ts",
+      "import": "./dist/plot/index.js"
+    },
+    "./inputs": {
+      "types": "./dist/input/index.d.ts",
+      "import": "./dist/input/index.js"
+    },
+    "./inputs/manifest": {
+      "types": "./dist/input/manifest.d.ts",
+      "import": "./dist/input/manifest.js"
+    },
+    "./text-field": {
+      "types": "./dist/input/text-field.d.ts",
+      "import": "./dist/input/text-field.js"
+    },
+    "./text-area": {
+      "types": "./dist/input/text-area.d.ts",
+      "import": "./dist/input/text-area.js"
+    },
+    "./number-field": {
+      "types": "./dist/input/number-field.d.ts",
+      "import": "./dist/input/number-field.js"
+    },
+    "./checkbox": {
+      "types": "./dist/input/checkbox.d.ts",
+      "import": "./dist/input/checkbox.js"
+    },
+    "./radio-group": {
+      "types": "./dist/input/radio-group.d.ts",
+      "import": "./dist/input/radio-group.js"
+    },
+    "./switch": {
+      "types": "./dist/input/switch.d.ts",
+      "import": "./dist/input/switch.js"
+    },
+    "./select": {
+      "types": "./dist/input/select.d.ts",
+      "import": "./dist/input/select.js"
+    },
+    "./combobox": {
+      "types": "./dist/input/combobox.d.ts",
+      "import": "./dist/input/combobox.js"
+    },
+    "./date-field": {
+      "types": "./dist/input/date-field.d.ts",
+      "import": "./dist/input/date-field.js"
+    },
+    "./date-range": {
+      "types": "./dist/input/date-range.d.ts",
+      "import": "./dist/input/date-range.js"
+    },
+    "./slider": {
+      "types": "./dist/input/slider.d.ts",
+      "import": "./dist/input/slider.js"
+    },
+    "./search-field": {
+      "types": "./dist/input/search-field.d.ts",
+      "import": "./dist/input/search-field.js"
+    },
+    "./file-input": {
+      "types": "./dist/input/file-input.d.ts",
+      "import": "./dist/input/file-input.js"
+    },
+    "./field-group": {
+      "types": "./dist/input/field-group.d.ts",
+      "import": "./dist/input/field-group.js"
+    },
+    "./form": {
+      "types": "./dist/input/form.d.ts",
+      "import": "./dist/input/form.js"
+    },
+    "./navigation": {
+      "types": "./dist/navigation/index.d.ts",
+      "import": "./dist/navigation/index.js"
+    },
+    "./tabs": {
+      "types": "./dist/navigation/tabs.d.ts",
+      "import": "./dist/navigation/tabs.js"
+    },
+    "./breadcrumb": {
+      "types": "./dist/navigation/breadcrumb.d.ts",
+      "import": "./dist/navigation/breadcrumb.js"
+    },
+    "./pagination": {
+      "types": "./dist/navigation/pagination.d.ts",
+      "import": "./dist/navigation/pagination.js"
+    },
+    "./menu": {
+      "types": "./dist/navigation/menu.d.ts",
+      "import": "./dist/navigation/menu.js"
+    },
+    "./tree-nav": {
+      "types": "./dist/navigation/tree-nav.d.ts",
+      "import": "./dist/navigation/tree-nav.js"
+    },
+    "./feedback": {
+      "types": "./dist/feedback/index.d.ts",
+      "import": "./dist/feedback/index.js"
+    },
+    "./dialog": {
+      "types": "./dist/feedback/dialog.d.ts",
+      "import": "./dist/feedback/dialog.js"
+    },
+    "./drawer": {
+      "types": "./dist/feedback/drawer.d.ts",
+      "import": "./dist/feedback/drawer.js"
+    },
+    "./popover": {
+      "types": "./dist/feedback/popover.d.ts",
+      "import": "./dist/feedback/popover.js"
+    },
+    "./tooltip": {
+      "types": "./dist/feedback/tooltip.d.ts",
+      "import": "./dist/feedback/tooltip.js"
+    },
+    "./alert": {
+      "types": "./dist/feedback/alert.d.ts",
+      "import": "./dist/feedback/alert.js"
+    },
+    "./toast": {
+      "types": "./dist/feedback/toast.d.ts",
+      "import": "./dist/feedback/toast.js"
+    },
+    "./progress": {
+      "types": "./dist/feedback/progress.d.ts",
+      "import": "./dist/feedback/progress.js"
+    },
+    "./skeleton": {
+      "types": "./dist/feedback/skeleton.d.ts",
+      "import": "./dist/feedback/skeleton.js"
+    },
+    "./empty-state": {
+      "types": "./dist/feedback/empty-state.d.ts",
+      "import": "./dist/feedback/empty-state.js"
+    },
+    "./data": {
+      "types": "./dist/data/index.d.ts",
+      "import": "./dist/data/index.js"
+    },
+    "./metric": {
+      "types": "./dist/data/metric.d.ts",
+      "import": "./dist/data/metric.js"
+    },
+    "./delta": {
+      "types": "./dist/data/delta.d.ts",
+      "import": "./dist/data/delta.js"
+    },
+    "./key-value": {
+      "types": "./dist/data/key-value.d.ts",
+      "import": "./dist/data/key-value.js"
+    },
+    "./detail": {
+      "types": "./dist/data/detail.d.ts",
+      "import": "./dist/data/detail.js"
+    },
+    "./record-list": {
+      "types": "./dist/data/record-list.d.ts",
+      "import": "./dist/data/record-list.js"
+    },
+    "./card-collection": {
+      "types": "./dist/data/card-collection.d.ts",
+      "import": "./dist/data/card-collection.js"
+    },
+    "./selection-summary": {
+      "types": "./dist/data/selection-summary.d.ts",
+      "import": "./dist/data/selection-summary.js"
+    },
+    "./filter-builder": {
+      "types": "./dist/data/filter-builder.d.ts",
+      "import": "./dist/data/filter-builder.js"
+    },
+    "./visualization": {
+      "types": "./dist/visualization/index.d.ts",
+      "import": "./dist/visualization/index.js"
+    },
+    "./trend": {
+      "types": "./dist/visualization/cartesian/trend.d.ts",
+      "import": "./dist/visualization/cartesian/trend.js"
+    },
+    "./bar": {
+      "types": "./dist/visualization/cartesian/bar.d.ts",
+      "import": "./dist/visualization/cartesian/bar.js"
+    },
+    "./area": {
+      "types": "./dist/visualization/cartesian/area.d.ts",
+      "import": "./dist/visualization/cartesian/area.js"
+    },
+    "./scatter": {
+      "types": "./dist/visualization/cartesian/scatter.d.ts",
+      "import": "./dist/visualization/cartesian/scatter.js"
+    },
+    "./histogram": {
+      "types": "./dist/visualization/cartesian/histogram.d.ts",
+      "import": "./dist/visualization/cartesian/histogram.js"
+    },
+    "./heatmap": {
+      "types": "./dist/visualization/cartesian/heatmap.d.ts",
+      "import": "./dist/visualization/cartesian/heatmap.js"
+    },
+    "./matrix": {
+      "types": "./dist/visualization/temporal/index.d.ts",
+      "import": "./dist/visualization/temporal/index.js"
+    },
+    "./timeline": {
+      "types": "./dist/visualization/temporal/index.d.ts",
+      "import": "./dist/visualization/temporal/index.js"
+    },
+    "./calendar-grid": {
+      "types": "./dist/visualization/temporal/index.d.ts",
+      "import": "./dist/visualization/temporal/index.js"
+    },
+    "./tree": {
+      "types": "./dist/visualization/hierarchy/index.d.ts",
+      "import": "./dist/visualization/hierarchy/index.js"
+    },
+    "./treemap": {
+      "types": "./dist/visualization/hierarchy/index.d.ts",
+      "import": "./dist/visualization/hierarchy/index.js"
+    },
+    "./relationship": {
+      "types": "./dist/visualization/hierarchy/index.d.ts",
+      "import": "./dist/visualization/hierarchy/index.js"
+    },
+    "./visualization/temporal": {
+      "types": "./dist/visualization/temporal/index.d.ts",
+      "import": "./dist/visualization/temporal/index.js"
+    },
+    "./visualization/cartesian": {
+      "types": "./dist/visualization/cartesian/index.d.ts",
+      "import": "./dist/visualization/cartesian/index.js"
+    },
+    "./visualization/hierarchy": {
+      "types": "./dist/visualization/hierarchy/index.d.ts",
+      "import": "./dist/visualization/hierarchy/index.js"
+    },
+    "./region/adaptation": {
+      "types": "./dist/region/adaptation.d.ts",
+      "import": "./dist/region/adaptation.js"
+    },
+    "./compound": {
+      "types": "./dist/compound/index.d.ts",
+      "import": "./dist/compound/index.js"
+    },
+    "./explorer": {
+      "types": "./dist/compound/explorer.d.ts",
+      "import": "./dist/compound/explorer.js"
+    },
+    "./comparison": {
+      "types": "./dist/compound/comparison.d.ts",
+      "import": "./dist/compound/comparison.js"
+    },
+    "./breakdown": {
+      "types": "./dist/compound/breakdown.d.ts",
+      "import": "./dist/compound/breakdown.js"
+    },
+    "./investigation": {
+      "types": "./dist/compound/investigation.d.ts",
+      "import": "./dist/compound/investigation.js"
+    },
+    "./search-results": {
+      "types": "./dist/compound/search-results.d.ts",
+      "import": "./dist/compound/search-results.js"
+    },
+    "./record-editor": {
+      "types": "./dist/compound/record-editor.d.ts",
+      "import": "./dist/compound/record-editor.js"
+    },
+    "./form-flow": {
+      "types": "./dist/compound/form-flow.d.ts",
+      "import": "./dist/compound/form-flow.js"
+    },
+    "./quality-panel": {
+      "types": "./dist/compound/quality-panel.d.ts",
+      "import": "./dist/compound/quality-panel.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@varendo/core": "workspace:*",
+    "@lit-labs/ssr": "4.1.0",
+    "d3-scale": "4.0.2",
+    "d3-shape": "3.2.0",
+    "lit": "3.3.3"
+  },
+  "devDependencies": {
+    "@types/d3-scale": "4.0.9",
+    "@types/d3-shape": "3.2.0",
+    "@varendo/runtime": "workspace:*"
+  },
+  "peerDependencies": {
+    "@varendo/runtime": "0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@varendo/runtime": {
+      "optional": true
+    }
+  }
+}

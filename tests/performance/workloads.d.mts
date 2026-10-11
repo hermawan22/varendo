@@ -1,0 +1,14 @@
+export const LARGE_POPULATION_COUNT: number;
+export const LARGE_TRANSFERRED_ROW_COUNT: number;
+export const MEDIUM_ROW_COUNT: number;
+export const MEDIUM_FIELD_COUNT: number;
+export const MEDIUM_VIEW_COUNT: number;
+export const SMALL_ROW_COUNT: number;
+export function firstSubsequent(label: string, operation: (phase: "first" | "subsequent", index: number) => unknown, options?: {firstCount?: number; subsequentCount?: number}): Promise<unknown>;
+export function environmentSnapshot(): Record<string, unknown>;
+export function makeRows(count: number, fieldCount?: number): Array<Record<string, string | number>>;
+export function runMediumPlanner(options?: {timed?: boolean}): {durationMs?: number; status: string; expansions: number; nodes: number; candidateCount: number; rowCount: number; viewCount: number; fieldCount: number; rowFieldCount: number};
+export function runTargetedReducer(iterations?: number, options?: {timed?: boolean}): Promise<{iterations: number; successful: number; unrelatedRoutes: number; finalDraftCount: number; rawMs?: number[]; count?: number; minMs?: number; maxMs?: number; p50Ms?: number; p95Ms?: number}>;
+export function runRuntimeResourceCycles(cycles?: number): {cycles: number; retainedHandles: number; liveRegions: number; openObservers: number; bounded: boolean};
+export const FIRST_SAMPLE_COUNT: number;
+export const SUBSEQUENT_SAMPLE_COUNT: number;

@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Varendo — adaptive interfaces, with or without AI</title>
+    <meta
+      name="description"
+      content="Adapt components, workspaces, and whole-page layouts to intent and available space, using application-owned data, permissions, and registered views."
+    />
+    <link rel="canonical" href="https://hermawan22.github.io/varendo/" />
+    <meta property="og:title" content="Varendo — adaptive interfaces, with or without AI" />
+    <meta
+      property="og:description"
+      content="Adapt components, workspaces, and whole-page layouts using the data, permissions, and views your application registers."
+    />
+    <meta property="og:url" content="https://hermawan22.github.io/varendo/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Varendo" />
+    <meta property="og:image" content="https://hermawan22.github.io/varendo/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Varendo: Ask a question. Varendo picks the view." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Varendo — adaptive interfaces, with or without AI" />
+    <meta
+      name="twitter:description"
+      content="Adapt components, workspaces, and whole-page layouts using the data, permissions, and views your application registers."
+    />
+    <meta name="twitter:image" content="https://hermawan22.github.io/varendo/og-image.png" />
+    <meta name="twitter:image:alt" content="Varendo: Ask a question. Varendo picks the view." />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://hermawan22.github.io/varendo/#organization",
+            "name": "Varendo",
+            "url": "https://hermawan22.github.io/varendo/",
+            "logo": "https://hermawan22.github.io/varendo/aeliqo.png",
+            "sameAs": ["https://github.com/hermawan22/varendo", "https://www.npmjs.com/package/@varendo/core"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://hermawan22.github.io/varendo/#website",
+            "name": "Varendo",
+            "url": "https://hermawan22.github.io/varendo/",
+            "description": "Adapt components, workspaces, and whole-page layouts to intent and available space, using application-owned data, permissions, and registered views.",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://hermawan22.github.io/varendo/#organization" },
+            "mainEntity": { "@id": "https://hermawan22.github.io/varendo/#software" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://hermawan22.github.io/varendo/#software",
+            "name": "Varendo",
+            "url": "https://hermawan22.github.io/varendo/",
+            "applicationCategory": "DeveloperApplication",
+            "description": "An open-source TypeScript UI runtime that adapts registered components, workspaces, and pages to user intent and available screen space.",
+            "isAccessibleForFree": true,
+            "license": "https://www.apache.org/licenses/LICENSE-2.0"
+          }
+        ]
+      }
+    </script>
+    <link rel="icon" href="/aeliqo.png" />
+    <link rel="stylesheet" href="/src/site.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="shell topbar">
+      <a class="brand" href="https://hermawan22.github.io/varendo/" aria-label="Varendo home" aria-current="page"
+        ><img src="/aeliqo.png" width="52" height="52" alt="" /><span>Varendo</span></a
+      >
+      <nav class="primary-nav" id="site-nav" aria-label="Main">
+        <a href="https://hermawan22.github.io/varendo/docs/">Docs</a><a href="https://hermawan22.github.io/varendo/playground/">Playground</a
+        ><a class="nav-github" href="https://github.com/hermawan22/varendo">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+      <div class="utilities">
+        <button
+          class="theme-toggle"
+          id="theme-toggle"
+          type="button"
+          data-theme-mode="system"
+          aria-label="Theme: system"
+          title="Theme: system"
+        >
+          <svg
+            class="icon-system"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="1.6" y="2.6" width="12.8" height="8.8" rx="1.4" />
+            <path d="M5.6 13.9h4.8M8 11.4v2.5" />
+          </svg>
+          <svg
+            class="icon-sun"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="8" cy="8" r="3.1" />
+            <path
+              d="M8 1.4v1.7M8 12.9v1.7M1.4 8h1.7M12.9 8h1.7M3.3 3.3l1.2 1.2M11.5 11.5l1.2 1.2M12.7 3.3l-1.2 1.2M4.5 11.5l-1.2 1.2"
+            />
+          </svg>
+          <svg
+            class="icon-moon"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M13.7 9.2A5.7 5.7 0 0 1 6.8 2.3a5.7 5.7 0 1 0 6.9 6.9Z" />
+          </svg>
+        </button>
+        <select id="theme-select" class="visually-hidden" aria-label="Theme" tabindex="-1">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span class="nav-toggle-label">Menu</span><span aria-hidden="true">☰</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section class="shell hero">
+        <div class="hero-copy">
+          <p class="eyebrow hero-status">Open source · TypeScript · With or without AI</p>
+          <h1>One intent.<br /><em>A view that adapts.</em></h1>
+          <p class="lead">
+            Describe your data. Ask a question. Varendo renders the right view for the task and the space, using your
+            components and your rules.
+          </p>
+          <div class="actions">
+            <a class="primary" href="https://hermawan22.github.io/varendo/playground/"
+              >Try the playground <span aria-hidden="true">→</span></a
+            >
+            <a class="secondary-action" href="https://hermawan22.github.io/varendo/start/">Start the quickstart</a>
+          </div>
+          <p class="install-row">
+            <button
+              class="install-chip"
+              id="install-chip"
+              type="button"
+              aria-label="Copy install command: npm i @varendo/react"
+              title="Copy install command"
+              data-copied="false"
+            >
+              <code>npm i @varendo/react</code>
+              <svg
+                class="icon-copy"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="5.5" y="5.5" width="8" height="8" rx="1.4" />
+                <path d="M10.5 3.5v-1a1.4 1.4 0 0 0-1.4-1.4H3.9A1.4 1.4 0 0 0 2.5 2.5v5.2A1.4 1.4 0 0 0 3.9 9.1h1" />
+              </svg>
+              <svg
+                class="icon-check"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m3 8.6 3.2 3.2L13 4.4" />
+              </svg>
+            </button>
+            <span class="install-status" id="install-status" role="status"></span>
+          </p>
+          <p class="hero-note">{{AELIQO_RELEASE_NOTE}}</p>
+        </div>
+
+        <aside class="product-window" aria-label="Live Varendo runtime demonstration">
+          <header class="demo-bar">
+            <p class="demo-bar-title">
+              <span class="demo-dot" aria-hidden="true"></span>Live demo · runs in your browser
+            </p>
+            <div class="demo-controls">
+              <label class="demo-filter" for="team"
+                >Team
+                <select id="team">
+                  <option value="all">All teams</option>
+                  <option value="Design">Design</option>
+                  <option value="Engineering">Engineering</option>
+                  <option value="Operations">Operations</option>
+                </select>
+              </label>
+              <div class="demo-view" role="group" aria-label="Ask a question or change the space">
+                <button type="button" data-demo-view="table" aria-pressed="true">List people</button>
+                <button type="button" data-demo-view="cards" aria-pressed="false">On a phone</button>
+                <button type="button" data-demo-view="chart" aria-pressed="false">Headcount trend</button>
+              </div>
+            </div>
+          </header>
+          <p class="demo-intent-line"><span>Intent</span><code id="demo-intent-inline"></code></p>
+          <div class="demo-tabs" role="tablist" aria-label="Demo output">
+            <button
+              class="demo-tab"
+              id="demo-tab-preview"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="demo-panel-preview"
+            >
+              Preview
+            </button>
+            <button
+              class="demo-tab"
+              id="demo-tab-code"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="demo-panel-code"
+              tabindex="-1"
+            >
+              Code
+            </button>
+          </div>
+          <div class="demo-panel" id="demo-panel-preview" role="tabpanel" aria-labelledby="demo-tab-preview">
+            <div
+              id="home-demo"
+              role="region"
+              aria-label="Synthetic people adaptive result"
+              tabindex="0"
+              data-width="wide"
+            >
+              <noscript
+                ><p>Enable JavaScript to run the sample. The documentation remains readable without it.</p></noscript
+              >
+            </div>
+            <div id="home-trend" role="region" aria-label="Workforce headcount trend" tabindex="0" hidden></div>
+            <p class="caption" id="demo-status" role="status"></p>
+          </div>
+          <div class="demo-panel" id="demo-panel-code" role="tabpanel" aria-labelledby="demo-tab-code" hidden>
+            <p class="demo-code-label">Intent for the current view — evaluated locally, zero model calls</p>
+            <pre class="demo-code" tabindex="0"><code id="demo-intent"></code></pre>
+            <p class="demo-code-label">Runtime call</p>
+            <pre class="demo-code" tabindex="0"><code id="demo-source"></code></pre>
+            <p class="demo-code-actions">
+              <button id="copy-demo" type="button">Copy source</button
+              ><span class="caption" id="copy-status" role="status"></span>
+            </p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="shell how" aria-labelledby="how-title">
+        <p class="eyebrow">HOW IT WORKS</p>
+        <h2 id="how-title">Describe once. Ask anything the data can answer.</h2>
+        <ol class="how-steps">
+          <li>
+            <span class="how-step">1 · Describe</span>
+            <h3>Your data and what it means</h3>
+            <p>Fields, a measure, and the views you allow. Your app keeps the records and permissions.</p>
+            <pre tabindex="0"><code>defineResource({
+  id: 'people',
+  fields: { team: { role: 'dimension' },
+            joined: { role: 'time' } },
+  measures: { hires: { aggregate: 'count' } },
+  presentation: {
+    allowedViews: ['table', 'cards', 'trend', 'bar'],
+  },
+});</code></pre>
+          </li>
+          <li>
+            <span class="how-step">2 · Ask</span>
+            <h3>A small typed intent</h3>
+            <p>From a button, your code, a URL, or an AI agent. It never contains HTML, code, or permissions.</p>
+            <pre tabindex="0"><code>{
+  "kind": "analyze",
+  "resource": "people",
+  "measures": [{ "id": "hires" }],
+  "time": { "field": "joined", "grain": "month" }
+}</code></pre>
+          </li>
+          <li>
+            <span class="how-step">3 · Adapt</span>
+            <h3>A view that fits</h3>
+            <p>Varendo validates the intent, evaluates the permitted data, and picks an allowed view.</p>
+            <ul class="how-map" aria-label="Which view answers which intent">
+              <li><code>browse</code><span>Table, or cards on a phone</span></li>
+              <li><code>analyze + time</code><span>Trend chart</span></li>
+              <li><code>analyze + dimensions</code><span>Bar chart</span></li>
+              <li><code>detail</code><span>One record</span></li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+
+      <section class="shell scenarios" aria-labelledby="scenarios-title">
+        <p class="eyebrow">WORKING EXAMPLES</p>
+        <h2 id="scenarios-title">The same runtime for four kinds of work.</h2>
+        <div class="scenario-grid">
+          <a href="https://hermawan22.github.io/varendo/examples/people/">
+            <span class="mini mini-table" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <strong>People</strong>
+            <p>Browse, filter, and chart workforce data.</p>
+            <b>Table · cards · trend</b>
+          </a>
+          <a href="https://hermawan22.github.io/varendo/examples/products/">
+            <span class="mini mini-grid" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <strong>Products</strong>
+            <p>Explore a catalog, compare items, and open validated forms.</p>
+            <b>Grid · detail · form</b>
+          </a>
+          <a href="https://hermawan22.github.io/varendo/examples/support/">
+            <span class="mini mini-queue" aria-hidden="true"><i></i><i></i><i></i></span>
+            <strong>Support</strong>
+            <p>Search tickets, edit state, and confirm business actions.</p>
+            <b>Queue · editor</b>
+          </a>
+          <a href="https://hermawan22.github.io/varendo/examples/knowledge/">
+            <span class="mini mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <strong>Knowledge</strong>
+            <p>Search content and move into focused reading layouts.</p>
+            <b>Results · article</b>
+          </a>
+        </div>
+      </section>
+
+      <section class="shell developers" aria-labelledby="developers-title">
+        <div class="developers-copy">
+          <p class="eyebrow">FOR DEVELOPERS</p>
+          <h2 id="developers-title">Four questions, four views, one file.</h2>
+          <p>
+            The quickstart renders a table, a filtered table, a monthly trend, and a per-team bar chart from one People
+            resource in about ten minutes. No account, backend, or model key.
+          </p>
+          <div class="start-paths">
+            <a href="https://hermawan22.github.io/varendo/start/"><strong>React quickstart</strong><span>Vite + React 19</span></a>
+            <a href="https://hermawan22.github.io/varendo/start/standalone-components/"
+              ><strong>Web Components</strong><span>Any framework or none</span></a
+            >
+            <a href="https://hermawan22.github.io/varendo/agents/"
+              ><strong>AI agents</strong><span>MCP, WebMCP, or your model</span></a
+            >
+          </div>
+        </div>
+        <figure class="developers-code">
+          <figcaption>src/main.tsx</figcaption>
+          <pre tabindex="0"><code id="quickstart-snippet">const questions = {
+  Everyone: { kind: 'browse', resource: 'people' },
+  'Hires per month': {
+    kind: 'analyze', resource: 'people',
+    measures: [{ id: 'hires', revision: '1' }],
+    time: { field: 'joined', grain: 'month' },
+  },
+};
+
+&lt;AeliqoRegion regionId="people" resourceId="people"
+  intent={questions[question]} /&gt;</code></pre>
+          <button type="button" id="copy-quickstart">Copy snippet</button>
+          <span class="caption" id="copy-quickstart-status" role="status"></span>
+        </figure>
+      </section>
+
+      <section class="boundary-section">
+        <div class="shell boundary-grid">
+          <div>
+            <p class="eyebrow">THE BOUNDARY</p>
+            <h2>Agents propose. Your app decides.</h2>
+          </div>
+          <ul class="boundary-points">
+            <li>
+              <strong>No generated UI.</strong> An agent sends a typed intent, never HTML, code, SQL, or permissions.
+            </li>
+            <li><strong>Your rules.</strong> Data, identity, routes, and actions stay in your application.</li>
+            <li>
+              <strong>Works without AI.</strong> Buttons and code use the same path; invalid requests never render.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="shell closing">
+        <h2>See it adapt in your browser.</h2>
+        <div class="closing-actions">
+          <a class="primary" href="https://hermawan22.github.io/varendo/playground/"
+            >Open the playground <span aria-hidden="true">→</span></a
+          ><a class="secondary-action" href="https://github.com/hermawan22/varendo"
+            >Star on GitHub <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+    </main>
+
+    <div
+      class="analytics-consent"
+      id="analytics-consent"
+      role="region"
+      aria-live="polite"
+      aria-labelledby="analytics-consent-title"
+      hidden
+    >
+      <div>
+        <p id="analytics-consent-title">Optional site analytics</p>
+        <p>Allow aggregate page counts. Query strings and form content are excluded.</p>
+      </div>
+      <div class="analytics-consent-actions">
+        <button id="analytics-decline" type="button">Decline</button>
+        <button class="primary" id="analytics-allow" type="button">Allow analytics</button>
+      </div>
+    </div>
+    <footer class="shell">
+      <a class="footer-brand" href="https://hermawan22.github.io/varendo/"
+        ><img src="/aeliqo.png" width="36" height="36" alt="" /><span>Varendo · Apache-2.0</span></a
+      >
+      <nav aria-label="Footer">
+        <a href="https://hermawan22.github.io/varendo/about/">About</a><a href="https://hermawan22.github.io/varendo/legal/license/">License</a
+        ><a href="https://hermawan22.github.io/varendo/legal/privacy/">Privacy</a
+        ><a href="https://hermawan22.github.io/varendo/legal/security/">Security</a
+        ><a href="https://hermawan22.github.io/varendo/legal/support/">Support</a>
+      </nav>
+    </footer>
+    <script type="module" src="/src/site.ts"></script>
+  </body>
+</html>

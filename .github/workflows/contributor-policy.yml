@@ -1,0 +1,42 @@
+name: Varendo contributor policy
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aeliqo-contributor-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  dco:
+    name: DCO
+    runs-on: ubuntu-latest
+    steps:
+      # The workflow and working tree come from the accepted base. PR objects
+      # are fetched only to inspect commit metadata; no PR code is executed.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 24.20.0
+      - name: Verify contributor commit signoffs
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          AELIQO_DCO_INTEGRATION_HEAD: ''
+        run: |
+          [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]
+          git fetch --no-tags origin "$HEAD_SHA"
+          git cat-file -e "$BASE_SHA:scripts/check-dco.mjs"
+          checker="$RUNNER_TEMP/aeliqo-check-dco.mjs"
+          git show "$BASE_SHA:scripts/check-dco.mjs" > "$checker"
+          node "$checker" "$BASE_SHA" "$HEAD_SHA"

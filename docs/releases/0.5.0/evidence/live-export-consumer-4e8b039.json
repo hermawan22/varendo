@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "kind": "live-export-clean-consumer",
+  "observedAt": "2026-09-24 11:31:40 UTC",
+  "sourceSiteRevision": "4e8b0395b92eee699da4e25c3cd4991bc50b4a5e",
+  "archive": {
+    "name": "aeliqo-products-example.zip",
+    "sha256": "94e078f7d1c815a39fb5ff1e884eeb90eea5382a735cdd2f1eb0e294eef82f1b",
+    "bytes": 4513
+  },
+  "commands": [
+    {
+      "command": "npm install --ignore-scripts --registry=https://registry.npmjs.org",
+      "result": "passed",
+      "logSha256": "419f90f3e4fbd1dc7021f11ab68fe89a02129c45092689c9a4bb9a8aee06f073"
+    },
+    {
+      "command": "npm run build",
+      "result": "passed",
+      "logSha256": "edb9f3cc3667a6e01ab14c532c139b16cfc2630950437a42ec253b39c172760f"
+    },
+    {
+      "command": "npm ls @aeliqo/core @aeliqo/runtime @aeliqo/web --json",
+      "result": "passed"
+    }
+  ],
+  "registryPackages": {
+    "@aeliqo/core": {
+      "version": "0.5.0",
+      "resolved": "https://registry.npmjs.org/@aeliqo/core/-/core-0.5.0.tgz",
+      "integrity": "sha512-6Uz19AoVZV6xlOdRCq61nwL6ro79F2QTcuWklmsttjKmSpE+iyW6Dho4zJpvLBqlg2NuIHph0YGd2egZaj07aw=="
+    },
+    "@aeliqo/runtime": {
+      "version": "0.5.0",
+      "resolved": "https://registry.npmjs.org/@aeliqo/runtime/-/runtime-0.5.0.tgz",
+      "integrity": "sha512-dUG9FemFKo2sxbaKGQ6rYwZE0+ZV/uNMeBwVQE7q6k3dzy8d225OQo5FkaH2YbGwUS13adb4jUkXGP0N51IknA=="
+    },
+    "@aeliqo/web": {
+      "version": "0.5.0",
+      "resolved": "https://registry.npmjs.org/@aeliqo/web/-/web-0.5.0.tgz",
+      "integrity": "sha512-I+B9fmQpWnBT+xzJ7g+e2mFA38i5OqKFvA15KY7Ckx9CLCJK1mmayIBSwlrz0dY+Y897pu2sNPdmjL1C0XyIzA=="
+    }
+  },
+  "browser": {
+    "result": "passed",
+    "httpStatus": 200,
+    "rendererStatus": "renderer-ready",
+    "tableCount": 1,
+    "renderedProducts": ["Field notebook", "Desk lamp"],
+    "pageErrors": []
+  },
+  "limits": [
+    "Clean consumer was extracted from the live ZIP. Browser render ran against a local Vite dev server; the production static build command also passed."
+  ]
+}

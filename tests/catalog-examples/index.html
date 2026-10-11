@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Varendo catalog examples</title>
+    <style>
+      :root { color-scheme: light; font: 16px/1.4 system-ui, sans-serif; }
+      body { margin: 0; padding: 24px; }
+      #catalog { display: grid; gap: 24px; }
+      [data-example-id] { border-block-end: 1px solid #cbd5e1; padding-block-end: 20px; }
+      [data-example-id] > h2 { font-size: 1rem; margin: 0 0 12px; }
+      [data-example-host] { min-block-size: 48px; }
+    </style>
+  </head>
+  <body>
+    <main id="catalog"></main>
+    <script type="module" src="/tests/catalog-examples/browser.ts"></script>
+  </body>
+</html>

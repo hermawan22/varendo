@@ -1,0 +1,47 @@
+:root {
+  color: #18202a;
+  font-family: system-ui, sans-serif;
+  line-height: 1.45;
+}
+
+body {
+  margin: 0;
+}
+
+main,
+#react-root,
+#vue-root {
+  display: grid;
+  gap: 1rem;
+  margin: 0 auto;
+  max-inline-size: 58rem;
+  padding: 2rem;
+}
+
+form {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  background: #18202a;
+  border: 0;
+  border-radius: 0.35rem;
+  color: #fff;
+  font: inherit;
+  min-block-size: 2.5rem;
+  padding-inline: 0.8rem;
+}
+
+button:focus-visible {
+  outline: 0.2rem solid #0b63ce;
+  outline-offset: 0.15rem;
+}

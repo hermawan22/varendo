@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "useDefineForClassFields": false,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "skipLibCheck": false,
+    "types": ["node", "vite/client"],
+    "paths": {
+      "/src/*": ["./src/*"],
+      "/docs-src/*": ["./src/*"],
+      "/playground-src/*": ["./src/playground/*"],
+      "@varendo/catalog-examples": ["../../examples/catalog/index.ts"],
+      "@varendo/agent/webmcp": ["./node_modules/@varendo/agent/dist/webmcp/index.d.ts"],
+      "@varendo/agent/protocol": ["./node_modules/@varendo/agent/dist/protocol/index.d.ts"],
+      "@varendo/core": ["./node_modules/@varendo/core/dist/index.d.ts"],
+      "@varendo/runtime/actions": ["./node_modules/@varendo/runtime/dist/actions/index.d.ts"],
+      "@varendo/web/app": ["./node_modules/@varendo/web/dist/app/index.d.ts"],
+      "@varendo/web/recipes": ["./node_modules/@varendo/web/dist/recipes/index.d.ts"],
+      "@varendo/runtime/data": ["./node_modules/@varendo/runtime/dist/data/index.d.ts"],
+      "@varendo/runtime/evaluation": ["./node_modules/@varendo/runtime/dist/evaluation/index.d.ts"],
+      "@varendo/runtime/meaning": ["./node_modules/@varendo/runtime/dist/meaning/index.d.ts"],
+      "@varendo/runtime/results": ["./node_modules/@varendo/runtime/dist/results/index.d.ts"],
+      "@varendo/web": ["./node_modules/@varendo/web/dist/index.d.ts"],
+      "@varendo/web/comparison": ["./node_modules/@varendo/web/dist/compound/comparison.d.ts"],
+      "@varendo/web/data": ["./node_modules/@varendo/web/dist/data/index.d.ts"],
+      "@varendo/web/detail": ["./node_modules/@varendo/web/dist/data/detail.d.ts"],
+      "@varendo/web/dialog": ["./node_modules/@varendo/web/dist/feedback/dialog.d.ts"],
+      "@varendo/web/record-list": ["./node_modules/@varendo/web/dist/data/record-list.d.ts"],
+      "@varendo/web/region": ["./node_modules/@varendo/web/dist/region/index.d.ts"],
+      "@varendo/web/text-field": ["./node_modules/@varendo/web/dist/input/text-field.d.ts"],
+      "@varendo/web/visualization": ["./node_modules/@varendo/web/dist/visualization/index.d.ts"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "artifacts"]
+}

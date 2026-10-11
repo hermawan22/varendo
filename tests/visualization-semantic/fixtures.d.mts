@@ -1,0 +1,10 @@
+export const refs: Readonly<Record<string, {readonly id: string; readonly revision: string}>>;
+export const schemas: Readonly<Record<string, {readonly id: string; readonly revision: string}>>;
+export const specs: Readonly<Record<string, unknown>>;
+export const visualizations: readonly unknown[];
+export const allRefs: readonly unknown[];
+export const temporalRef: Readonly<Record<string, string>>;
+export function visualizationPlan(): unknown;
+export function visualizationContext(): unknown;
+export function visualizationRegistryOptions(readOnly?: boolean): unknown;
+export function regionResults(): readonly unknown[];

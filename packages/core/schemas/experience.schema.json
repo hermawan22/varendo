@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1",
+      "maxLength": 16384
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\s\\u0000-\\u001f\\u007f]+$"
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\s\\u0000-\\u001f\\u007f]+$"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "fixed",
+        "adaptive",
+        "composable"
+      ],
+      "maxLength": 16384
+    },
+    "agentAllowed": {
+      "type": "boolean"
+    },
+    "allowedRepresentations": {
+      "maxItems": 10000,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160,
+        "pattern": "^[^\\s\\u0000-\\u001f\\u007f]+$"
+      }
+    },
+    "allowedPatterns": {
+      "maxItems": 10000,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160,
+        "pattern": "^[^\\s\\u0000-\\u001f\\u007f]+$"
+      }
+    },
+    "composition": {
+      "type": "object",
+      "properties": {
+        "allowWithoutPreset": {
+          "type": "boolean"
+        },
+        "maxNodes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 512
+        },
+        "maxExpansions": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "allowWithoutPreset",
+        "maxNodes",
+        "maxExpansions"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 256,
+      "propertyNames": {
+        "maxLength": 160,
+        "not": {
+          "const": "__proto__"
+        }
+      }
+    },
+    "requiredOperations": {
+      "maxItems": 10000,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160,
+        "pattern": "^[^\\s\\u0000-\\u001f\\u007f]+$"
+      }
+    },
+    "tokenProfile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "pattern": "^[^\\s\\u0000-\\u001f\\u007f]+$"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "pattern": "^[^\\s\\u0000-\\u001f\\u007f]+$"
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 256,
+      "propertyNames": {
+        "maxLength": 160,
+        "not": {
+          "const": "__proto__"
+        }
+      }
+    },
+    "extensionAllowlist": {
+      "maxItems": 10000,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "pattern": "^[^\\s\\u0000-\\u001f\\u007f]+$"
+          },
+          "revision": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "pattern": "^[^\\s\\u0000-\\u001f\\u007f]+$"
+          }
+        },
+        "required": [
+          "id",
+          "revision"
+        ],
+        "additionalProperties": false,
+        "maxProperties": 256,
+        "propertyNames": {
+          "maxLength": 160,
+          "not": {
+            "const": "__proto__"
+          }
+        }
+      }
+    },
+    "transitionPolicy": {
+      "type": "string",
+      "enum": [
+        "stable",
+        "explicit-only"
+      ],
+      "maxLength": 16384
+    }
+  },
+  "required": [
+    "version",
+    "id",
+    "revision",
+    "mode",
+    "agentAllowed",
+    "allowedRepresentations",
+    "allowedPatterns",
+    "composition",
+    "requiredOperations",
+    "tokenProfile",
+    "extensionAllowlist",
+    "transitionPolicy"
+  ],
+  "additionalProperties": false,
+  "maxProperties": 256,
+  "propertyNames": {
+    "maxLength": 160,
+    "not": {
+      "const": "__proto__"
+    }
+  },
+  "$id": "https://hermawan22.github.io/varendo/schemas/1/experience.schema.json",
+  "$comment": "Shape contract only. Apply documented byte/depth/node/JSON-object ingress limits before recursive validation; binding and authority are separate."
+}

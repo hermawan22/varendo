@@ -1,0 +1,151 @@
+{
+  "catalog": {
+    "version": "1",
+    "revision": "catalog-1",
+    "functionRegistryDigest": "functions-1",
+    "entities": [
+      {
+        "id": "employees",
+        "label": "Employees",
+        "identity": [
+          "employee.id"
+        ],
+        "rowGrain": [
+          "employee.id"
+        ],
+        "fields": [
+          {
+            "id": "employee.id",
+            "label": "Employee ID",
+            "type": {
+              "value": "text",
+              "nullable": false
+            },
+            "role": "identity"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "meanings": [],
+    "capabilities": []
+  },
+  "task": {
+    "version": "1",
+    "id": "task-1",
+    "revision": "task-r1",
+    "catalogRevision": "catalog-1",
+    "functionRegistryDigest": "functions-1",
+    "regionId": "region-1",
+    "goal": "Browse employees",
+    "needs": [],
+    "assumptions": [],
+    "kind": "data",
+    "outputs": [
+      {
+        "id": "rows",
+        "kind": "query",
+        "query": {
+          "entity": "employees",
+          "fields": [
+            "employee.id"
+          ],
+          "measures": [],
+          "relations": [],
+          "groupBy": [
+            "employee.id"
+          ],
+          "population": {
+            "kind": "all-authorized"
+          },
+          "order": []
+        },
+        "dependsOn": [],
+        "delivery": "eager"
+      }
+    ]
+  },
+  "result": {
+    "version": "1",
+    "ref": {
+      "id": "result-1",
+      "revision": "r1",
+      "outputId": "rows",
+      "queryDigest": "query-1",
+      "scopeDigest": "scope-1"
+    },
+    "taskId": "task-1",
+    "fields": [
+      {
+        "id": "employee.id",
+        "label": "Employee ID",
+        "type": {
+          "value": "text",
+          "nullable": false
+        },
+        "role": "identity"
+      }
+    ],
+    "identity": [
+      "employee.id"
+    ],
+    "rowGrain": [
+      "employee.id"
+    ],
+    "counts": {
+      "loaded": 1,
+      "population": {
+        "kind": "exact",
+        "value": 1,
+        "populationDigest": "population-1"
+      }
+    },
+    "precision": {
+      "kind": "exact"
+    },
+    "coverage": {
+      "kind": "complete",
+      "populationDigest": "population-1"
+    },
+    "consistency": {
+      "kind": "snapshot",
+      "snapshotId": "snapshot-1",
+      "sourceRevisions": {
+        "employees": "source-r1"
+      }
+    },
+    "evidence": {
+      "kind": "observed",
+      "source": {
+        "id": "employees",
+        "revision": "source-r1"
+      }
+    },
+    "filters": [],
+    "lineage": [],
+    "warnings": []
+  },
+  "experience": {
+    "version": "1",
+    "id": "experience-1",
+    "revision": "experience-r1",
+    "mode": "adaptive",
+    "agentAllowed": false,
+    "allowedRepresentations": [
+      "data.table"
+    ],
+    "allowedPatterns": [],
+    "composition": {
+      "allowWithoutPreset": true,
+      "maxNodes": 8,
+      "maxExpansions": 16
+    },
+    "requiredOperations": [],
+    "tokenProfile": {
+      "id": "tokens.default",
+      "revision": "1"
+    },
+    "extensionAllowlist": [],
+    "transitionPolicy": "stable"
+  }
+}

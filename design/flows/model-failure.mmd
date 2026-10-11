@@ -1,0 +1,14 @@
+flowchart LR
+  P[Untrusted model proposal] --> S[Wire and budget checks]
+  S --> A[Host operation grants]
+  A --> B[Catalog and meaning binding]
+  B --> O{Outcome}
+  O -->|bound| V[Semantic and capability checks]
+  O -->|needs-choice| CH[User choice]
+  O -->|needs-meaning| M[AI-assisted or manual definition]
+  O -->|invalid / denied / unsupported / stale| D[Diagnostic, no effect]
+  V --> E[Evaluate]
+  E --> PP[Propose relevant presentation]
+  PP --> C[Validate and recheck before commit]
+  C --> UI[Validated UI within declared contracts]
+  UI --> N[Interpretation can still be wrong: scope and evidence visible]

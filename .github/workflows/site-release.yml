@@ -1,0 +1,157 @@
+name: Deploy production
+
+on:
+  workflow_dispatch:
+    inputs:
+      stable_publish_run_id:
+        description: Successful same-SHA stable package publication run; omit only when the deploy changes site-surface files alone
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: aeliqo-public-site-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.actor == 'hermawan22' && github.triggering_actor == 'hermawan22'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    permissions:
+      contents: read
+      actions: read
+      packages: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Require owner-dispatched current main with successful same-SHA functional quality
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -Eeuo pipefail
+          test "$GH_REPO" = "hermawan22/varendo"
+          test "$(gh api "repos/$GH_REPO/branches/main" --jq '.commit.sha')" = "$SOURCE_SHA"
+          mkdir -p artifacts/site-release-policy
+          gh api --method GET "repos/$GH_REPO/actions/workflows/quality.yml/runs" \
+            -f head_sha="$SOURCE_SHA" -f branch=main -f event=push -f status=success \
+            --jq '.workflow_runs' > artifacts/site-release-policy/quality-runs.json
+          jq -e --arg sha "$SOURCE_SHA" \
+            '[.[] | select(.head_sha == $sha and .head_branch == "main" and .event == "push" and .conclusion == "success")] | if length == 0 then error("no successful same-SHA functional quality run") else max_by(.run_number) end' \
+            artifacts/site-release-policy/quality-runs.json > artifacts/site-release-policy/quality-run.json
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '24.20.0'
+          package-manager-cache: false
+      - name: Verify matching stable registry packages and source provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+          STABLE_RUN_ID: ${{ inputs.stable_publish_run_id }}
+        run: |
+          set -Eeuo pipefail
+          RELEASE_VERSION="$(jq -er '.version | select(test("^[0-9]+\\.[0-9]+\\.[0-9]+$"))' release-metadata.json)"
+          # Two publication modes share one verified identity:
+          # - release mode passes a stable publish run bound to SOURCE_SHA;
+          # - site-only mode finds the stable run that published RELEASE_VERSION
+          #   and requires package-affecting source to be identical since then,
+          #   so redeploying docs/site does not republish unchanged packages.
+          if [[ "$STABLE_RUN_ID" =~ ^[1-9][0-9]*$ ]]; then
+            PUBLISHED_SHA="$SOURCE_SHA"
+            gh api "repos/$GH_REPO/actions/runs/$STABLE_RUN_ID" > artifacts/site-release-policy/stable-run.json
+            jq -e --arg sha "$SOURCE_SHA" '
+              .head_sha == $sha and .head_branch == "main" and
+              .event == "workflow_dispatch" and .status == "completed" and
+              .conclusion == "success" and .path == ".github/workflows/release-publish.yml"
+            ' artifacts/site-release-policy/stable-run.json >/dev/null
+          elif [ -z "$STABLE_RUN_ID" ]; then
+            gh api --method GET "repos/$GH_REPO/actions/workflows/release-publish.yml/runs" \
+              -f branch=main -f event=workflow_dispatch -f status=success -f per_page=30 \
+              --jq '.workflow_runs | map({id,head_sha,conclusion,status}) | sort_by(-.id)' \
+              > artifacts/site-release-policy/publish-runs.json
+            PUBLISHED_SHA=""
+            PUBLISH_RUN_ID=""
+            while IFS=$'\t' read -r run_id head_sha; do
+              artifact_name="aeliqo-npm-publication-$RELEASE_VERSION-$head_sha"
+              if gh api "repos/$GH_REPO/actions/runs/$run_id/artifacts" \
+                --jq '.artifacts[].name' | grep -qx "$artifact_name"; then
+                PUBLISHED_SHA="$head_sha"
+                PUBLISH_RUN_ID="$run_id"
+                break
+              fi
+            done < <(jq -er '.[] | select(.conclusion == "success" and .status == "completed") | [.id, .head_sha] | @tsv' \
+              artifacts/site-release-policy/publish-runs.json)
+            if [ -z "$PUBLISHED_SHA" ]; then
+              echo "No stable publication of $RELEASE_VERSION exists to deploy against." >&2
+              exit 1
+            fi
+            git fetch --quiet --depth=1 origin "$PUBLISHED_SHA"
+            # Deploy-safe paths cannot change the published package bytes or
+            # require new package evidence; anything else needs a republication.
+            # Visual baseline metadata only records approved test evidence.
+            while IFS= read -r path; do
+              case "$path" in
+                docs/packages/*)
+                  echo "Package-affecting path changed since published source $PUBLISHED_SHA: $path" >&2; exit 1 ;;
+                apps/site/*|docs/site/*|docs/public-site/*|catalog/*|examples/catalog/*|scripts/docs/*|scripts/visual/baseline.json|docs/*|README.md|AGENTS.md|CONTRIBUTING.md|SECURITY.md|CODE_OF_CONDUCT.md|.github/*|tests/*|quality/*) ;;
+                *)
+                  echo "Package-affecting path changed since published source $PUBLISHED_SHA: $path" >&2; exit 1 ;;
+              esac
+            done < <(git diff --name-only "$PUBLISHED_SHA" "$SOURCE_SHA")
+            STABLE_RUN_ID="$PUBLISH_RUN_ID"
+          else
+            echo "stable_publish_run_id must be a numeric run id or empty." >&2
+            exit 1
+          fi
+          mkdir -p artifacts/approved-stable
+          gh run download "$STABLE_RUN_ID" --repo "$GH_REPO" \
+            --name "aeliqo-npm-publication-$RELEASE_VERSION-$PUBLISHED_SHA" --dir artifacts/approved-stable
+          APPROVED_DIR=artifacts/approved-stable/release-candidate
+          node scripts/release/verify-approved-stable.mjs \
+            --candidate "$APPROVED_DIR/manifest.json" \
+            --publication "$APPROVED_DIR/publication.json" \
+            --consumer "$APPROVED_DIR/registry-consumer.json" --source "$PUBLISHED_SHA"
+          corepack enable
+          corepack prepare pnpm@11.24.0 --activate
+          pnpm install --frozen-lockfile
+          node scripts/release/registry-consumer.mjs --version "$RELEASE_VERSION" \
+            --expected-candidate "$APPROVED_DIR/manifest.json" \
+            --require-provenance-source "$PUBLISHED_SHA" \
+            --output artifacts/site-release-policy/registry-consumer.json
+          node scripts/release/verify-approved-stable.mjs \
+            --candidate "$APPROVED_DIR/manifest.json" \
+            --publication "$APPROVED_DIR/publication.json" \
+            --consumer artifacts/site-release-policy/registry-consumer.json --source "$PUBLISHED_SHA"
+          node --experimental-strip-types scripts/release/verify-export-registry.mjs \
+            --version "$RELEASE_VERSION" --source "$PUBLISHED_SHA" \
+            --output artifacts/site-release-policy/export-consumer.json
+          echo "AELIQO_EXPORT_VERIFIED_VERSION=$RELEASE_VERSION" >> "$GITHUB_ENV"
+          echo "AELIQO_REGISTRY_SOURCE=$PUBLISHED_SHA" >> "$GITHUB_ENV"
+      - name: Publish, attest, and scan the immutable site image
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_ACTOR: ${{ github.actor }}
+          GH_TRIGGERING_ACTOR: ${{ github.triggering_actor }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+          AELIQO_EXPORT_VERIFIED_VERSION: ${{ env.AELIQO_EXPORT_VERIFIED_VERSION }}
+          AELIQO_REGISTRY_SOURCE: ${{ env.AELIQO_REGISTRY_SOURCE }}
+        run: apps/site/scripts/ci/publish-production-image.sh
+      - name: Upload immutable image identity, provenance, SBOM, and vulnerability report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: varendo-web-production-image-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            artifacts/site-release-policy
+            apps/site/artifacts/production-image
+          if-no-files-found: warn
+          retention-days: 30

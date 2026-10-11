@@ -1,0 +1,3 @@
+# Review routing only. Branch protection keeps required quality checks but does
+# not require a second approval while the project has one active maintainer.
+* @hermawan22

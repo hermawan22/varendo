@@ -1,0 +1,32 @@
+{
+  "name": "@varendo/local-agent-example",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": "24.20.0",
+    "pnpm": "11.24.0"
+  },
+  "scripts": {
+    "dev": "pnpm build && pnpm start",
+    "build": "tsc -p tsconfig.json && vite build",
+    "start": "node --env-file-if-exists=.env.local runner/server.mjs",
+    "mcp:stdio": "node runner/mcp-stdio.mjs",
+    "test": "node --test runner/*.test.mjs"
+  },
+  "dependencies": {
+    "@varendo/core": "0.1.0",
+    "@varendo/runtime": "0.1.0",
+    "@varendo/web": "0.1.0",
+    "@varendo/agent": "0.1.0",
+    "zod": "4.5.4",
+    "@modelcontextprotocol/server": "2.0.0",
+    "@modelcontextprotocol/client": "2.2.0",
+    "openai": "7.10.0"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "vite": "8.2.2"
+  }
+}

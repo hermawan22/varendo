@@ -1,0 +1,99 @@
+{
+  "name": "@varendo/agent",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hermawan22/varendo.git",
+    "directory": "packages/agent"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./app": {
+      "types": "./dist/app/index.d.ts",
+      "import": "./dist/app/index.js"
+    },
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "import": "./dist/browser/index.js"
+    },
+    "./capabilities": {
+      "types": "./dist/capabilities/index.d.ts",
+      "import": "./dist/capabilities/index.js"
+    },
+    "./session": {
+      "types": "./dist/session/index.d.ts",
+      "import": "./dist/session/index.js"
+    },
+    "./meaning": {
+      "types": "./dist/meaning/index.d.ts",
+      "import": "./dist/meaning/index.js"
+    },
+    "./protocol": {
+      "types": "./dist/protocol/index.d.ts",
+      "import": "./dist/protocol/index.js"
+    },
+    "./model": {
+      "types": "./dist/model/index.d.ts",
+      "import": "./dist/model/index.js"
+    },
+    "./model/openai": {
+      "types": "./dist/model/openai.d.ts",
+      "import": "./dist/model/openai.js"
+    },
+    "./model/responses": {
+      "types": "./dist/model/responses.d.ts",
+      "import": "./dist/model/responses.js"
+    },
+    "./webmcp": {
+      "types": "./dist/webmcp/index.d.ts",
+      "import": "./dist/webmcp/index.js"
+    },
+    "./mcp": {
+      "types": "./dist/mcp/index.d.ts",
+      "import": "./dist/mcp/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@varendo/core": "workspace:*",
+    "@varendo/runtime": "workspace:*"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/server": "2.0.0",
+    "openai": "7.10.0",
+    "@modelcontextprotocol/client": "2.2.0"
+  },
+  "peerDependenciesMeta": {
+    "@modelcontextprotocol/server": {
+      "optional": true
+    },
+    "openai": {
+      "optional": true
+    },
+    "@modelcontextprotocol/client": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/server": "2.0.0",
+    "openai": "7.10.0",
+    "@modelcontextprotocol/client": "2.2.0"
+  }
+}

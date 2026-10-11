@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Varendo static island</title>
+  </head>
+  <body>
+    <main>
+      <h1>Static content with one Varendo island</h1>
+      <p id="island-static-copy">This page stays useful when JavaScript is unavailable.</p>
+      <section aria-labelledby="island-heading">
+        <h2 id="island-heading">Contact preference</h2>
+        <p id="island-status" role="status">Island has not hydrated.</p>
+        <form>
+          <aeliqo-text-field label="Island person" name="person" value="Ada"></aeliqo-text-field>
+        </form>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

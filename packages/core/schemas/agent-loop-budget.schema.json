@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "maxTurns": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "maxRepairs": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 16
+    },
+    "maxMilliseconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 300000
+    },
+    "maxProposalBytes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8388608
+    }
+  },
+  "required": [
+    "maxTurns",
+    "maxRepairs",
+    "maxMilliseconds",
+    "maxProposalBytes"
+  ],
+  "additionalProperties": false,
+  "maxProperties": 256,
+  "propertyNames": {
+    "maxLength": 160,
+    "not": {
+      "const": "__proto__"
+    }
+  },
+  "$id": "https://hermawan22.github.io/varendo/schemas/1/agent-loop-budget.schema.json",
+  "$comment": "Shape contract only. Apply documented byte/depth/node/JSON-object ingress limits before recursive validation; binding and authority are separate."
+}

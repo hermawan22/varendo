@@ -1,0 +1,45 @@
+export { readResultStream, DataStreamError } from './stream.js';
+export type { ResultStreamLimits, ResultStreamContext } from './stream.js';
+export { createLocalDataService, DEFAULT_BUDGET, DEFAULT_SOURCE_LIMITS } from './local.js';
+export { createDataHttpHandler, createHttpDataService, DEFAULT_PATHS } from './http.js';
+export {
+  ADC_SCHEMAS,
+  parseAcceptedQuery,
+  parseBudget,
+  parseCatalogPage,
+  parseCatalogRequest,
+  parseDataError,
+  parseJSON,
+  parsePlanAcceptance,
+  parsePlanRequest,
+  parseResultEvent,
+} from './schema.js';
+export type {
+  AcceptedQuery,
+  AuthorizeRead,
+  CatalogPage,
+  CatalogRequest,
+  CatalogTarget,
+  CapabilityGap,
+  DataErrorPayload,
+  DataHttpHandler,
+  DataHttpServerOptions,
+  DataOperation,
+  DataRecord,
+  DataService,
+  DataValue,
+  HttpDataPaths,
+  HttpDataServiceOptions,
+  LocalDataService,
+  LocalDataServiceOptions,
+  LocalSnapshot,
+  MeaningRegistration,
+  PlanAcceptance,
+  PlanRequest,
+  PlanTarget,
+  QueryBudget,
+  ReadContext,
+  ReadGrant,
+  ResultEvent,
+  UnsupportedCapability,
+} from './types.js';

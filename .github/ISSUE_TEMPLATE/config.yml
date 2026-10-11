@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/hermawan22/varendo/security/advisories/new
+    about: Report vulnerabilities privately.
+  - name: Support guidance
+    url: https://github.com/hermawan22/varendo/blob/main/SUPPORT.md
+    about: Choose the right support channel before filing an issue.

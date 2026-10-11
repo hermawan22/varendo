@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Draft exit acceptance</title>
+  </head>
+  <body>
+    <label
+      >Exit choice
+      <select id="choice">
+        <option>stay</option>
+        <option>discard</option>
+        <option>save</option>
+        <option>failed-save</option>
+      </select></label
+    >
+    <label
+      >Action result
+      <select id="action-mode">
+        <option>success</option>
+        <option>failed</option>
+        <option>held</option>
+        <option>preview</option>
+      </select></label
+    >
+    <button id="browse">Browse</button><button id="invalid">Invalid target</button
+    ><button id="release">Release action</button><button id="confirm-preview">Confirm preview</button
+    ><button id="cancel-preview">Cancel preview</button><button id="dispose">Dispose</button>
+    <p id="status" role="status">starting</p>
+    <p id="action-status" role="status"></p>
+    <div id="target" style="width: 800px; min-height: 300px"></div>
+    <script type="module" src="./app-draft-exit.ts"></script>
+  </body>
+</html>

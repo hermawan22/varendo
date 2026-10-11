@@ -1,0 +1,58 @@
+{
+  "source": "fixtures/hr/raw.json",
+  "policy": {
+    "calendar": "iso8601",
+    "timezone": "Asia/Jakarta",
+    "from": "2026-01-05",
+    "toExclusive": "2026-03-30"
+  },
+  "mutations": [
+    {
+      "id": "missing-required-observation",
+      "removeObservation": {
+        "employee_id": "e1",
+        "date": "2026-01-05"
+      },
+      "expected": {
+        "employee": {
+          "employee_id": "e1",
+          "absent": 20,
+          "expected": 60,
+          "unknown": 1,
+          "rate": null
+        },
+        "topFive": [
+          "e2",
+          "e3",
+          "e4",
+          "e5",
+          "e6"
+        ]
+      }
+    },
+    {
+      "id": "missing-approved-leave-observation",
+      "removeObservation": {
+        "employee_id": "e2",
+        "date": "2026-01-05"
+      },
+      "expected": {
+        "sameAsBaseline": true,
+        "employee": {
+          "employee_id": "e2",
+          "absent": 14,
+          "expected": 56,
+          "unknown": 0,
+          "rate": "1/4"
+        },
+        "topFive": [
+          "e1",
+          "e2",
+          "e3",
+          "e4",
+          "e5"
+        ]
+      }
+    }
+  ]
+}

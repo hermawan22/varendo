@@ -1,0 +1,16 @@
+{
+  "name": "@varendo/vertical-slice",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@varendo/core": "workspace:*",
+    "@varendo/runtime": "workspace:*",
+    "@varendo/web": "workspace:*",
+    "lit": "3.3.3",
+    "@lit-labs/ssr-client": "1.1.8"
+  }
+}

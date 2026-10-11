@@ -1,0 +1,65 @@
+name: Bug report
+description: Report reproducible incorrect behavior in Varendo.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include credentials, private records, or security vulnerabilities. Report vulnerabilities through the private process in SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: Varendo version
+      placeholder: 0.6.1
+    validations:
+      required: true
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package or surface
+      options:
+        - "@varendo/core"
+        - "@varendo/runtime"
+        - "@varendo/web"
+        - "@varendo/react"
+        - "@varendo/agent"
+        - Documentation or Playground
+        - Release tooling
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include the smallest resource, intent, records, and host code needed to reproduce the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and diagnostics
+      description: Remove credentials, tokens, private records, and identifying data from logs.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, framework, and operating system
+      placeholder: Include exact versions and WebMCP flag status if relevant
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I reproduced this with a supported Varendo version and a minimal synthetic example.
+          required: true
+        - label: This report contains no secret, private customer data, or undisclosed vulnerability.
+          required: true

@@ -1,0 +1,197 @@
+<header class="pg-intro" aria-labelledby="playground-title">
+  <div>
+    <p class="pg-kicker">Interactive workspace</p>
+    <h1 id="playground-title">Playground</h1>
+    <p class="pg-intro-dek">Choose a question. Explore the view it creates.</p>
+  </div>
+  <div class="pg-intro-copy">
+    <p>Explore four scenarios with local synthetic data. No account or API key needed.</p>
+  </div>
+</header>
+
+<section class="pg-app" aria-label="Varendo playground" aria-busy="true">
+  <div id="pg-boot" class="pg-boot" role="status" aria-live="polite">
+    <span class="pg-boot-mark" aria-hidden="true">A</span>
+    <div>
+      <p class="pg-kicker">Local runtime</p>
+      <h2>Preparing your workspace</h2>
+      <p>Loading synthetic data and the first view. This demo makes no model calls.</p>
+    </div>
+  </div>
+  <header class="pg-toolbar">
+    <label
+      ><span>Scenario</span
+      ><select id="pg-scenario" data-playground-boot-control disabled></select
+    ></label>
+    <fieldset class="pg-mode" aria-label="Playground mode">
+      <legend>Mode</legend>
+      <button type="button" data-mode="without-ai" data-playground-boot-control disabled aria-pressed="true">
+        Without AI
+      </button>
+      <button type="button" data-mode="connected" data-playground-boot-control disabled aria-pressed="false">
+        Browser agent
+      </button>
+    </fieldset>
+    <div class="pg-connection" aria-live="polite">
+      <span id="pg-connection-dot"></span><strong id="pg-connection-label">No agent · manual runtime</strong>
+    </div>
+    <div class="pg-toolbar-actions">
+      <button type="button" id="pg-inspect" data-playground-boot-control disabled aria-haspopup="dialog">
+        Inspect
+      </button>
+      <details class="pg-menu" id="pg-menu">
+        <summary>More</summary>
+        <div class="pg-menu-body">
+          <button type="button" id="pg-export" data-playground-boot-control disabled>Export project</button>
+          <button type="button" id="pg-reset" data-playground-boot-control disabled aria-label="Reset playground">
+            Reset
+          </button>
+          <p id="pg-export-note" class="pg-menu-note" hidden></p>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <div class="pg-workspace">
+    <details class="pg-request" id="pg-request" open>
+      <summary class="pg-request-summary">
+        <h2 id="pg-request-title">Choose a task</h2>
+        <span class="pg-request-hint">Scenario steps, guided demos, agent setup</span>
+      </summary>
+      <div class="pg-request-body">
+        <p id="pg-scenario-description"></p>
+        <section id="pg-guided" aria-labelledby="pg-guided-title">
+          <h3 id="pg-guided-title">Scenario steps</h3>
+          <div id="pg-steps" class="pg-steps"></div>
+          <p class="pg-note">Each step sends a predefined request through the real runtime. No model is called.</p>
+        </section>
+        <section class="pg-public-journeys" aria-labelledby="pg-journeys-title">
+          <h3 id="pg-journeys-title">Guided demos</h3>
+          <div class="pg-steps">
+            <button type="button" data-journey="jakarta">
+              <strong>People in Jakarta</strong><span>Commit a location filter on the People view.</span>
+            </button>
+            <button type="button" data-journey="attendance">
+              <strong>Daily attendance</strong
+              ><span>Inspect an approved rate, period, coverage, and metric choice.</span>
+            </button>
+            <button type="button" data-journey="workspace">
+              <strong>Analytical workspace</strong
+              ><span>Render a registered summary, trend, and breakdown together.</span>
+            </button>
+            <button type="button" data-journey="page">
+              <strong>Entire page</strong><span>Include a registered header, sidebar, and workspace.</span>
+            </button>
+          </div>
+          <p class="pg-note">Registered tasks with synthetic data. No model calls.</p>
+        </section>
+        <section id="pg-connected" hidden aria-labelledby="pg-connected-title">
+          <h3 id="pg-connected-title">Use your browser agent</h3>
+          <p>
+            Enable WebMCP, keep this tab open, then ask your browser agent to change the interface. It uses the same
+            validated requests as the manual controls. Actions still require confirmation.
+          </p>
+          <div id="pg-webmcp-note" class="pg-webmcp-note" hidden>
+            <p>WebMCP is experimental, and this browser does not expose it yet. To try it:</p>
+            <ol>
+              <li>Use Chrome 153 or later.</li>
+              <li>Enable <code>chrome://flags/#enable-webmcp-testing</code> and restart.</li>
+              <li>Open a browser agent that supports WebMCP on this tab.</li>
+            </ol>
+            <p><a href="/agents/webmcp/">WebMCP setup guide</a> · The manual controls work without it.</p>
+          </div>
+          <button type="button" id="pg-connect" data-playground-boot-control disabled>Enable WebMCP</button>
+          <p id="pg-connect-status" class="pg-note" role="status">Tools are not registered yet.</p>
+          <p>Ask your browser agent one of these. Each answer picks a different view:</p>
+          <ul class="pg-prompts" aria-label="Prompts to copy">
+            <li>
+              <button type="button" data-copy-prompt>Show the people in Engineering.</button><span>Filtered table</span>
+            </li>
+            <li>
+              <button type="button" data-copy-prompt>How did month-end headcount change over time?</button
+              ><span>Trend chart</span>
+            </li>
+            <li><button type="button" data-copy-prompt>Show everyone as cards.</button><span>Cards</span></li>
+          </ul>
+          <p id="pg-copy-status" class="pg-note" role="status"></p>
+          <p><a href="/agents/mcp/">Run MCP or BYOK locally</a> using the standalone example.</p>
+        </section>
+      </div>
+    </details>
+
+    <div class="pg-result" aria-labelledby="pg-result-title">
+      <header class="pg-result-header">
+        <div>
+          <p class="pg-kicker">Live canvas</p>
+          <h2 id="pg-result-title">Employees</h2>
+        </div>
+      </header>
+
+      <p id="pg-result-definition" class="pg-result-definition" hidden></p>
+      <p id="pg-committed-filter" class="pg-result-definition" hidden></p>
+      <div id="pg-error" class="pg-error" role="alert" hidden></div>
+      <div id="pg-region" class="pg-region" aria-label="Rendered Varendo interface"></div>
+      <section class="pg-progress" aria-label="Request progress">
+        <ol class="pg-journey" aria-label="Current request progress">
+          <li data-stage="intent" data-state="pending">
+            <small>01 · Request</small><strong id="pg-journey-intent">Choose a task</strong
+            ><span>Validated request</span>
+          </li>
+          <li data-stage="result" data-state="pending">
+            <small>02 · Result</small><strong id="pg-journey-result">Waiting</strong
+            ><span>Evaluated with app data</span>
+          </li>
+          <li data-stage="view" data-state="pending">
+            <small>03 · View</small><strong id="pg-journey-view">Waiting</strong
+            ><span id="pg-view-badge" class="pg-view-badge" data-state="pending">Waiting for a request</span>
+          </li>
+        </ol>
+        <p id="pg-status" class="pg-status" role="status" aria-live="polite">Choose a task to show the first view.</p>
+      </section>
+      <details id="pg-intent" class="pg-intent" hidden>
+        <summary>Request details</summary>
+        <pre tabindex="0"><code id="pg-intent-json"></code></pre>
+      </details>
+      <footer class="pg-evidence">
+        <span>Synthetic local data</span><span>Website model calls: <strong id="pg-model-calls">0</strong></span
+        ><span hidden>Receipt <strong id="pg-receipt-state">None</strong></span>
+      </footer>
+    </div>
+  </div>
+</section>
+
+<dialog id="pg-inspector" class="pg-inspector" aria-labelledby="pg-inspector-title">
+  <header>
+    <div>
+      <p class="pg-kicker">Runtime evidence</p>
+      <h2 id="pg-inspector-title">Inspector</h2>
+    </div>
+    <button type="button" id="pg-inspector-close" aria-label="Close inspector">Close</button>
+  </header>
+  <nav aria-label="Inspector section">
+    <button type="button" data-inspector="intent" aria-pressed="true">Request</button
+    ><button type="button" data-inspector="task" aria-pressed="false">Task</button
+    ><button type="button" data-inspector="result" aria-pressed="false">Result</button
+    ><button type="button" data-inspector="presentation" aria-pressed="false">View policy</button
+    ><button type="button" data-inspector="diagnostics" aria-pressed="false">Diagnostics</button>
+  </nav>
+  <p id="pg-inspector-summary">Nothing has run yet.</p>
+  <pre id="pg-inspector-content" tabindex="0">{}</pre>
+</dialog>
+
+<dialog id="pg-action" class="pg-action" aria-labelledby="pg-action-title">
+  <h2 id="pg-action-title">Review action</h2>
+  <p>The runtime validated this proposal. Confirming is still your decision.</p>
+  <pre id="pg-action-content" tabindex="0"></pre>
+  <div>
+    <button type="button" id="pg-action-cancel">Cancel</button
+    ><button type="button" class="primary" id="pg-action-confirm">Confirm action</button>
+  </div>
+  <p id="pg-action-status" role="status"></p>
+</dialog>
+
+<noscript
+  ><p class="shell">
+    The playground needs JavaScript to run its local synthetic runtime. <a href="/">Read the documentation</a>.
+  </p></noscript
+>

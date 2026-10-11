@@ -1,0 +1,35 @@
+export {
+  canonicalMeaning,
+  createMeaningAuthoring,
+  createMeaningDraft,
+  freezeMeaningValue,
+  meaningDigest,
+  meaningRefKey,
+} from './authoring.js';
+export { createMeaningEvaluator } from './evaluator.js';
+export { createMeaningRegistry } from './registry.js';
+export type {
+  MeaningActivationContext,
+  MeaningActivationOptions,
+  MeaningActivationHost,
+  MeaningActivationContextRequest,
+  MeaningActivationOutcome,
+  MeaningAuthoring,
+  MeaningAuthoringOptions,
+  MeaningAuthoringOutcome,
+  MeaningDefinitionInput,
+  MeaningDiff,
+  MeaningDiffOutcome,
+  MeaningDraft,
+  MeaningEntry,
+  MeaningEvaluationInput,
+  MeaningEvaluator,
+  MeaningEvaluatorOptions,
+  MeaningRegistrationInput,
+  MeaningRegistrationOutcome,
+  MeaningRegistrationReceipt,
+  MeaningRegistry,
+  MeaningRegistryOptions,
+  MeaningRevocationReceipt,
+  MeaningSource,
+} from './types.js';

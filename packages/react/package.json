@@ -1,0 +1,91 @@
+{
+  "name": "@varendo/react",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hermawan22/varendo.git",
+    "directory": "packages/react"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Thin React bindings for Varendo web elements",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": [
+    "./dist/ssr.js"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./app": {
+      "types": "./dist/app/index.d.ts",
+      "import": "./dist/app/index.js"
+    },
+    "./surface": {
+      "types": "./dist/surface/index.d.ts",
+      "import": "./dist/surface/index.js"
+    },
+    "./foundation": {
+      "types": "./dist/foundation.d.ts",
+      "import": "./dist/foundation.js"
+    },
+    "./inputs": {
+      "types": "./dist/inputs.d.ts",
+      "import": "./dist/inputs.js"
+    },
+    "./navigation": {
+      "types": "./dist/navigation.d.ts",
+      "import": "./dist/navigation.js"
+    },
+    "./feedback": {
+      "types": "./dist/feedback.d.ts",
+      "import": "./dist/feedback.js"
+    },
+    "./data": {
+      "types": "./dist/data.d.ts",
+      "import": "./dist/data.js"
+    },
+    "./ssr": {
+      "types": "./dist/ssr.d.ts",
+      "import": "./dist/ssr.js"
+    },
+    "./plot": {
+      "types": "./dist/plot.d.ts",
+      "import": "./dist/plot.js"
+    },
+    "./visualization": {
+      "types": "./dist/visualization.d.ts",
+      "import": "./dist/visualization.js"
+    },
+    "./compound": {
+      "types": "./dist/compound.d.ts",
+      "import": "./dist/compound.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "@varendo/runtime": "0.1.0",
+    "react": ">=19.2.0 <20.0.0",
+    "react-dom": ">=19.2.0 <20.0.0"
+  },
+  "devDependencies": {
+    "@varendo/runtime": "workspace:*"
+  },
+  "dependencies": {
+    "@varendo/core": "workspace:*",
+    "@varendo/web": "workspace:*",
+    "@lit-labs/ssr-react": "0.3.4",
+    "@lit/react": "1.0.8"
+  }
+}

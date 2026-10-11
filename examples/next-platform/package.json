@@ -1,0 +1,28 @@
+{
+  "name": "@varendo/next-platform-fixture",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1 --port 4174"
+  },
+  "dependencies": {
+    "@varendo/core": "workspace:*",
+    "@varendo/react": "workspace:*",
+    "@varendo/runtime": "workspace:*",
+    "@varendo/web": "workspace:*",
+    "next": "16.3.8",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "lit": "3.3.3",
+    "@lit-labs/ssr-client": "1.1.8",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "typescript": "7.0.2"
+  }
+}

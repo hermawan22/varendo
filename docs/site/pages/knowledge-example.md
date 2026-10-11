@@ -1,0 +1,15 @@
+---
+id: 'knowledge-example'
+path: '/examples/knowledge/'
+section: 'Examples'
+title: 'Knowledge example'
+description: 'Search content, read an article, navigate between results, and render a consumer-owned custom presentation.'
+---
+
+<p class="lead">The Knowledge example shows extension beyond tables and cards: the app registers its own request kind and article view. No core package is edited.</p>
+<h2>Run it</h2><ol class="doc-steps"><li><span>1</span><div><h3>Open the scenario</h3><p>Open <a href="/playground/?scenario=knowledge">Knowledge in the playground</a>. You should see searchable synthetic articles.</p></div></li><li><span>2</span><div><h3>Run the scenario steps</h3><p>Choose <strong>Search articles</strong>, <strong>Read article</strong>, then <strong>Security topic</strong>. You should see matched articles, a registered reading view, and the output of a custom request kind.</p></div></li><li><span>3</span><div><h3>Inspect the custom request</h3><p>After <strong>Security topic</strong>, choose <strong>Inspect</strong>. You should see the custom request (<code>demo.knowledge.by-topic</code>) compile through the same validator as the built-in kinds.</p></div></li><li><span>4</span><div><h3>Run it locally</h3><p>Choose <strong>More → Export project</strong>, unzip the download, then run <code>pnpm install</code> and <code>pnpm dev</code>. You should see a local browse view and the status <code>renderer-ready</code>.</p></div></li></ol>
+<h2>What it exercises</h2><div class="doc-checklist"><ul><li>Search article titles, summaries, and content through a browse request.</li><li>Render a registered custom view (<code>demo.knowledge-article</code>) for reading.</li><li>Send a namespaced custom request that compiles into the normal pipeline.</li><li>Keep the custom request and renderer bound to their registered contracts.</li></ul></div>
+<h2>Make it yours</h2><div class="doc-checklist"><ul><li>Swap the synthetic articles for your data adapter.</li><li>Read permissions from your real app state.</li><li>Register your own view or request kind — same contract, no core edits.</li><li>Dispose the app when the host removes the surface.</li></ul></div>
+<h2>When it fails</h2><p>An unknown field or view returns a diagnostic and keeps the last permitted view. A denied permission read returns no data. Fix the contract or the trusted policy, then send the request again.</p>
+<h2>Local browse starter source</h2><p>The exported project renders one browse view. The additional Playground steps above require their resource meanings, forms/actions, or custom registrations; they are not bundled in this minimal starter. Follow <a href="/start/registered-app/">Connect your data</a> to add those contracts.</p><aeliqo-project data-scenario="knowledge"></aeliqo-project>
+<nav class="doc-next" aria-label="Continue reading"><p>Continue reading</p><a href="/guides/custom-views/"><span>Build an extension</span><small>Register a custom view and request kind.</small><b aria-hidden="true">→</b></a><a href="/examples/"><span>All examples</span><small>Compare the four domain shapes.</small><b aria-hidden="true">→</b></a></nav>

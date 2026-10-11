@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Attendance workspace · Varendo</title>
+    <style>
+      body {
+        margin: 0;
+        background: #f7f8fb;
+        color: #172033;
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 72rem;
+        margin: auto;
+        padding: 2rem 1rem;
+      }
+      #workspace {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      #workspace[data-width='narrow'] {
+        max-width: 360px;
+        grid-template-columns: 1fr;
+      }
+      #trend {
+        grid-column: 1 / -1;
+      }
+      section {
+        min-width: 0;
+        padding: 1rem;
+        background: white;
+        border: 1px solid #d7ddea;
+        border-radius: 0.75rem;
+      }
+      button,
+      input {
+        font: inherit;
+        min-height: 2.75rem;
+        margin: 0.25rem;
+      }
+      :focus-visible {
+        outline: 3px solid #4338ca;
+        outline-offset: 2px;
+      }
+      @media (max-width: 720px) {
+        #workspace {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Engineering attendance workspace</h1>
+      <p>Registered present employee-days · Engineering only · September 2026 synthetic snapshot</p>
+      <label for="workspace-note">Workspace note</label><input id="workspace-note" type="text" />
+      <button type="button" id="narrow-workspace">Narrow workspace</button>
+      <div id="workspace" data-testid="workspace-layout" data-width="wide">
+        <section id="summary">
+          <h2>Summary</h2>
+          <p data-testid="summary-status" role="status">Loading</p>
+          <div id="summary-host"></div>
+          <output data-testid="summary-value"></output>
+        </section>
+        <section id="trend">
+          <h2>Daily trend</h2>
+          <p data-testid="trend-status" role="status">Loading</p>
+          <div id="trend-host"></div>
+          <ul data-testid="trend-values"></ul>
+        </section>
+        <section id="breakdown">
+          <h2>Employee breakdown</h2>
+          <p data-testid="breakdown-status" role="status">Loading</p>
+          <div id="breakdown-host"></div>
+          <ul data-testid="breakdown-values"></ul>
+          <button type="button" id="unsupported-breakdown">Request unsupported breakdown</button
+          ><button type="button" id="restore-breakdown">Restore breakdown</button>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

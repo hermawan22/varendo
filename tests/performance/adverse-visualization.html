@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Adverse visualization measurements</title>
+    <style>
+      :root { color-scheme: light; font: 16px/1.45 system-ui, sans-serif; }
+      body { margin: 0; padding: 1rem; background: #fff; color: #172033; }
+      main { display: grid; gap: 1rem; min-inline-size: 0; }
+      #fixture { display: grid; gap: 1rem; min-inline-size: 0; }
+      #fixture > section { min-inline-size: 0; }
+      aeliqo-bar, aeliqo-trend { display: block; max-inline-size: 100%; min-inline-size: 0; }
+      .measurement-shell { max-inline-size: 100%; min-inline-size: 0; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <main aria-labelledby="title">
+      <h1 id="title">Adverse visualization measurements</h1>
+      <p>Desktop production-package probes for bounded geometry, exact data alternatives and local interaction cost.</p>
+      <div id="fixture"></div>
+    </main>
+    <script type="module" src="./adverse-visualization.ts"></script>
+  </body>
+</html>

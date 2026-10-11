@@ -1,0 +1,195 @@
+name: Publish verified Varendo packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: 'Publish target; RC uses next and stable uses latest.'
+        required: true
+        type: choice
+        options: [rc, stable]
+      version:
+        description: 'Release version declared by release-metadata.json, optionally with -rc.N.'
+        required: true
+        type: string
+      rc_version:
+        description: 'For stable only: the exact verified OIDC-published RC predecessor.'
+        required: false
+        type: string
+      rc_source_sha:
+        description: 'For stable only: full source SHA of the approved RC publication.'
+        required: false
+        type: string
+      rc_run_id:
+        description: 'For stable only: successful release-publish run ID carrying the approved RC records.'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: aeliqo-npm-publication
+  cancel-in-progress: false
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      quality_run_id: ${{ steps.policy.outputs.quality_run_id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Require owner-dispatched current main with successful same-SHA quality
+        id: policy
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+          REF: ${{ github.ref }}
+          ACTOR: ${{ github.actor }}
+          TRIGGERING_ACTOR: ${{ github.triggering_actor }}
+          EVENT: ${{ github.event_name }}
+          STAGE: ${{ inputs.stage }}
+          VERSION: ${{ inputs.version }}
+          RC_VERSION: ${{ inputs.rc_version }}
+          RC_SOURCE_SHA: ${{ inputs.rc_source_sha }}
+          RC_RUN_ID: ${{ inputs.rc_run_id }}
+        run: |
+          set -Eeuo pipefail
+          test "$GH_REPO" = "hermawan22/varendo"
+          test "$EVENT" = "workflow_dispatch"
+          test "$REF" = "refs/heads/main"
+          test "$ACTOR" = "hermawan22"
+          test "$TRIGGERING_ACTOR" = "hermawan22"
+          test "$(gh api "repos/$GH_REPO/branches/main" --jq '.commit.sha')" = "$SOURCE_SHA"
+          release_version="$(jq -er '.version | select(test("^[0-9]+\\.[0-9]+\\.[0-9]+$"))' release-metadata.json)"
+          escaped_version="${release_version//./\\.}"
+          if [ "$STAGE" = rc ] && [[ "$VERSION" =~ ^${escaped_version}-rc\.([1-9][0-9]*)$ ]] && [ -z "$RC_VERSION$RC_SOURCE_SHA$RC_RUN_ID" ]; then
+            :
+          elif [ "$STAGE" = stable ] && [ "$VERSION" = "$release_version" ] && [[ "$RC_VERSION" =~ ^${escaped_version}-rc\.([1-9][0-9]*)$ ]] && [ "$RC_SOURCE_SHA" = "$SOURCE_SHA" ] && [[ "$RC_RUN_ID" =~ ^[1-9][0-9]*$ ]]; then
+            :
+          else
+            echo "Stage, version, and approved RC identity are not allowed." >&2
+            exit 1
+          fi
+          mkdir -p artifacts/package-release-policy
+          gh api --method GET "repos/$GH_REPO/actions/workflows/quality.yml/runs" \
+            -f head_sha="$SOURCE_SHA" -f branch=main -f event=push -f status=success \
+            --jq '.workflow_runs' > artifacts/package-release-policy/quality-runs.json
+          jq -e --arg sha "$SOURCE_SHA" \
+            '[.[] | select(.head_sha == $sha and .head_branch == "main" and .event == "push" and .conclusion == "success")] | if length == 0 then error("no successful same-SHA main quality run") else max_by(.run_number) | {id,run_number,head_sha,head_branch,event,conclusion,html_url} end' \
+            artifacts/package-release-policy/quality-runs.json > artifacts/package-release-policy/quality-run.json
+          quality_run_id="$(jq -er '.id' artifacts/package-release-policy/quality-run.json)"
+          gh api "repos/$GH_REPO/actions/runs/$quality_run_id/jobs?per_page=100" \
+            --jq '.jobs[].steps[]' > artifacts/package-release-policy/quality-jobs.json
+          jq -es \
+            'if [.[] | select(.name == "Run required functional, security, browser, and package checks" and .conclusion == "success")] | length > 0
+             then true
+             else error("same-SHA push quality ran the site lane only; publish from a main push that runs the full matrix (manual dispatch is diagnostic evidence only)")
+             end' \
+            artifacts/package-release-policy/quality-jobs.json >/dev/null
+          echo "quality_run_id=$quality_run_id" >> "$GITHUB_OUTPUT"
+          if [ "$STAGE" = stable ]; then
+            gh api "repos/$GH_REPO/actions/runs/$RC_RUN_ID" > artifacts/package-release-policy/rc-run-full.json
+            jq -e --arg sha "$RC_SOURCE_SHA" \
+              'select(.path == ".github/workflows/release-publish.yml" and .event == "workflow_dispatch" and .head_branch == "main" and .head_sha == $sha and .status == "completed" and .conclusion == "success") | {id,path,event,head_branch,head_sha,status,conclusion,html_url}' \
+              artifacts/package-release-policy/rc-run-full.json > artifacts/package-release-policy/rc-run.json
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: aeliqo-package-release-policy-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/package-release-policy
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    needs: policy
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.actor == 'hermawan22' && github.triggering_actor == 'hermawan22'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24.20.0'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Install the locked package manager and dependencies
+        run: |
+          corepack enable
+          corepack prepare pnpm@11.24.0 --activate
+          pnpm install --frozen-lockfile
+      - name: Require the source-complete prepublication gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QUALITY_RUN_ID: ${{ needs.policy.outputs.quality_run_id }}
+        run: |
+          mkdir -p artifacts/quality-evidence
+          gh run download "$QUALITY_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "aeliqo-quality-evidence-$GITHUB_SHA" --dir artifacts/quality-evidence
+          test -f artifacts/quality-evidence/artifacts/product-ci/ci.json
+          cp -R artifacts/quality-evidence/artifacts/product-ci artifacts/product-ci
+          pnpm build:platform
+          pnpm build:agent
+          pnpm test:release-tooling
+          AELIQO_CI_EVIDENCE_PATH=artifacts/quality-evidence/artifacts/product-ci/ci.json node scripts/release/verify-quality-evidence.mjs
+      - name: Reinstall and exercise the published RC before stable
+        if: inputs.stage == 'stable'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RC_VERSION: ${{ inputs.rc_version }}
+          RC_SOURCE_SHA: ${{ inputs.rc_source_sha }}
+          RC_RUN_ID: ${{ inputs.rc_run_id }}
+        run: |
+          mkdir -p artifacts/approved-rc
+          gh run download "$RC_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "aeliqo-npm-publication-$RC_VERSION-$RC_SOURCE_SHA" --dir artifacts/approved-rc
+          APPROVED_DIR=artifacts/approved-rc/release-candidate
+          test -f "$APPROVED_DIR/manifest.json"
+          test -f "$APPROVED_DIR/publication.json"
+          test -f "$APPROVED_DIR/registry-consumer.json"
+          node scripts/release/verify-approved-rc.mjs --candidate "$APPROVED_DIR/manifest.json" --publication "$APPROVED_DIR/publication.json" --consumer "$APPROVED_DIR/registry-consumer.json" --version "$RC_VERSION" --source "$RC_SOURCE_SHA"
+          node scripts/release/registry-consumer.mjs --version "$RC_VERSION" --expected-candidate "$APPROVED_DIR/manifest.json" --require-provenance-source "$RC_SOURCE_SHA" --output artifacts/release-rc-consumer.json
+      - name: Build and verify the exact publishable candidate
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          node scripts/release/candidate.mjs --version "$VERSION"
+          node --input-type=module <<'NODE'
+          import {readFile} from 'node:fs/promises';
+          import {PUBLIC_PACKAGE_NAMES} from './scripts/release/metadata.mjs';
+          const candidate = JSON.parse(await readFile('artifacts/release-candidate/manifest.json', 'utf8'));
+          if (candidate.sourceRevision !== process.env.GITHUB_SHA) throw new Error('Candidate source SHA differs from workflow SHA');
+          const packageNames = candidate.packages.map(({name}) => name);
+          if (candidate.version !== process.env.VERSION || JSON.stringify(packageNames) !== JSON.stringify(PUBLIC_PACKAGE_NAMES)) throw new Error('Candidate has an unexpected release identity');
+          NODE
+      - name: Publish in verified dependency order using trusted publishing
+        env:
+          STAGE: ${{ inputs.stage }}
+        run: |
+          TAG=next
+          if [ "$STAGE" = stable ]; then TAG=latest; fi
+          node scripts/release/publish.mjs --tag "$TAG"
+      - name: Reinstall the exact registry artifacts after publication
+        env:
+          VERSION: ${{ inputs.version }}
+        run: node scripts/release/registry-consumer.mjs --version "$VERSION" --expected-candidate artifacts/release-candidate/manifest.json --require-provenance-source "$GITHUB_SHA" --output artifacts/release-candidate/registry-consumer.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: aeliqo-npm-publication-${{ inputs.version }}-${{ github.sha }}
+          path: |
+            artifacts/release-candidate
+            artifacts/release-rc-consumer.json
+          if-no-files-found: warn
+          retention-days: 30

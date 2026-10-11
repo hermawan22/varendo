@@ -1,0 +1,39 @@
+name: Feature request
+description: Propose a concrete addition to an existing Varendo contract or workflow.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the developer or end-user task and the current limitation.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example application flow
+      description: Show the resource, intent, component, or integration flow that needs this capability.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed contract
+      description: Include compatibility, ownership, accessibility, and failure-state expectations where relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Project boundaries
+      options:
+        - label: Application code remains responsible for identity, permissions, routes, and business effects.
+          required: true
+        - label: The proposal does not require rendering model-supplied HTML or executing model-supplied code.
+          required: true

@@ -1,0 +1,93 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #182532;
+  background: #f5f7fa;
+  color-scheme: light;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  width: min(100% - 2rem, 64rem);
+  margin: 3rem auto;
+}
+h1 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  line-height: 1.15;
+  max-width: 22ch;
+}
+h2 {
+  font-size: 1.2rem;
+}
+p {
+  line-height: 1.6;
+}
+.eyebrow {
+  color: #425d76;
+  font-size: 0.9rem;
+}
+section {
+  padding: 1.25rem;
+  margin: 1rem 0;
+  border: 1px solid #ccd5df;
+  border-radius: 0.75rem;
+  background: white;
+  min-width: 0;
+}
+button,
+textarea {
+  font: inherit;
+  border: 1px solid #8997a6;
+  border-radius: 0.4rem;
+  padding: 0.75rem 1rem;
+}
+button {
+  min-height: 44px;
+  cursor: pointer;
+  background: #123e68;
+  color: white;
+}
+button:disabled {
+  cursor: default;
+  background: #e6ebf0;
+  color: #526171;
+}
+button:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid #1f78be;
+  outline-offset: 3px;
+}
+label,
+textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.6rem;
+}
+#receipt {
+  overflow-wrap: anywhere;
+}
+#region {
+  min-width: 0;
+}
+a {
+  color: #174d83;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    color: #e6edf4;
+    background: #101923;
+  }
+  section {
+    background: #162330;
+    border-color: #506070;
+  }
+  .eyebrow,
+  a {
+    color: #a9d3f6;
+  }
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Varendo component review</title>
+    <style>
+      :root {
+        --review-button-text: #161a20;
+        --review-button-surface: #f4f5f7;
+        --review-button-border: #637083;
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+        color-scheme: light;
+        background: #fff;
+        color: #161a20;
+      }
+      :root[data-theme='dark'] {
+        --review-button-text: #f4f5f7;
+        --review-button-surface: #292f37;
+        --review-button-border: #aab1bb;
+        color-scheme: dark;
+        background: #101318;
+        color: #f4f5f7;
+      }
+      body {
+        margin: 0;
+        padding: 16px;
+      }
+      main,
+      #fixture,
+      #fixture > [data-catalog-example-root] {
+        min-width: 0;
+      }
+      h1 {
+        font-size: 1rem;
+        margin: 0 0 1rem;
+        overflow-wrap: anywhere;
+        padding-inline: 1px;
+      }
+      #fixture > [data-catalog-example-root] > button {
+        min-height: 2.75rem;
+        border: 1px solid var(--review-button-border);
+        border-radius: 0.25rem;
+        padding: 0.5rem 0.75rem;
+        color: var(--review-button-text);
+        background: var(--review-button-surface);
+        font: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 id="title">Component review</h1>
+      <div id="fixture"></div>
+    </main>
+    <script type="module" src="/tests/visual/catalog.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daily attendance · Varendo</title>
+    <style>
+      body { font: 16px/1.5 system-ui, sans-serif; color: #172033; margin: 0; background: #f7f8fb; }
+      main { max-width: 72rem; margin: auto; padding: 2rem 1rem; display: grid; gap: 1rem; }
+      section { background: white; border: 1px solid #d7ddea; border-radius: 0.75rem; padding: 1rem; }
+      button, select { font: inherit; min-height: 2.75rem; margin-right: 0.5rem; }
+      button:focus-visible, select:focus-visible { outline: 3px solid #4338ca; outline-offset: 2px; }
+      #attendance-host { min-height: 16rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Daily attendance</h1>
+        <p data-testid="period">September 2026 · Asia/Jakarta · complete local days through 5 September only</p>
+      </header>
+      <section aria-label="Metric policy">
+        <p data-testid="metric-policy">Approved attendance rate: Present eligible employee-days / eligible employee-days. Approved leave is excluded from both counts.</p>
+        <p data-testid="coverage">4–5 September: no observations, so no points. 6 September: future at the fixed as-of; excluded. The full month is not complete.</p>
+      </section>
+      <section aria-label="Attendance trend">
+        <p data-testid="attendance-status" role="status">Loading attendance</p>
+        <div id="attendance-host"></div>
+        <h2>Observed daily values</h2>
+        <ul data-testid="daily-values"></ul>
+      </section>
+      <section aria-label="Metric choice">
+        <button type="button" id="compare-metrics">Compare attendance metrics</button>
+        <div id="metric-choice" hidden>
+          <label for="attendance-metric">Attendance metric</label>
+          <select id="attendance-metric"><option value="attendance.rate">Attendance rate</option><option value="attendance.present">Present employee-days</option></select>
+          <button type="button" id="apply-metric">Show selected attendance metric</button>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

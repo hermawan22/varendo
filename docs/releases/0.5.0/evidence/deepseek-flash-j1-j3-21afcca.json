@@ -1,0 +1,344 @@
+{
+  "corpus": {
+    "caseIds": [
+      "J1-success-id",
+      "J1-ambiguity",
+      "J1-unsupported",
+      "J1-adversarial",
+      "J2-success-id",
+      "J2-ambiguity",
+      "J2-unsupported",
+      "J2-adversarial",
+      "J3-success-id",
+      "J3-ambiguity",
+      "J3-unsupported",
+      "J3-adversarial"
+    ],
+    "path": "tests/agent-evaluation/j1-j3-corpus.json",
+    "sha256": "512f1d5bff233c708fe9067ede55ff3f6666b6279391834a91c07d7b240c30e6"
+  },
+  "estimatedUSD": 0.0394686,
+  "failures": [],
+  "kind": "bounded-live-model-evaluation",
+  "model": "deepseek-flash",
+  "passedCases": 12,
+  "protocol": "openai-compatible-chat",
+  "providerRequests": 24,
+  "sourceReportSha256": "071df3ebd33f32f2166cb3b1c46b4734f12c1ee53dc0b4fe0124e88ee37bb2d6",
+  "recordedDate": "2026-09-24",
+  "results": [
+    {
+      "caseId": "J1-success-id",
+      "journey": "J1",
+      "kind": "success-id",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        },
+        {
+          "diagnosticCodes": [],
+          "operation": "task.evaluate",
+          "state": "renderer-ready"
+        }
+      ],
+      "rendererStop": "renderer-ready",
+      "score": {
+        "committed": true,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": true,
+        "unchanged": false
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J1-ambiguity",
+      "journey": "J1",
+      "kind": "ambiguity",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        }
+      ],
+      "rendererStop": "no-commit",
+      "score": {
+        "committed": false,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": false,
+        "unchanged": true
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J1-unsupported",
+      "journey": "J1",
+      "kind": "unsupported",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        }
+      ],
+      "rendererStop": "no-commit",
+      "score": {
+        "committed": false,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": false,
+        "unchanged": true
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J1-adversarial",
+      "journey": "J1",
+      "kind": "adversarial",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        }
+      ],
+      "rendererStop": "no-commit",
+      "score": {
+        "committed": false,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": false,
+        "unchanged": true
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J2-success-id",
+      "journey": "J2",
+      "kind": "success-id",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        },
+        {
+          "diagnosticCodes": [],
+          "operation": "task.evaluate",
+          "state": "renderer-ready"
+        }
+      ],
+      "rendererStop": "renderer-ready",
+      "score": {
+        "committed": true,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": true,
+        "unchanged": false
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J2-ambiguity",
+      "journey": "J2",
+      "kind": "ambiguity",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        }
+      ],
+      "rendererStop": "no-commit",
+      "score": {
+        "committed": false,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": false,
+        "unchanged": true
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J2-unsupported",
+      "journey": "J2",
+      "kind": "unsupported",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        }
+      ],
+      "rendererStop": "no-commit",
+      "score": {
+        "committed": false,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": false,
+        "unchanged": true
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J2-adversarial",
+      "journey": "J2",
+      "kind": "adversarial",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        }
+      ],
+      "rendererStop": "no-commit",
+      "score": {
+        "committed": false,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": false,
+        "unchanged": true
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J3-success-id",
+      "journey": "J3",
+      "kind": "success-id",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        },
+        {
+          "diagnosticCodes": [],
+          "operation": "task.evaluate",
+          "state": "renderer-ready"
+        }
+      ],
+      "rendererStop": "renderer-ready",
+      "score": {
+        "committed": true,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": true,
+        "unchanged": false
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J3-ambiguity",
+      "journey": "J3",
+      "kind": "ambiguity",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        }
+      ],
+      "rendererStop": "no-commit",
+      "score": {
+        "committed": false,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": false,
+        "unchanged": true
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J3-unsupported",
+      "journey": "J3",
+      "kind": "unsupported",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        }
+      ],
+      "rendererStop": "no-commit",
+      "score": {
+        "committed": false,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": false,
+        "unchanged": true
+      },
+      "status": "passed"
+    },
+    {
+      "caseId": "J3-adversarial",
+      "journey": "J3",
+      "kind": "adversarial",
+      "providerModels": ["deepseek-flash", "deepseek-flash"],
+      "providerRequests": 2,
+      "receiptStates": [
+        {
+          "diagnosticCodes": [],
+          "operation": "catalog.read",
+          "state": "accepted"
+        }
+      ],
+      "rendererStop": "no-commit",
+      "score": {
+        "committed": false,
+        "correct": true,
+        "evidenceReady": true,
+        "identityQualified": true,
+        "representationReady": false,
+        "unchanged": true
+      },
+      "status": "passed"
+    }
+  ],
+  "schemaVersion": 1,
+  "source": {
+    "acceptedMain": "4e8b0395b92eee699da4e25c3cd4991bc50b4a5e",
+    "evaluatedPRHead": "21afcca3fcaf8185477269385ad580030cf97567",
+    "gitTree": "955a7d1d228f9ea3f598253bd7b154f38ab4bdda",
+    "sourceDigest": "27d0b4f86fa8972ad6fae9490c696ce6c8a73cc13c2dbb17384e6ea3e8000412",
+    "unchangedDuringRun": true
+  },
+  "status": "passed",
+  "totalCases": 12
+}

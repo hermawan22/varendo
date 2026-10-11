@@ -1,0 +1,129 @@
+{
+  "status": "proposed-authoring-examples-not-sdk-config",
+  "version": "0.10",
+  "profiles": [
+    {
+      "id": "aeliqo.inspection",
+      "mode": "adaptive",
+      "allowedRepresentations": [
+        "data.table",
+        "data.record-list",
+        "data.detail"
+      ],
+      "patterns": [
+        "single",
+        "master-detail",
+        "drill-in"
+      ],
+      "constraints": [
+        "identity-preserved",
+        "explicit-view-respected",
+        "required-fields-reachable",
+        "task-operations-preserved"
+      ],
+      "composition": {
+        "allowWithoutPreset": false,
+        "maxNodes": 30,
+        "maxExpansions": 64
+      }
+    },
+    {
+      "id": "aeliqo.comparison",
+      "mode": "adaptive",
+      "allowedRepresentations": [
+        "data.table",
+        "compound.comparison",
+        "visualization.matrix"
+      ],
+      "patterns": [
+        "single",
+        "split"
+      ],
+      "constraints": [
+        "simultaneous-comparison",
+        "units-per-measure",
+        "stable-compare-set",
+        "essential-2d-scroll-permitted"
+      ],
+      "composition": {
+        "allowWithoutPreset": false,
+        "maxNodes": 30,
+        "maxExpansions": 64
+      }
+    },
+    {
+      "id": "aeliqo.analysis",
+      "mode": "composable",
+      "allowedRepresentations": [
+        "data.metric",
+        "data.delta",
+        "data.key-value",
+        "data.detail",
+        "data.record-list",
+        "data.card-collection",
+        "data.table",
+        "data.filter-builder",
+        "data.selection-summary",
+        "visualization.trend",
+        "visualization.bar",
+        "visualization.area",
+        "visualization.scatter",
+        "visualization.histogram",
+        "visualization.heatmap",
+        "visualization.matrix",
+        "visualization.relationship",
+        "visualization.tree",
+        "visualization.treemap",
+        "visualization.timeline",
+        "visualization.calendar-grid",
+        "compound.explorer",
+        "compound.comparison",
+        "compound.breakdown",
+        "compound.investigation",
+        "compound.search-results",
+        "compound.quality-panel"
+      ],
+      "patterns": [
+        "single",
+        "stack",
+        "split",
+        "master-detail",
+        "drill-in"
+      ],
+      "constraints": [
+        "scope-visible",
+        "bounded-view-count",
+        "result-lineage",
+        "no-causal-claim-from-correlation"
+      ],
+      "composition": {
+        "allowWithoutPreset": true,
+        "maxNodes": 30,
+        "maxExpansions": 64
+      }
+    },
+    {
+      "id": "aeliqo.editing",
+      "mode": "fixed",
+      "allowedRepresentations": [
+        "compound.record-editor",
+        "compound.form-flow"
+      ],
+      "patterns": [
+        "single",
+        "steps"
+      ],
+      "constraints": [
+        "draft-preserved",
+        "explicit-save",
+        "host-action-authorization",
+        "no-structural-adaptation-during-edit"
+      ],
+      "composition": {
+        "allowWithoutPreset": false,
+        "maxNodes": 30,
+        "maxExpansions": 64
+      }
+    }
+  ]
+}

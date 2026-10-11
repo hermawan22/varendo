@@ -1,0 +1,10 @@
+{
+  "name": "@varendo/catalog-examples",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@varendo/core": "workspace:*",
+    "@varendo/web": "workspace:*"
+  }
+}

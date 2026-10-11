@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {"noEmit": true},
+  "include": ["./**/*.ts", "../../examples/vertical-slice/src/**/*.ts"]
+}

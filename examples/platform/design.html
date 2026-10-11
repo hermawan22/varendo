@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'nonce-t02nonce'; connect-src 'self' ws:; object-src 'none'; base-uri 'none'" />
+    <title>Varendo owned design baseline</title>
+    <link rel="stylesheet" href="/src/design.css" />
+  </head>
+  <body>
+    <main id="design-root" data-aeliqo-theme="light">
+      <header>
+        <p class="eyebrow">AELIQO · SYNTHETIC DESIGN FIXTURE</p>
+        <h1 id="page-title">Team overview</h1>
+        <p id="intro">A small working view of people and their weekly activity.</p>
+        <div class="preferences">
+          <label>Theme <select id="theme"><option value="light">Light</option><option value="dark">Dark</option><option value="system">System</option></select></label>
+          <label>Language <select id="locale"><option value="en-US">English</option><option value="ar-EG">العربية</option></select></label>
+        </div>
+      </header>
+      <section aria-labelledby="details-title">
+        <h2 id="details-title">Team details</h2>
+        <form>
+          <div class="fields">
+            <aeliqo-text-field id="team" data-aeliqo-theme="inherit" label="Team name" name="team" value="Research" description="Changes stay in this local fixture."></aeliqo-text-field>
+            <aeliqo-text-field id="owner" data-aeliqo-theme="inherit" label="Owner" value="Ada" read-only description="Read only"></aeliqo-text-field>
+            <aeliqo-text-field id="code" data-aeliqo-theme="inherit" label="Team code" value="" error="Enter a team code." required></aeliqo-text-field>
+            <aeliqo-text-field id="archive" data-aeliqo-theme="inherit" label="Archived team" value="No archived team" disabled></aeliqo-text-field>
+          </div>
+          <p id="draft-status" role="status">Ready to edit.</p>
+        </form>
+      </section>
+      <section aria-labelledby="people-title">
+        <h2 id="people-title">People</h2>
+        <aeliqo-table id="people" data-aeliqo-theme="inherit"></aeliqo-table>
+      </section>
+      <section aria-labelledby="activity-title">
+        <h2 id="activity-title">Weekly activity</h2>
+        <aeliqo-chart id="activity" data-aeliqo-theme="inherit"></aeliqo-chart>
+      </section>
+      <section aria-labelledby="empty-title">
+        <h2 id="empty-title">Upcoming assignments</h2>
+        <aeliqo-table id="empty" data-aeliqo-theme="inherit" empty-label="No upcoming assignments."></aeliqo-table>
+      </section>
+    </main>
+    <script type="module" src="/src/design.ts"></script>
+  </body>
+</html>

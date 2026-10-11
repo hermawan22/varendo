@@ -1,0 +1,1 @@
+{"extends":"../../tsconfig.json","compilerOptions":{"noEmit":true,"rootDir":"../..","types":["node"],"lib":["ES2022","DOM","DOM.Iterable"]},"include":["./*.ts","../contracts/fixtures.ts"]}

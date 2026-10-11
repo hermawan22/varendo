@@ -1,0 +1,22 @@
+{
+  "authorized": false,
+  "authorizationReference": "Replace only after explicit owner approval for this exact corpus and model",
+  "corpusSha256": "512f1d5bff233c708fe9067ede55ff3f6666b6279391834a91c07d7b240c30e6",
+  "maxRequests": 60,
+  "maxUSD": 1,
+  "maxModelRequestsPerCase": 4,
+  "maxInputTokensPerRequest": 32000,
+  "maxOutputTokensPerRequest": 2000,
+  "model": {
+    "protocol": "openai-compatible-chat",
+    "endpoint": "https://api.deepseek.com/",
+    "model": "deepseek-flash",
+    "expectedReportedModel": "deepseek-flash",
+    "authScheme": "bearer",
+    "capabilities": ["tool-calls", "usage", "input-token-estimate", "request-cancellation"],
+    "credentialEnvironment": "AELIQO_MODEL_API_KEY",
+    "inputUSDPerMillion": 0.3,
+    "outputUSDPerMillion": 1.2,
+    "priceSource": "https://api-docs.deepseek.com/quick_start/pricing"
+  }
+}

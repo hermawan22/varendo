@@ -1,0 +1,10 @@
+@import './styles/aeliqo-tokens.css';
+@import './styles/palette.css';
+@import './styles/base.css';
+@import './styles/shell.css';
+@import './styles/landing.css';
+@import './styles/landing-sections.css';
+@import './styles/docs.css';
+@import './styles/docs-reference.css';
+@import './styles/playground.css';
+@import './styles/playground-result.css';

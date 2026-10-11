@@ -1,0 +1,24 @@
+{
+  "name": "@varendo/testkit",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Internal assertions and stream helpers for Varendo host and security tests",
+  "private": true,
+  "license": "Apache-2.0",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@varendo/runtime": "workspace:*"
+  }
+}

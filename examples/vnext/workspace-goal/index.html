@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registered attendance goal · Varendo</title>
+    <style>
+      body {
+        margin: 0;
+        background: #f7f8fb;
+        color: #172033;
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 72rem;
+        margin: auto;
+        padding: 2rem 1rem;
+      }
+      #workspace {
+        min-width: 0;
+        padding: 1rem;
+        background: white;
+        border: 1px solid #d7ddea;
+        border-radius: 0.75rem;
+      }
+      button {
+        font: inherit;
+        min-height: 2.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Engineering attendance overview</h1>
+      <p>One registered goal with summary, daily trend, and employee breakdown.</p>
+      <button type="button" id="request-anomaly">Request anomaly</button>
+      <button type="button" id="fail-breakdown">Fail breakdown update</button>
+      <p data-testid="goal-status" role="status">Loading</p>
+      <div id="workspace" data-testid="goal-workspace"></div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

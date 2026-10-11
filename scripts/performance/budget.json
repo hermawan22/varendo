@@ -1,0 +1,57 @@
+{
+  "status": "unapproved",
+  "baselineSHA": "d90a2c8c11c695439d951b661f4071411e30b9b6",
+  "workloadSHA": "c9f7283566889e784043cc07703215c6ca882dfdd45da284dc9849e6326314fb",
+  "runner": {
+    "container": "sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7",
+    "hostImage": null,
+    "platform": "linux/x64",
+    "node": "v24.20.0",
+    "pnpm": "11.24.0",
+    "playwright": "1.63.0",
+    "browsers": {
+      "chromium": {
+        "version": "153.0.8010.12",
+        "executableSHA": "98be65519ae462a890df35b26ddadcb3df6ead590ee08d1d44f1e4434e304a1a"
+      },
+      "firefox": {
+        "version": "155.0",
+        "executableSHA": "550bcf49e7b3332c4354d2120daf689b8aa65b9a556435c382c8706b3e7b8503"
+      },
+      "webkit": {
+        "version": "26.6",
+        "executableSHA": "000bdb8bd97df6da2c1fbd16aae41ba10188e1c9fb7e2d96755682bd1970d810"
+      }
+    },
+    "fonts": {
+      "sha256": "500e892570d9dc6de53bf0877c672b2802bb6fe9468c7ba9900f22ed1127ca05",
+      "files": 39,
+      "directories": ["/usr/share/fonts", "/usr/local/share/fonts"]
+    },
+    "deviceScaleFactor": 1,
+    "workloads": {
+      "layout": {
+        "locale": "en-US",
+        "timezone": "UTC",
+        "viewport": "1280x720",
+        "deviceScaleFactor": 1
+      },
+      "visualization": {
+        "locale": "de-DE",
+        "timezone": "Europe/Berlin",
+        "viewport": "1440x900",
+        "deviceScaleFactor": 1
+      }
+    }
+  },
+  "review": "docs/testing/0.6.3-performance-reference.md",
+  "pairs": 3,
+  "relative": {
+    "fraction": 0.2,
+    "milliseconds": 2
+  },
+  "absolute": {
+    "reducerP95Ms": 4,
+    "mountedRows": 100
+  }
+}

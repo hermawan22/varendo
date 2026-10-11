@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Host-only people baseline</title>
+    <style>
+      body { max-width: 48rem; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 system-ui, sans-serif; }
+      button { min-height: 2.75rem; }
+      button:focus-visible { outline: 0.1875rem solid #4338ca; outline-offset: 0.125rem; }
+      table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+      th, td { border: 1px solid #94a3b8; padding: 0.4rem; text-align: left; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Host-only people baseline</h1>
+      <p>This synthetic fixture performs the same Jakarta people browse task without Varendo.</p>
+      <button type="button" id="show-jakarta">People in Jakarta</button>
+      <p id="people-filter" role="status">All authorized people · scope vnext-scope</p>
+      <table>
+        <caption>Authorized people</caption>
+        <thead><tr><th scope="col">Name</th><th scope="col">Team</th><th scope="col">Location</th></tr></thead>
+        <tbody id="people-rows"></tbody>
+      </table>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

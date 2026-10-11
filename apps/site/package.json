@@ -1,0 +1,46 @@
+{
+  "name": "@varendo/site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": "24.20.0",
+    "pnpm": "11.24.0"
+  },
+  "scripts": {
+    "dev": "pnpm --workspace-root build:platform && pnpm --workspace-root build:agent && vite --host 127.0.0.1",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tests/site/tsconfig.json",
+    "build": "pnpm --workspace-root build:platform && pnpm --workspace-root build:agent && tsc -p tsconfig.json && vite build",
+    "test": "pnpm test:unit",
+    "test:unit": "vitest run --config tests/site/vitest.config.mjs && pnpm typecheck",
+    "test:browser": "pnpm build && playwright test --config tests/site/playwright.config.mjs",
+    "test:docs": "pnpm build && playwright test --config tests/site/docs-navigation.playwright.config.mjs",
+    "test:responsive": "pnpm build && playwright test --config tests/site/playground-responsive.playwright.config.mjs",
+    "test:document-layout": "pnpm build && playwright test --config tests/site/document-layout.playwright.config.mjs",
+    "test:visual-baseline": "playwright test --config tests/site/visual-baseline.playwright.config.mjs",
+    "test:performance": "pnpm build && playwright test --config tests/performance/site-page.playwright.config.mjs",
+    "test:seo": "node scripts/seo-check.mjs dist",
+    "test:server": "go test ./deploy/server.go ./deploy/server_test.go",
+    "test:provenance": "python3 -m unittest discover -s tests/ci -p 'test_*.py' -v",
+    "test:boundary": "pnpm test:provenance",
+    "check": "pnpm test:unit && pnpm build && pnpm test:seo && playwright test --config tests/site/playwright.config.mjs && playwright test --config tests/site/docs-navigation.playwright.config.mjs && playwright test --config tests/site/playground-responsive.playwright.config.mjs && playwright test --config tests/site/action-review.playwright.config.mjs && playwright test --config tests/site/document-layout.playwright.config.mjs && pnpm test:server && pnpm test:provenance && pnpm test:visual-baseline && pnpm test:webmcp:native",
+    "test:webmcp:native": "playwright test --config tests/site/webmcp-native.playwright.config.mjs"
+  },
+  "dependencies": {
+    "@varendo/agent": "workspace:*",
+    "@varendo/core": "workspace:*",
+    "@varendo/runtime": "workspace:*",
+    "@varendo/web": "workspace:*",
+    "lit": "3.3.3",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.13.3",
+    "typescript": "7.0.2",
+    "vite": "8.2.2",
+    "vitest": "5.0.0"
+  }
+}

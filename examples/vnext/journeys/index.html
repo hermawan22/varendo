@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Varendo vNext reference journeys</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font:
+          16px/1.45 system-ui,
+          sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 2rem;
+        color: #172033;
+        background: #f7f8fb;
+      }
+      main {
+        max-width: 72rem;
+        margin: auto;
+        display: grid;
+        gap: 1rem;
+      }
+      section {
+        padding: 1rem;
+        background: white;
+        border: 1px solid #d7ddea;
+        border-radius: 0.75rem;
+      }
+      .controls {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin: 0.75rem 0;
+      }
+      button {
+        min-block-size: 2.75rem;
+        padding: 0.45rem 0.75rem;
+      }
+      button:focus-visible {
+        outline: 3px solid #4338ca;
+        outline-offset: 2px;
+      }
+      [data-view] {
+        min-block-size: 3rem;
+        padding: 0.5rem;
+        border: 1px dashed #94a3b8;
+        overflow-wrap: anywhere;
+      }
+      [data-view] aeliqo-table {
+        display: block;
+        min-block-size: 8rem;
+      }
+      code {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Four vNext reference journeys</h1>
+        <p id="journey-status" role="status">Static journey descriptions are available before JavaScript.</p>
+      </header>
+
+      <section aria-labelledby="public-heading">
+        <h2 id="public-heading">Public content and an optional island</h2>
+        <p>Read a static product note, then filter its small, synthetic detail region. No model is used.</p>
+        <div class="controls"><button type="button" data-action="public-filter">Filter public detail</button></div>
+        <p id="public-status" role="status">Static content ready</p>
+        <div id="public-view" data-view aria-label="Public content detail">
+          Release notes: stable HTML remains useful before hydration.
+        </div>
+      </section>
+
+      <section aria-labelledby="catalog-heading">
+        <h2 id="catalog-heading">Consumer catalog comparison</h2>
+        <p>Compare the same two synthetic products through a manual control or a host-controlled fixture agent.</p>
+        <div class="controls">
+          <button type="button" data-action="catalog-manual">Manual compare p1 and p2</button>
+          <button type="button" data-action="catalog-agent">Fixture-agent compare p1 and p2</button>
+          <button type="button" data-action="catalog-reset">Reset through host control</button>
+        </div>
+        <p id="catalog-status" role="status">No comparison committed</p>
+        <output id="catalog-intent" aria-label="Committed catalog intent"></output>
+        <div id="catalog-view" data-view role="region" aria-label="Catalog comparison"></div>
+      </section>
+
+      <section aria-labelledby="enterprise-heading">
+        <h2 id="enterprise-heading">Enterprise operations</h2>
+        <p>Two independent synthetic remote windows keep their own state. A host approval records an audit entry.</p>
+        <div class="controls">
+          <button type="button" data-action="enterprise-left">Load left partial page</button>
+          <button type="button" data-action="enterprise-right">Load right partial page</button>
+          <button type="button" data-action="enterprise-review">Request host approval</button>
+          <button type="button" data-action="enterprise-approve" disabled>Approve reviewed action</button>
+          <button type="button" data-action="enterprise-revoke">Revoke right-surface access</button>
+        </div>
+        <p id="enterprise-status" role="status">No remote window loaded</p>
+        <div id="enterprise-left-view" data-view role="region" aria-label="Left enterprise window"></div>
+        <div id="enterprise-right-view" data-view role="region" aria-label="Right enterprise window"></div>
+        <output id="enterprise-audit" aria-label="Enterprise audit trace"></output>
+      </section>
+
+      <section aria-labelledby="job-heading">
+        <h2 id="job-heading">Non-data editor and document job</h2>
+        <p>
+          Editing stays local. The typed job surface exposes host-owned progress, cancellation, and an opaque output
+          reference.
+        </p>
+        <label>Document title <input id="job-draft" value="Quarterly brief" /></label>
+        <div class="controls">
+          <button type="button" data-action="job-start">Start document job</button>
+          <button type="button" data-action="job-progress" disabled>Advance progress</button>
+          <button type="button" data-action="job-cancel" disabled>Cancel job</button>
+        </div>
+        <p id="job-status" role="status">Editor draft is local; no job started</p>
+        <output id="job-output" aria-label="Job output reference"></output>
+      </section>
+    </main>
+    <script type="module" src="/journeys/main.ts"></script>
+  </body>
+</html>

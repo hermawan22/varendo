@@ -1,0 +1,15 @@
+---
+id: "people-example"
+path: "/examples/people/"
+section: "Examples"
+title: "People example"
+description: "Browse, filter, detail, and trend over a registered People resource with correct temporal meaning."
+---
+
+<p class="lead">The People example shows the classic table-to-cards adaptation on a small employee list — plus a detail view and a monthly headcount chart. No AI involved.</p>
+<h2>Run it</h2><ol class="doc-steps"><li><span>1</span><div><h3>Open the scenario</h3><p>Open <a href="/playground/?scenario=people">People in the playground</a>. You should see a table of synthetic employees.</p></div></li><li><span>2</span><div><h3>Run the scenario steps</h3><p>Choose <strong>Engineering only</strong>, <strong>Open Ada</strong>, then <strong>Monthly headcount</strong>. You should see a filtered table, a detail view, and a month-end trend chart.</p></div></li><li><span>3</span><div><h3>Inspect the run</h3><p>Choose <strong>Inspect</strong>. You should see the validated request, the result, and the reason that view was picked.</p></div></li><li><span>4</span><div><h3>Shrink the region</h3><p>Make the region narrower. You should see the table swap to cards with the same rows and filter.</p></div></li><li><span>5</span><div><h3>Run it locally</h3><p>Choose <strong>More → Export project</strong>, unzip the download, then run <code>pnpm install</code> and <code>pnpm dev</code>. You should see a local browse view and the status <code>renderer-ready</code>.</p></div></li></ol>
+<h2>What it exercises</h2><div class="doc-checklist"><ul><li>Browse a typed collection with stable identity per row.</li><li>Filter by team while keeping stable identity on the returned rows.</li><li>Open one person in detail, including on a narrow layout.</li><li>Chart a registered month-end measure by month.</li><li>Reject an unknown field, invalid aggregate, or unregistered view.</li></ul></div>
+<h2>Make it yours</h2><div class="doc-checklist"><ul><li>Swap the synthetic rows for your data adapter.</li><li>Read permissions from your real app state.</li><li>Keep each row's identity stable and its meaning explicit.</li><li>Dispose the app when the host removes the surface.</li></ul></div>
+<h2>When it fails</h2><p>An unknown field or view returns a diagnostic and keeps the last permitted view. A denied permission read returns no data. Fix the contract or the trusted policy, then send the request again.</p>
+<h2>Local browse starter source</h2><p>The exported project renders one browse view. The additional Playground steps above require their resource meanings, forms/actions, or custom registrations; they are not bundled in this minimal starter. Follow <a href="/start/registered-app/">Connect your data</a> to add those contracts.</p><aeliqo-project data-scenario="people"></aeliqo-project>
+<nav class="doc-next" aria-label="Continue reading"><p>Continue reading</p><a href="/concepts/semantics/"><span>Why the trend is valid</span><small>Understand meaning, period, unit, and grain.</small><b aria-hidden="true">→</b></a><a href="/examples/products/"><span>Products</span><small>Move beyond table-first UI.</small><b aria-hidden="true">→</b></a></nav>

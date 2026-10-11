@@ -1,0 +1,26 @@
+export { createAeliqoRuntime } from './runtime.js';
+export type { CreateScopeInput, ScopeActivationContext, ScopeBinding, ScopeController } from '../scopes/types.js';
+export type {
+  AeliqoAuthority,
+  AeliqoRuntime,
+  AeliqoRuntimeOptions,
+  AppAuthorityContext,
+  AppAuthorityRequest,
+  RuntimeCommittedReceipt,
+  RuntimeEffect,
+  RuntimeMountInput,
+  RuntimePhase,
+  RuntimePresentationInput,
+  RuntimePresentationProjection,
+  RuntimePreparedRender,
+  RuntimeRenderPreparation,
+  RuntimeRenderOptions,
+  RuntimeRegionState,
+  RuntimeRenderInput,
+  RuntimeRenderReceipt,
+  RuntimeRenderStatus,
+  RuntimeResourceBinding,
+  RuntimeResourceContext,
+  RuntimeUncommittedReceipt,
+  RuntimeUnsubscribe,
+} from './types.js';

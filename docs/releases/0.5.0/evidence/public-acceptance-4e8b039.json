@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 2,
+  "kind": "public-production-browser-smoke",
+  "observedAt": "2026-09-24 11:38:01 UTC",
+  "sourceRevision": "4e8b0395b92eee699da4e25c3cd4991bc50b4a5e",
+  "siteImageDigest": "sha256:cbd23c3ead42122ece905fdcfbe350a3fb5cd9a891135ecee141b02145ffd526",
+  "platformGitOpsRevision": "2bb3d439ae469ebcd9c9f6bb337dc516139b932b",
+  "browser": "Chromium via Playwright",
+  "assertionScriptSha256": "f9751950a333da615c3a981d1cdebec869c862fc68f988f796c46943431d0baf",
+  "result": {
+    "status": "passed",
+    "expectedSha": "4e8b0395b92eee699da4e25c3cd4991bc50b4a5e",
+    "checks": [
+      {
+        "url": "https://aeliqo.com/version",
+        "status": 200
+      },
+      {
+        "url": "https://docs.aeliqo.com/version",
+        "status": 200
+      },
+      {
+        "url": "https://aeliqo.com/healthz",
+        "status": 200
+      },
+      {
+        "url": "https://aeliqo.com/readyz",
+        "status": 200
+      },
+      {
+        "url": "https://aeliqo.com/",
+        "status": 200
+      },
+      {
+        "url": "https://docs.aeliqo.com/components/data.table/",
+        "status": 200
+      },
+      {
+        "url": "https://docs.aeliqo.com/playground/",
+        "status": 200
+      }
+    ],
+    "evidence": {
+      "componentSidebarLinks": 71,
+      "search": {
+        "query": "table",
+        "resultHref": "/components/data.table/",
+        "shortcut": "Control+k"
+      },
+      "peopleJakarta": {
+        "committedFilter": "Committed filter · Location: Jakarta · Scope: synthetic People",
+        "adaRows": 1,
+        "samRows": 0
+      },
+      "attendance": {
+        "period": "September 2026 · Asia/Jakarta · complete local days through 5 September only",
+        "dailyValues": ["2026-09-01: 1", "2026-09-02: 0.5", "2026-09-03: 1"],
+        "clarification": "Needs a choice"
+      },
+      "workspace": {
+        "needs": "summary,trend,breakdown",
+        "unsupported": "unsupported:intent.unknown-custom",
+        "priorAdaRetained": true
+      },
+      "exportPackageDependencies": {
+        "@aeliqo/core": "0.5.0",
+        "@aeliqo/runtime": "0.5.0",
+        "@aeliqo/web": "0.5.0",
+        "zod": "4.5.4"
+      }
+    },
+    "noAiJourneys": ["people", "attendance", "workspace"],
+    "modelCalls": 0,
+    "export": {
+      "filename": "aeliqo-products-example.zip",
+      "bytes": 4513,
+      "pinnedVersion": "0.5.0"
+    }
+  },
+  "limits": [
+    "Synthetic fixtures and browser routes; this does not establish production workload or human usability evidence."
+  ],
+  "assertionScript": "scripts/release/public-live-smoke.mjs"
+}
