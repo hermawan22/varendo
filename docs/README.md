@@ -4,6 +4,9 @@ The public website at [Varendo documentation](https://hermawan22.github.io/varen
 
 [Project status](STATUS.md) records the goal, the published versions, and open items.
 
+[Publishing Varendo](releasing-varendo.md) covers maintainer ownership checks,
+first-package bootstrap, trusted publishing, and source-bound release verification.
+
 ## Start integrating
 
 - [Package guides](packages/README.md): canonical usage, root APIs, and subpaths for the five published packages.

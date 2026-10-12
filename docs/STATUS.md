@@ -1,6 +1,6 @@
 # Varendo status
 
-Last updated: 2026-10-11. This is the maintained status of the independent Varendo
+Last updated: 2026-10-12. This is the maintained status of the independent Varendo
 framework. The original Aeliqo status and release receipts remain unchanged in
 [the upstream archive](history/aeliqo-status-2026-10-09.md), `docs/adr/`,
 `docs/releases/` and the historical public release notes.
@@ -75,18 +75,53 @@ jobs report failures; no baseline, approval or timing threshold was invented.
 Planner latency remains diagnostic under ADR 014. Required functional quality
 and release-contract acceptance passed for the explicit receipt above.
 
-## Remaining work and untouched infrastructure
+## Release completion and legacy retirement
 
-- Verify authenticated npm `varendo` namespace ownership and configure trusted
-  publishing before seeking distinct package-publication approval. All five
-  public package lookups returned HTTP 404, while authenticated npm checks
-  returned HTTP 401. Neither result proves namespace ownership or availability.
-- Review and approve new paired performance/visual comparison evidence through
-  the existing process; do not silently adopt the migration snapshot as a baseline.
-- Review any future image publication, legacy docs redirect, GitOps retirement,
-  DNS change or commercial `aeliqo.com` cutover separately.
+The maintainer authorized publishing all five Varendo 0.1.0 packages after
+verified npm namespace ownership on 12 October 2026. The Aeliqo music application
+is paused and is outside this release. This approval does not establish ownership
+or substitute for successful release evidence.
 
-Original `@aeliqo/*` packages were not published over, deleted or deprecated.
+Current execution state:
+
+1. **GitHub presentation complete:** the profile README features Varendo, its
+   repository is the first profile pin, and repository About links to the live
+   HTTPS documentation. Other profile projects and personal links are preserved.
+2. **Ownership pending:** the local npm session returned HTTP 401. A fresh login
+   is required before checking authenticated namespace authority and account 2FA.
+   Public package 404 responses are not ownership evidence.
+3. **Release source pending:** current main `c249af35b6a8afd77c887e228208aaf479ea8b92`
+   passed the site lane only. The publication workflow correctly rejects that
+   source for npm publication. The release concurrency identity is being aligned
+   with Varendo, with its existing contract check updated; the resulting reviewed
+   source must pass a full main-push matrix and remain frozen through RC and stable.
+4. **Registry publication pending:** follow the [maintainer release guide](releasing-varendo.md).
+   New-package bootstrap, if used, must follow authenticated scope verification,
+   keep its staged version distinct from the canonical OIDC RC, and configure
+   only the approved repository/workflow as trusted publisher. No package or
+   placeholder has been created, and no publication or trust setting is assumed.
+5. **Legacy retirement pending:** the maintainer requests removal of the old
+   public framework repository and container package. Verified independent Git,
+   GitHub metadata and OCI backups plus removal of active dependencies must precede
+   deletion. The private archived site repository and new music repositories are
+   outside that public-framework deletion scope. Original attribution and history
+   in Varendo remain intact.
+
+All five legacy npm packages exceed npm's 300-download weekly unpublish limit
+and are older than 72 hours; they cannot be treated as eligible for routine
+unpublish. Published sibling dependencies also exist. After Varendo is published
+and verified, deprecation can direct consumers to the successor without breaking
+existing installations. Permanent removal would require npm support intervention;
+deprecation must not be described as deletion. See the
+[official npm policy](https://docs.npmjs.com/policies/unpublish/).
+
+Paired performance and historical visual-baseline approval remain advisory
+follow-ups, not substitutes for or blockers on the required functional matrix.
+
+## Historical migration infrastructure boundary
+
+At the initial migration, original `@aeliqo/*` packages were not published over,
+deleted or deprecated.
 The original site still reports revision
 `1c0e9a4f0db95a08fd964890cb38204cae86826d`, SDK 0.7.1, with healthy `/healthz` and
 `/readyz`. GitOps retains
@@ -94,5 +129,6 @@ The original site still reports revision
 and the `aeliqo.com`, `www.aeliqo.com`, and `docs.aeliqo.com` ingresses. Empty
 repository secrets/deployment lists do not exclude organization or environment
 credentials. No original repository, domain, deployment, registry or production
-service was changed. The new manual image tooling targets
+service was changed by that framework migration. Later music cutover and the
+newly authorized retirement are separate operations. The new manual image tooling targets
 `ghcr.io/hermawan22/varendo-web`.

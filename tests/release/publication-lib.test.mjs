@@ -420,7 +420,7 @@ test('all public packages carry the canonical full LICENSE and NOTICE', async ()
 test('package workflow serializes publication and binds quality plus approved RC evidence', async () => {
   const root = resolve(import.meta.dirname, '../..');
   const workflow = await readFile(resolve(root, '.github/workflows/release-publish.yml'), 'utf8');
-  assert.match(workflow, /group: aeliqo-npm-publication\n/);
+  assert.match(workflow, /group: varendo-npm-publication\n/);
   assert.match(workflow, /test "\$GH_REPO" = "hermawan22\/varendo"/);
   assert.match(workflow, /test "\$ACTOR" = "hermawan22"/);
   assert.match(workflow, /branches\/main/);
