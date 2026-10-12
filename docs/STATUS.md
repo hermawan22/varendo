@@ -12,7 +12,8 @@ framework repository, initialized from the tracked `Arconath/aeliqo` snapshot
 `3b5328dc717de0bb6aad57e8f17a4b9aa5f89f79` with one `Initialize` root
 commit carrying the maintainer author and DCO signoff. It is independent of the
 new Aeliqo music application. Apache-2.0 attribution, notices and historical
-release/decision records are preserved; original Git history remains upstream.
+release/decision records are preserved; original Git history is retained in the
+maintainer’s independent Git backup.
 
 All five public packages are published at **0.1.0**: `@varendo/core`, `@varendo/runtime`,
 `@varendo/web`, `@varendo/react`, and `@varendo/agent`. There is no previous
@@ -24,13 +25,16 @@ keys and protocols retain compatible behavior. See the
 
 **All five npm packages are published and verified; the Varendo container image
 remains unpublished.** Public documentation is live at
-<https://hermawan22.github.io/varendo/>. The
-[current recorded Pages deployment](https://github.com/hermawan22/varendo/actions/runs/38205265973)
-published clean source `53406eeab85103fd0b1159e765ee3996e2b4ab70`, version 0.1.0.
-The post-publication documentation and ZIP-export wiring are not yet deployed;
-the live version endpoint identifies subsequent deployments independently.
-Pages requires successful quality evidence for current `main`. Container
-publication remains a separate owner-run manual workflow with unchanged gates.
+<https://hermawan22.github.io/varendo/>. The first stable-documentation rollout
+[Pages checkpoint](https://github.com/hermawan22/varendo/actions/runs/38219004316)
+published clean source `1c48d45b3680a3b9aa23095bec936a4954042e1f`, version 0.1.0,
+after its [main-push quality run](https://github.com/hermawan22/varendo/actions/runs/38216529324)
+merged all 93 acceptance commands from four successful shards. Pages verified
+all four exported projects by installing and building against public npm 0.1.0.
+The first source-selection attempt saw an empty successful-run index immediately
+after CI completion; a retry passed the unchanged source gate. The live version
+endpoint identifies later deployments independently. Container publication
+remains a separate owner-run manual workflow with unchanged gates.
 
 ## Verified Varendo 0.1.0 publication
 
@@ -107,31 +111,73 @@ and release-contract acceptance passed for the explicit receipt above.
 
 ## Release completion and legacy retirement
 
-The maintainer authorized publishing all five Varendo 0.1.0 packages after
-verified npm namespace ownership on 12 October 2026. The Aeliqo music application
-is paused and is outside this release. This approval does not establish ownership
-or substitute for successful release evidence.
+The maintainer authorized all five Varendo 0.1.0 npm packages after verified
+namespace authority on 12 October 2026. They are published from immutable source
+`53406eeab85103fd0b1159e765ee3996e2b4ab70`; stable run 38210717157 verified
+166 installed exports and source-bound provenance. The independent Aeliqo music
+application remains paused. Its original **US$1 total** AI-test cap and unresolved
+usage accounting remain in force; no further model call, reset or top-up is
+implied by framework delivery or retirement.
 
 Current execution state:
 
 1. **GitHub presentation complete:** the profile README features Varendo, its
-   repository is the first profile pin, and repository About links to the live
-   HTTPS documentation. Other profile projects and personal links are preserved.
+   repository is the first profile pin, and About links to HTTPS documentation.
+   Other profile projects and personal links are preserved.
 2. **Ownership and npm publication complete:** verified authority and account
-   2FA preceded bootstrap, trusted publisher setup, canonical RC and stable
-   publication. The initial HTTP 401 was resolved; it is not a current blocker.
-   All five stable packages passed registry consumers and provenance checks.
-3. **Pages follow-up pending:** the recorded deployment above serves source
-   `53406ee...`. This post-publication documentation change and the existing ZIP
-   export feature still require reviewed integration, required quality checks,
-   Pages deployment and live verification. No post-change deployment is claimed.
-4. **Legacy retirement pending:** [GitOps retirement PR 496](https://github.com/Arconath/platform-apps/pull/496)
-   is a draft with green checks and remains unmerged. Original repository,
-   container and npm backups have been verified as described below. Removal of
-   active references and reconciliation of rollback requirements precede any
-   deletion. No legacy deletion, npm deprecation or support request is claimed.
-   The private archived site repository and new music repositories are outside
-   the public-framework deletion scope; original attribution remains in Varendo.
+   2FA preceded bootstrap, exact trusted-publisher setup, canonical RC and
+   stable publication. All five stable packages passed registry consumers,
+   provenance and independent integrity/latest-tag checks. Preserve the complete
+   original npm acceptance record above; later documentation commits do not
+   change the published source.
+3. **Stable Pages deployed:** the fixed rollout checkpoint above serves clean
+   source `1c48d45...`, with all four registry-backed ZIP projects verified during
+   the build. Live browser verification rendered all four scenarios, and all four
+   downloaded ZIPs independently matched the exact 0.1.0 package pins. The
+   playground passed 360/768/1440-pixel overflow checks and keyboard navigation;
+   guided-journey exports remained disabled as intended. Documentation navigation
+   and the stable quickstart worked on the public base-prefixed routes. No model
+   was called.
+4. **Legacy runtime and container retirement complete:**
+   [GitOps PR496](https://github.com/Arconath/platform-apps/pull/496) merged as
+   `92ca531452e5fa724e3a4ebfb97d05e90c185bcc`. At 07:17 UTC on 12 October,
+   **28/28 native checks passed**: both Flux units observed the merged source,
+   legacy framework workload/service/config/image-automation resources were
+   absent, no legacy-image pod remained in the owned namespace, retained music
+   identity/image/generation and ready replicas were unchanged, and the existing
+   PVC remained unchanged and Bound. Desired ingress/redirect configuration
+   matched. **Five public docs redirects** returned 301 to working Varendo 200
+   targets, including preserved path/query cases. Music health/readiness/version
+   returned 200, apex returned 200, and www redirected to the retained music
+   domain. These checks made **zero model calls**.
+   The exact legacy GHCR package `ghcr.io/arconath/aeliqo-web`, ID **14891059**,
+   was deleted and absence verified at 07:19:32 UTC. All **90** deleted versions
+   matched the verified backup beforehand; that backup is retained. Music image
+   package identity/metadata were unchanged. This operation deleted neither the
+   old npm packages nor the public framework repository.
+5. **Managed public repository removed:** reviewed [workspace PR127](https://github.com/Arconath/workspace/pull/127) and
+   [infrastructure PR359](https://github.com/Arconath/platform-infrastructure/pull/359)
+   removed the exact four legacy management declarations.
+   Encrypted-state [PR361](https://github.com/Arconath/platform-infrastructure/pull/361)
+   retained all 176 unrelated instances unchanged after
+   forgetting those four addresses; the state lineage was preserved. A fresh
+   pre-deletion plan reported no changes or imports and no recreation of the
+   old repository. The exact public `Arconath/aeliqo`, repository ID
+   **1359193467**, was deleted at 08:02 UTC on 12 October. Independent
+   authenticated checks confirmed both its old path and numeric ID return 404.
+   The private archived `Arconath/aeliqo-site`, new music app and its separate
+   documentation repository, and Varendo retain their identities and visibility.
+   The post-deletion plan also reported no changes, imports or recreation.
+   Fresh native checks preserved the music deployment identity, generation,
+   exact image and two ready replicas, plus the existing Bound PVC and volume;
+   legacy workloads and image references remained absent. All five exact
+   path/query redirects and complete destination responses passed. One
+   destination initially timed out after 200 headers; bounded retries returned
+   complete 200 bodies without changing TLS or network protections. Music public
+   health/readiness/version responses passed. The shared mutation freeze was
+   released after these checks.
+   DNS, retained music data/backups, signed music-image rollback and existing
+   holds remain outside the public-framework deletion scope.
 
 Independent protected backups cover the original framework repository at
 `3b5328dc717de0bb6aad57e8f17a4b9aa5f89f79`: an independently cloned Git bundle
@@ -157,8 +203,11 @@ October counts were 764, 735, 677, 565 and 607 respectively for core, runtime,
 web, react and agent; published sibling dependencies also exist. The current
 `hermawan22` npm account has no write access to these packages, whose recorded
 maintainer is `arconath`. No legacy-package access change, deprecation or unpublish was
-performed. Permanent removal requires npm support consideration; the prepared
-support request awaits explicit owner approval and has not been sent.
+performed. Permanent removal requires npm support consideration. The owner-approved
+request was submitted through the official npm support form on 12 October 2026
+at 06:51:50 UTC. The form confirmed successful submission; no case number was
+displayed. A support decision remains pending, and no legacy npm deletion is
+claimed.
 Deprecation must not be described as deletion. See the
 [official npm policy](https://docs.npmjs.com/policies/unpublish/).
 
