@@ -3,23 +3,25 @@ id: 'support-matrix'
 path: '/ship/support-matrix/'
 section: 'Releases'
 title: 'Support matrix and release acceptance'
-description: 'Varendo 0.7 profiles, tested source revisions, and release qualification boundaries.'
+description: 'Varendo 0.1.0 profiles, tested source revisions, and release qualification boundaries.'
 ---
 
-<p class="lead">Varendo 0.7 targets the maintained profiles below. Recorded source checks cover framework consumers, browser behavior, and bounded workloads. Release qualification, package publication, and production deployment are verified separately.</p>
+<p class="lead">Varendo 0.1.0 targets the maintained profiles below. Recorded source checks cover framework consumers, browser behavior, and bounded workloads. Release qualification, package publication, and production deployment are verified separately.</p>
 <aeliqo-release-status></aeliqo-release-status>
 
 The [machine-readable source record](https://github.com/hermawan22/varendo/blob/main/docs/support-matrix.json)
-identifies the revisions and checks that were tested. It is prepared before
-publication, so its candidate identity and publication flags describe that
-source snapshot. They are not a live registry or deployment inventory.
+identifies the revisions and checks that were tested, with profile limits
+preserved independently from publication. All five 0.1.0 npm packages were
+verified from source `53406eeab85103fd0b1159e765ee3996e2b4ab70`; this does not
+qualify a later documentation commit or production container deployment.
 
-A successful full main-push quality run is required before publication. See the
-[0.1.0 release record](https://github.com/hermawan22/varendo/releases/tag/v0.1.0)
-for the exact source and acceptance receipts once publication is verified.
-The [0.6.3 record](https://github.com/hermawan22/varendo/releases/tag/v0.6.3)
-preserves an earlier published version's evidence.
-The publication banner above follows registry verification. The public
+The [full main-push quality run](https://github.com/hermawan22/varendo/actions/runs/38203288539)
+passed all 93 acceptance commands at the published source. The
+[canonical stable publication](https://github.com/hermawan22/varendo/actions/runs/38210717157)
+verified all five installed packages, 166 exports and source-bound provenance.
+Historical Aeliqo acceptance remains in the preserved release records and does
+not qualify changed Varendo source. The publication banner follows this verified
+release metadata. The public
 [`/version`](https://hermawan22.github.io/varendo/version) endpoint identifies the deployed site.
 
 ## Maintained profiles
@@ -53,7 +55,7 @@ The changed workload retired the earlier reference; the current reference is
 unapproved, so current paired-performance qualification is not claimed. Reducer,
 mounted-row, relative comparison, provenance, functional and visual policies
 remain in force. Final release receipts bind acceptance to the source that
-actually published the packages and image.
+actually published each artifact; the Varendo image remains unpublished.
 
 Follow [WebMCP setup](/agents/webmcp/) for the tested experimental flag path.
 Native, simulated and unavailable-browser results are separate evidence.

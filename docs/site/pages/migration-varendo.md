@@ -8,19 +8,19 @@ description: 'Move the adaptive UI framework from @aeliqo 0.7.1 to the separatel
 
 ## Migrate from 0.7 to 0.1
 
-Varendo 0.1.0 is the first release candidate of the independent Apache-2.0 framework repository, copied from Aeliqo framework source `3b5328dc717de0bb6aad57e8f17a4b9aa5f89f79`. Release metadata records no previous Varendo version (`previousVersion: null`); `upstreamVersion: 0.7.1` identifies the separate Aeliqo family. The version restarts for a new npm package family; it does not indicate a downgrade of the framework implementation. The original `@aeliqo/*` 0.7.1 packages, Git history and production service remain unchanged.
+Varendo 0.1.0 is the first stable release of the independent Apache-2.0 framework repository, copied from Aeliqo framework source `3b5328dc717de0bb6aad57e8f17a4b9aa5f89f79`. Release metadata records no previous Varendo version (`previousVersion: null`); `upstreamVersion: 0.7.1` identifies the separate Aeliqo family. The version restarts for a new npm package family; it does not indicate a downgrade of the framework implementation. The original `@aeliqo/*` 0.7.1 packages and Git history remain available; later infrastructure retirement is tracked separately.
 
-The five new package names are prepared in source. They are **not yet published**. npm returned 404 for `@varendo/core` during preflight, which is not proof of namespace ownership. The local npm authentication returned 401; a maintainer must prove control of the `varendo` scope and configure the new repository's trusted publishing identity before a separately approved release.
+All five new package names are published at **0.1.0** from source `53406eeab85103fd0b1159e765ee3996e2b4ab70`. Authenticated scope authority and trusted publishing were verified before release. The [canonical stable run](https://github.com/hermawan22/varendo/actions/runs/38210717157) passed installed registry consumers across 166 exports and source-bound provenance checks. See the [maintained release record](https://github.com/hermawan22/varendo/blob/main/docs/STATUS.md) for exact acceptance and deployment evidence.
 
-| Existing package | New package |
-| --- | --- |
-| `@aeliqo/core` | `@varendo/core` |
+| Existing package  | New package        |
+| ----------------- | ------------------ |
+| `@aeliqo/core`    | `@varendo/core`    |
 | `@aeliqo/runtime` | `@varendo/runtime` |
-| `@aeliqo/web` | `@varendo/web` |
-| `@aeliqo/react` | `@varendo/react` |
-| `@aeliqo/agent` | `@varendo/agent` |
+| `@aeliqo/web`     | `@varendo/web`     |
+| `@aeliqo/react`   | `@varendo/react`   |
+| `@aeliqo/agent`   | `@varendo/agent`   |
 
-After publication and registry consumer verification, replace the packages used by your application together:
+Replace the packages used by your application together:
 
 ```sh
 pnpm remove @aeliqo/core @aeliqo/runtime @aeliqo/web @aeliqo/react @aeliqo/agent
@@ -44,7 +44,7 @@ The existing runtime trust boundaries are unchanged. Resource `policy.expectedIs
 
 ## Documentation and release boundary
 
-The new source is [hermawan22/varendo](https://github.com/hermawan22/varendo). Static documentation is prepared for [GitHub Pages](https://hermawan22.github.io/varendo/), including the existing playground. The Pages build uses `/varendo/` for assets, route navigation, search and redirect pages. Existing route suffixes remain available, including legacy aliases. No automatic cross-domain redirect has been configured on the old service, and no legacy DNS, GitOps object or published image is changed by this snapshot.
+The new source is [hermawan22/varendo](https://github.com/hermawan22/varendo). Static documentation is live on [GitHub Pages](https://hermawan22.github.io/varendo/), including the existing playground. The live version endpoint identifies its deployed source independently from the npm release source. The Pages build uses `/varendo/` for assets, route navigation, search and redirect pages. Existing route suffixes remain available, including legacy aliases. The initial migration configured no automatic cross-domain redirect and changed no legacy DNS, GitOps object or published image. Subsequent retirement remains a separate operation.
 
 The original framework site is reported in the preserved status history as `ghcr.io/arconath/aeliqo-web`, managed by existing Arconath GitOps. The separate historical `Arconath/aeliqo-site` repository is archived. Empty repository-level secrets and deployments API responses cannot prove that environment or organization credentials are absent. The new image tooling targets `ghcr.io/hermawan22/varendo-web` and stays manually dispatched; Pages does not require image publication or npm publication. Telemetry remains disabled by default.
 
@@ -52,9 +52,11 @@ A clean `Initialize` root commit in the new repository must retain the original 
 
 ## Maintainer release and rollback
 
+For future releases, follow the [maintainer procedure](https://github.com/hermawan22/varendo/blob/main/docs/releasing-varendo.md), preserving these boundaries:
+
 1. Verify scope ownership using authenticated npm account and organization access; verify all five target package/version names have no conflicting publication or tombstone.
 2. Configure trusted publishing for `hermawan22/varendo`, review release workflow identity, and retain the exact-source full-matrix main-push gate. Run clean tarball consumers and the release candidate tooling on that clean commit.
-3. Obtain explicit npm release approval; publish an RC in dependency order, verify provenance and registry consumers, then approve stable 0.1.0 promotion. Never overwrite or delete `@aeliqo/*` versions.
+3. Obtain explicit npm release approval; publish an RC in dependency order, verify provenance and registry consumers, then approve stable 0.1.0 promotion. Never overwrite existing npm versions; keep legacy retirement separate from release promotion.
 4. Publish static Pages documentation only after the same-source quality workflow succeeds. Verify actual URLs and browser journeys after deployment. Pages is independent of the legacy production site.
 5. Coordinate any old documentation redirects, GHCR/GitOps retirement, DNS changes or `aeliqo.com` cutover separately with the owner. The music product has an independent repository and deployment lifecycle.
 

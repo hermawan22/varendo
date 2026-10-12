@@ -16,8 +16,10 @@ cannot supply HTML, executable code, permissions, or an unregistered view.
 
 ## Quick start
 
-This checkout prepares **0.1.0** under the new `@varendo` scope. These packages are not yet published; authenticated namespace ownership and a separately approved release are required before the registry install below works. Published versions and installation status are
-shown in the [package guide](https://hermawan22.github.io/varendo/reference/packages/).
+All five `@varendo` packages are published at **0.1.0**. The stable release passed
+installed registry consumers and source-bound provenance verification. See the
+[package guide](https://hermawan22.github.io/varendo/reference/packages/) for installation
+and the [release record](docs/STATUS.md) for acceptance evidence.
 For the React example below, use React 19.2 or a newer 19.x release and install matching
 Varendo package versions:
 
@@ -73,8 +75,8 @@ transport adapters, and other advanced APIs use explicit package subpaths.
 
 ## Packages
 
-| Package           | Responsibility                                                       |
-| ----------------- | -------------------------------------------------------------------- |
+| Package            | Responsibility                                                       |
+| ------------------ | -------------------------------------------------------------------- |
 | `@varendo/core`    | Wire contracts, resource definitions, and intent compilation         |
 | `@varendo/runtime` | Data, authority checks, Results, Regions, actions, and runtime state |
 | `@varendo/web`     | Shared web components, browser registration, and adaptive app facade |

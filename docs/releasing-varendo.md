@@ -1,9 +1,12 @@
 # Publishing Varendo 0.1.0
 
-This maintainer procedure is prepared, not executed. Authenticated npm checks
-have returned HTTP 401; ownership of `@varendo` remains unverified. Public package
-lookups returning 404 do not establish ownership or permission to publish.
-[Project status](STATUS.md) records the current release evidence and open work.
+All five `@varendo` packages were published at **0.1.0** on 12 October 2026
+from source `53406eeab85103fd0b1159e765ee3996e2b4ab70`, after authenticated
+scope authority, account 2FA and all five trusted publishers were verified.
+[The canonical stable run](https://github.com/hermawan22/varendo/actions/runs/38210717157)
+passed registry consumers and provenance verification. [Project status](STATUS.md)
+records the receipts and remaining work. The procedure below describes the
+maintainer gates; it does not grant account access or future publication approval.
 
 ## Verify authority before writing to npm
 
@@ -49,22 +52,28 @@ the same version index, so a pending staged version cannot be published directly
 Do not stage `0.1.0` or the version selected for the canonical RC.
 [npm stage behavior](https://docs.npmjs.com/cli/v11/commands/npm-stage/).
 
-Build the verified bootstrap tarballs from the frozen clean source:
+Build the verified bootstrap tarballs from the frozen clean source, using a new
+or empty ignored output directory so existing release evidence is preserved.
+Wait for other builds to finish: the builder recreates package outputs.
 
 ```sh
 pnpm build:platform
 pnpm build:agent
 pnpm test:release-tooling
-node scripts/release/candidate.mjs --version 0.1.0-rc.1
-npm stage publish artifacts/release-candidate/varendo-core-0.1.0-rc.1.tgz \
-  --access public --tag next --registry https://registry.npmjs.org
+node scripts/release/candidate.mjs artifacts/bootstrap-0.1.0-rc.1 --version 0.1.0-rc.1
+npm stage publish artifacts/bootstrap-0.1.0-rc.1/varendo-core-0.1.0-rc.1.tgz \
+  --access public --tag bootstrap --registry https://registry.npmjs.org
 ```
 
 Repeat the staging command for the verified `runtime`, `web`, `react`, and
-`agent` tarballs in that order, recording the resulting stage IDs. Verify the
-new package records and access before proceeding. Bootstrap staging is not an
-approved OIDC RC and does not satisfy the stable workflow's predecessor gate.
-Do not automatically approve or reject staged records as part of publication.
+`agent` tarballs in that order, recording the resulting stage IDs. Inspect all
+five actual package records, access and dist-tags before proceeding. Keep the
+bootstrap tag separate from canonical `next`: the existing RC advancement guard
+rejects `next` pointing to `0.0.0-stage`; do not weaken it or force a tag change.
+Bootstrap staging is not an approved OIDC RC and does not satisfy the stable
+workflow's predecessor gate. Do not automatically approve or reject staged
+records as part of publication. The first release used staged RC1 bootstrap,
+then canonical OIDC RC2 and stable from the same frozen source.
 
 ## Configure the exact trusted publisher
 

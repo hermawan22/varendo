@@ -14,7 +14,7 @@ commit carrying the maintainer author and DCO signoff. It is independent of the
 new Aeliqo music application. Apache-2.0 attribution, notices and historical
 release/decision records are preserved; original Git history remains upstream.
 
-All five public packages target **0.1.0**: `@varendo/core`, `@varendo/runtime`,
+All five public packages are published at **0.1.0**: `@varendo/core`, `@varendo/runtime`,
 `@varendo/web`, `@varendo/react`, and `@varendo/agent`. There is no previous
 Varendo release; metadata separately records upstream Aeliqo 0.7.1. Imports,
 repository metadata and current documentation use the new scope. Public API
@@ -22,14 +22,44 @@ identifiers, `aeliqo-*` elements/events/tokens, serialized contracts, persistenc
 keys and protocols retain compatible behavior. See the
 [migration guide](site/pages/migration-varendo.md).
 
-**Packages and images remain unpublished.** The public documentation is live at
+**All five npm packages are published and verified; the Varendo container image
+remains unpublished.** Public documentation is live at
 <https://hermawan22.github.io/varendo/>. The
-[first Pages deployment](https://github.com/hermawan22/varendo/actions/runs/38124097408)
-published source `540786dde4460de55e9ec3b7d543156ece518d60`. Pages requires successful
-quality evidence for the current `main` source; npm and container publication
-remain separate owner-run manual workflows with unchanged gates.
+[current recorded Pages deployment](https://github.com/hermawan22/varendo/actions/runs/38205265973)
+published clean source `53406eeab85103fd0b1159e765ee3996e2b4ab70`, version 0.1.0.
+The post-publication documentation and ZIP-export wiring are not yet deployed;
+the live version endpoint identifies subsequent deployments independently.
+Pages requires successful quality evidence for current `main`. Container
+publication remains a separate owner-run manual workflow with unchanged gates.
 
-## Source-bound verification receipts
+## Verified Varendo 0.1.0 publication
+
+The frozen published source is
+`53406eeab85103fd0b1159e765ee3996e2b4ab70`. With pinned Node.js **24.20.0**
+and pnpm **11.24.0**, a complete local `pnpm check` passed all **93 acceptance
+commands**. The [same-SHA full main-push quality run](https://github.com/hermawan22/varendo/actions/runs/38203288539)
+passed its four shards, merged functional evidence and release contract.
+The [canonical RC 0.1.0-rc.2](https://github.com/hermawan22/varendo/actions/runs/38209749684)
+and [stable 0.1.0 publication](https://github.com/hermawan22/varendo/actions/runs/38210717157)
+then completed successfully from that same unchanged source through trusted
+publishing, with no long-lived npm token fallback in GitHub Actions.
+
+Authenticated scope authority, account 2FA and all five exact trusted publisher
+records were verified before publication. New-package bootstrap used distinct
+staged `0.1.0-rc.1` tarballs with the `bootstrap` tag to establish package records;
+it was not used as canonical RC approval. Pending bootstrap stages were not
+automatically approved or rejected.
+
+The stable installed registry consumer checked **166 exports** and reported
+`provenanceVerified: true` against the frozen source. Independent registry checks
+confirmed **all five `latest` tags equal 0.1.0**, with matching tarball integrity;
+the downloaded tarballs were independently rehashed. Publication and consumer
+receipts are retained with the canonical workflow artifacts. These receipts
+qualify the published source, not the later documentation commit or an image.
+See the [maintainer procedure](releasing-varendo.md) for the preserved release
+gates and [support matrix](support-matrix.json) for bounded profile claims.
+
+## Earlier source-bound verification receipts
 
 Pinned Node.js **24.20.0** and pnpm **11.24.0** were used. At source
 `540786dde4460de55e9ec3b7d543156ece518d60`, the canonical clean release candidate
@@ -87,32 +117,49 @@ Current execution state:
 1. **GitHub presentation complete:** the profile README features Varendo, its
    repository is the first profile pin, and repository About links to the live
    HTTPS documentation. Other profile projects and personal links are preserved.
-2. **Ownership pending:** the local npm session returned HTTP 401. A fresh login
-   is required before checking authenticated namespace authority and account 2FA.
-   Public package 404 responses are not ownership evidence.
-3. **Release source pending:** current main `c249af35b6a8afd77c887e228208aaf479ea8b92`
-   passed the site lane only. The publication workflow correctly rejects that
-   source for npm publication. The release concurrency identity is being aligned
-   with Varendo, with its existing contract check updated; the resulting reviewed
-   source must pass a full main-push matrix and remain frozen through RC and stable.
-4. **Registry publication pending:** follow the [maintainer release guide](releasing-varendo.md).
-   New-package bootstrap, if used, must follow authenticated scope verification,
-   keep its staged version distinct from the canonical OIDC RC, and configure
-   only the approved repository/workflow as trusted publisher. No package or
-   placeholder has been created, and no publication or trust setting is assumed.
-5. **Legacy retirement pending:** the maintainer requests removal of the old
-   public framework repository and container package. Verified independent Git,
-   GitHub metadata and OCI backups plus removal of active dependencies must precede
-   deletion. The private archived site repository and new music repositories are
-   outside that public-framework deletion scope. Original attribution and history
-   in Varendo remain intact.
+2. **Ownership and npm publication complete:** verified authority and account
+   2FA preceded bootstrap, trusted publisher setup, canonical RC and stable
+   publication. The initial HTTP 401 was resolved; it is not a current blocker.
+   All five stable packages passed registry consumers and provenance checks.
+3. **Pages follow-up pending:** the recorded deployment above serves source
+   `53406ee...`. This post-publication documentation change and the existing ZIP
+   export feature still require reviewed integration, required quality checks,
+   Pages deployment and live verification. No post-change deployment is claimed.
+4. **Legacy retirement pending:** [GitOps retirement PR 496](https://github.com/Arconath/platform-apps/pull/496)
+   is a draft with green checks and remains unmerged. Original repository,
+   container and npm backups have been verified as described below. Removal of
+   active references and reconciliation of rollback requirements precede any
+   deletion. No legacy deletion, npm deprecation or support request is claimed.
+   The private archived site repository and new music repositories are outside
+   the public-framework deletion scope; original attribution remains in Varendo.
 
-All five legacy npm packages exceed npm's 300-download weekly unpublish limit
-and are older than 72 hours; they cannot be treated as eligible for routine
-unpublish. Published sibling dependencies also exist. After Varendo is published
-and verified, deprecation can direct consumers to the successor without breaking
-existing installations. Permanent removal would require npm support intervention;
-deprecation must not be described as deletion. See the
+Independent protected backups cover the original framework repository at
+`3b5328dc717de0bb6aad57e8f17a4b9aa5f89f79`: an independently cloned Git bundle
+passed fsck across 79 refs, with bounded GitHub metadata for 66 issue/PR entries,
+8 releases without assets, 11 tags and 2 branches. Secrets, Actions, Projects,
+webhooks and attachments are outside that backup. Container backups preserve
+90 known GHCR versions, 90 manifests and 222 blobs with verified hashes and
+descriptors. A local restore of the original AMD64 config/layer bytes passed
+seven HTTP routes as UID 101 with read-only filesystem and no-new-privileges,
+without external calls; the ephemeral container was removed. This is not a full
+interactive application or GitHub-service restoration.
+
+Legacy npm backups preserve all five packages' 140 tarballs with SHA-512/SHA-1
+verification and stable before/after version sets. Independent rehashing covered
+all 160 manifest-listed files and the 140 tarball integrity values. This supports
+distribution and public-metadata recovery; npm same-version restoration is not
+guaranteed. Backup manifests and restore receipts remain in protected maintainer
+storage, rather than being represented as public download links.
+
+All five legacy npm packages are older than 72 hours and exceed npm's routine
+unpublish ceiling of 300 downloads in the preceding week. The checked 5–11
+October counts were 764, 735, 677, 565 and 607 respectively for core, runtime,
+web, react and agent; published sibling dependencies also exist. The current
+`hermawan22` npm account has no write access to these packages, whose recorded
+maintainer is `arconath`. No legacy-package access change, deprecation or unpublish was
+performed. Permanent removal requires npm support consideration; the prepared
+support request awaits explicit owner approval and has not been sent.
+Deprecation must not be described as deletion. See the
 [official npm policy](https://docs.npmjs.com/policies/unpublish/).
 
 Paired performance and historical visual-baseline approval remain advisory

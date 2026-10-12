@@ -43,14 +43,37 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version-file: .node-version
-      - run: |
+      - name: Install locked dependencies
+        run: |
           corepack enable
           corepack prepare pnpm@11.24.0 --activate
           pnpm install --frozen-lockfile
-          pnpm site:build:pages
+      - name: Verify published packages and exported projects
+        env:
+          SOURCE_SHA: ${{ steps.source.outputs.sha }}
+        run: |
+          set -Eeuo pipefail
+          release_version="$(jq -er '.version | select(type == "string" and test("^[0-9]+\\.[0-9]+\\.[0-9]+$"))' release-metadata.json)"
+          release_status="$(jq -er '.status | select(. == "candidate" or . == "stable")' release-metadata.json)"
+          if [ "$release_status" = candidate ]; then exit 0; fi
+          mkdir -p artifacts/pages-release-policy
+          node --experimental-strip-types scripts/release/verify-export-registry.mjs \
+            --version "$release_version" --source "$SOURCE_SHA" \
+            --output artifacts/pages-release-policy/export-consumer.json
+          printf 'AELIQO_EXPORT_VERIFIED_VERSION=%s\n' "$release_version" >> "$GITHUB_ENV"
+      - name: Build Pages
+        run: pnpm site:build:pages
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
         with:
           path: apps/site/dist
+      - name: Preserve export verification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: varendo-pages-export-${{ steps.source.outputs.sha }}
+          path: artifacts/pages-release-policy/export-consumer.json
+          if-no-files-found: ignore
+          retention-days: 30
 
   deploy:
     needs: build
