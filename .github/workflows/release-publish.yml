@@ -30,7 +30,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: aeliqo-npm-publication
+  group: varendo-npm-publication
   cancel-in-progress: false
 
 jobs:
