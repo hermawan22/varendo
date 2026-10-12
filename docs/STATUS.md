@@ -103,11 +103,37 @@ page errors or overflow. These modified-tree diagnostics are separate from the
 clean-source receipts above. Current evidence is ignored under `artifacts/` and
 local logs; generated output is excluded from the source snapshot.
 
-Advisory paired performance comparison lacks an approved budget, and the
-historical visual comparison baseline has a legacy fixture hash. Those advisory
-jobs report failures; no baseline, approval or timing threshold was invented.
-Planner latency remains diagnostic under ADR 014. Required functional quality
-and release-contract acceptance passed for the explicit receipt above.
+At those earlier checkpoints, advisory paired performance correctly rejected an
+unapproved budget and visual comparison rejected the inherited fixture hash.
+The fresh Varendo reference renewal below supersedes that metadata; it does not
+relabel the historical failures. Planner latency remains diagnostic under ADR 014. Required functional quality and release-contract acceptance passed for the
+explicit receipts above.
+
+## Advisory reference renewal
+
+The maintainer requested completion of visual and paired-performance acceptance
+on 12 October 2026. Both reference records now bind reachable Varendo source
+`e50eda3f3b34a2957e5cd1f9f9228c32d3e4c84a`, rather than commits present only in
+the preserved upstream Git archive. The owner-dispatched
+[reference probe](https://github.com/hermawan22/varendo/actions/runs/38230522021)
+passed all 93 functional commands and the release contract, all three complete
+visual probes and their aggregate, and the three-pair performance probe.
+
+The [visual review](testing/0.1.0-visual-reference.md) records 1,830 tests and
+2,862 unique PNGs with identical repeated captures, actual image inspection,
+archive digests and the unchanged runner. The
+[performance review](testing/0.1.0-performance-reference.md) records independent
+source-manifest and raw-sample verification, three alternating pairs, the
+unchanged 20% **and** 2 ms comparison policy, 4 ms reducer p95 and 100-row limit.
+Probe artifacts retain their unapproved diagnostic results; acceptance is
+recorded separately in the reviewed metadata. No workload, hash exclusion,
+comparison threshold or workflow gate was weakened.
+
+Ordinary strict comparisons use that fixed source for subsequent candidates;
+their per-revision results remain available in
+[main quality runs](https://github.com/hermawan22/varendo/actions/workflows/quality.yml?query=branch%3Amain).
+These reference receipts are separate from the immutable npm publication above
+and do not authorize an Aeliqo music-app change or a new package publication.
 
 ## Release completion and legacy retirement
 
@@ -211,8 +237,9 @@ claimed.
 Deprecation must not be described as deletion. See the
 [official npm policy](https://docs.npmjs.com/policies/unpublish/).
 
-Paired performance and historical visual-baseline approval remain advisory
-follow-ups, not substitutes for or blockers on the required functional matrix.
+The fresh advisory reference records above supersede the inherited approval
+follow-ups. Visual and paired-performance results remain separate evidence from
+the required functional matrix.
 
 ## Historical migration infrastructure boundary
 

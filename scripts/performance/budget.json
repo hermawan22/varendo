@@ -1,7 +1,7 @@
 {
-  "status": "unapproved",
-  "baselineSHA": "d90a2c8c11c695439d951b661f4071411e30b9b6",
-  "workloadSHA": "c9f7283566889e784043cc07703215c6ca882dfdd45da284dc9849e6326314fb",
+  "status": "approved",
+  "baselineSHA": "e50eda3f3b34a2957e5cd1f9f9228c32d3e4c84a",
+  "workloadSHA": "33a7411e722a3cd85e6bd312d1fdf29690c51b031acd1285a632acaefd63f558",
   "runner": {
     "container": "sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7",
     "hostImage": null,
@@ -44,7 +44,7 @@
       }
     }
   },
-  "review": "docs/testing/0.6.3-performance-reference.md",
+  "review": "docs/testing/0.1.0-performance-reference.md",
   "pairs": 3,
   "relative": {
     "fraction": 0.2,
