@@ -16,9 +16,9 @@ render returns `renderer-ready` after the browser commits it.
 
 Use Node.js **24.20.0**, pnpm **11.24.0**, and Git. These commands copy only the
 example out of the source checkout; its dependencies use exact registry
-versions rather than workspace links. This checkout targets the 0.1.0
-candidate. Check the [package publication status](/reference/packages/) before
-installing that version:
+versions rather than workspace links. All five 0.1.0 packages are published
+and passed registry consumer and provenance verification. See the
+[package guide](/reference/packages/) for the exact-version installation contract:
 
 ```bash
 git clone --depth 1 --filter=blob:none --sparse https://github.com/hermawan22/varendo.git aeliqo-source

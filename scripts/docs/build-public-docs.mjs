@@ -318,6 +318,8 @@ async function sourceInputs() {
     'scripts/docs/component-documents.mjs',
     'scripts/docs/component-api.mjs',
     'scripts/docs/public-docs-contract.mjs',
+    'release-metadata.json',
+    'scripts/release/metadata.mjs',
     'scripts/release/source-state.mjs',
     'apps/site/src/playground/project-template.ts',
   ];
@@ -378,6 +380,13 @@ async function sourceIdentity() {
   return { source: { repository: 'https://github.com/hermawan22/varendo', revision }, sourceTree };
 }
 
+async function artifactReleaseStatus(docsVersion) {
+  const metadata = JSON.parse(await readFile(resolve(root, 'release-metadata.json'), 'utf8'));
+  if (metadata.status !== 'candidate' && metadata.status !== 'stable')
+    throw new Error('Public documentation release status must be candidate or stable.');
+  return docsVersion === RELEASE_VERSION ? metadata.status : 'candidate';
+}
+
 async function main() {
   if (
     (outputIndex !== -1 && !arguments_[outputIndex + 1]) ||
@@ -394,6 +403,7 @@ async function main() {
   const docsVersion = versionIndex === -1 ? RELEASE_VERSION : arguments_[versionIndex + 1];
   if (!isReleaseVersion(docsVersion))
     throw new Error(`The public docs artifact must use the ${RELEASE_VERSION} release lineage.`);
+  const releaseStatus = await artifactReleaseStatus(docsVersion);
   const versions = await packageVersions(docsVersion);
   const { source, sourceTree } = await sourceIdentity();
   const artifact = assertPublicDocsArtifact({
@@ -401,7 +411,7 @@ async function main() {
     docsVersion,
     source,
     packageVersions: versions,
-    pages: (await buildPublicPages()).map((page) => ({ ...page, path: docsArtifactPath(page.path) })),
+    pages: (await buildPublicPages({ releaseStatus })).map((page) => ({ ...page, path: docsArtifactPath(page.path) })),
   });
   const artifactName = `aeliqo-public-docs-${docsVersion}.json`;
   const artifactBytes = Buffer.from(`${JSON.stringify(artifact, null, 2)}\n`);

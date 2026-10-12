@@ -2,7 +2,7 @@
   "version": "0.1.0",
   "line": "0.1",
   "previousVersion": null,
-  "status": "candidate",
+  "status": "stable",
   "publicPackages": [
     "core",
     "runtime",

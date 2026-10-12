@@ -286,7 +286,9 @@ test('stable export follows the four base scenarios and never substitutes them f
   }
   for (const scenario of ['people', 'products', 'support', 'knowledge']) {
     await page.locator('#pg-scenario').selectOption(scenario);
-    await page.locator('#pg-menu > summary').click();
+    if ((await page.locator('#pg-menu').getAttribute('open')) === null)
+      await page.locator('#pg-menu > summary').click();
+    await expect(exportButton).toBeVisible();
     const download = page.waitForEvent('download');
     await exportButton.click();
     expect((await download).suggestedFilename()).toBe(`aeliqo-${scenario}-example.zip`);

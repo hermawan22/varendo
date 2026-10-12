@@ -4,7 +4,7 @@
   "product": "varendo",
   "candidate": {
     "version": "0.1.0",
-    "status": "candidate",
+    "status": "stable",
     "baseVersion": null,
     "compatibility": "breaking",
     "upstreamVersion": "0.7.1"
@@ -260,16 +260,16 @@
     "everyProvider": false,
     "liveModelQuality": false,
     "nativeWebMcp": true,
-    "stablePublished": false,
+    "stablePublished": true,
     "deployed": false
   },
   "acceptance": {
-    "status": "source-checks-recorded",
-    "sourceRevision": null,
-    "scope": "This file records observed revisions; it does not certify its own enclosing commit. Publication requires a full same-SHA main-push quality run. Publication and deployment receipts are external to the source snapshot.",
+    "status": "stable-publication-verified",
+    "sourceRevision": "53406eeab85103fd0b1159e765ee3996e2b4ab70",
+    "scope": "All five 0.1.0 packages were published from this immutable source after its successful 93-command local check and same-SHA full main-push quality run 38203288539. Canonical stable run 38210717157 verified registry consumers and provenance. This record does not certify its enclosing later documentation commit or a container deployment.",
     "record": "docs/STATUS.md",
-    "releaseReceipts": "https://github.com/hermawan22/varendo/releases/tag/v0.1.0",
+    "releaseReceipts": "https://github.com/hermawan22/varendo/actions/runs/38210717157",
     "historicalMatrix": "docs/releases/0.5.2/support-matrix.json"
   },
-  "snapshotScope": "Prepublication source qualification. Candidate metadata and publication/deployment flags describe this source snapshot; use the versioned release receipts and public /version endpoint for live publication and deployment identity."
+  "snapshotScope": "Recorded profile qualifications plus verified Varendo 0.1.0 npm publication from source 53406eeab85103fd0b1159e765ee3996e2b4ab70. Profile limits remain unchanged. Pages and container deployment are separate; use docs/STATUS.md and the public /version endpoint for site identity."
 }

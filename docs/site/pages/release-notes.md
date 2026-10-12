@@ -3,7 +3,7 @@ id: 'release-notes'
 path: '/ship/release-notes/'
 section: 'Releases'
 title: 'Release notes'
-description: 'The Varendo 0.1.0 candidate and preserved source-bound records for earlier Aeliqo framework releases.'
+description: 'The Varendo 0.1.0 stable release and preserved source-bound records for earlier Aeliqo framework releases.'
 ---
 
 <p class="lead">Read the changes and acceptance evidence for each version. Publication is verified separately from source changes.</p>
@@ -11,7 +11,9 @@ description: 'The Varendo 0.1.0 candidate and preserved source-bound records for
 
 ## Varendo 0.1.0
 
-First independent framework candidate under `hermawan22/varendo` and `@varendo/*`, based on Aeliqo 0.7.1 implementation and subsequent source fixes. The package scope changes; exported identifiers, element tags and serialized protocols stay compatible. Follow the [Aeliqo to Varendo migration guide](/ship/migration-varendo/). Packages are not published; npm ownership and exact-source release acceptance remain required.
+Published 12 October 2026: the first independent stable framework release under `hermawan22/varendo` and `@varendo/*`, based on Aeliqo 0.7.1 implementation and subsequent source fixes. The package scope changes; exported identifiers, element tags and serialized protocols stay compatible. Follow the [Aeliqo to Varendo migration guide](/ship/migration-varendo/).
+
+All five 0.1.0 packages were published from `53406eeab85103fd0b1159e765ee3996e2b4ab70`. Its [full main-push quality run](https://github.com/hermawan22/varendo/actions/runs/38203288539) passed all 93 acceptance commands. The [canonical RC](https://github.com/hermawan22/varendo/actions/runs/38209749684) and [stable publication](https://github.com/hermawan22/varendo/actions/runs/38210717157) passed installed registry consumers and provenance verification at that same source. The stable consumer verified 166 exports; registry `latest` tags and tarball integrity were checked for all five packages. [Project status](https://github.com/hermawan22/varendo/blob/main/docs/STATUS.md) separates npm evidence from Pages deployment, the unpublished container image and advisory qualifications.
 
 The Aeliqo release records below are preserved as historical evidence. Their package names, versions, source revisions and deployment claims describe the original project, not Varendo publication.
 

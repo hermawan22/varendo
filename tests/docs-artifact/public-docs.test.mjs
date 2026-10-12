@@ -121,6 +121,30 @@ test('an external consumer can accept the verified public artifact without priva
   assert.equal(JSON.stringify(manifest).includes('packages/web/src'), true);
 });
 
+test('the current docs artifact follows canonical release status and binds its metadata inputs', async () => {
+  const { artifact, manifest } = await readVerifiedPublicDocs(manifestPath);
+  const metadata = JSON.parse(await readFile(resolve(root, 'release-metadata.json'), 'utf8'));
+  assert.ok(['candidate', 'stable'].includes(metadata.status));
+  const notes = artifact.pages.flatMap((page) =>
+    [...page.body.matchAll(/<p class="release-status-note">([^<]+)<\/p>/gu)].map((match) => match[1]),
+  );
+  assert.ok(notes.length > 0, 'Missing current release status banners');
+  for (const note of notes) {
+    if (metadata.status === 'stable') {
+      assert.ok(note.startsWith(`Varendo ${RELEASE_VERSION} is the published stable release.`));
+      assert.doesNotMatch(note, /source candidate|only after registry publication/u);
+    } else {
+      assert.ok(note.startsWith(`Varendo ${RELEASE_VERSION} is a source candidate.`));
+      assert.doesNotMatch(note, /published stable release/u);
+    }
+  }
+  const inputsByPath = new Map(manifest.inputs.map((input) => [input.path, input]));
+  for (const path of ['release-metadata.json', 'scripts/release/metadata.mjs']) {
+    const bytes = await readFile(resolve(root, path));
+    assert.deepEqual(inputsByPath.get(path), { path, sha256: sha256(bytes), bytes: bytes.byteLength });
+  }
+});
+
 test('verification rejects changed bytes, path traversal, and forged package identity', async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'aeliqo-public-docs-test-'));
   await cp(resolve(root, `artifacts/public-docs/${RELEASE_VERSION}`), scratch, { recursive: true });
@@ -170,6 +194,14 @@ test('producer can bind the docs artifact to one exact release-candidate package
   assert.equal(artifact.source.revision, revision);
   assert.ok(Object.values(artifact.packageVersions).every((version) => version === rcVersion));
   assert.deepEqual(artifact.packageVersions, manifest.packageVersions);
+  const notes = artifact.pages.flatMap((page) =>
+    [...page.body.matchAll(/<p class="release-status-note">([^<]+)<\/p>/gu)].map((match) => match[1]),
+  );
+  assert.ok(notes.length > 0, 'Missing release-candidate status banners');
+  for (const note of notes) {
+    assert.ok(note.startsWith(`Varendo ${RELEASE_VERSION} is a source candidate.`));
+    assert.doesNotMatch(note, /published stable release/u);
+  }
 });
 
 test('producer rejects a shaped source revision that is not a repository commit', async () => {

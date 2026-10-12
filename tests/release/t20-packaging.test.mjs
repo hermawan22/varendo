@@ -356,13 +356,14 @@ async function readQualificationInputs() {
   assert.equal(metadata.previousVersion, null);
   assert.equal(matrix.candidate.upstreamVersion, metadata.upstreamVersion);
   assert.notEqual(metadata.previousVersion, metadata.version);
-  assert.equal(metadata.status, 'candidate');
+  assert.ok(['candidate', 'stable'].includes(metadata.status), 'Release status must be candidate or stable');
+  assert.equal(matrix.candidate.status, metadata.status);
+  assert.equal(matrix.claims.stablePublished, metadata.status === 'stable');
   assert.equal(matrix.candidate.version, metadata.version);
   assert.equal(matrix.candidate.baseVersion, metadata.previousVersion);
-  assert.equal(matrix.candidate.status, metadata.status);
   assert.equal(matrix.candidate.compatibility, previousLine === metadata.line ? 'compatible' : 'breaking');
   assert.equal(metadata.line, metadata.version.split('.').slice(0, 2).join('.'));
-  for (const claim of ['unlimitedScale', 'everyFramework', 'everyProvider', 'stablePublished'])
+  for (const claim of ['unlimitedScale', 'everyFramework', 'everyProvider', 'liveModelQuality'])
     assert.equal(matrix.claims[claim], false);
   assert.ok(migration.includes(`Migrate from ${migrationLine} to ${metadata.line}`));
   assert.ok(migration.includes(metadata.version));
@@ -384,6 +385,10 @@ async function readQualificationInputs() {
   await assertHistoricalMigration(releaseNotes, packagePage);
   return { metadata, matrix };
 }
+
+test('release qualification matches canonical documentation inputs', async () => {
+  await readQualificationInputs();
+});
 
 test('T20 packages, migrates, and qualifies support from packed artifacts', async () => {
   const { metadata, matrix } = await readQualificationInputs();
