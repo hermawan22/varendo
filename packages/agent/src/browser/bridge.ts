@@ -57,7 +57,7 @@ function sameActivation(left: ScopeSnapshot, right: ScopeSnapshot): boolean {
 }
 
 function freshId(prefix: string): string {
-  return `aeliqo-${prefix}-${Date.now().toString(36)}-${nextPairingId++}`;
+  return `varendo-${prefix}-${Date.now().toString(36)}-${nextPairingId++}`;
 }
 
 interface PairingState {
@@ -332,7 +332,7 @@ function createAgentConnection(
     targetId: string,
     intent: SurfaceRequest<unknown>,
     options: { readonly requestId?: string; readonly signal?: AbortSignal } = {},
-  ) => invoke('aeliqo_surface_render', { targetId, intent }, options);
+  ) => invoke('varendo_surface_render', { targetId, intent }, options);
   const runExperience = (
     prompt: string,
     options: {

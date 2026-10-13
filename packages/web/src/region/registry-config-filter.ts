@@ -1,13 +1,13 @@
 import type { Outcome, Result, Task } from '@varendo/core';
 import type { PresentationValues, ResolvedPresentationConfig } from '@varendo/core/presentation';
-import { AELIQO_OPERATION_REFS } from './registry-contracts.js';
-import type { AeliqoPresentationRegistryOptions } from './registry-contracts.js';
+import { VARENDO_OPERATION_REFS } from './registry-contracts.js';
+import type { VarendoPresentationRegistryOptions } from './registry-contracts.js';
 import { fail, fieldMap, record, text, trustedEntity } from './registry-config-common.js';
 
 export function filterConfig(
   values: PresentationValues,
   result: Result | undefined,
-  resolveEntity: AeliqoPresentationRegistryOptions['resolveEntity'],
+  resolveEntity: VarendoPresentationRegistryOptions['resolveEntity'],
 ): Outcome<ResolvedPresentationConfig> {
   const input = record(values);
   if (input === undefined) return fail('config', 'The filter configuration must be an object.');
@@ -44,7 +44,7 @@ function filterPresentation(
       values: values as PresentationValues,
       fields: [field],
       ports: [{ id: 'filter', direction: 'output', payload: 'filter' }],
-      operations: [AELIQO_OPERATION_REFS.filter],
+      operations: [VARENDO_OPERATION_REFS.filter],
     },
   };
 }
@@ -56,8 +56,8 @@ export function suggestTable(needs: readonly Task['needs'][number][]): Outcome<P
 
 function isSelectionNeed(need: Task['needs'][number]): boolean {
   return (
-    need.operation.id === AELIQO_OPERATION_REFS.selection.id &&
-    need.operation.revision === AELIQO_OPERATION_REFS.selection.revision
+    need.operation.id === VARENDO_OPERATION_REFS.selection.id &&
+    need.operation.revision === VARENDO_OPERATION_REFS.selection.revision
   );
 }
 

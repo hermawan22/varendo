@@ -12,7 +12,7 @@ import { useContainerSize, useSurfaceState } from './hooks.js';
 import { useLocalMount, useLocalUpdates } from './local-hooks.js';
 import { DataCards, DataRows } from './local-fallback.js';
 import { resolveLocalBrowse, type ContainerSize } from './local-presentation.js';
-import { useOptionalAeliqoScope } from './scope.js';
+import { useOptionalVarendoScope } from './scope.js';
 
 export type LocalDataSurfaceOptions<Row extends DataRecord> = Omit<LocalDataSurfaceInput<Row>, 'id'> & {
   readonly id?: string;
@@ -35,7 +35,7 @@ export interface LocalDataSurface<Row extends DataRecord> {
 export function useLocalDataSurface<Row extends DataRecord>(
   options: LocalDataSurfaceOptions<Row> | undefined,
 ): LocalDataSurface<Row> | undefined {
-  const scoped = useOptionalAeliqoScope() !== undefined;
+  const scoped = useOptionalVarendoScope() !== undefined;
   const ownership = useLocalMount(options, scoped);
   useLocalUpdates(options, scoped, ownership);
   if (options === undefined) return undefined;

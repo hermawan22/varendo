@@ -1,7 +1,7 @@
 import { isAbsolute, join } from 'node:path';
 
 export function pairedConfig(base, label) {
-  const destination = process.env.AELIQO_PERFORMANCE_PAIR_OUTPUT;
+  const destination = process.env.VARENDO_PERFORMANCE_PAIR_OUTPUT;
   if (!destination || !isAbsolute(destination)) throw Error('Expected absolute paired performance output path');
   const prefix = 'pnpm build:platform && ';
   if (!base.webServer?.command.startsWith(prefix)) throw Error('Unexpected performance build command');

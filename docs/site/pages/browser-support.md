@@ -19,7 +19,7 @@ site and component library are exercised in Chromium, Firefox, and WebKit.
 - Layout adapts to container width and text direction rather than user-agent
   detection.
 - Server imports do not register custom elements or read browser globals. Call
-  `registerAeliqoElements()` at the client entry point.
+  `registerVarendoElements()` at the client entry point.
 
 ## Optional WebMCP
 

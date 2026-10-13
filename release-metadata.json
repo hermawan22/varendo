@@ -1,8 +1,8 @@
 {
-  "version": "0.1.0",
-  "line": "0.1",
-  "previousVersion": null,
-  "status": "stable",
+  "version": "0.2.0",
+  "line": "0.2",
+  "previousVersion": "0.1.0",
+  "status": "candidate",
   "publicPackages": [
     "core",
     "runtime",
@@ -10,6 +10,6 @@
     "react",
     "agent"
   ],
-  "migration": "migration-varendo",
+  "migration": "migration-varendo-0.2",
   "upstreamVersion": "0.7.1"
 }

@@ -17,7 +17,7 @@ function lint(path) {
 }
 
 test('source lint rejects a correctness violation and accepts valid JavaScript', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-lint-contract-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-lint-contract-'));
   try {
     const fixture = join(directory, 'fixture.mjs');
     await writeFile(fixture, 'const unused = 1;\n');

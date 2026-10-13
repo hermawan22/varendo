@@ -5,7 +5,7 @@ import { Readable } from 'node:stream';
 import { defineDataFeature } from '@varendo/core/features';
 import type { Catalog, Diagnostic, Intent, MeaningDefinition, Outcome, QuerySpec, Result } from '@varendo/core';
 import {
-  createAeliqoRuntime,
+  createVarendoRuntime,
   type DataSurfaceBindings,
   type LocalSurfaceScope,
   type SurfaceController,
@@ -131,14 +131,14 @@ export interface RemoteResultStoreBeginObservation extends ResultBeginInput {
 }
 
 export interface RemotePrincipalSurface {
-  readonly runtime: ReturnType<typeof createAeliqoRuntime>;
+  readonly runtime: ReturnType<typeof createVarendoRuntime>;
   readonly scope: LocalSurfaceScope;
   readonly surface: SurfaceController<Intent, RemotePeopleState>;
   readonly dispose: () => void;
 }
 
 export interface RemotePeopleFixture {
-  readonly runtime: ReturnType<typeof createAeliqoRuntime>;
+  readonly runtime: ReturnType<typeof createVarendoRuntime>;
   readonly scope: LocalSurfaceScope;
   readonly surface: SurfaceController<Intent, RemotePeopleState>;
   readonly globalCountIntent: Intent;
@@ -1293,7 +1293,7 @@ export async function createRemotePeopleFixture(options: RemotePeopleFixtureOpti
     return value;
   };
   const rootPrincipal = principalContext('tenant-a');
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId: 'remote-runtime',
     resources: [{ resource: feature.resource, data: client }],
     resultStore,
@@ -1382,7 +1382,7 @@ export async function createRemotePeopleFixture(options: RemotePeopleFixtureOpti
     const principal = principalContext(principalKey);
     const fixedClient = clients.get(principalKey)!;
     const sequence = ++principalSurfaceSequence;
-    const childRuntime = createAeliqoRuntime({
+    const childRuntime = createVarendoRuntime({
       runtimeId: `remote-runtime-${principalKey}-${sequence}`,
       resources: [{ resource: feature.resource, data: fixedClient }],
       resultStore,

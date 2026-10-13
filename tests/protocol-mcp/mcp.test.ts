@@ -13,7 +13,7 @@ import type { AgentCapabilityManifest, AgentCapabilityReceipt } from '../../pack
 import { createAgentToolEndpoint } from '../../packages/agent/src/protocol/endpoint.js';
 import type { AgentToolEndpoint, AgentToolEndpointOptions } from '../../packages/agent/src/protocol/types.js';
 import {
-  AELIQO_MCP_PROTOCOL_REVISION,
+  VARENDO_MCP_PROTOCOL_REVISION,
   connectMcpHttpClient,
   connectMcpStdioClient,
   createMcpHttpHandler,
@@ -536,7 +536,7 @@ describe('MCP adapter', () => {
     const child = fileURLToPath(new URL('./stdio-child.mjs', import.meta.url));
     const processHandle = (await import('node:child_process')).spawn(process.execPath, [child], {
       stdio: ['pipe', 'pipe', 'pipe'],
-      env: { ...process.env, AELIQO_MCP_MAX_BUFFER: '256' },
+      env: { ...process.env, VARENDO_MCP_MAX_BUFFER: '256' },
     });
     let stdout = '';
     processHandle.stdout.on('data', (chunk) => {
@@ -550,6 +550,6 @@ describe('MCP adapter', () => {
 
   it('uses the current protocol revision in documentation', async () => {
     const documentation = await readFile(new URL('../../docs/agent-protocols/mcp.md', import.meta.url), 'utf8');
-    expect(documentation).toContain(AELIQO_MCP_PROTOCOL_REVISION);
+    expect(documentation).toContain(VARENDO_MCP_PROTOCOL_REVISION);
   });
 });

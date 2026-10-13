@@ -7,9 +7,9 @@ contract: 'Provide consistent bounded chrome; never impose dashboard cards on ev
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -28,29 +28,29 @@ Groups slotted content in a labelled section with a chosen surface tone. It adds
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 ## Keyboard, focus, and accessibility
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -58,9 +58,9 @@ Surface follows the width of its parent and adds no columns. Put layout breakpoi
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -69,7 +69,7 @@ Surface follows the width of its parent and adds no columns. Put layout breakpoi
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

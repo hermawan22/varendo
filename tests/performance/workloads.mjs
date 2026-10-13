@@ -7,10 +7,10 @@
  */
 import { composePresentation } from '@varendo/core/presentation';
 import {
-  createAeliqoPresentationRegistry,
-  AELIQO_CONFIG_SCHEMAS,
-  AELIQO_OPERATION_REFS,
-  AELIQO_PRESENTATION_REFS,
+  createVarendoPresentationRegistry,
+  VARENDO_CONFIG_SCHEMAS,
+  VARENDO_OPERATION_REFS,
+  VARENDO_PRESENTATION_REFS,
 } from '@varendo/web/region';
 import { createInteractionController, createInteractionGraph } from '@varendo/runtime/interaction';
 import { createRegionStore } from '@varendo/runtime/regions';
@@ -142,7 +142,7 @@ function mediumContext() {
   const result = mediumResult();
   const needs = Array.from({ length: MEDIUM_VIEW_COUNT }, (_, index) => ({
     id: `view-${String(index + 1).padStart(2, '0')}`,
-    operation: AELIQO_OPERATION_REFS.read,
+    operation: VARENDO_OPERATION_REFS.read,
     outputId: result.ref.outputId,
     fields: [result.fields[index + 1]?.id ?? 'id'],
     required: true,
@@ -176,7 +176,7 @@ function mediumContext() {
     revision: current.experienceRevision,
     mode: 'composable',
     agentAllowed: false,
-    allowedRepresentations: [AELIQO_PRESENTATION_REFS.stack.id, AELIQO_PRESENTATION_REFS.table.id],
+    allowedRepresentations: [VARENDO_PRESENTATION_REFS.stack.id, VARENDO_PRESENTATION_REFS.table.id],
     allowedPatterns: [],
     composition: { allowWithoutPreset: true, maxNodes: 64, maxExpansions: MEDIUM_CANDIDATE_COUNT },
     requiredOperations: [],
@@ -205,8 +205,8 @@ export function mediumPlan() {
     {
       id: 'layout',
       role: 'structure',
-      representation: AELIQO_PRESENTATION_REFS.stack,
-      config: { schema: AELIQO_CONFIG_SCHEMAS.stack, values: {} },
+      representation: VARENDO_PRESENTATION_REFS.stack,
+      config: { schema: VARENDO_CONFIG_SCHEMAS.stack, values: {} },
       children: [],
     },
   ];
@@ -216,9 +216,9 @@ export function mediumPlan() {
     tableNodes.push({
       id,
       role: 'table',
-      representation: AELIQO_PRESENTATION_REFS.table,
+      representation: VARENDO_PRESENTATION_REFS.table,
       result: result.ref,
-      config: { schema: AELIQO_CONFIG_SCHEMAS.table, values: { selection: 'none' } },
+      config: { schema: VARENDO_CONFIG_SCHEMAS.table, values: { selection: 'none' } },
       children: [],
     });
   }
@@ -234,12 +234,12 @@ export function mediumPlan() {
     coverage: task.needs.map((need, index) => ({
       needId: need.id,
       nodeIds: [tableNodes[index]?.id ?? 'view-01'],
-      operations: [AELIQO_OPERATION_REFS.read],
+      operations: [VARENDO_OPERATION_REFS.read],
     })),
     stateTransfer: [],
     diagnostics: [],
   };
-  const registryResult = createAeliqoPresentationRegistry({ resolveEntity: () => 'record' });
+  const registryResult = createVarendoPresentationRegistry({ resolveEntity: () => 'record' });
   if (!registryResult.ok)
     throw new Error(`presentation registry unavailable: ${registryResult.diagnostics[0]?.message ?? 'unknown error'}`);
   const context = {
@@ -248,7 +248,7 @@ export function mediumPlan() {
     results: [result],
     current,
     environment,
-    rendererCapabilities: [AELIQO_PRESENTATION_REFS.stack, AELIQO_PRESENTATION_REFS.table],
+    rendererCapabilities: [VARENDO_PRESENTATION_REFS.stack, VARENDO_PRESENTATION_REFS.table],
   };
   const candidates = Array.from({ length: MEDIUM_CANDIDATE_COUNT }, (_, gap) => ({
     source: 'explicit',
@@ -280,7 +280,7 @@ export function runMediumPlanner(options = {}) {
   const timing = timed ? { durationMs: finished - started } : {};
   // Record the captured interval after timing it; tracing work is outside durationMs.
   if (timed && typeof globalThis.performance?.measure === 'function')
-    globalThis.performance.measure('aeliqo.presentation.compose', {
+    globalThis.performance.measure('varendo.presentation.compose', {
       start: started,
       end: finished,
       detail: { observation: ++plannerObservation },

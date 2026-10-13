@@ -1,6 +1,6 @@
-import { registerAeliqoElements } from '@varendo/web/register';
+import { registerVarendoElements } from '@varendo/web/register';
 
-registerAeliqoElements();
+registerVarendoElements();
 
 const status = document.querySelector<HTMLElement>('#island-status');
 if (status !== null) status.textContent = 'Island hydrated.';

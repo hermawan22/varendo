@@ -31,7 +31,7 @@ type VisualizationHost = HTMLElement & {
 };
 
 type ReviewWindow = Window & {
-  aeliqoReviewReady?: boolean;
+  varendoReviewReady?: boolean;
   visualizationSelections?: readonly unknown[];
 };
 
@@ -43,7 +43,7 @@ type ExpectedSelection = {
 };
 
 const catalogResult: ResultRef = {
-  id: 'aeliqo-catalog-example',
+  id: 'varendo-catalog-example',
   revision: '1',
   outputId: 'people',
   queryDigest: 'catalog-query',
@@ -51,12 +51,12 @@ const catalogResult: ResultRef = {
 };
 const hierarchyResult: ResultRef = {
   ...catalogResult,
-  id: 'aeliqo-catalog-hierarchy',
+  id: 'varendo-catalog-hierarchy',
   outputId: 'nodes',
 };
 const relationshipResult: ResultRef = {
   ...catalogResult,
-  id: 'aeliqo-catalog-relationship',
+  id: 'varendo-catalog-relationship',
   outputId: 'edges',
 };
 
@@ -81,7 +81,7 @@ const expectedSelection: Record<VisualizationId, ExpectedSelection> = {
 };
 
 function componentLocator(page: Page, id: VisualizationId): Locator {
-  return page.locator(`#fixture aeliqo-${id}`).first();
+  return page.locator(`#fixture varendo-${id}`).first();
 }
 
 async function openVisualization(
@@ -97,7 +97,7 @@ async function openVisualization(
   await page.setViewportSize(reviewViewport(variant));
   await page.emulateMedia({ colorScheme: reviewColorScheme(variant), reducedMotion: 'reduce' });
   await page.goto(`/tests/visual/index.html?component=${id}&variant=${variant}`);
-  await page.waitForFunction(() => Boolean((window as ReviewWindow).aeliqoReviewReady));
+  await page.waitForFunction(() => Boolean((window as ReviewWindow).varendoReviewReady));
   const host = componentLocator(page, id);
   await expect(host).toBeAttached();
   // Cartesian charts fold their exact-values table; hierarchy and temporal views show it inline.
@@ -106,7 +106,7 @@ async function openVisualization(
   await expect(host.locator('[part=data]')).toBeVisible();
   await page.evaluate(() => {
     const selections: unknown[] = [];
-    document.addEventListener('aeliqo-visualization-select', (event) => {
+    document.addEventListener('varendo-visualization-select', (event) => {
       selections.push((event as CustomEvent).detail);
     });
     (window as ReviewWindow).visualizationSelections = selections;
@@ -282,7 +282,7 @@ for (const variant of REVIEW_VARIANTS) {
         );
         expect(selectedRowIndex).toBe(reorderedIndex);
         await assertBoundedGeometry(session.host);
-        const axe = await new AxeBuilder({ page }).include(`#fixture aeliqo-${id}`).analyze();
+        const axe = await new AxeBuilder({ page }).include(`#fixture varendo-${id}`).analyze();
         expect(axe.violations).toEqual([]);
         expect(session.errors).toEqual([]);
         await page.screenshot({ path: info.outputPath('selected-reordered.png'), fullPage: true });

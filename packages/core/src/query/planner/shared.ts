@@ -5,7 +5,7 @@ import { versionRefKey as relationKey } from '../../contracts/stable.js';
 import type { FunctionRegistry } from '../../expressions/types.js';
 import type { PlanOperation, QueryField, QueryOutcome, QuerySchema } from '../types.js';
 
-export const PLAN_ENTITY = '__aeliqo_plan__';
+export const PLAN_ENTITY = '__varendo_plan__';
 export type CatalogEntity = Catalog['entities'][number];
 export type CatalogRelationship = Catalog['relationships'][number];
 

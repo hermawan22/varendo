@@ -1,18 +1,18 @@
 import type { Outcome, VersionRef } from '@varendo/core';
 import type { PresentationNode, PresentationValues } from '@varendo/core/presentation';
 import type {
-  AeliqoBreadcrumbBindingItem,
-  AeliqoFeedbackBinding,
-  AeliqoMenuBindingItem,
-  AeliqoNavigationFeedbackAction,
-  AeliqoNavigationFeedbackBindings,
-  AeliqoNavigationFeedbackContent,
-  AeliqoNavigationFeedbackRoute,
-  AeliqoPaginationBinding,
-  AeliqoTabsBinding,
-  AeliqoTreeBindingNode,
+  VarendoBreadcrumbBindingItem,
+  VarendoFeedbackBinding,
+  VarendoMenuBindingItem,
+  VarendoNavigationFeedbackAction,
+  VarendoNavigationFeedbackBindings,
+  VarendoNavigationFeedbackContent,
+  VarendoNavigationFeedbackRoute,
+  VarendoPaginationBinding,
+  VarendoTabsBinding,
+  VarendoTreeBindingNode,
 } from './navigation-feedback-types.js';
-import { AELIQO_NAVIGATION_FEEDBACK_OPERATION_REFS } from './navigation-feedback-contracts.js';
+import { VARENDO_NAVIGATION_FEEDBACK_OPERATION_REFS } from './navigation-feedback-contracts.js';
 import {
   MAX_TREE_NODES,
   actionMap,
@@ -50,7 +50,7 @@ interface BreadcrumbProjection {
 
 export function breadcrumbConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = configRecord(values, ['bindingRevision', 'bindingRef'], bindings);
   if (!checked.ok) return checked;
@@ -75,9 +75,9 @@ export function breadcrumbConfig(
 }
 
 function breadcrumbItems(
-  source: readonly AeliqoBreadcrumbBindingItem[],
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
+  source: readonly VarendoBreadcrumbBindingItem[],
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
 ): Outcome<BreadcrumbProjection> {
   const items: RecordValue[] = [];
   const operations: VersionRef[] = [];
@@ -92,12 +92,12 @@ function breadcrumbItems(
 }
 
 function breadcrumbItem(
-  item: NonNullable<AeliqoNavigationFeedbackBindings['breadcrumbs']>[number]['items'][number],
+  item: NonNullable<VarendoNavigationFeedbackBindings['breadcrumbs']>[number]['items'][number],
   index: number,
   itemCount: number,
   hasExplicitCurrent: boolean,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
 ): Outcome<{ readonly item: RecordValue; readonly operation?: VersionRef }> {
   const label = content(contents, item.labelRef, 'breadcrumb label');
   if (!label.ok) return label;
@@ -134,14 +134,14 @@ interface MenuItemProjection {
 }
 
 interface MenuTargets {
-  readonly route?: AeliqoNavigationFeedbackRoute;
-  readonly action?: AeliqoNavigationFeedbackAction;
+  readonly route?: VarendoNavigationFeedbackRoute;
+  readonly action?: VarendoNavigationFeedbackAction;
   readonly reachable: boolean;
 }
 
 export function menuConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = configRecord(values, ['bindingRevision', 'bindingRef'], bindings);
   if (!checked.ok) return checked;
@@ -162,10 +162,10 @@ export function menuConfig(
 }
 
 function menuItems(
-  source: readonly AeliqoMenuBindingItem[],
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
+  source: readonly VarendoMenuBindingItem[],
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
 ): Outcome<MenuProjection> {
   const items: RecordValue[] = [];
   const operations: VersionRef[] = [];
@@ -183,10 +183,10 @@ function menuItems(
 }
 
 function menuItem(
-  item: AeliqoMenuBindingItem,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
+  item: VarendoMenuBindingItem,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
 ): Outcome<MenuItemProjection> {
   const label = content(contents, item.labelRef, 'menu label');
   if (!label.ok) return label;
@@ -196,9 +196,9 @@ function menuItem(
 }
 
 function registeredMenuTargets(
-  item: AeliqoMenuBindingItem,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
+  item: VarendoMenuBindingItem,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
 ): Outcome<MenuTargets> {
   const route = item.routeRef === undefined ? undefined : routes.get(item.routeRef);
   const action = item.actionRef === undefined ? undefined : actions.get(item.actionRef);
@@ -215,7 +215,7 @@ function registeredMenuTargets(
 }
 
 function menuItemProjection(
-  item: AeliqoMenuBindingItem,
+  item: VarendoMenuBindingItem,
   label: string,
   targets: MenuTargets,
 ): Outcome<MenuItemProjection> {
@@ -252,7 +252,7 @@ function menuPorts(projection: MenuProjection) {
 
 export function paginationConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = configRecord(values, ['bindingRevision', 'bindingRef'], bindings);
   if (!checked.ok) return checked;
@@ -281,11 +281,11 @@ export function paginationConfig(
     },
     [],
     canMove ? [navPort('page', 'page')] : [],
-    canMove ? [AELIQO_NAVIGATION_FEEDBACK_OPERATION_REFS.page] : [],
+    canMove ? [VARENDO_NAVIGATION_FEEDBACK_OPERATION_REFS.page] : [],
   );
 }
 
-function paginationCanMove(entry: AeliqoPaginationBinding): boolean {
+function paginationCanMove(entry: VarendoPaginationBinding): boolean {
   if (entry.pending === true) return false;
   const previous = entry.hasPrevious && entry.page > 1;
   const next = entry.hasNext && (entry.pageCount === undefined || entry.page < entry.pageCount);
@@ -294,7 +294,7 @@ function paginationCanMove(entry: AeliqoPaginationBinding): boolean {
 
 export function tabsConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
   node?: PresentationNode,
 ): Outcome<ResolvedPresentation> {
   const checked = configRecord(
@@ -318,13 +318,13 @@ export function tabsConfig(
   return resolved(output);
 }
 
-function validTabChildren(entry: AeliqoTabsBinding, node: PresentationNode | undefined): boolean {
+function validTabChildren(entry: VarendoTabsBinding, node: PresentationNode | undefined): boolean {
   if (node === undefined) return true;
   if (node.children.length > entry.items.length) return false;
   return !node.children.some((_, index) => entry.items[index]?.disabled === true);
 }
 
-function tabsConfigError(input: RecordValue, entry: AeliqoTabsBinding): string | undefined {
+function tabsConfigError(input: RecordValue, entry: VarendoTabsBinding): string | undefined {
   const invalidSelection = invalidTabSelection(input, entry);
   if (invalidSelection !== undefined) return invalidSelection;
   if (input.activation !== undefined && input.activation !== 'automatic' && input.activation !== 'manual')
@@ -334,7 +334,7 @@ function tabsConfigError(input: RecordValue, entry: AeliqoTabsBinding): string |
   return undefined;
 }
 
-function invalidTabSelection(input: RecordValue, entry: AeliqoTabsBinding): string | undefined {
+function invalidTabSelection(input: RecordValue, entry: VarendoTabsBinding): string | undefined {
   for (const key of ['value', 'defaultValue'] as const) {
     if (input[key] === undefined) continue;
     if (!enabledTab(input[key], entry)) return `${key} must identify an enabled item in the registered tab set.`;
@@ -342,14 +342,14 @@ function invalidTabSelection(input: RecordValue, entry: AeliqoTabsBinding): stri
   return undefined;
 }
 
-function enabledTab(value: unknown, entry: AeliqoTabsBinding): boolean {
+function enabledTab(value: unknown, entry: VarendoTabsBinding): boolean {
   if (!bounded(value)) return false;
   return entry.items.some((item) => item.id === value && item.disabled !== true);
 }
 
 function tabItems(
-  entry: AeliqoTabsBinding,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  entry: VarendoTabsBinding,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
 ): Outcome<readonly RecordValue[]> {
   const items: RecordValue[] = [];
   for (const item of entry.items) {
@@ -369,7 +369,7 @@ function tabItems(
 
 function tabsOutput(
   input: RecordValue,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
   id: string,
   items: readonly RecordValue[],
 ): RecordValue {
@@ -386,9 +386,9 @@ function tabsOutput(
 
 interface TreeRenderContext {
   readonly input: RecordValue;
-  readonly contents: Map<string, AeliqoNavigationFeedbackContent>;
-  readonly routes: Map<string, AeliqoNavigationFeedbackRoute>;
-  readonly actions: Map<string, AeliqoNavigationFeedbackAction>;
+  readonly contents: Map<string, VarendoNavigationFeedbackContent>;
+  readonly routes: Map<string, VarendoNavigationFeedbackRoute>;
+  readonly actions: Map<string, VarendoNavigationFeedbackAction>;
   readonly ids: Set<string>;
   readonly operations: VersionRef[];
   hasRoute: boolean;
@@ -397,7 +397,7 @@ interface TreeRenderContext {
 
 export function treeConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = configRecord(values, ['bindingRevision', 'bindingRef', 'expandedIds', 'selectedId'], bindings);
   if (!checked.ok) return checked;
@@ -424,7 +424,7 @@ export function treeConfig(
   );
 }
 
-function treeContext(input: RecordValue, bindings: AeliqoNavigationFeedbackBindings): TreeRenderContext {
+function treeContext(input: RecordValue, bindings: VarendoNavigationFeedbackBindings): TreeRenderContext {
   return {
     input,
     contents: contentMap(bindings),
@@ -438,14 +438,14 @@ function treeContext(input: RecordValue, bindings: AeliqoNavigationFeedbackBindi
 }
 
 function renderTreeNodes(
-  source: readonly AeliqoTreeBindingNode[],
+  source: readonly VarendoTreeBindingNode[],
   context: TreeRenderContext,
   reachable = true,
 ): RecordValue[] {
   return source.map((item) => renderTreeNode(item, context, reachable));
 }
 
-function renderTreeNode(item: AeliqoTreeBindingNode, context: TreeRenderContext, reachable: boolean): RecordValue {
+function renderTreeNode(item: VarendoTreeBindingNode, context: TreeRenderContext, reachable: boolean): RecordValue {
   context.ids.add(item.id);
   const available = reachable && item.disabled !== true;
   const childrenReachable = reachable && (item.disabled !== true || isExpanded(context.input, item.id));
@@ -465,8 +465,8 @@ function renderTreeNode(item: AeliqoTreeBindingNode, context: TreeRenderContext,
 function addTreeOperations(
   context: TreeRenderContext,
   available: boolean,
-  route: AeliqoNavigationFeedbackRoute | undefined,
-  action: AeliqoNavigationFeedbackAction | undefined,
+  route: VarendoNavigationFeedbackRoute | undefined,
+  action: VarendoNavigationFeedbackAction | undefined,
 ): void {
   if (!available) return;
   if (route !== undefined) {
@@ -511,12 +511,12 @@ function treePorts(context: TreeRenderContext) {
 export function feedbackBase(
   values: PresentationValues,
   allowed: readonly string[],
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<{
   readonly input: RecordValue;
-  readonly entry: AeliqoFeedbackBinding;
-  readonly contents: Map<string, AeliqoNavigationFeedbackContent>;
-  readonly actions: Map<string, AeliqoNavigationFeedbackAction>;
+  readonly entry: VarendoFeedbackBinding;
+  readonly contents: Map<string, VarendoNavigationFeedbackContent>;
+  readonly actions: Map<string, VarendoNavigationFeedbackAction>;
 }> {
   const checked = configRecord(values, allowed, bindings);
   if (!checked.ok) return checked;

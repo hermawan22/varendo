@@ -7,9 +7,9 @@ contract: 'Determinate or unknown progress honestly; no invented completion perc
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -28,19 +28,19 @@ Reports an ongoing operation with native progress semantics. A bounded value sho
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 With no finite `value`, the component renders an indeterminate progressbar.
 For determinate progress, it clamps the displayed value to the range from zero
@@ -51,11 +51,11 @@ report completion only when the underlying operation actually finishes.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -63,9 +63,9 @@ The bar follows its host width while the label remains readable. Do not use colo
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -74,7 +74,7 @@ The bar follows its host width while the label remains readable. Do not use colo
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

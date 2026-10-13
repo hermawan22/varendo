@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('holds a resize transition during focused IME draft and retries after focus release', async ({ page }) => {
   await page.goto('/tests/runtime-presentation/browser/index.html');
-  const editor = page.locator('aeliqo-region').locator('#editor');
+  const editor = page.locator('varendo-region').locator('#editor');
   await editor.fill('draft');
   await editor.focus();
   await expect
@@ -13,7 +13,7 @@ test('holds a resize transition during focused IME draft and retries after focus
   );
   expect(first).toMatchObject({ ok: true, value: { status: 'deferred', reason: 'transition-blocked' } });
   await page.evaluate(() => {
-    const input = (document.querySelector('aeliqo-region') as HTMLElement).shadowRoot!.querySelector('#editor')!;
+    const input = (document.querySelector('varendo-region') as HTMLElement).shadowRoot!.querySelector('#editor')!;
     input.dispatchEvent(new CompositionEvent('compositionstart', { bubbles: true, composed: true }));
   });
   const blocked = await page.evaluate(async () =>
@@ -25,7 +25,7 @@ test('holds a resize transition during focused IME draft and retries after focus
   );
   expect(before).toBeUndefined();
   await page.evaluate(() => {
-    const input = (document.querySelector('aeliqo-region') as HTMLElement).shadowRoot!.querySelector('#editor')!;
+    const input = (document.querySelector('varendo-region') as HTMLElement).shadowRoot!.querySelector('#editor')!;
     input.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true, composed: true }));
     (input as HTMLInputElement).blur();
   });
@@ -38,7 +38,7 @@ test('holds a resize transition during focused IME draft and retries after focus
       ),
     )
     .toBe('layout.narrow');
-  await expect.poll(() => page.locator('aeliqo-region').locator('#editor').inputValue()).toBe('draft');
+  await expect.poll(() => page.locator('varendo-region').locator('#editor').inputValue()).toBe('draft');
   await expect
     .poll(() =>
       page.evaluate(() => (window as typeof window & { editor: HTMLInputElement }).editor === document.activeElement),
@@ -50,7 +50,7 @@ test('holds a transition during an active pointer drag and removes listeners on 
   await page.goto('/tests/runtime-presentation/browser/index.html');
   await page.evaluate(async () => (window as typeof window & { requestWide: () => Promise<unknown> }).requestWide());
   await page.evaluate(() => {
-    const region = document.querySelector('aeliqo-region')!;
+    const region = document.querySelector('varendo-region')!;
     region.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, pointerId: 7, button: 0 }));
   });
   const blocked = await page.evaluate(async () =>
@@ -85,7 +85,7 @@ test('guards focused editable controls when the region is mounted in a nested sh
   await page.goto('/tests/runtime-presentation/browser/index.html');
   await page.evaluate(async () => (window as typeof window & { requestWide: () => Promise<unknown> }).requestWide());
   await page.evaluate(() => {
-    const region = document.querySelector('aeliqo-region')!;
+    const region = document.querySelector('varendo-region')!;
     const outerHost = document.createElement('div');
     outerHost.id = 'outer-host';
     const outerRoot = outerHost.attachShadow({ mode: 'open' });
@@ -101,7 +101,7 @@ test('guards focused editable controls when the region is mounted in a nested sh
     (
       document
         .querySelector('#outer-host')!
-        .shadowRoot!.querySelector('aeliqo-region')!
+        .shadowRoot!.querySelector('varendo-region')!
         .shadowRoot!.querySelector('#editor') as HTMLInputElement
     ).blur(),
   );
@@ -155,7 +155,7 @@ test('app reevaluates host layouts within one width category and on height chang
   page,
 }) => {
   await page.goto('/tests/runtime-presentation/browser/app-resize.html');
-  await expect(page.locator('aeliqo-table')).toContainText('Ada');
+  await expect(page.locator('varendo-table')).toContainText('Ada');
   const snapshot = () => page.evaluate(() => (window as ResizeFixtureWindow).resizeFixture.snapshot());
   await expect.poll(async () => (await snapshot()).environment.inlineSize.value).toBe(1440);
   await page.locator('#target').evaluate((target) => {
@@ -168,7 +168,7 @@ test('app reevaluates host layouts within one width category and on height chang
   await expect.poll(async () => (await snapshot()).environment.blockSize.value).toBe(420);
   expect((await snapshot()).queries).toBe(1);
   expect((await snapshot()).renderedWidths).toContain(900);
-  await expect(page.locator('aeliqo-table')).toContainText('Ada');
+  await expect(page.locator('varendo-table')).toContainText('Ada');
   const settled = (await snapshot()).recipeCalls;
   await page.waitForTimeout(100);
   expect((await snapshot()).recipeCalls).toBe(settled);
@@ -182,7 +182,7 @@ test('app reevaluates host layouts within one width category and on height chang
 
 test('app defers same-category resize during IME and focus ownership then uses the latest size', async ({ page }) => {
   await page.goto('/tests/runtime-presentation/browser/app-resize.html');
-  const editor = page.locator('aeliqo-region').locator('#editor');
+  const editor = page.locator('varendo-region').locator('#editor');
   await editor.fill('draft');
   await editor.evaluate((input) => {
     input.dispatchEvent(new CompositionEvent('compositionstart', { bubbles: true, composed: true }));

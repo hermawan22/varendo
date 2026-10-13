@@ -15,7 +15,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/visualization-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-visualization-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-visualization-consumer-'));
 const consumerReal = await realpath(consumer);
 
 function run(argv, cwd, encoding = 'utf8') {
@@ -79,7 +79,7 @@ for (const name of packageNames) {
   assert.notEqual(manifest.private, true);
   await clearCompiledOutput(join(directory, 'dist'));
   run(['pnpm', 'build'], directory);
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));
@@ -236,14 +236,14 @@ await writeFile(
 import type {VisualizationSpec,
   Result,
 } from '@varendo/core';
-import {AeliqoMatrixElement,AeliqoTimelineElement,AeliqoCalendarGridElement,type VisualizationInputs} from '@varendo/web/visualization';
-import {AeliqoMatrix,AeliqoTimeline,AeliqoCalendarGrid,${extraNames.map((name) => 'Aeliqo' + name).join(',')}} from '@varendo/react/visualization';
+import {VarendoMatrixElement,VarendoTimelineElement,VarendoCalendarGridElement,type VisualizationInputs} from '@varendo/web/visualization';
+import {VarendoMatrix,VarendoTimeline,VarendoCalendarGrid,${extraNames.map((name) => 'Varendo' + name).join(',')}} from '@varendo/react/visualization';
 const result:Result=${JSON.stringify(result)};
 const specs:readonly VisualizationSpec[]=${JSON.stringify(specs)};
 const inputs:VisualizationInputs={visualization:specs[0],context:{results:[result]},datasets:[{result:result.ref,rows:${JSON.stringify(rows)}}],label:'Exact result',width:640,height:320,maxMarks:1000};
-const element=new AeliqoMatrixElement();element.visualization=specs[0];element.context=inputs.context;element.datasets=inputs.datasets;
-const component=<AeliqoMatrix {...inputs} onSelectionChange={e=>{const digest:string=e.detail.result.scopeDigest;const identity:string=e.detail.identity;void[digest,identity];}}/>;
-void[component,AeliqoTimeline,AeliqoCalendarGrid,AeliqoTimelineElement,AeliqoCalendarGridElement,${extraNames.map((name) => 'Aeliqo' + name).join(',')}];
+const element=new VarendoMatrixElement();element.visualization=specs[0];element.context=inputs.context;element.datasets=inputs.datasets;
+const component=<VarendoMatrix {...inputs} onSelectionChange={e=>{const digest:string=e.detail.result.scopeDigest;const identity:string=e.detail.identity;void[digest,identity];}}/>;
+void[component,VarendoTimeline,VarendoCalendarGrid,VarendoTimelineElement,VarendoCalendarGridElement,${extraNames.map((name) => 'Varendo' + name).join(',')}];
 `,
 );
 await writeFile(
@@ -266,22 +266,22 @@ run([join(consumer, 'node_modules/.bin/tsc'), '-p', 'tsconfig.json'], consumer);
 await writeFile(
   join(consumer, 'ssr.mjs'),
   `import '@varendo/react/ssr';
-import assert from 'node:assert/strict';import {createElement} from 'react';import {renderToString} from 'react-dom/server';import {AeliqoMatrix,AeliqoTimeline,AeliqoCalendarGrid,${extraNames.map((name) => 'Aeliqo' + name).join(',')}} from '@varendo/react/visualization';
+import assert from 'node:assert/strict';import {createElement} from 'react';import {renderToString} from 'react-dom/server';import {VarendoMatrix,VarendoTimeline,VarendoCalendarGrid,${extraNames.map((name) => 'Varendo' + name).join(',')}} from '@varendo/react/visualization';
 ${dataSource}
-for(const [index,component] of [AeliqoMatrix,AeliqoTimeline,AeliqoCalendarGrid].entries()){
+for(const [index,component] of [VarendoMatrix,VarendoTimeline,VarendoCalendarGrid].entries()){
  const output=renderToString(createElement(component,{visualization:specs[index],context:{results:[result]},datasets:[{result:result.ref,rows}]}));
  assert(output.includes('9007199254740993.001'));assert(output.includes('shadowrootmode="open"'));assert(output.includes('Other rows may exist.'));
  const next=renderToString(createElement(component));assert(!next.includes('9007199254740993'));assert(!next.includes('<table'));
 }
-for(const [index,component] of [${extraNames.map((name) => 'Aeliqo' + name).join(',')}].entries()){const data=extraViews[index];const output=renderToString(createElement(component,{visualization:data.spec,context:data.context,datasets:data.datasets}));assert(output.includes('<table'));assert(output.includes('<svg'));assert(output.includes('shadowrootmode="open"'));const next=renderToString(createElement(component));assert(!next.includes('<table'));}
+for(const [index,component] of [${extraNames.map((name) => 'Varendo' + name).join(',')}].entries()){const data=extraViews[index];const output=renderToString(createElement(component,{visualization:data.spec,context:data.context,datasets:data.datasets}));assert(output.includes('<table'));assert(output.includes('<svg'));assert(output.includes('shadowrootmode="open"'));const next=renderToString(createElement(component));assert(!next.includes('<table'));}
 console.log('Installed React twelve-family plus Matrix, Timeline, CalendarGrid SSR exact values, warnings and request isolation passed.');`,
 );
 const ssr = run(['node', 'ssr.mjs'], consumer);
 await writeFile(
   join(consumer, 'browser.ts'),
-  `import {registerAeliqoElements} from '@varendo/web';
+  `import {registerVarendoElements} from '@varendo/web';
 ${dataSource}
-registerAeliqoElements();const views=specs.map(spec=>{const element=document.createElement('aeliqo-'+spec.view);Object.assign(element,{label:spec.view,visualization:spec,context:{results:[result]},datasets:[{result:result.ref,rows}]});element.addEventListener('aeliqo-visualization-select',event=>Object.assign(window,{selection:event.detail}));document.querySelector('main').append(element);return element;});for(const data of extraViews){const element=document.createElement('aeliqo-'+data.view);Object.assign(element,{visualization:data.spec,context:data.context,datasets:data.datasets});element.addEventListener('aeliqo-visualization-select',event=>Object.assign(window,{selection:event.detail}));document.querySelector('main').append(element);views.push(element);}Object.assign(window,{views});`,
+registerVarendoElements();const views=specs.map(spec=>{const element=document.createElement('varendo-'+spec.view);Object.assign(element,{label:spec.view,visualization:spec,context:{results:[result]},datasets:[{result:result.ref,rows}]});element.addEventListener('varendo-visualization-select',event=>Object.assign(window,{selection:event.detail}));document.querySelector('main').append(element);return element;});for(const data of extraViews){const element=document.createElement('varendo-'+data.view);Object.assign(element,{visualization:data.spec,context:data.context,datasets:data.datasets});element.addEventListener('varendo-visualization-select',event=>Object.assign(window,{selection:event.detail}));document.querySelector('main').append(element);views.push(element);}Object.assign(window,{views});`,
 );
 await writeFile(
   join(consumer, 'index.html'),
@@ -312,11 +312,11 @@ try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 1100 } });
   page.on('pageerror', (e) => failures.push(e.message));
   await page.goto(`http://127.0.0.1:${server.address().port}`);
-  await page.locator('aeliqo-matrix table').waitFor();
+  await page.locator('varendo-matrix table').waitFor();
   assert.equal(await page.locator('table').count(), 12);
   assert.equal(await page.getByRole('cell', { name: '9007199254740993.001', exact: true }).count(), 3);
-  assert.equal(await page.locator('aeliqo-timeline line').count(), 1);
-  const button = page.locator('aeliqo-matrix').getByRole('button', { name: 'Select a', exact: true });
+  assert.equal(await page.locator('varendo-timeline line').count(), 1);
+  const button = page.locator('varendo-matrix').getByRole('button', { name: 'Select a', exact: true });
   await button.focus();
   await page.keyboard.press('Enter');
   const selected = await page.evaluate(() => window.selection);
@@ -324,7 +324,7 @@ try {
   assert.equal(selected.result.scopeDigest, 's');
   assert(selected.identity.includes('a'));
   for (const data of extraViews) {
-    const host = page.locator('aeliqo-' + data.view);
+    const host = page.locator('varendo-' + data.view);
     assert.equal(await host.locator('table').count(), 1);
     assert.equal(await host.locator('svg').count(), 1);
     assert((await host.locator('tbody tr').count()) > 0);

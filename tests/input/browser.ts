@@ -1,38 +1,38 @@
 import {
-  AeliqoCheckboxElement,
-  AeliqoComboboxElement,
-  AeliqoDateFieldElement,
-  AeliqoDateRangeElement,
-  AeliqoFieldGroupElement,
-  AeliqoFileInputElement,
-  AeliqoFormElement,
-  AeliqoNumberFieldElement,
-  AeliqoRadioGroupElement,
-  AeliqoSearchFieldElement,
-  AeliqoSelectElement,
-  AeliqoSliderElement,
-  AeliqoSwitchElement,
-  AeliqoTextAreaElement,
-  AeliqoTextFieldElement,
-  type AeliqoOption,
+  VarendoCheckboxElement,
+  VarendoComboboxElement,
+  VarendoDateFieldElement,
+  VarendoDateRangeElement,
+  VarendoFieldGroupElement,
+  VarendoFileInputElement,
+  VarendoFormElement,
+  VarendoNumberFieldElement,
+  VarendoRadioGroupElement,
+  VarendoSearchFieldElement,
+  VarendoSelectElement,
+  VarendoSliderElement,
+  VarendoSwitchElement,
+  VarendoTextAreaElement,
+  VarendoTextFieldElement,
+  type VarendoOption,
 } from '../../packages/web/src/input/index.js';
 
 const registrations: readonly [string, CustomElementConstructor][] = [
-  ['aeliqo-text-field', AeliqoTextFieldElement],
-  ['aeliqo-text-area', AeliqoTextAreaElement],
-  ['aeliqo-number-field', AeliqoNumberFieldElement],
-  ['aeliqo-checkbox', AeliqoCheckboxElement],
-  ['aeliqo-radio-group', AeliqoRadioGroupElement],
-  ['aeliqo-switch', AeliqoSwitchElement],
-  ['aeliqo-select', AeliqoSelectElement],
-  ['aeliqo-combobox', AeliqoComboboxElement],
-  ['aeliqo-date-field', AeliqoDateFieldElement],
-  ['aeliqo-date-range', AeliqoDateRangeElement],
-  ['aeliqo-slider', AeliqoSliderElement],
-  ['aeliqo-search-field', AeliqoSearchFieldElement],
-  ['aeliqo-file-input', AeliqoFileInputElement],
-  ['aeliqo-field-group', AeliqoFieldGroupElement],
-  ['aeliqo-form', AeliqoFormElement],
+  ['varendo-text-field', VarendoTextFieldElement],
+  ['varendo-text-area', VarendoTextAreaElement],
+  ['varendo-number-field', VarendoNumberFieldElement],
+  ['varendo-checkbox', VarendoCheckboxElement],
+  ['varendo-radio-group', VarendoRadioGroupElement],
+  ['varendo-switch', VarendoSwitchElement],
+  ['varendo-select', VarendoSelectElement],
+  ['varendo-combobox', VarendoComboboxElement],
+  ['varendo-date-field', VarendoDateFieldElement],
+  ['varendo-date-range', VarendoDateRangeElement],
+  ['varendo-slider', VarendoSliderElement],
+  ['varendo-search-field', VarendoSearchFieldElement],
+  ['varendo-file-input', VarendoFileInputElement],
+  ['varendo-field-group', VarendoFieldGroupElement],
+  ['varendo-form', VarendoFormElement],
 ];
 for (const [name, constructor] of registrations) customElements.define(name, constructor);
 
@@ -42,15 +42,15 @@ if (fixture === null) throw new Error('Input fixture root is missing.');
 const nativeForm = document.createElement('form');
 nativeForm.id = 'native-form';
 nativeForm.innerHTML = `
-  <aeliqo-text-field id="name" label="Name" name="person" value="Ada" description="Full name"></aeliqo-text-field>
-  <aeliqo-text-area id="notes" label="Notes" name="notes" default-value="Draft"></aeliqo-text-area>
-  <aeliqo-number-field id="amount" label="Amount" name="amount" locale="de-DE" text="1.234,50" value="1234.50" unit="EUR"></aeliqo-number-field>
-  <aeliqo-checkbox id="agree" label="Agree" name="agree" value="yes"></aeliqo-checkbox>
-  <aeliqo-select id="country" label="Country" name="country"></aeliqo-select>
+  <varendo-text-field id="name" label="Name" name="person" value="Ada" description="Full name"></varendo-text-field>
+  <varendo-text-area id="notes" label="Notes" name="notes" default-value="Draft"></varendo-text-area>
+  <varendo-number-field id="amount" label="Amount" name="amount" locale="de-DE" text="1.234,50" value="1234.50" unit="EUR"></varendo-number-field>
+  <varendo-checkbox id="agree" label="Agree" name="agree" value="yes"></varendo-checkbox>
+  <varendo-select id="country" label="Country" name="country"></varendo-select>
   <button type="reset">Reset</button>`;
 fixture.append(nativeForm);
 
-const country = nativeForm.querySelector<AeliqoSelectElement>('#country');
+const country = nativeForm.querySelector<VarendoSelectElement>('#country');
 if (country === null) throw new Error('Select fixture missing.');
 country.options = [
   { value: 'id', label: 'Indonesia' },
@@ -61,25 +61,25 @@ country.value = 'id';
 const choices = document.createElement('div');
 choices.id = 'choices';
 choices.innerHTML = `
-  <aeliqo-radio-group id="radio" label="Role"></aeliqo-radio-group>
-  <aeliqo-switch id="switch" label="Notifications"></aeliqo-switch>
-  <aeliqo-combobox id="combo" label="Person"></aeliqo-combobox>
-  <aeliqo-date-field id="date" label="Date"></aeliqo-date-field>
-  <aeliqo-date-range id="range" label="Period"></aeliqo-date-range>
-  <aeliqo-slider id="slider" label="Progress"></aeliqo-slider>
-  <aeliqo-search-field id="search" label="Search"></aeliqo-search-field>
-  <aeliqo-file-input id="file" label="Attachment"></aeliqo-file-input>`;
+  <varendo-radio-group id="radio" label="Role"></varendo-radio-group>
+  <varendo-switch id="switch" label="Notifications"></varendo-switch>
+  <varendo-combobox id="combo" label="Person"></varendo-combobox>
+  <varendo-date-field id="date" label="Date"></varendo-date-field>
+  <varendo-date-range id="range" label="Period"></varendo-date-range>
+  <varendo-slider id="slider" label="Progress"></varendo-slider>
+  <varendo-search-field id="search" label="Search"></varendo-search-field>
+  <varendo-file-input id="file" label="Attachment"></varendo-file-input>`;
 fixture.append(choices);
 
-const radio = choices.querySelector<AeliqoRadioGroupElement>('#radio');
-const combo = choices.querySelector<AeliqoComboboxElement>('#combo');
-const date = choices.querySelector<AeliqoDateFieldElement>('#date');
-const range = choices.querySelector<AeliqoDateRangeElement>('#range');
-const slider = choices.querySelector<AeliqoSliderElement>('#slider');
-const search = choices.querySelector<AeliqoSearchFieldElement>('#search');
+const radio = choices.querySelector<VarendoRadioGroupElement>('#radio');
+const combo = choices.querySelector<VarendoComboboxElement>('#combo');
+const date = choices.querySelector<VarendoDateFieldElement>('#date');
+const range = choices.querySelector<VarendoDateRangeElement>('#range');
+const slider = choices.querySelector<VarendoSliderElement>('#slider');
+const search = choices.querySelector<VarendoSearchFieldElement>('#search');
 if (radio === null || combo === null || date === null || range === null || slider === null || search === null)
   throw new Error('Choice fixture missing.');
-const options: readonly AeliqoOption[] = [
+const options: readonly VarendoOption[] = [
   { value: 'ada', label: 'Ada Lovelace', description: 'Engineer' },
   { value: 'grace', label: 'Grace Hopper', description: 'Admiral' },
 ];
@@ -95,28 +95,28 @@ slider.value = 40;
 search.queryOnInput = true;
 search.debounceMs = 30;
 
-const group = document.createElement('aeliqo-field-group') as AeliqoFieldGroupElement;
+const group = document.createElement('varendo-field-group') as VarendoFieldGroupElement;
 group.id = 'group';
 group.legend = 'Profile';
 group.description = 'Fields are validated together.';
-const groupedField = document.createElement('aeliqo-text-field');
+const groupedField = document.createElement('varendo-text-field');
 groupedField.setAttribute('label', 'Profile name');
 group.append(groupedField);
 fixture.append(group);
 
-const appForm = document.createElement('aeliqo-form') as AeliqoFormElement;
+const appForm = document.createElement('varendo-form') as VarendoFormElement;
 appForm.id = 'app-form';
-const appField = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+const appField = document.createElement('varendo-text-field') as VarendoTextFieldElement;
 appField.label = 'Required app field';
 appField.name = 'app-field';
 appField.required = true;
 appForm.append(appField);
-appForm.addEventListener('aeliqo-form-submit', () => {
-  (window as Window & { aeliqoInputSubmitted?: boolean }).aeliqoInputSubmitted = true;
+appForm.addEventListener('varendo-form-submit', () => {
+  (window as Window & { varendoInputSubmitted?: boolean }).varendoInputSubmitted = true;
 });
 fixture.append(appForm);
 
 Object.assign(window, {
-  aeliqoInputReady: true,
-  aeliqoInputFixture: { nativeForm, country, radio, combo, date, range, slider, search, appForm },
+  varendoInputReady: true,
+  varendoInputFixture: { nativeForm, country, radio, combo, date, range, slider, search, appForm },
 });

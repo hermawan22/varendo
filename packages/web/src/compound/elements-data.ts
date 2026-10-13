@@ -2,23 +2,23 @@ import { css, html, nothing } from 'lit';
 import type { ResultRef } from '@varendo/core';
 import { stableDataRecordKey, stableDataValueKey } from '../data/shared.js';
 import type {
-  AeliqoBreakdownGroup,
-  AeliqoBreakdownGroupDetail,
-  AeliqoComparisonMetric,
-  AeliqoComparisonSetDetail,
-  AeliqoCompoundStatus,
+  VarendoBreakdownGroup,
+  VarendoBreakdownGroupDetail,
+  VarendoComparisonMetric,
+  VarendoComparisonSetDetail,
+  VarendoCompoundStatus,
 } from './types.js';
 import type {
-  AeliqoDataColumn,
-  AeliqoDataRecord,
-  AeliqoDataScope,
-  AeliqoFieldOption,
-  AeliqoFilterPredicate,
-  AeliqoFilterChangeDetail,
-  AeliqoSelectionDetail,
+  VarendoDataColumn,
+  VarendoDataRecord,
+  VarendoDataScope,
+  VarendoFieldOption,
+  VarendoFilterPredicate,
+  VarendoFilterChangeDetail,
+  VarendoSelectionDetail,
 } from '../data/types.js';
-import type { AeliqoTableColumn, AeliqoTableRow } from '../types.js';
-import { AeliqoCompoundElement, aeliqoCompoundThemeStyles } from './base.js';
+import type { VarendoTableColumn, VarendoTableRow } from '../types.js';
+import { VarendoCompoundElement, varendoCompoundThemeStyles } from './base.js';
 import {
   MAX_BREAKDOWN_GROUPS,
   MAX_COMPARISON_KEYS,
@@ -29,7 +29,7 @@ import {
   tableCell,
 } from './shared.js';
 
-export class AeliqoExplorerElement extends AeliqoCompoundElement {
+export class VarendoExplorerElement extends VarendoCompoundElement {
   static readonly properties = {
     fields: { attribute: false },
     predicate: { attribute: false },
@@ -51,11 +51,11 @@ export class AeliqoExplorerElement extends AeliqoCompoundElement {
     selection: { type: String },
   };
   static readonly styles = [
-    ...aeliqoCompoundThemeStyles,
+    ...varendoCompoundThemeStyles,
     css`
       [part='panels'] {
         display: grid;
-        gap: var(--aeliqo-space-24, 1.5rem);
+        gap: var(--varendo-space-24, 1.5rem);
         grid-template-columns: minmax(12rem, 0.7fr) minmax(16rem, 1.3fr);
       }
       @media (max-width: 48rem) {
@@ -65,18 +65,18 @@ export class AeliqoExplorerElement extends AeliqoCompoundElement {
       }
     `,
   ];
-  fields: readonly AeliqoFieldOption[] = [];
-  predicate: AeliqoFilterPredicate | undefined;
-  rows: readonly AeliqoDataRecord[] = [];
-  columns: readonly AeliqoDataColumn[] = [];
+  fields: readonly VarendoFieldOption[] = [];
+  predicate: VarendoFilterPredicate | undefined;
+  rows: readonly VarendoDataRecord[] = [];
+  columns: readonly VarendoDataColumn[] = [];
   identity: readonly string[] = [];
   entity = 'record';
   selectedKey = '';
-  detailRecord: AeliqoDataRecord | undefined;
-  detailFields: readonly AeliqoDataColumn[] = [];
+  detailRecord: VarendoDataRecord | undefined;
+  detailFields: readonly VarendoDataColumn[] = [];
   result: ResultRef | undefined;
-  scope: AeliqoDataScope | undefined;
-  status: AeliqoCompoundStatus = 'ready';
+  scope: VarendoDataScope | undefined;
+  status: VarendoCompoundStatus = 'ready';
   message = '';
   title = 'Explore';
   filterLabel = 'Filter';
@@ -95,17 +95,17 @@ export class AeliqoExplorerElement extends AeliqoCompoundElement {
       <div part="panels">
         <section part="filter" aria-label=${this.filterLabel}>
           <h3>${this.filterLabel}</h3>
-          <aeliqo-filter-builder
+          <varendo-filter-builder
             .fields=${this.fields}
             .predicate=${this.predicate}
             .entity=${this.entity}
             .status=${current}
-            @aeliqo-filter-change=${this.forwardFilter}
-          ></aeliqo-filter-builder>
+            @varendo-filter-change=${this.forwardFilter}
+          ></varendo-filter-builder>
         </section>
         <section part="collection" aria-label=${this.collectionLabel}>
           <h3>${this.collectionLabel}</h3>
-          <aeliqo-record-list
+          <varendo-record-list
             .rows=${this.rows}
             .columns=${this.columns}
             .identity=${this.identity}
@@ -115,12 +115,12 @@ export class AeliqoExplorerElement extends AeliqoCompoundElement {
             .scope=${this.scope}
             .selection=${this.selection}
             .status=${current}
-            @aeliqo-record-list-selection=${this.forwardSelection}
-          ></aeliqo-record-list>
+            @varendo-record-list-selection=${this.forwardSelection}
+          ></varendo-record-list>
         </section>
         <section part="detail">
           <h3>${this.detailLabel}</h3>
-          <aeliqo-detail
+          <varendo-detail
             .title=${this.detailLabel}
             .record=${detail}
             .fields=${this.detailFields.length ? this.detailFields : this.columns}
@@ -128,26 +128,26 @@ export class AeliqoExplorerElement extends AeliqoCompoundElement {
             .entity=${this.entity}
             .scope=${this.scope}
             .status=${current}
-          ></aeliqo-detail>
+          ></varendo-detail>
         </section>
       </div>
       ${statusText ? html`<p part="status" role="status">${statusText}</p>` : nothing}
     </section>`;
   }
-  private rowKey(row: AeliqoDataRecord): string | undefined {
+  private rowKey(row: VarendoDataRecord): string | undefined {
     return stableDataRecordKey(row, this.identity);
   }
   private readonly forwardFilter = (raw: Event): void => {
-    const detail = (raw as CustomEvent<AeliqoFilterChangeDetail>).detail;
-    if (detail) this.dispatchEvent(event('aeliqo-explorer-filter', detail));
+    const detail = (raw as CustomEvent<VarendoFilterChangeDetail>).detail;
+    if (detail) this.dispatchEvent(event('varendo-explorer-filter', detail));
   };
   private readonly forwardSelection = (raw: Event): void => {
-    const detail = (raw as CustomEvent<AeliqoSelectionDetail>).detail;
-    if (detail) this.dispatchEvent(event('aeliqo-explorer-selection', detail));
+    const detail = (raw as CustomEvent<VarendoSelectionDetail>).detail;
+    if (detail) this.dispatchEvent(event('varendo-explorer-selection', detail));
   };
 }
 
-export class AeliqoComparisonElement extends AeliqoCompoundElement {
+export class VarendoComparisonElement extends VarendoCompoundElement {
   static readonly properties = {
     compareKeys: { attribute: false },
     compareSet: { attribute: false },
@@ -163,7 +163,7 @@ export class AeliqoComparisonElement extends AeliqoCompoundElement {
     selectedKey: { attribute: 'selected-key', type: String },
   };
   static readonly styles = [
-    ...aeliqoCompoundThemeStyles,
+    ...varendoCompoundThemeStyles,
     css`
       [part='table'] {
         max-inline-size: 100%;
@@ -173,13 +173,13 @@ export class AeliqoComparisonElement extends AeliqoCompoundElement {
   ];
   compareKeys: readonly string[] = [];
   compareSet: readonly { readonly key: string; readonly label?: string }[] = [];
-  metrics: readonly AeliqoComparisonMetric[] = [];
+  metrics: readonly VarendoComparisonMetric[] = [];
   entity = 'record';
-  status: AeliqoCompoundStatus = 'ready';
+  status: VarendoCompoundStatus = 'ready';
   message = '';
   title = 'Comparison';
   result: ResultRef | undefined;
-  scope: AeliqoDataScope | undefined;
+  scope: VarendoDataScope | undefined;
   identity: readonly string[] = [];
   compatible = true;
   selectedKey = '';
@@ -194,11 +194,11 @@ export class AeliqoComparisonElement extends AeliqoCompoundElement {
       bounded(this.compareSet, MAX_COMPARISON_KEYS).map((item) => [item.key, item.label ?? item.key]),
     );
     const selectedKeys = new Set(keys);
-    const columns: readonly AeliqoTableColumn[] = [
+    const columns: readonly VarendoTableColumn[] = [
       { key: 'metric', label: 'Metric' },
       ...keys.map((key) => ({ key: `comparison:${key}`, label: labels.get(key) ?? key })),
     ];
-    const rows: readonly AeliqoTableRow[] = metrics.map((metric) => ({
+    const rows: readonly VarendoTableRow[] = metrics.map((metric) => ({
       metricId: metric.id,
       metric: metric.unit ? `${metric.label} (${metric.unit})` : metric.label,
       ...Object.fromEntries(keys.map((key) => [`comparison:${key}`, tableCell(metric.values[key])])),
@@ -220,7 +220,7 @@ export class AeliqoComparisonElement extends AeliqoCompoundElement {
                 ${keys.map((key) => html`<button part="compare-button" type="button" ?disabled=${overflow} aria-pressed=${String(selectedKeys.has(key))} @click=${() => this.requestCompare(key)}>${labels.get(key) ?? key}</button>`)}
               </div>
               <div part="table" role="region" aria-label="Simultaneous comparison">
-                <aeliqo-table
+                <varendo-table
                   .caption=${`${this.title}: ${keys.length} ${this.entity}${keys.length === 1 ? '' : 's'}`}
                   .columns=${columns}
                   .rows=${rows}
@@ -228,7 +228,7 @@ export class AeliqoComparisonElement extends AeliqoCompoundElement {
                   .result=${this.result}
                   .scope=${this.scope}
                   status=${current}
-                ></aeliqo-table>
+                ></varendo-table>
               </div>
               ${boundedNotice ? html`<p part="hint">Showing a bounded comparison window. Narrow the compare set to edit it.</p>` : nothing}
             `
@@ -242,7 +242,7 @@ export class AeliqoComparisonElement extends AeliqoCompoundElement {
     const next = current.includes(key) ? current.filter((item) => item !== key) : [...current, key];
     if (next.length === 0) return;
     this.dispatchEvent(
-      event<AeliqoComparisonSetDetail>('aeliqo-comparison-set', {
+      event<VarendoComparisonSetDetail>('varendo-comparison-set', {
         source: 'user',
         entity: this.entity,
         keys: next,
@@ -253,7 +253,7 @@ export class AeliqoComparisonElement extends AeliqoCompoundElement {
   };
 }
 
-export class AeliqoBreakdownElement extends AeliqoCompoundElement {
+export class VarendoBreakdownElement extends VarendoCompoundElement {
   static readonly properties = {
     groups: { attribute: false },
     rows: { attribute: false },
@@ -270,7 +270,7 @@ export class AeliqoBreakdownElement extends AeliqoCompoundElement {
     selectedGroup: { attribute: 'selected-group', type: String },
   };
   static readonly styles = [
-    ...aeliqoCompoundThemeStyles,
+    ...varendoCompoundThemeStyles,
     css`
       [part='table'] {
         max-inline-size: 100%;
@@ -278,28 +278,28 @@ export class AeliqoBreakdownElement extends AeliqoCompoundElement {
       }
     `,
   ];
-  groups: readonly AeliqoBreakdownGroup[] = [];
-  rows: readonly AeliqoDataRecord[] = [];
-  columns: readonly AeliqoDataColumn[] = [];
+  groups: readonly VarendoBreakdownGroup[] = [];
+  rows: readonly VarendoDataRecord[] = [];
+  columns: readonly VarendoDataColumn[] = [];
   identity: readonly string[] = [];
   entity = 'record';
   groupLabel = 'Group';
   metricLabel = 'Metric';
   result: ResultRef | undefined;
-  scope: AeliqoDataScope | undefined;
-  status: AeliqoCompoundStatus = 'ready';
+  scope: VarendoDataScope | undefined;
+  status: VarendoCompoundStatus = 'ready';
   message = '';
   title = 'Breakdown';
   selectedGroup = '';
   protected override render() {
     const current = status(this.status);
     const groups = bounded(this.groups, MAX_BREAKDOWN_GROUPS);
-    const tableColumns: readonly AeliqoTableColumn[] = [
+    const tableColumns: readonly VarendoTableColumn[] = [
       { key: 'group', label: this.groupLabel },
       { key: 'metric', label: this.metricLabel },
       { key: 'records', label: 'Records' },
     ];
-    const tableRows: readonly AeliqoTableRow[] = groups.map((group) => ({
+    const tableRows: readonly VarendoTableRow[] = groups.map((group) => ({
       groupKey: group.key,
       group: group.label,
       metric: group.displayValue ?? tableCell(group.value),
@@ -313,7 +313,7 @@ export class AeliqoBreakdownElement extends AeliqoCompoundElement {
           ${this.scope ? html`<span part="scope">${this.scopeLabel(this.scope)}</span>` : nothing}
         </div>
         <div part="table">
-          <aeliqo-table
+          <varendo-table
             data-reflow="stack"
             .caption=${`${this.title}: grouped ${this.entity} data`}
             .columns=${tableColumns}
@@ -324,15 +324,15 @@ export class AeliqoBreakdownElement extends AeliqoCompoundElement {
             .result=${this.result}
             .scope=${this.scope}
             status=${current}
-            @aeliqo-table-selection=${this.forwardGroupSelection}
-          ></aeliqo-table>
+            @varendo-table-selection=${this.forwardGroupSelection}
+          ></varendo-table>
         </div>
         ${this.groups.length > groups.length ? html`<p part="hint">Showing a bounded group window.</p>` : nothing}
         ${
           this.selectedGroup
             ? html`<section part="detail" aria-label="Contributing records">
                 <h3>Contributing records</h3>
-                <aeliqo-record-list
+                <varendo-record-list
                   .rows=${this.rows}
                   .columns=${this.columns}
                   .identity=${this.identity}
@@ -340,7 +340,7 @@ export class AeliqoBreakdownElement extends AeliqoCompoundElement {
                   .result=${this.result}
                   .scope=${this.scope}
                   selection="none"
-                ></aeliqo-record-list>
+                ></varendo-record-list>
               </section>`
             : nothing
         }
@@ -349,12 +349,12 @@ export class AeliqoBreakdownElement extends AeliqoCompoundElement {
     `;
   }
   private readonly forwardGroupSelection = (raw: Event): void => {
-    const detail = (raw as CustomEvent<AeliqoSelectionDetail>).detail;
+    const detail = (raw as CustomEvent<VarendoSelectionDetail>).detail;
     if (!detail || detail.mode !== 'ids' || detail.keys.length === 0) return;
     const group = this.groups.find((candidate) => stableDataValueKey(candidate.key) === detail.keys[0]);
     if (group === undefined) return;
     this.dispatchEvent(
-      event<AeliqoBreakdownGroupDetail>('aeliqo-breakdown-group', {
+      event<VarendoBreakdownGroupDetail>('varendo-breakdown-group', {
         source: 'user',
         key: group.key,
         entity: this.entity,

@@ -7,9 +7,9 @@ contract: 'Explicit/debounced query policy; composition input is not submitted m
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -30,19 +30,19 @@ IME composition never submits early. The host decides whether to run or persist 
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 The default `queryOnInput` value is false. When enabled, `debounceMs` is
 clamped to 0–10,000 milliseconds (250 by default); a host-driven value change
@@ -54,11 +54,11 @@ empty data, a denied source, or a failed request.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -66,9 +66,9 @@ Let the query field use the available row width. Keep search policy and empty fe
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -77,7 +77,7 @@ Let the query field use the available row width. Keep search policy and empty fe
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

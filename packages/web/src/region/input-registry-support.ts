@@ -7,8 +7,8 @@ import {
   type SemanticType,
   type VersionRef,
 } from '@varendo/core';
-import type { AeliqoOption } from '../input/options.js';
-import type { AeliqoInputDraftBinding } from './input-registry-types.js';
+import type { VarendoOption } from '../input/options.js';
+import type { VarendoInputDraftBinding } from './input-registry-types.js';
 
 export const fail = <T>(code: string, message: string): Outcome<T> => ({
   ok: false,
@@ -115,7 +115,7 @@ export function copyJson(value: unknown): unknown {
   return copy(parsed.value);
 }
 
-export function optionList(value: unknown): value is readonly AeliqoOption[] {
+export function optionList(value: unknown): value is readonly VarendoOption[] {
   if (!Array.isArray(value) || value.length === 0 || value.length > 500) return false;
   const seen = new Set<string>();
   return value.every((item) => {
@@ -203,7 +203,7 @@ export function numberValue(type: SemanticType, value: unknown): Outcome<Scalar 
   return typeValue(type, candidate, false);
 }
 
-export function fieldBinding(value: unknown, path: string): Outcome<AeliqoInputDraftBinding> {
+export function fieldBinding(value: unknown, path: string): Outcome<VarendoInputDraftBinding> {
   const field = record(value);
   if (
     field === undefined ||

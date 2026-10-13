@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { defineResource } from '../../packages/core/src/index.js';
-import { AELIQO_AGENT_INSTRUCTIONS, createAppToolEndpoint } from '../../packages/agent/src/app/index.js';
-import { createAeliqoRuntime } from '../../packages/runtime/src/app/index.js';
+import { VARENDO_AGENT_INSTRUCTIONS, createAppToolEndpoint } from '../../packages/agent/src/app/index.js';
+import { createVarendoRuntime } from '../../packages/runtime/src/app/index.js';
 import { createLocalDataService } from '../../packages/runtime/src/data/index.js';
 
 type Json = Record<string, unknown>;
@@ -37,7 +37,7 @@ function setup() {
     },
     authorize: () => ({ ok: true, value: access }),
   });
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     resources: [{ resource: people, data }],
     authority: {
       read: () => ({
@@ -65,7 +65,7 @@ function setup() {
 }
 
 async function render(endpoint: ReturnType<typeof setup>['endpoint'], intent: Json, requestId: string) {
-  const result = await endpoint.invoke('aeliqo_render', intent, { requestId });
+  const result = await endpoint.invoke('varendo_render', intent, { requestId });
   if (!result.ok) throw new Error(result.diagnostics[0].message);
   return result.value;
 }
@@ -75,8 +75,8 @@ describe('agent-friendly app tools', () => {
     const { runtime, endpoint } = setup();
     const tools = await endpoint.discover();
     if (!tools.ok) throw new Error(tools.diagnostics[0].message);
-    const renderTool = tools.value.find((tool) => tool.name === 'aeliqo_render')!;
-    expect(renderTool.description).toContain('aeliqo_context');
+    const renderTool = tools.value.find((tool) => tool.name === 'varendo_render')!;
+    expect(renderTool.description).toContain('varendo_context');
     expect(renderTool.description).toContain('"kind":"analyze"');
     expect(renderTool.description).toContain('"renderer-ready" confirms the host showed the view');
     expect(renderTool.description).toContain('"plan-committed" confirms only that the plan committed');
@@ -94,14 +94,14 @@ describe('agent-friendly app tools', () => {
       type: 'string',
       enum: ['day', 'week', 'month', 'quarter', 'year'],
     });
-    expect(tools.value.find((tool) => tool.name === 'aeliqo_context')!.description).toContain('examples');
+    expect(tools.value.find((tool) => tool.name === 'varendo_context')!.description).toContain('examples');
     endpoint.close();
     runtime.dispose();
   });
 
   it('returns ready-to-send examples, view purposes, and time grains that all render', async () => {
     const { runtime, endpoint } = setup();
-    const context = await endpoint.invoke('aeliqo_context', {}, { requestId: 'context-1' });
+    const context = await endpoint.invoke('varendo_context', {}, { requestId: 'context-1' });
     if (!context.ok) throw new Error(context.diagnostics[0].message);
     const value = (context.value as { value: Json }).value;
     expect(value.timeGrains).toEqual(['day', 'week', 'month', 'quarter', 'year']);
@@ -132,7 +132,7 @@ describe('agent-friendly app tools', () => {
   it('still rejects an invented measure with a diagnostic that names it', async () => {
     const { runtime, endpoint } = setup();
     const result = await endpoint.invoke(
-      'aeliqo_render',
+      'varendo_render',
       { kind: 'analyze', resource: 'people', measures: [{ id: 'salary' }] },
       { requestId: 'invented-1' },
     );
@@ -146,7 +146,7 @@ describe('agent-friendly app tools', () => {
   it('explains the expected object shape when measures are sent as strings', async () => {
     const { runtime, endpoint } = setup();
     const result = await endpoint.invoke(
-      'aeliqo_render',
+      'varendo_render',
       { kind: 'analyze', resource: 'people', measures: ['hires'] },
       { requestId: 'measure-shape-1' },
     );
@@ -189,7 +189,7 @@ describe('agent-friendly app tools', () => {
     ];
 
     for (const [index, item] of cases.entries()) {
-      const result = await endpoint.invoke('aeliqo_render', item.input, { requestId: `invalid-${index}` });
+      const result = await endpoint.invoke('varendo_render', item.input, { requestId: `invalid-${index}` });
       if (!result.ok) throw new Error(JSON.stringify(result));
       expect(result.value.diagnostics[0]?.message, JSON.stringify(result.value.diagnostics)).toContain(item.expected);
     }
@@ -198,7 +198,7 @@ describe('agent-friendly app tools', () => {
   });
 
   it('exports recommended model instructions', () => {
-    expect(AELIQO_AGENT_INSTRUCTIONS).toContain('aeliqo_context');
-    expect(AELIQO_AGENT_INSTRUCTIONS.length).toBeLessThanOrEqual(16_384);
+    expect(VARENDO_AGENT_INSTRUCTIONS).toContain('varendo_context');
+    expect(VARENDO_AGENT_INSTRUCTIONS.length).toBeLessThanOrEqual(16_384);
   });
 });

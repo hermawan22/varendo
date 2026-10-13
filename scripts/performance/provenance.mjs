@@ -74,13 +74,13 @@ export async function writeArchiveManifest(repository, sourceSHA, source, destin
 }
 
 export async function createSourceGuard(root, env = process.env) {
-  const path = env.AELIQO_SOURCE_ARCHIVE_MANIFEST;
+  const path = env.VARENDO_SOURCE_ARCHIVE_MANIFEST;
   if (!path) {
-    const commit = env.AELIQO_SOURCE_COMMIT ?? git(root, ['rev-parse', 'HEAD']).trim();
+    const commit = env.VARENDO_SOURCE_COMMIT ?? git(root, ['rev-parse', 'HEAD']).trim();
     return { commit, current: async () => git(root, ['rev-parse', 'HEAD']).trim() === commit };
   }
   const manifest = JSON.parse(await readFile(path, 'utf8'));
-  if (manifest.sourceSHA !== env.AELIQO_SOURCE_COMMIT || !(await verifyArchive(root, manifest)))
+  if (manifest.sourceSHA !== env.VARENDO_SOURCE_COMMIT || !(await verifyArchive(root, manifest)))
     throw Error('Archive provenance does not match the requested source and actual tree');
   return { commit: manifest.sourceSHA, current: () => verifyArchive(root, manifest) };
 }

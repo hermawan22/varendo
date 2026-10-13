@@ -8,13 +8,13 @@ description: 'Five public packages, their root APIs, and the subpaths for specia
 
 <p class="lead">Pick the smallest entry point that does the work. Each package root covers the common jobs; specialized APIs live on explicit subpaths.</p>
 
-| Package           | Root provides                                                              | Documented subpaths                                                                                                                                         |
-| ----------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Package            | Root provides                                                              | Documented subpaths                                                                                                                                         |
+| ------------------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@varendo/core`    | Contracts, typed parsers, `defineResource`, `compileIntent`, primary types | `app`, `agent`, `contracts`, `expressions`, `features`, `interaction`, `plot`, `presentation`, `query`, `schema`, `schemas/*`, `semantics`, `visualization` |
-| `@varendo/runtime` | `createAeliqoRuntime` and runtime types                                    | `actions`, `app`, `audit`, `data`, `evaluation`, `interaction`, `meaning`, `persistence`, `presentation`, `regions`, `results`, `scopes`, `surfaces`        |
+| `@varendo/runtime` | `createVarendoRuntime` and runtime types                                   | `actions`, `app`, `audit`, `data`, `evaluation`, `interaction`, `meaning`, `persistence`, `presentation`, `regions`, `results`, `scopes`, `surfaces`        |
 | `@varendo/web`     | Element registration and recipe policy types                               | `app`, `server`, `region`, `recipes`, `register`, `events`, `styles`, `table`, `chart`, plus the family and component entries below                         |
 | `@varendo/react`   | Provider, Region, render and surface hooks, element registration           | `app`, `surface`, `ssr`, `foundation`, `inputs`, `navigation`, `feedback`, `data`, `plot`, `visualization`, `compound`                                      |
-| `@varendo/agent`   | `createAppToolEndpoint`, `createAppToolSession`, and host session types      | `app`, `browser`, `capabilities`, `mcp`, `meaning`, `model`, `model/openai`, `model/responses`, `protocol`, `session`, `webmcp`                             |
+| `@varendo/agent`   | `createAppToolEndpoint`, `createAppToolSession`, and host session types    | `app`, `browser`, `capabilities`, `mcp`, `meaning`, `model`, `model/openai`, `model/responses`, `protocol`, `session`, `webmcp`                             |
 
 `@varendo/web` also publishes family entries: `foundation`, `inputs`,
 `navigation`, `feedback`, `data`, `plot`, `visualization`, and `compound`.
@@ -47,17 +47,17 @@ them together:
 
 ```sh
 npm install --save-exact \
-  @varendo/core@0.1.0 \
-  @varendo/runtime@0.1.0 \
-  @varendo/web@0.1.0 \
-  @varendo/react@0.1.0 \
-  @varendo/agent@0.1.0
+  @varendo/core@0.2.0 \
+  @varendo/runtime@0.2.0 \
+  @varendo/web@0.2.0 \
+  @varendo/react@0.2.0 \
+  @varendo/agent@0.2.0
 ```
 
 Component-only consumers can install only `@varendo/web`; skip `@varendo/agent`
 when no agent connects.
 
-<aeliqo-release-status></aeliqo-release-status>
+<varendo-release-status></varendo-release-status>
 
 The historical `0.5.0-rc.1` was published from an earlier source revision. It
 does not contain the React local data path documented here. Do not mix package

@@ -1,16 +1,16 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from './base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from './base.js';
 
-export type AeliqoStackDirection = 'row' | 'column';
-export type AeliqoStackGap = 0 | 4 | 8 | 12 | 16 | 24 | 32 | 48;
-export type AeliqoStackAlign = 'start' | 'center' | 'end' | 'stretch';
-export type AeliqoStackJustify = 'start' | 'center' | 'end' | 'between';
+export type VarendoStackDirection = 'row' | 'column';
+export type VarendoStackGap = 0 | 4 | 8 | 12 | 16 | 24 | 32 | 48;
+export type VarendoStackAlign = 'start' | 'center' | 'end' | 'stretch';
+export type VarendoStackJustify = 'start' | 'center' | 'end' | 'between';
 
-const STACK_ALIGNS: ReadonlySet<AeliqoStackAlign> = new Set(['start', 'center', 'end', 'stretch']);
-const STACK_JUSTIFIES: ReadonlySet<AeliqoStackJustify> = new Set(['start', 'center', 'end', 'between']);
-const STACK_GAPS: ReadonlySet<AeliqoStackGap> = new Set([0, 4, 8, 12, 16, 24, 32, 48]);
+const STACK_ALIGNS: ReadonlySet<VarendoStackAlign> = new Set(['start', 'center', 'end', 'stretch']);
+const STACK_JUSTIFIES: ReadonlySet<VarendoStackJustify> = new Set(['start', 'center', 'end', 'between']);
+const STACK_GAPS: ReadonlySet<VarendoStackGap> = new Set([0, 4, 8, 12, 16, 24, 32, 48]);
 
-export class AeliqoStackElement extends AeliqoFoundationElement {
+export class VarendoStackElement extends VarendoFoundationElement {
   static readonly properties = {
     direction: { type: String },
     gap: { type: Number },
@@ -19,10 +19,10 @@ export class AeliqoStackElement extends AeliqoFoundationElement {
     wrap: { type: Boolean, reflect: true },
   };
 
-  direction: AeliqoStackDirection = 'column';
-  gap: AeliqoStackGap = 16;
-  align: AeliqoStackAlign = 'stretch';
-  justify: AeliqoStackJustify = 'start';
+  direction: VarendoStackDirection = 'column';
+  gap: VarendoStackGap = 16;
+  align: VarendoStackAlign = 'stretch';
+  justify: VarendoStackJustify = 'start';
   wrap = false;
 
   protected override render() {
@@ -40,7 +40,7 @@ export class AeliqoStackElement extends AeliqoFoundationElement {
   }
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: block;
@@ -87,25 +87,25 @@ export class AeliqoStackElement extends AeliqoFoundationElement {
         gap: 0;
       }
       .gap-4 {
-        gap: var(--aeliqo-space-4, 0.25rem);
+        gap: var(--varendo-space-4, 0.25rem);
       }
       .gap-8 {
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
       }
       .gap-12 {
-        gap: var(--aeliqo-space-12, 0.75rem);
+        gap: var(--varendo-space-12, 0.75rem);
       }
       .gap-16 {
-        gap: var(--aeliqo-space-16, 1rem);
+        gap: var(--varendo-space-16, 1rem);
       }
       .gap-24 {
-        gap: var(--aeliqo-space-24, 1.5rem);
+        gap: var(--varendo-space-24, 1.5rem);
       }
       .gap-32 {
-        gap: var(--aeliqo-space-32, 2rem);
+        gap: var(--varendo-space-32, 2rem);
       }
       .gap-48 {
-        gap: var(--aeliqo-space-48, 3rem);
+        gap: var(--varendo-space-48, 3rem);
       }
     `,
   ];

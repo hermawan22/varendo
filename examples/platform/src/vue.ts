@@ -1,15 +1,15 @@
 import './csp-bootstrap.js';
 import { createApp, h, ref, type App, type VNode } from 'vue';
-import { registerAeliqoElements } from '@varendo/web';
-import { AeliqoInputChangeEvent } from '@varendo/web/inputs';
+import { registerVarendoElements } from '@varendo/web';
+import { VarendoInputChangeEvent } from '@varendo/web/inputs';
 
-registerAeliqoElements();
+registerVarendoElements();
 
 const VueFixture = {
   setup(): () => VNode {
     const value = ref('Vue');
     const onInput = (event: Event): void => {
-      if (event instanceof AeliqoInputChangeEvent) {
+      if (event instanceof VarendoInputChangeEvent) {
         value.value = event.detail.value;
       }
     };
@@ -19,15 +19,15 @@ const VueFixture = {
         h('h1', 'Vue platform fixture'),
         h('p', { id: 'vue-value', role: 'status' }, value.value),
         h('form', { id: 'vue-form' }, [
-          h('aeliqo-text-field', {
+          h('varendo-text-field', {
             label: 'Vue name',
             value: value.value,
             name: 'person',
-            'onAeliqo-input-change': onInput,
+            'onVarendo-input-change': onInput,
           }),
           h('button', { type: 'submit' }, 'Submit'),
         ]),
-        h('aeliqo-table', {
+        h('varendo-table', {
           caption: 'People',
           columns: [
             { key: 'name', label: 'Name' },
@@ -38,7 +38,7 @@ const VueFixture = {
             { name: 'Grace', role: 'Researcher' },
           ],
         }),
-        h('aeliqo-chart', {
+        h('varendo-chart', {
           title: 'Weekly activity',
           summary: 'A small, accessible trend example.',
           unit: 'events',

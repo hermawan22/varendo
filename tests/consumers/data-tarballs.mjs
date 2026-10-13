@@ -25,7 +25,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/data-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-data-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-data-consumer-'));
 const consumerReal = await realpath(consumer);
 
 function run(argv, cwd, encoding = 'utf8') {
@@ -182,7 +182,7 @@ for (const name of packageNames) {
   assert.notEqual(manifest.private, true);
   await clearCompiledOutput(join(directory, 'dist'));
   run(['pnpm', 'build'], directory);
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));
@@ -329,37 +329,37 @@ await writeFile(
   join(consumer, 'consumer.tsx'),
   `
 import React from 'react';
-import {createAeliqoPresentationRegistry} from '@varendo/web/region';
-import type {AeliqoDataBinding,
-  AeliqoPresentationRegistryOptions} from '@varendo/web/region';
+import {createVarendoPresentationRegistry} from '@varendo/web/region';
+import type {VarendoDataBinding,
+  VarendoPresentationRegistryOptions} from '@varendo/web/region';
 import type {Result,
   ResultRef,
 } from '@varendo/core';
 import {
-  AeliqoMetric,
-  AeliqoDelta,
-  AeliqoKeyValue,
-  AeliqoDetail,
-  AeliqoRecordList,
-  AeliqoCardCollection,
-  AeliqoSelectionSummary,
-  AeliqoFilterBuilder,
-  AeliqoTable} from '@varendo/react/data';
-import {AeliqoMetricElement} from '@varendo/web/metric';
-import {AeliqoDeltaElement,
-  calculateAeliqoDelta} from '@varendo/web/delta';
-import {AeliqoKeyValueElement} from '@varendo/web/key-value';
-import {AeliqoDetailElement} from '@varendo/web/detail';
-import {AeliqoRecordListElement} from '@varendo/web/record-list';
-import {AeliqoCardCollectionElement} from '@varendo/web/card-collection';
-import {AeliqoSelectionSummaryElement} from '@varendo/web/selection-summary';
-import {AeliqoFilterBuilderElement} from '@varendo/web/filter-builder';
-import {AeliqoTableElement,
-  AELIQO_TABLE_MAX_VIRTUAL_ROWS} from '@varendo/web/data';
-import type {AeliqoDataScope,
-  AeliqoFilterChangeDetail,
-  AeliqoTableRow,
-  AeliqoTableWindowDetail} from '@varendo/web/data';
+  VarendoMetric,
+  VarendoDelta,
+  VarendoKeyValue,
+  VarendoDetail,
+  VarendoRecordList,
+  VarendoCardCollection,
+  VarendoSelectionSummary,
+  VarendoFilterBuilder,
+  VarendoTable} from '@varendo/react/data';
+import {VarendoMetricElement} from '@varendo/web/metric';
+import {VarendoDeltaElement,
+  calculateVarendoDelta} from '@varendo/web/delta';
+import {VarendoKeyValueElement} from '@varendo/web/key-value';
+import {VarendoDetailElement} from '@varendo/web/detail';
+import {VarendoRecordListElement} from '@varendo/web/record-list';
+import {VarendoCardCollectionElement} from '@varendo/web/card-collection';
+import {VarendoSelectionSummaryElement} from '@varendo/web/selection-summary';
+import {VarendoFilterBuilderElement} from '@varendo/web/filter-builder';
+import {VarendoTableElement,
+  VARENDO_TABLE_MAX_VIRTUAL_ROWS} from '@varendo/web/data';
+import type {VarendoDataScope,
+  VarendoFilterChangeDetail,
+  VarendoTableRow,
+  VarendoTableWindowDetail} from '@varendo/web/data';
 
 const rows = [
   {id: 'a',
@@ -368,7 +368,7 @@ const rows = [
   {id: 'b',
   name: 'Lin',
   amount: {decimal: '2.50'}},
-  ] as const satisfies readonly AeliqoTableRow[];
+  ] as const satisfies readonly VarendoTableRow[];
 const semanticRef = {id: 'semantic-result',
   revision: '1',
   outputId: 'people',
@@ -411,12 +411,12 @@ const semanticResult: Result = {
   warnings: [],
   lineage: [],
   };
-const semanticBinding: AeliqoDataBinding = {result: semanticResult,
+const semanticBinding: VarendoDataBinding = {result: semanticResult,
   rows: [{id: 'a',
   amount: {decimal: '12.50'}}]};
 const semanticOptions = {data: [semanticBinding],
-  resolveEntity: (value: Result) => value.ref.outputId === 'people' ? 'person' : undefined} satisfies AeliqoPresentationRegistryOptions;
-const semanticRegistry = createAeliqoPresentationRegistry(semanticOptions);
+  resolveEntity: (value: Result) => value.ref.outputId === 'people' ? 'person' : undefined} satisfies VarendoPresentationRegistryOptions;
+const semanticRegistry = createVarendoPresentationRegistry(semanticOptions);
 if (!semanticRegistry.ok) throw new Error(semanticRegistry.diagnostics[0]?.message ?? 'semantic registry failed');
 void semanticRegistry.value;
 const columns = [{key: 'id',
@@ -425,51 +425,51 @@ const columns = [{key: 'id',
   label: 'Name'},
   {key: 'amount',
   label: 'Amount'}] as const;
-const scope: AeliqoDataScope = {loaded: 2,
+const scope: VarendoDataScope = {loaded: 2,
   filteredTotal: 2,
   kind: 'filtered'};
-const delta = calculateAeliqoDelta({decimal: '0.0001'},
+const delta = calculateVarendoDelta({decimal: '0.0001'},
   {decimal: '0'},
   'percentage-point');
 if (delta.status !== 'ready') throw new Error('delta unexpectedly unavailable');
-const dataElements: readonly [typeof AeliqoMetricElement,
-  typeof AeliqoDeltaElement,
-  typeof AeliqoKeyValueElement,
-  typeof AeliqoDetailElement,
-  typeof AeliqoRecordListElement,
-  typeof AeliqoCardCollectionElement,
-  typeof AeliqoSelectionSummaryElement,
-  typeof AeliqoFilterBuilderElement,
-  typeof AeliqoTableElement] = [AeliqoMetricElement,
-  AeliqoDeltaElement,
-  AeliqoKeyValueElement,
-  AeliqoDetailElement,
-  AeliqoRecordListElement,
-  AeliqoCardCollectionElement,
-  AeliqoSelectionSummaryElement,
-  AeliqoFilterBuilderElement,
-  AeliqoTableElement];
+const dataElements: readonly [typeof VarendoMetricElement,
+  typeof VarendoDeltaElement,
+  typeof VarendoKeyValueElement,
+  typeof VarendoDetailElement,
+  typeof VarendoRecordListElement,
+  typeof VarendoCardCollectionElement,
+  typeof VarendoSelectionSummaryElement,
+  typeof VarendoFilterBuilderElement,
+  typeof VarendoTableElement] = [VarendoMetricElement,
+  VarendoDeltaElement,
+  VarendoKeyValueElement,
+  VarendoDetailElement,
+  VarendoRecordListElement,
+  VarendoCardCollectionElement,
+  VarendoSelectionSummaryElement,
+  VarendoFilterBuilderElement,
+  VarendoTableElement];
 void dataElements;
-const handleWindow = (event: CustomEvent<AeliqoTableWindowDetail>) => { const start: number = event.detail.start; const reason: 'keyboard' = event.detail.reason; void [start,
+const handleWindow = (event: CustomEvent<VarendoTableWindowDetail>) => { const start: number = event.detail.start; const reason: 'keyboard' = event.detail.reason; void [start,
   reason]; };
-const handleFilter = (event: CustomEvent<AeliqoFilterChangeDetail>) => { const applied: true = event.detail.applied; void applied; };
+const handleFilter = (event: CustomEvent<VarendoFilterChangeDetail>) => { const applied: true = event.detail.applied; void applied; };
 const app = <>
-  <AeliqoMetric label='Revenue' value={rows[0].amount} unit='USD' scope={scope} />
-  <AeliqoDelta label='Rate' current={{decimal: '0.0001'}} baseline={{decimal: '0'}} mode='percentage-point' />
-  <AeliqoKeyValue items={[{key: 'owner',
+  <VarendoMetric label='Revenue' value={rows[0].amount} unit='USD' scope={scope} />
+  <VarendoDelta label='Rate' current={{decimal: '0.0001'}} baseline={{decimal: '0'}} mode='percentage-point' />
+  <VarendoKeyValue items={[{key: 'owner',
   label: 'Owner',
   value: 'Ada'}]} />
-  <AeliqoDetail fields={columns} identity={['id']} record={rows[0]} />
-  <AeliqoRecordList columns={columns} rows={rows} identity={['id']} onSelectionChange={event => { const keys: readonly string[] = event.detail.keys; void keys; }} onLoadMore={() => undefined} />
-  <AeliqoCardCollection columns={columns} rows={rows} identity={['id']} onSelectionChange={event => { const mode: 'clear' | 'ids' = event.detail.mode; void mode; }} onLoadMore={() => undefined} />
-  <AeliqoSelectionSummary entity='person' selectedKeys={['string:1:a']} onClear={event => { const mode: 'clear' | 'ids' = event.detail.mode; void mode; }} />
-  <AeliqoFilterBuilder fields={[{id: 'name',
+  <VarendoDetail fields={columns} identity={['id']} record={rows[0]} />
+  <VarendoRecordList columns={columns} rows={rows} identity={['id']} onSelectionChange={event => { const keys: readonly string[] = event.detail.keys; void keys; }} onLoadMore={() => undefined} />
+  <VarendoCardCollection columns={columns} rows={rows} identity={['id']} onSelectionChange={event => { const mode: 'clear' | 'ids' = event.detail.mode; void mode; }} onLoadMore={() => undefined} />
+  <VarendoSelectionSummary entity='person' selectedKeys={['string:1:a']} onClear={event => { const mode: 'clear' | 'ids' = event.detail.mode; void mode; }} />
+  <VarendoFilterBuilder fields={[{id: 'name',
   label: 'Name',
   type: 'text'}]} onFilterChange={handleFilter} />
-  <AeliqoTable columns={columns} rows={rows} identity={['id']} mode='grid' virtualized virtualCount={1} overscan={0} onSelectionChange={event => { const mode: 'clear' | 'ids' = event.detail.mode; void mode; }} onSortChange={event => { const field: string | undefined = event.detail.sort?.field; void field; }} onPageChange={event => { const page: number = event.detail.page; void page; }} onWindowChange={handleWindow} />
+  <VarendoTable columns={columns} rows={rows} identity={['id']} mode='grid' virtualized virtualCount={1} overscan={0} onSelectionChange={event => { const mode: 'clear' | 'ids' = event.detail.mode; void mode; }} onSortChange={event => { const field: string | undefined = event.detail.sort?.field; void field; }} onPageChange={event => { const page: number = event.detail.page; void page; }} onWindowChange={handleWindow} />
 </>;
 void app;
-const element = new AeliqoTableElement(); element.columns = columns; element.rows = rows; element.identity = ['id']; element.virtualized = true; element.virtualCount = AELIQO_TABLE_MAX_VIRTUAL_ROWS;
+const element = new VarendoTableElement(); element.columns = columns; element.rows = rows; element.identity = ['id']; element.virtualized = true; element.virtualCount = VARENDO_TABLE_MAX_VIRTUAL_ROWS;
 void element;
 `,
 );
@@ -506,18 +506,18 @@ import '@varendo/react/ssr';
 import {createElement} from 'react';
 import {renderToString} from 'react-dom/server';
 import {html} from 'lit';
-import {renderAeliqo} from '@varendo/web/server';
-import {createAeliqoPresentationRegistry} from '@varendo/web/region';
+import {renderVarendo} from '@varendo/web/server';
+import {createVarendoPresentationRegistry} from '@varendo/web/region';
 import { validatePresentationPlan } from '@varendo/core/presentation';
-import {AeliqoMetricElement, AeliqoDeltaElement, AeliqoKeyValueElement, AeliqoDetailElement, AeliqoRecordListElement, AeliqoCardCollectionElement, AeliqoSelectionSummaryElement, AeliqoFilterBuilderElement, AeliqoTableElement} from '@varendo/web/data';
-import {AeliqoTable, AeliqoDelta} from '@varendo/react/data';
+import {VarendoMetricElement, VarendoDeltaElement, VarendoKeyValueElement, VarendoDetailElement, VarendoRecordListElement, VarendoCardCollectionElement, VarendoSelectionSummaryElement, VarendoFilterBuilderElement, VarendoTableElement} from '@varendo/web/data';
+import {VarendoTable, VarendoDelta} from '@varendo/react/data';
 assert.equal(typeof globalThis.window, 'undefined');
 assert.equal(typeof globalThis.document, 'undefined');
-const definitions = [['aeliqo-metric', AeliqoMetricElement], ['aeliqo-delta', AeliqoDeltaElement], ['aeliqo-key-value', AeliqoKeyValueElement], ['aeliqo-detail', AeliqoDetailElement], ['aeliqo-record-list', AeliqoRecordListElement], ['aeliqo-card-collection', AeliqoCardCollectionElement], ['aeliqo-selection-summary', AeliqoSelectionSummaryElement], ['aeliqo-filter-builder', AeliqoFilterBuilderElement], ['aeliqo-table', AeliqoTableElement]];
+const definitions = [['varendo-metric', VarendoMetricElement], ['varendo-delta', VarendoDeltaElement], ['varendo-key-value', VarendoKeyValueElement], ['varendo-detail', VarendoDetailElement], ['varendo-record-list', VarendoRecordListElement], ['varendo-card-collection', VarendoCardCollectionElement], ['varendo-selection-summary', VarendoSelectionSummaryElement], ['varendo-filter-builder', VarendoFilterBuilderElement], ['varendo-table', VarendoTableElement]];
 for (const [tag, constructor] of definitions) if (!customElements.get(tag)) customElements.define(tag, constructor);
 const rows = [{id: 'a', name: 'Ada', amount: {decimal: '100000000000000000.01'}}, {id: 'b', name: 'Lin', amount: {decimal: '2.50'}}];
 const columns = [{key: 'id', label: 'ID'}, {key: 'name', label: 'Name'}, {key: 'amount', label: 'Amount'}];
-const webMarkup = await renderAeliqo(html\`<aeliqo-table caption="SSR people" .columns=\${columns} .rows=\${rows} .identity=\${['id']}></aeliqo-table><aeliqo-delta label="SSR delta" .current=\${{decimal: '0.0001'}} .baseline=\${{decimal: '0'}} mode="percentage-point"></aeliqo-delta>\`);
+const webMarkup = await renderVarendo(html\`<varendo-table caption="SSR people" .columns=\${columns} .rows=\${rows} .identity=\${['id']}></varendo-table><varendo-delta label="SSR delta" .current=\${{decimal: '0.0001'}} .baseline=\${{decimal: '0'}} mode="percentage-point"></varendo-delta>\`);
 assert.match(webMarkup, /shadowrootmode="open"/);
 assert.match(webMarkup, /100000000000000000\.01/);
 assert(webMarkup.includes('+0.01 pp'));
@@ -536,7 +536,7 @@ const semanticResult = {
   filters: [], warnings: [], lineage: [],
 };
 const semanticBinding = {result: semanticResult, rows: [{id: 'a', amount: {decimal: '12.50'}}]};
-const semanticRegistry = createAeliqoPresentationRegistry({data: [semanticBinding], resolveEntity: () => 'person'});
+const semanticRegistry = createVarendoPresentationRegistry({data: [semanticBinding], resolveEntity: () => 'person'});
 assert.equal(semanticRegistry.ok, true);
 if (!semanticRegistry.ok) throw new Error(semanticRegistry.diagnostics[0]?.message ?? 'semantic registry failed');
 const semanticManifest = semanticRegistry.value.manifests.find(manifest => manifest.ref.id === 'data.metric');
@@ -557,17 +557,17 @@ const semanticContext = {
 const semanticChecked = validatePresentationPlan(semanticPlan, semanticContext, semanticRegistry.value);
 assert.equal(semanticChecked.ok, true);
 if (!semanticChecked.ok) throw new Error(semanticChecked.diagnostics[0]?.message ?? 'semantic plan failed');
-const semanticMarkup = await renderAeliqo(html\`<aeliqo-region .presentation=\${semanticChecked.value} .results=\${[{ref: semanticRef, rows: semanticBinding.rows}]}></aeliqo-region>\`);
-assert(semanticMarkup.includes('<aeliqo-metric'));
+const semanticMarkup = await renderVarendo(html\`<varendo-region .presentation=\${semanticChecked.value} .results=\${[{ref: semanticRef, rows: semanticBinding.rows}]}></varendo-region>\`);
+assert(semanticMarkup.includes('<varendo-metric'));
 assert(semanticMarkup.includes('12.50'));
 assert(semanticMarkup.includes('shadowrootmode="open"'));
-const reactMarkup = renderToString(createElement(AeliqoTable, {caption: 'React SSR people', columns, rows, identity: ['id']}));
-assert.match(reactMarkup, /aeliqo-table/);
+const reactMarkup = renderToString(createElement(VarendoTable, {caption: 'React SSR people', columns, rows, identity: ['id']}));
+assert.match(reactMarkup, /varendo-table/);
 assert.match(reactMarkup, /shadowrootmode="open"/);
 assert.match(reactMarkup, /100000000000000000\.01/);
-const reactDelta = renderToString(createElement(AeliqoDelta, {label: 'React SSR delta', current: {decimal: '0.0001'}, baseline: {decimal: '0'}, mode: 'percentage-point'}));
+const reactDelta = renderToString(createElement(VarendoDelta, {label: 'React SSR delta', current: {decimal: '0.0001'}, baseline: {decimal: '0'}, mode: 'percentage-point'}));
 assert(reactDelta.includes('+0.01 pp'));
-const secondRequest = renderToString(createElement(AeliqoDelta, {label: 'Second request', current: {decimal: '1'}, baseline: {decimal: '0'}, mode: 'absolute'}));
+const secondRequest = renderToString(createElement(VarendoDelta, {label: 'Second request', current: {decimal: '1'}, baseline: {decimal: '0'}, mode: 'absolute'}));
 assert(!secondRequest.includes('SSR people'));
 console.log(JSON.stringify({webBytes: webMarkup.length, reactBytes: reactMarkup.length + reactDelta.length + secondRequest.length}));
 `,
@@ -577,8 +577,8 @@ const ssrOutput = run(['node', join(consumer, 'ssr.mjs')], consumer).trim();
 await writeFile(
   join(consumer, 'browser-entry.ts'),
   `
-import {AeliqoTableElement, AeliqoDeltaElement, AeliqoFilterBuilderElement} from '@varendo/web/data';
-const definitions = [['aeliqo-table', AeliqoTableElement], ['aeliqo-delta', AeliqoDeltaElement], ['aeliqo-filter-builder', AeliqoFilterBuilderElement]];
+import {VarendoTableElement, VarendoDeltaElement, VarendoFilterBuilderElement} from '@varendo/web/data';
+const definitions = [['varendo-table', VarendoTableElement], ['varendo-delta', VarendoDeltaElement], ['varendo-filter-builder', VarendoFilterBuilderElement]];
 for (const [tag, constructor] of definitions) if (!customElements.get(tag)) customElements.define(tag, constructor);
 const fixture = document.querySelector('#fixture');
 if (!fixture) throw new Error('data fixture root missing');
@@ -588,13 +588,13 @@ const rows = [
   {id: 'c', name: 'Grace', amount: {decimal: '3.00'}},
 ];
 const columns = [{key: 'id', label: 'ID'}, {key: 'name', label: 'Name'}, {key: 'amount', label: 'Amount'}];
-const table = new AeliqoTableElement(); table.id = 'table'; table.caption = 'People'; table.columns = columns; table.rows = rows; table.identity = ['id']; table.totalRows = 3; table.scope = {loaded: 3, filteredTotal: 3, kind: 'filtered'}; fixture.append(table);
-const delta = new AeliqoDeltaElement(); delta.id = 'delta'; delta.label = 'Change'; delta.current = {decimal: '0.0001'}; delta.baseline = {decimal: '0'}; delta.mode = 'percentage-point'; fixture.append(delta);
-const filter = new AeliqoFilterBuilderElement(); filter.id = 'filter'; filter.fields = [{id: 'name', label: 'Name', type: 'text'}]; fixture.append(filter);
-const grid = new AeliqoTableElement(); grid.id = 'grid'; grid.caption = 'Window'; grid.mode = 'grid'; grid.columns = columns; grid.rows = rows; grid.identity = ['id']; grid.virtualized = true; grid.virtualStart = 0; grid.virtualCount = 1; grid.overscan = 0; grid.totalRows = 3; grid.scope = {loaded: 3, filteredTotal: 3, kind: 'filtered'}; fixture.append(grid);
+const table = new VarendoTableElement(); table.id = 'table'; table.caption = 'People'; table.columns = columns; table.rows = rows; table.identity = ['id']; table.totalRows = 3; table.scope = {loaded: 3, filteredTotal: 3, kind: 'filtered'}; fixture.append(table);
+const delta = new VarendoDeltaElement(); delta.id = 'delta'; delta.label = 'Change'; delta.current = {decimal: '0.0001'}; delta.baseline = {decimal: '0'}; delta.mode = 'percentage-point'; fixture.append(delta);
+const filter = new VarendoFilterBuilderElement(); filter.id = 'filter'; filter.fields = [{id: 'name', label: 'Name', type: 'text'}]; fixture.append(filter);
+const grid = new VarendoTableElement(); grid.id = 'grid'; grid.caption = 'Window'; grid.mode = 'grid'; grid.columns = columns; grid.rows = rows; grid.identity = ['id']; grid.virtualized = true; grid.virtualStart = 0; grid.virtualCount = 1; grid.overscan = 0; grid.totalRows = 3; grid.scope = {loaded: 3, filteredTotal: 3, kind: 'filtered'}; fixture.append(grid);
 const windowRequests = []; const filterEvents = [];
-grid.addEventListener('aeliqo-table-window', event => { const detail = event.detail; windowRequests.push({...detail}); grid.virtualStart = detail.start; });
-filter.addEventListener('aeliqo-filter-change', event => filterEvents.push({...event.detail}));
+grid.addEventListener('varendo-table-window', event => { const detail = event.detail; windowRequests.push({...detail}); grid.virtualStart = detail.start; });
+filter.addEventListener('varendo-filter-change', event => filterEvents.push({...event.detail}));
 const ready = Promise.all([table.updateComplete, delta.updateComplete, filter.updateComplete, grid.updateComplete]);
 Object.assign(window, {dataFixture: {table, delta, filter, grid, windowRequests, filterEvents, ready}});
 `,

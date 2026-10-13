@@ -1,20 +1,20 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
-import { AeliqoInputChangeEvent } from './events.js';
-import type { AeliqoOption } from './options.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
+import { VarendoInputChangeEvent } from './events.js';
+import type { VarendoOption } from './options.js';
 import { validOptions } from './options.js';
 
 /** Native radio group with stable option identities and one form value. */
-export class AeliqoRadioGroupElement extends AeliqoFieldElement<string> {
+export class VarendoRadioGroupElement extends VarendoFieldElement<string> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     options: { attribute: false },
     value: { type: String, reflect: true },
     defaultValue: { attribute: 'default-value', type: String },
     orientation: { type: String },
   };
 
-  options: readonly AeliqoOption[] = [];
+  options: readonly VarendoOption[] = [];
   value = '';
   defaultValue = '';
   orientation: 'horizontal' | 'vertical' = 'vertical';
@@ -53,7 +53,7 @@ export class AeliqoRadioGroupElement extends AeliqoFieldElement<string> {
               <input
                 part="input"
                 type="radio"
-                name="aeliqo-radio-group"
+                name="varendo-radio-group"
                 value=${option.value}
                 .checked=${this.value === option.value}
                 ?disabled=${this.fieldDisabled || option.disabled === true}
@@ -82,7 +82,7 @@ export class AeliqoRadioGroupElement extends AeliqoFieldElement<string> {
       return;
     }
     this.value = input.value;
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value: this.value }));
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value: this.value }));
     void this.validateProposed(this.value);
     this.syncNative();
   };
@@ -106,12 +106,12 @@ export class AeliqoRadioGroupElement extends AeliqoFieldElement<string> {
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       fieldset {
         border: 0;
         display: flex;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         margin: 0;
         min-inline-size: 0;
         padding: 0;
@@ -124,20 +124,20 @@ export class AeliqoRadioGroupElement extends AeliqoFieldElement<string> {
         flex-wrap: wrap;
       }
       legend {
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
-        margin-block-end: var(--aeliqo-space-4, 0.25rem);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
+        margin-block-end: var(--varendo-space-4, 0.25rem);
       }
       [part='option'] {
         align-items: center;
         display: inline-flex;
-        gap: var(--aeliqo-space-8, 0.5rem);
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
+        gap: var(--varendo-space-8, 0.5rem);
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
       }
       [part='option'].disabled {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
       }
       input {
-        accent-color: var(--aeliqo-color-accent, #4338ca);
+        accent-color: var(--varendo-color-accent, #4338ca);
         block-size: 1.25rem;
         inline-size: 1.25rem;
       }

@@ -1,4 +1,4 @@
-export interface AeliqoLocalizedDecimal {
+export interface VarendoLocalizedDecimal {
   readonly canonical: string | undefined;
   readonly valid: boolean;
 }
@@ -76,7 +76,7 @@ function canonicalDecimal(
   normalized: string,
   symbols: LocaleSymbols,
   formatter: Intl.NumberFormat,
-): AeliqoLocalizedDecimal {
+): VarendoLocalizedDecimal {
   const parts = decimalParts(normalized);
   if (parts === undefined) return { canonical: undefined, valid: false };
   if (!validFraction(parts.fraction)) return { canonical: undefined, valid: false };
@@ -106,7 +106,7 @@ function validInteger(integer: string, group: string | undefined, formatter: Int
 }
 
 /** Parse a locale-formatted decimal without converting through IEEE-754. */
-export function parseLocalizedDecimal(text: string, locale = 'en-US'): AeliqoLocalizedDecimal {
+export function parseLocalizedDecimal(text: string, locale = 'en-US'): VarendoLocalizedDecimal {
   const trimmed = text.trim();
   if (trimmed.length === 0) return { canonical: undefined, valid: true };
   if (trimmed.length > MAX_LOCALIZED_DECIMAL_LENGTH) return { canonical: undefined, valid: false };

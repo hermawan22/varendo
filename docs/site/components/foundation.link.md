@@ -7,9 +7,9 @@ contract: 'Navigate to an application-approved destination; preserve browser ope
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -28,19 +28,19 @@ A native link to a destination your app approves, preserving browser behavior li
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 An empty or invalid `href` renders plain text, not an anchor. `disabled`
 renders noninteractive text too. Approved `_blank` destinations get
@@ -51,11 +51,11 @@ open.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -63,9 +63,9 @@ The label follows inline text flow and can wrap. Avoid fixed-width wrappers that
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -74,7 +74,7 @@ The label follows inline text flow and can wrap. Avoid fixed-width wrappers that
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

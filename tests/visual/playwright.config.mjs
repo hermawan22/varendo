@@ -2,13 +2,14 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from '@playwright/test';
 import { testPort } from '../shared/port.mjs';
 const browsers = ['chromium', 'firefox', 'webkit'];
-const selectedProject = process.env.AELIQO_VISUAL_PROJECT;
+const selectedProject = process.env.VARENDO_VISUAL_PROJECT;
 if (selectedProject !== undefined && !browsers.includes(selectedProject))
-  throw new Error('Unknown AELIQO_VISUAL_PROJECT');
-const selectedBatch = process.env.AELIQO_VISUAL_BATCH;
-if (selectedBatch !== undefined && !/^[a-z0-9-]+$/u.test(selectedBatch)) throw new Error('Invalid AELIQO_VISUAL_BATCH');
+  throw new Error('Unknown VARENDO_VISUAL_PROJECT');
+const selectedBatch = process.env.VARENDO_VISUAL_BATCH;
+if (selectedBatch !== undefined && !/^[a-z0-9-]+$/u.test(selectedBatch))
+  throw new Error('Invalid VARENDO_VISUAL_BATCH');
 const outputDirectory = `../../artifacts/visual-catalog/${selectedProject ?? 'all'}/${selectedBatch ?? 'full'}`;
-const port = await testPort('AELIQO_VISUAL_PORT');
+const port = await testPort('VARENDO_VISUAL_PORT');
 export default defineConfig({
   testDir: '.',
   testMatch: [

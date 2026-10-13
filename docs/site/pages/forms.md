@@ -41,7 +41,7 @@ You should see: a `create` request opens an empty form; an `edit` request loads 
 Register a `formState` adapter so an edit form can load current values and the entity revision. Varendo never invents existing field values.
 
 ```ts
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources,
   authority,
   formState: {

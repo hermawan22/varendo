@@ -2,7 +2,7 @@
 
 This directory is a test-only reference boundary. `oracle.py` calculates the
 expected values with Python `Fraction`, `Decimal`, deterministic seeded rows,
-and an in-memory SQLite semijoin. It does not import Aeliqo code, call a query
+and an in-memory SQLite semijoin. It does not import Varendo code, call a query
 planner, or use the production evaluator as an oracle.
 
 The fixtures cover:

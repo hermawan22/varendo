@@ -3,7 +3,7 @@ import { spawnSync } from 'node:child_process';
 export function execute(cwd, command, args, env = {}) {
   const result = spawnSync(command, args, {
     cwd,
-    env: { ...process.env, AELIQO_BUILD_REUSE_DIRECTORY: '', ...env },
+    env: { ...process.env, VARENDO_BUILD_REUSE_DIRECTORY: '', ...env },
     stdio: 'inherit',
   });
   if (result.error) throw result.error;

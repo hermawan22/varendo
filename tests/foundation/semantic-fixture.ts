@@ -1,14 +1,14 @@
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
 import type { PresentationPlan } from '../../packages/core/src/contracts/index.js';
 import type { PresentationContext, PresentationValues } from '../../packages/core/src/presentation/index.js';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
-import { AELIQO_FOUNDATION_MANIFESTS } from '../../packages/web/src/foundation/manifest.js';
-import type { AeliqoFoundationBindings } from '../../packages/web/src/region/foundation-registry.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import { VARENDO_FOUNDATION_MANIFESTS } from '../../packages/web/src/foundation/manifest.js';
+import type { VarendoFoundationBindings } from '../../packages/web/src/region/foundation-registry.js';
 import { environment, experience, presentationPlan, presentationTask } from '../contracts/fixtures.js';
 
 export const save = { id: 'profile.save', revision: '1' };
 export const route = { id: 'profile.open', revision: '1' };
-export const bindings: AeliqoFoundationBindings = {
+export const bindings: VarendoFoundationBindings = {
   revision: 'copy-1',
   contents: [
     { id: 'title', text: 'Account preferences' },
@@ -31,7 +31,7 @@ export const bindings: AeliqoFoundationBindings = {
   identities: [{ id: 'owner', name: 'Ada Lovelace' }],
 };
 export function fixture(input = bindings) {
-  const created = createAeliqoPresentationRegistry({ foundation: input });
+  const created = createVarendoPresentationRegistry({ foundation: input });
   if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
   const registry = created.value;
   const values: Readonly<Record<string, PresentationValues>> = {
@@ -60,7 +60,7 @@ export function fixture(input = bindings) {
     ...presentationPlan,
     rootId: 'surface',
     preconditions: { ...presentationPlan.preconditions, results: [] },
-    nodes: AELIQO_FOUNDATION_MANIFESTS.map((m) => {
+    nodes: VARENDO_FOUNDATION_MANIFESTS.map((m) => {
       const id = m.ref.id.slice('foundation.'.length);
       return {
         id,
@@ -91,7 +91,7 @@ export function fixture(input = bindings) {
     experience: {
       ...experience,
       mode: 'composable',
-      allowedRepresentations: AELIQO_FOUNDATION_MANIFESTS.map((m) => m.ref.id),
+      allowedRepresentations: VARENDO_FOUNDATION_MANIFESTS.map((m) => m.ref.id),
       composition: { allowWithoutPreset: true, maxNodes: 32, maxExpansions: 64 },
     },
     current: plan.preconditions,

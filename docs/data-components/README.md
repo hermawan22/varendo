@@ -39,7 +39,7 @@ interactive mode with roving cell keyboard navigation and explicit row and
 column positions. Sorting and paging emit typed requests for the host.
 Virtualization is host controlled: `virtualStart` addresses the loaded `rows`
 window, and a keyboard move beyond the mounted window emits
-`aeliqo-table-window` so the host can provide the requested window. The host
+`varendo-table-window` so the host can provide the requested window. The host
 also updates `virtualStart` in response to its own scroll or pointer window
 logic; the component does not pretend that a bounded slice is the whole
 source. Non-finite values are sanitized, and at most 100 body rows including
@@ -64,7 +64,7 @@ it cannot imply that loaded rows represent an unobserved global set.
 
 The region data adapter is the boundary between these direct views and a
 validated presentation. The public
-`createAeliqoPresentationRegistry({data: bindings, resolveEntity})` installs all
+`createVarendoPresentationRegistry({data: bindings, resolveEntity})` installs all
 eight additional data manifests alongside the existing table manifest, using
 the same core presentation validator. Each binding contains an application
 authorized `Result` descriptor together with its exact loaded rows. It checks
@@ -73,7 +73,7 @@ labels, row grain and stable identity tuples before a node can render. It does
 not aggregate rows, discover a source, or turn a loaded page into a population.
 Scalar views (`Metric`, `Delta`, `KeyValue`, and `Detail`) require one row or an
 explicit identity tuple; `Delta` requires two declared numeric observations
-with compatible units and delegates arithmetic to `calculateAeliqoDelta`.
+with compatible units and delegates arithmetic to `calculateVarendoDelta`.
 Collection views retain the authorized rows and identity fields. Filter,
 selection, page, sort, load-more and keyboard-window requests are sent to a
 host callback; only registered selection and filter ports produce canonical
@@ -89,11 +89,11 @@ review remains part of the product release gate.
 Register the authorized materialization before validating a presentation:
 
 ```ts
-import {createAeliqoPresentationRegistry} from '@varendo/web';
-import type {AeliqoDataBinding} from '@varendo/web';
+import {createVarendoPresentationRegistry} from '@varendo/web';
+import type {VarendoDataBinding} from '@varendo/web';
 
-export function registryForPeople(binding: AeliqoDataBinding) {
-  return createAeliqoPresentationRegistry({
+export function registryForPeople(binding: VarendoDataBinding) {
+  return createVarendoPresentationRegistry({
     data: [binding],
     resolveEntity: result => result.ref.outputId === 'people' ? 'person' : undefined,
   });
@@ -103,10 +103,10 @@ export function registryForPeople(binding: AeliqoDataBinding) {
 The registry takes an immutable snapshot. Recreate it for a new authorized
 result revision. Pass the registry to the core validator, then supply the
 validated presentation and current `{ref, rows}` materialization to
-`<aeliqo-region>`. Rows never enter the presentation wire graph. The renderer
+`<varendo-region>`. Rows never enter the presentation wire graph. The renderer
 checks the current descriptor and exact ResultRef again; clearing the region
 removes the displayed data. Host requests use the region's `onDataRequest`
-callback. The lower-level `createAeliqoDataRegistry` helper remains available
+callback. The lower-level `createVarendoDataRegistry` helper remains available
 for direct adapter use; it does not replace the canonical presentation graph.
 
 When registration includes custom host scope annotations, also pass that
@@ -121,7 +121,7 @@ must advance the ResultRef when its content changes. A matching reference is
 not an authorization grant. The standalone renderer validates the supplied
 materialization and refuses changes to the validated field/operation coverage;
 it cannot authenticate a host's assertion about business data. The optional
-`createAeliqoDataPresentationRegistry` bridge also retains its original row
+`createVarendoDataPresentationRegistry` bridge also retains its original row
 snapshot and refuses different row content under the same reference, while
 allowing row order to change.
 

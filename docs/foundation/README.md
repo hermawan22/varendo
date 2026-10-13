@@ -10,7 +10,7 @@ custom-element registry. The parent package integrates these constructors into
 the shared registry; the standalone tests define them locally to prove that the
 same implementation works outside a region.
 
-Actions dispatch cancelable `aeliqo-action` proposals with `source: "user"` and
+Actions dispatch cancelable `varendo-action` proposals with `source: "user"` and
 an explicit action kind. A host may call `preventDefault()` while validating or
 authorizing the registered action reference. `Button` and `IconButton` expose
 native `button` semantics, form association, submit/reset behavior, disabled and
@@ -20,7 +20,7 @@ only at the direct API boundary; manifest configuration carries registered
 
 `SplitPane` is controlled when `position` is supplied and otherwise keeps a
 bounded local position from `defaultPosition`. Pointer movement and
-Arrow/Home/End keyboard input emit typed `aeliqo-split-change` proposals. The
+Arrow/Home/End keyboard input emit typed `varendo-split-change` proposals. The
 splitter exposes separator value semantics, respects minimum and maximum bounds,
 and accounts for RTL horizontal direction.
 
@@ -38,21 +38,21 @@ module paths. It does not resolve business actions or invent source capability.
 ## Direct and React use
 
 ```ts
-import {AeliqoButtonElement} from '@varendo/web/button';
-customElements.define('aeliqo-button', AeliqoButtonElement);
+import {VarendoButtonElement} from '@varendo/web/button';
+customElements.define('varendo-button', VarendoButtonElement);
 ```
 
 Each of the 13 elements has a leaf export (`/button`, `/icon-button`, `/link`,
 `/text`, `/heading`, `/badge`, `/avatar`, `/separator`, `/surface`, `/stack`,
 `/grid`, `/split-pane`, `/scroll-area`). Importing `/foundation` collects the
-constructors. Call `registerAeliqoElements` from `/register` to register the whole
+constructors. Call `registerVarendoElements` from `/register` to register the whole
 web catalog. React wrappers are available from `@varendo/react/foundation`; they
-use those same elements and typed `onAeliqoAction`, `onAeliqoLink` and
-`onAeliqoSplitChange` events. Applications supply IconButton's `icon` slot.
+use those same elements and typed `onVarendoAction`, `onVarendoLink` and
+`onVarendoSplitChange` events. Applications supply IconButton's `icon` slot.
 
 ## Validated presentation use
 
-`createAeliqoPresentationRegistry({foundation: bindings})` adapts the same
+`createVarendoPresentationRegistry({foundation: bindings})` adapts the same
 foundation manifests into the core presentation registry. The application owns
 an immutable snapshot of versioned bindings with `contents`, `actions`, `routes`
 and `identities`. For example, a `contentRef` selects reviewed text and an
@@ -65,7 +65,7 @@ Surface `labelledBy` instead names an actual DOM element.
 Static content bindings must not be used to let a model self-certify computed
 claims; evidence-bound result narratives use the agent verifier.
 
-`AeliqoRegion` renders the resulting `ValidatedPresentation`. Semantic buttons
+`VarendoRegion` renders the resulting `ValidatedPresentation`. Semantic buttons
 emit `action-request` through `onSemanticInteraction`; they use `type="button"`
 and do not submit or reset an enclosing form. The host performs authorization
 and business execution. Ordinary links emit `navigate`; modified and new-tab

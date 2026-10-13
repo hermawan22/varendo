@@ -7,9 +7,9 @@ contract: 'Source, freshness, completeness, provenance and unsupported claims di
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -30,29 +30,29 @@ QualityPanel reports a view's source, freshness, completeness, provenance, and u
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 ## Keyboard, focus, and accessibility
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -60,9 +60,9 @@ Let provenance and unsupported claims wrap inside the panel. Keep freshness and 
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -71,7 +71,7 @@ Let provenance and unsupported claims wrap inside the panel. Keep freshness and 
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

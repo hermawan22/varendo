@@ -1,7 +1,7 @@
 import { css, html, LitElement, nothing } from 'lit';
-import { aeliqoThemeStyles } from '../styles/theme.js';
-import { AELIQO_WEB_VERSION } from '../version.js';
-import type { AeliqoDataScope, AeliqoDataStatus, AeliqoDataValue } from './types.js';
+import { varendoThemeStyles } from '../styles/theme.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
+import type { VarendoDataScope, VarendoDataStatus, VarendoDataValue } from './types.js';
 import {
   dataValueText,
   dataStatusMessage,
@@ -11,12 +11,12 @@ import {
   statusTemplate,
 } from './shared.js';
 
-export type AeliqoMetricFormat = 'plain' | 'number' | 'percent';
+export type VarendoMetricFormat = 'plain' | 'number' | 'percent';
 
 /** A single host-validated value. This component formats and labels data; it
  * never computes a metric or changes its scope. */
-export class AeliqoMetricElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoMetricElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     label: { type: String },
     value: { attribute: false },
@@ -31,14 +31,14 @@ export class AeliqoMetricElement extends LitElement {
   };
 
   label = '';
-  value: AeliqoDataValue | undefined = undefined;
+  value: VarendoDataValue | undefined = undefined;
   displayValue: string | undefined = undefined;
   unit = '';
   description = '';
-  scope: AeliqoDataScope | undefined = undefined;
-  status: AeliqoDataStatus = 'ready';
+  scope: VarendoDataScope | undefined = undefined;
+  status: VarendoDataStatus = 'ready';
   message = '';
-  format: AeliqoMetricFormat = 'plain';
+  format: VarendoMetricFormat = 'plain';
   locale = '';
 
   protected override render() {
@@ -61,16 +61,16 @@ export class AeliqoMetricElement extends LitElement {
     `;
   }
 
-  private get effectiveStatus(): AeliqoDataStatus {
+  private get effectiveStatus(): VarendoDataStatus {
     if (this.value === undefined && this.status === 'ready') return 'unavailable';
     return this.status;
   }
 
-  private isUnavailable(status: AeliqoDataStatus): boolean {
+  private isUnavailable(status: VarendoDataStatus): boolean {
     return status === 'unavailable' || status === 'error';
   }
 
-  private valueForStatus(status: AeliqoDataStatus, unavailable: boolean): string {
+  private valueForStatus(status: VarendoDataStatus, unavailable: boolean): string {
     if (!unavailable) return this.renderValue();
     return dataStatusMessage(status, this.message) ?? 'Value unavailable.';
   }
@@ -91,7 +91,7 @@ export class AeliqoMetricElement extends LitElement {
     return ids.join(' ');
   }
 
-  private renderStatus(status: AeliqoDataStatus) {
+  private renderStatus(status: VarendoDataStatus) {
     if (!displaysStatusBanner(status)) return nothing;
     return statusTemplate(status, this.message);
   }
@@ -125,26 +125,26 @@ export class AeliqoMetricElement extends LitElement {
   }
 
   static readonly styles = [
-    aeliqoThemeStyles,
+    varendoThemeStyles,
     dataStyles,
     css`
       dl {
         margin: 0;
       }
       dt {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
       }
       dd {
         align-items: baseline;
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-4, 0.25rem);
-        margin: var(--aeliqo-space-4, 0.25rem) 0 0;
+        gap: var(--varendo-space-4, 0.25rem);
+        margin: var(--varendo-space-4, 0.25rem) 0 0;
       }
       [part='number'] {
-        font-size: var(--aeliqo-typography-font-size-heading, 1.5rem);
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        font-size: var(--varendo-typography-font-size-heading, 1.5rem);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
         overflow-wrap: anywhere;
       }
       [part='number'][dir='ltr'] {
@@ -157,18 +157,18 @@ export class AeliqoMetricElement extends LitElement {
         white-space: nowrap;
       }
       [part='unit'] {
-        color: var(--aeliqo-color-muted, #475569);
+        color: var(--varendo-color-muted, #475569);
         overflow-wrap: anywhere;
       }
       [part='description'],
       [part='scope'] {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
-        margin-block-start: var(--aeliqo-space-4, 0.25rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
+        margin-block-start: var(--varendo-space-4, 0.25rem);
         overflow-wrap: anywhere;
       }
       dd.unavailable [part='number'] {
-        color: var(--aeliqo-color-muted, #475569);
+        color: var(--varendo-color-muted, #475569);
         font-size: inherit;
         font-weight: 400;
       }

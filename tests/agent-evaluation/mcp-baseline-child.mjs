@@ -15,7 +15,7 @@ const loader = await createServer({
 });
 const { createEvaluationHost } = await loader.ssrLoadModule('/tests/agent-evaluation/host.ts');
 const stdio = createMcpStdioServer({
-  name: 'aeliqo-evaluation-baseline',
+  name: 'varendo-evaluation-baseline',
   version: '0.0.0-test',
   createEndpoint() {
     const host = createEvaluationHost(fixture, 'mcp');

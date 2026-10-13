@@ -1,4 +1,4 @@
-import { registerAeliqoElements } from '@varendo/web';
+import { registerVarendoElements } from '@varendo/web';
 import { compoundExamples } from './compound.js';
 import { dataExamples } from './data.js';
 import { feedbackExamples } from './feedback.js';
@@ -136,7 +136,7 @@ export function getCatalogExample(id: CatalogExampleId): CatalogExampleDefinitio
 
 /** Mount one real web component example into an application-owned container. */
 export function catalogExample(id: CatalogExampleId, container: HTMLElement): ReturnType<CatalogExampleMount> {
-  registerAeliqoElements();
+  registerVarendoElements();
   return getCatalogExample(id).mount(container);
 }
 

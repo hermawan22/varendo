@@ -8,8 +8,8 @@ describe('catalog examples', () => {
     expect(new Set(catalogExamples.map((example) => example.id)).size).toBe(71);
     for (const id of CATALOG_EXAMPLE_IDS) {
       const definition = getCatalogExample(id);
-      expect(definition.metadata.source).toContain('registerAeliqoElements');
-      expect(definition.metadata.source).toContain(`aeliqo-${id}`);
+      expect(definition.metadata.source).toContain('registerVarendoElements');
+      expect(definition.metadata.source).toContain(`varendo-${id}`);
       expect(definition.metadata.source).toContain('function createCatalogRoot');
       expect(definition.metadata.source).toContain('function createCatalogElement');
       expect(definition.metadata.source).toContain('const root = createCatalogRoot(host)');

@@ -1,5 +1,5 @@
 import type { ValidatedPresentation } from '@varendo/core/presentation';
-import type { AeliqoViewDefinition } from '../region/types.js';
+import type { VarendoViewDefinition } from '../region/types.js';
 import { registerElements } from '../register-elements.js';
 
 const loaders = {
@@ -47,7 +47,7 @@ function family(id: string): Family | undefined {
 export async function registerPresentationElements(
   presentation: ValidatedPresentation,
   registry: CustomElementRegistry,
-  customViews: readonly AeliqoViewDefinition[],
+  customViews: readonly VarendoViewDefinition[],
 ): Promise<void> {
   const families = new Set<Family>();
   for (const node of presentation.nodes) {
@@ -56,7 +56,7 @@ export async function registerPresentationElements(
     if (customViews.some((view) => view.ref.id === id) || (!native.has(id) && selected === undefined)) {
       // Extension renderers may use any shared element, including compounds with nested children.
       const full = await import('../register.js');
-      full.registerAeliqoElements(registry);
+      full.registerVarendoElements(registry);
       return;
     }
     if (!native.has(id) && selected !== undefined) families.add(selected);

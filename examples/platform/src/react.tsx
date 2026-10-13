@@ -1,11 +1,11 @@
 import './csp-bootstrap.js';
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { AeliqoTextField } from '@varendo/react/inputs';
-import { AeliqoTable } from '@varendo/react/data';
-import { registerAeliqoReactElements } from '@varendo/react';
+import { VarendoTextField } from '@varendo/react/inputs';
+import { VarendoTable } from '@varendo/react/data';
+import { registerVarendoReactElements } from '@varendo/react';
 
-registerAeliqoReactElements();
+registerVarendoReactElements();
 
 function ReactFixture(): React.JSX.Element {
   const [value, setValue] = useState('React');
@@ -16,7 +16,7 @@ function ReactFixture(): React.JSX.Element {
         {value}
       </p>
       <form id="react-form">
-        <AeliqoTextField
+        <VarendoTextField
           label="React name"
           value={value}
           name="person"
@@ -24,7 +24,7 @@ function ReactFixture(): React.JSX.Element {
         />
         <button type="submit">Submit</button>
       </form>
-      <AeliqoTable
+      <VarendoTable
         caption="People"
         columns={[
           { key: 'name', label: 'Name' },

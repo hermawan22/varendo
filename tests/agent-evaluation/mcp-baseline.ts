@@ -5,7 +5,7 @@ import { join, resolve } from 'node:path';
 import { Client } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
 import { parseResult, parseWireValue, type Outcome, type Task } from '@varendo/core';
-import { AELIQO_MCP_PROTOCOL_REVISION, createMcpClientEndpoint } from '../../packages/agent/src/mcp/index.js';
+import { VARENDO_MCP_PROTOCOL_REVISION, createMcpClientEndpoint } from '../../packages/agent/src/mcp/index.js';
 import type { EvaluatedOutput, EvaluationFixture } from './host.js';
 import type { DataRecord, DataValue } from '../../packages/runtime/src/data/index.js';
 
@@ -62,7 +62,7 @@ export function parseMcpEvaluationOutputs(input: unknown): Outcome<readonly Eval
 
 /** Real official SDK client and stdio child. Explicit tasks only; no model call. */
 export async function runExplicitMcp(fixture: EvaluationFixture, task: Task) {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-evaluation-mcp-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-evaluation-mcp-'));
   const fixturePath = join(directory, 'fixture.json');
   const childFixture: EvaluationFixture = {
     id: fixture.id,
@@ -75,7 +75,7 @@ export async function runExplicitMcp(fixture: EvaluationFixture, task: Task) {
     goalEpoch: fixture.goalEpoch,
     budget: fixture.budget,
   };
-  const client = new Client({ name: 'aeliqo-evaluation-client', version: '0.0.0-test' });
+  const client = new Client({ name: 'varendo-evaluation-client', version: '0.0.0-test' });
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: [resolve(import.meta.dirname, 'mcp-baseline-child.mjs'), fixturePath],
@@ -146,7 +146,7 @@ export async function runExplicitMcp(fixture: EvaluationFixture, task: Task) {
     result,
     observation: {
       transport: 'official-sdk-stdio',
-      protocolPin: AELIQO_MCP_PROTOCOL_REVISION,
+      protocolPin: VARENDO_MCP_PROTOCOL_REVISION,
       server: server ?? null,
       node: process.version,
       discoveredTools,

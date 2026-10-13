@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 import { defineResource } from '@varendo/core';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
-import { AeliqoProvider, AeliqoRegion } from '@varendo/react/app';
+import { VarendoProvider, VarendoRegion } from '@varendo/react/app';
 import { createLocalDataService } from '@varendo/runtime/data';
-import type { AeliqoApp } from '@varendo/web/app';
+import type { VarendoApp } from '@varendo/web/app';
 import { z } from 'zod';
 
 const people = defineResource({
@@ -17,7 +17,7 @@ const people = defineResource({
   presentation: { allowedViews: ['table', 'cards'] },
 });
 
-function createPeopleApp(createAeliqoApp: (typeof import('@varendo/web/app'))['createAeliqoApp']) {
+function createPeopleApp(createVarendoApp: (typeof import('@varendo/web/app'))['createVarendoApp']) {
   const functions = createQueryFunctionRegistry({ version: '2' });
   if (!functions.ok) throw new Error(functions.diagnostics[0].message);
   const data = createLocalDataService({
@@ -30,7 +30,7 @@ function createPeopleApp(createAeliqoApp: (typeof import('@varendo/web/app'))['c
     sourceLimits: { rows: 100, bytes: 100_000 },
     authorize: () => ({ ok: true, value: { scopeDigest: 'next-scope', policyRevision: 'next-policy-1' } }),
   });
-  return createAeliqoApp({
+  return createVarendoApp({
     resources: [{ resource: people, data }],
     authority: {
       read: () => ({
@@ -57,15 +57,15 @@ const browsePeople = Object.freeze({
 });
 
 export function AdaptivePeople() {
-  const [app, setApp] = useState<AeliqoApp>();
+  const [app, setApp] = useState<VarendoApp>();
   const [status, setStatus] = useState('Preparing browser runtime');
   useEffect(() => {
     let active = true;
-    let instance: AeliqoApp | undefined;
+    let instance: VarendoApp | undefined;
     void (async () => {
       await import('@lit-labs/ssr-client/lit-element-hydrate-support.js');
-      const { createAeliqoApp } = await import('@varendo/web/app');
-      instance = createPeopleApp(createAeliqoApp);
+      const { createVarendoApp } = await import('@varendo/web/app');
+      instance = createPeopleApp(createVarendoApp);
       if (active) setApp(instance);
       else instance.dispose();
     })().catch((error) => {
@@ -83,14 +83,14 @@ export function AdaptivePeople() {
         {status}
       </p>
       {app === undefined ? null : (
-        <AeliqoProvider app={app}>
-          <AeliqoRegion
+        <VarendoProvider app={app}>
+          <VarendoRegion
             regionId="next-people"
             resourceId="people"
             intent={browsePeople}
             onReceipt={(receipt) => setStatus(receipt.status)}
           />
-        </AeliqoProvider>
+        </VarendoProvider>
       )}
     </section>
   );

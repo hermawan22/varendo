@@ -2,7 +2,7 @@ import type { CatalogExampleId } from './types.js';
 
 export const COMPOUND_MOUNT_SOURCES = {
   explorer: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoExplorerElement>("aeliqo-explorer", root);
+		const element = createCatalogElement<VarendoExplorerElement>("varendo-explorer", root);
 		element.fields = catalogFields;
 		element.rows = catalogRows;
 		element.columns = catalogColumns;
@@ -16,7 +16,7 @@ export const COMPOUND_MOUNT_SOURCES = {
 		element.selection = "single";
 	})`,
   comparison: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoComparisonElement>("aeliqo-comparison", root);
+		const element = createCatalogElement<VarendoComparisonElement>("varendo-comparison", root);
 		element.compareSet = [{
 			key: "ada",
 			label: "Ada"
@@ -46,7 +46,7 @@ export const COMPOUND_MOUNT_SOURCES = {
 		element.scope = catalogScope;
 	})`,
   breakdown: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoBreakdownElement>("aeliqo-breakdown", root);
+		const element = createCatalogElement<VarendoBreakdownElement>("varendo-breakdown", root);
 		element.groups = [{
 			key: "research",
 			label: "Research",
@@ -68,7 +68,7 @@ export const COMPOUND_MOUNT_SOURCES = {
 		element.scope = catalogScope;
 	})`,
   investigation: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoInvestigationElement>("aeliqo-investigation", root);
+		const element = createCatalogElement<VarendoInvestigationElement>("varendo-investigation", root);
 		element.entity = "person";
 		element.result = catalogRef;
 		element.scope = catalogScope;
@@ -80,7 +80,7 @@ export const COMPOUND_MOUNT_SOURCES = {
 		element.trendDatasets = [catalogVisualizationDataset];
 	})`,
   'search-results': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoSearchResultsElement>("aeliqo-search-results", root);
+		const element = createCatalogElement<VarendoSearchResultsElement>("varendo-search-results", root);
 		element.query = "research";
 		element.queryRevision = "query-2";
 		element.resultRevision = catalogRef.revision;
@@ -96,15 +96,15 @@ export const COMPOUND_MOUNT_SOURCES = {
 		element.detailFields = catalogColumns;
 	})`,
   'record-editor': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoRecordEditorElement>("aeliqo-record-editor", root);
+		const element = createCatalogElement<VarendoRecordEditorElement>("varendo-record-editor", root);
 		element.entity = "person";
 		element.entityKey = "string:3:ada";
 		element.entityRevision = "person-revision-1";
-		const name = document.createElement("aeliqo-text-field") as AeliqoTextFieldElement;
+		const name = document.createElement("varendo-text-field") as VarendoTextFieldElement;
 		name.label = "Name";
 		name.name = "name";
 		name.value = "Ada Lovelace";
-		const period = document.createElement("aeliqo-date-range") as AeliqoDateRangeElement;
+		const period = document.createElement("varendo-date-range") as VarendoDateRangeElement;
 		period.label = "Review period";
 		period.name = "period";
 		period.start = "2026-09-01";
@@ -112,7 +112,7 @@ export const COMPOUND_MOUNT_SOURCES = {
 		element.append(name, period);
 	})`,
   'form-flow': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoFormFlowElement>("aeliqo-form-flow", root);
+		const element = createCatalogElement<VarendoFormFlowElement>("varendo-form-flow", root);
 		element.steps = [{
 			id: "identity",
 			label: "Identity",
@@ -126,7 +126,7 @@ export const COMPOUND_MOUNT_SOURCES = {
 		element.draft = { name: "Ada Lovelace" };
 		const identity = document.createElement("div");
 		identity.slot = "step-identity";
-		const name = document.createElement("aeliqo-text-field") as AeliqoTextFieldElement;
+		const name = document.createElement("varendo-text-field") as VarendoTextFieldElement;
 		name.label = "Name";
 		name.name = "name";
 		name.value = "Ada Lovelace";
@@ -137,7 +137,7 @@ export const COMPOUND_MOUNT_SOURCES = {
 		element.append(identity, review);
 	})`,
   'quality-panel': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoQualityPanelElement>("aeliqo-quality-panel", root);
+		const element = createCatalogElement<VarendoQualityPanelElement>("varendo-quality-panel", root);
 		element.source = "People registry";
 		element.freshness = "2026-09-09 09:00 UTC";
 		element.completeness = "3 of 3 rows loaded";

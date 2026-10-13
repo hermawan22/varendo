@@ -5,7 +5,7 @@ async function catalog(page: Page, component: string, direction: string) {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(`/tests/visual/index.html?component=${component}&variant=narrow-dark-rtl`);
   await page.waitForFunction(() =>
-    Boolean((window as typeof window & { aeliqoReviewReady?: boolean }).aeliqoReviewReady),
+    Boolean((window as typeof window & { varendoReviewReady?: boolean }).varendoReviewReady),
   );
   await page.evaluate((dir) => {
     document.documentElement.dir = dir;
@@ -15,7 +15,7 @@ async function catalog(page: Page, component: string, direction: string) {
 for (const direction of ['ltr', 'rtl']) {
   test(`switch thumb remains inside its track for checked and unchecked ${direction}`, async ({ page }, info) => {
     await catalog(page, 'switch', direction);
-    const host = page.locator('aeliqo-switch');
+    const host = page.locator('varendo-switch');
     const control = host.getByRole('switch');
     await expect(control).toBeChecked();
     const centers: number[] = [];
@@ -42,7 +42,7 @@ for (const direction of ['ltr', 'rtl']) {
 
   test(`heatmap numeric key follows its physical gradient in ${direction}`, async ({ page }, info) => {
     await catalog(page, 'heatmap', direction);
-    const host = page.locator('aeliqo-heatmap');
+    const host = page.locator('varendo-heatmap');
     const bar = host.locator('[part="color-key-bar"]');
     const tickList = host.locator('[part="color-key-ticks"]');
     await expect(tickList.locator('li')).toHaveText(['96', '120', '144']);

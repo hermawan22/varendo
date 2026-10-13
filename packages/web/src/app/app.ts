@@ -1,7 +1,7 @@
 import type { VersionRef } from '@varendo/core';
-import { createAeliqoRuntime } from '@varendo/runtime/app';
+import { createVarendoRuntime } from '@varendo/runtime/app';
 import { STANDARD_RECIPES } from '../recipes/standard.js';
-import type { AeliqoApp, AeliqoAppOptions, WebRenderReceipt } from './types.js';
+import type { VarendoApp, VarendoAppOptions, WebRenderReceipt } from './types.js';
 import { createInteractionHandler } from './interaction.js';
 import { createMountHandler } from './mount.js';
 import { disposeApp, subscribeRegion, unmountRegion } from './lifecycle.js';
@@ -13,16 +13,16 @@ function assertUniqueRegistrations(values: readonly { readonly ref: VersionRef }
   if (new Set(keys).size !== values.length) throw new TypeError(kind + ' registrations must be unique.');
 }
 
-function createContext(options: AeliqoAppOptions): WebAppContext {
+function createContext(options: VarendoAppOptions): WebAppContext {
   const recipes = Object.freeze([...(options.recipes ?? STANDARD_RECIPES)]);
   const views = Object.freeze([...(options.views ?? [])]);
   if (recipes.length === 0 && (options.patterns?.length ?? 0) === 0)
-    throw new TypeError('createAeliqoApp requires at least one recipe or pattern.');
+    throw new TypeError('createVarendoApp requires at least one recipe or pattern.');
   assertUniqueRegistrations(recipes, 'Recipe');
   assertUniqueRegistrations(views, 'View');
   const registry = registryFor([], [], views, '', undefined, options);
   if (registry === undefined) throw new TypeError('Invalid presentation registrations.');
-  const runtime = createAeliqoRuntime(options);
+  const runtime = createVarendoRuntime(options);
   return {
     options,
     runtime,
@@ -54,7 +54,7 @@ function observePresentation(context: WebAppContext, receipt: WebRenderReceipt |
   }
 }
 
-export function createAeliqoApp(options: AeliqoAppOptions): AeliqoApp {
+export function createVarendoApp(options: VarendoAppOptions): VarendoApp {
   const context = createContext(options);
   const adapt = async (region: Parameters<typeof adaptRegion>[1]) => {
     const receipt = await adaptRegion(context, region);
@@ -81,5 +81,5 @@ export function createAeliqoApp(options: AeliqoAppOptions): AeliqoApp {
     subscribe: (regionId, listener) => subscribeRegion(context, regionId, listener),
     unmount: (regionId) => unmountRegion(context, regionId),
     dispose: () => disposeApp(context),
-  } satisfies AeliqoApp);
+  } satisfies VarendoApp);
 }

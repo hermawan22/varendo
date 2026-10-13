@@ -15,7 +15,7 @@ test('mounts every catalog entry through its executable example', async ({ page 
     .locator('[data-example-id]')
     .evaluateAll((sections) =>
       sections
-        .filter((section) => !section.querySelector(`aeliqo-${section.getAttribute('data-example-id') ?? ''}`))
+        .filter((section) => !section.querySelector(`varendo-${section.getAttribute('data-example-id') ?? ''}`))
         .map((section) => section.getAttribute('data-example-id')),
     );
   expect(missing).toEqual([]);
@@ -25,17 +25,19 @@ test('mounts every catalog entry through its executable example', async ({ page 
 });
 
 test('uses real renderers and compound host boundaries', async ({ page }) => {
-  await expect(page.locator('[data-example-id="trend"] aeliqo-trend svg')).toBeVisible();
-  await expect(page.locator('[data-example-id="bar"] aeliqo-bar svg')).toBeVisible();
-  await expect(page.locator('[data-example-id="table"] aeliqo-table [part="table"]')).toBeVisible();
-  await expect(page.locator('[data-example-id="explorer"] aeliqo-explorer [part="collection"]')).toBeVisible();
-  await expect(page.locator('[data-example-id="record-editor"] aeliqo-record-editor aeliqo-text-field')).toBeAttached();
-  await expect(page.locator('[data-example-id="form-flow"] aeliqo-form-flow [slot="step-identity"]')).toBeAttached();
-  await expect(page.locator('[data-example-id="quality-panel"] aeliqo-quality-panel')).toBeAttached();
+  await expect(page.locator('[data-example-id="trend"] varendo-trend svg')).toBeVisible();
+  await expect(page.locator('[data-example-id="bar"] varendo-bar svg')).toBeVisible();
+  await expect(page.locator('[data-example-id="table"] varendo-table [part="table"]')).toBeVisible();
+  await expect(page.locator('[data-example-id="explorer"] varendo-explorer [part="collection"]')).toBeVisible();
+  await expect(
+    page.locator('[data-example-id="record-editor"] varendo-record-editor varendo-text-field'),
+  ).toBeAttached();
+  await expect(page.locator('[data-example-id="form-flow"] varendo-form-flow [slot="step-identity"]')).toBeAttached();
+  await expect(page.locator('[data-example-id="quality-panel"] varendo-quality-panel')).toBeAttached();
 });
 
 test('keyboard focus reaches a direct action and cleanup removes mounted roots', async ({ page }) => {
-  const button = page.locator('[data-example-id="button"] aeliqo-button').locator('button');
+  const button = page.locator('[data-example-id="button"] varendo-button').locator('button');
   await button.press('Enter');
   await page.evaluate(() =>
     (window as typeof window & { disposeCatalogExamples: () => void }).disposeCatalogExamples(),

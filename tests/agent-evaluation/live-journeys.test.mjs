@@ -13,7 +13,7 @@ const model = {
   expectedReportedModel: 'approved-tool-model',
   authScheme: 'bearer',
   capabilities: ['tool-calls', 'usage'],
-  credentialEnvironment: 'AELIQO_MODEL_API_KEY',
+  credentialEnvironment: 'VARENDO_MODEL_API_KEY',
   inputUSDPerMillion: 0.5,
   outputUSDPerMillion: 0.5,
   priceSource: 'owner-approved test rate',
@@ -72,7 +72,7 @@ test('rejects altered corpus, model ambiguity, and excessive spend before any tr
     () =>
       validateLiveJourneyPlan({
         ...input,
-        config: { ...input.config, model: { ...model, credentialEnvironment: 'AELIQO_OTHER_KEY' } },
+        config: { ...input.config, model: { ...model, credentialEnvironment: 'VARENDO_OTHER_KEY' } },
       }),
     /credential/u,
   );

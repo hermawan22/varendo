@@ -171,7 +171,7 @@ export function createActionCapability(
   state: ActionCapabilityState,
 ): AgentCapabilityManifest<ParsedAction, AgentJsonValue> {
   return {
-    ref: { id: 'aeliqo.app.action', revision: '1' },
+    ref: { id: 'varendo.app.action', revision: '1' },
     operation: 'action.propose',
     label: 'Preview or execute a registered Varendo action',
     description:

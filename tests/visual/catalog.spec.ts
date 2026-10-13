@@ -16,9 +16,9 @@ for (const component of components.components)
       await page.emulateMedia({ colorScheme: reviewColorScheme(variant) });
       await page.goto(`/tests/visual/index.html?component=${id}&variant=${variant}`);
       await page.waitForFunction(() =>
-        Boolean((window as typeof window & { aeliqoReviewReady?: boolean }).aeliqoReviewReady),
+        Boolean((window as typeof window & { varendoReviewReady?: boolean }).varendoReviewReady),
       );
-      await expect(page.locator(`#fixture aeliqo-${id}`).first()).toBeAttached();
+      await expect(page.locator(`#fixture varendo-${id}`).first()).toBeAttached();
       if (id === 'dialog') {
         const closedAxe = await new AxeBuilder({ page }).analyze();
         await info.attach('accessibility-closed.json', {
@@ -39,7 +39,7 @@ for (const component of components.components)
       const axeBuilder = new AxeBuilder({ page });
       if (id === 'dialog') {
         // WebKit measures the inert page control against the native modal backdrop while the dialog is open.
-        axeBuilder.include(`#fixture aeliqo-${id}`);
+        axeBuilder.include(`#fixture varendo-${id}`);
       }
       const axe = await axeBuilder.analyze();
       await info.attach('accessibility.json', {
@@ -66,7 +66,7 @@ for (const component of components.components)
       await page.screenshot({ path: info.outputPath('review.png'), fullPage: true });
       expect(errors).toEqual([]);
       if (id === 'trend' && variant === 'desktop-light') {
-        const axes = await page.locator('#fixture aeliqo-trend').evaluate((element) => {
+        const axes = await page.locator('#fixture varendo-trend').evaluate((element) => {
           const svg = element.shadowRoot!.querySelector<SVGSVGElement>('[part="viewport"] svg')!;
           return {
             x: [...svg.querySelectorAll<SVGTextElement>('.axis-x-tick')].map((tick) => ({
@@ -98,16 +98,16 @@ for (const component of components.components)
       expect(axe.incomplete.filter(({ id }) => id === 'aria-prohibited-attr')).toEqual([]);
       expect(measurements.documentWidth).toBeLessThanOrEqual(measurements.viewport.width);
       if (id === 'select') {
-        const control = page.locator('aeliqo-select select');
+        const control = page.locator('varendo-select select');
         await expect(control).toHaveValue('research');
         expect(await control.locator('option').allTextContents()).toEqual(['Choose a team', 'Research', 'Product']);
       }
       if (variant === 'desktop-light' && id === 'investigation') {
-        const layout = await page.locator('aeliqo-investigation').evaluate((element) => {
+        const layout = await page.locator('varendo-investigation').evaluate((element) => {
           const root = element.shadowRoot!;
           const grid = root.querySelector<HTMLElement>('[part="grid"]')!;
           const trendPanel = root.querySelector<HTMLElement>('[part="trend"]')!;
-          const trend = root.querySelector('aeliqo-trend')!;
+          const trend = root.querySelector('varendo-trend')!;
           const trendRoot = trend.shadowRoot!;
           // Measure the exact-values table in its expanded state.
           trendRoot.querySelector<HTMLDetailsElement>('[part="data-details"]')!.open = true;
@@ -139,9 +139,11 @@ for (const component of components.components)
         variant === 'narrow-dark-rtl' &&
         ['trend', 'bar', 'area', 'scatter', 'histogram', 'heatmap', 'timeline', 'investigation'].includes(id)
       ) {
-        const sizes = await page.locator(`aeliqo-${id}`).evaluate(async (element) => {
+        const sizes = await page.locator(`varendo-${id}`).evaluate(async (element) => {
           const chart =
-            element.localName === 'aeliqo-investigation' ? element.shadowRoot!.querySelector('aeliqo-trend')! : element;
+            element.localName === 'varendo-investigation'
+              ? element.shadowRoot!.querySelector('varendo-trend')!
+              : element;
           const label = chart.shadowRoot!.querySelector<SVGTextElement>(
             'svg text.axis-x-tick,svg text.timeline-label',
           )!;
@@ -162,7 +164,7 @@ for (const component of components.components)
         expect(sizes.zoomed / sizes.normal).toBeGreaterThanOrEqual(1.8);
       }
       if (variant === 'narrow-dark-rtl' && ['stack', 'grid'].includes(id)) {
-        const layout = await page.locator(`aeliqo-${id}`).evaluate((element) => {
+        const layout = await page.locator(`varendo-${id}`).evaluate((element) => {
           const nodes = [...element.querySelectorAll('span')].map((node) => node.getBoundingClientRect());
           return nodes.map((box, index) =>
             index === 0
@@ -182,7 +184,7 @@ for (const component of components.components)
         expect(layout[1]).toBeGreaterThan(0);
       }
       if (variant === 'narrow-dark-rtl' && ['form', 'dialog'].includes(id)) {
-        const control = await page.locator(`aeliqo-${id}`).evaluate((element) => {
+        const control = await page.locator(`varendo-${id}`).evaluate((element) => {
           const button = element.querySelector('button')!;
           const box = button.getBoundingClientRect();
           return {
@@ -200,9 +202,11 @@ for (const component of components.components)
         variant === 'narrow-dark-rtl' &&
         ['trend', 'bar', 'area', 'scatter', 'histogram', 'heatmap', 'investigation'].includes(id)
       ) {
-        const intersections = await page.locator(`aeliqo-${id}`).evaluate((element) => {
+        const intersections = await page.locator(`varendo-${id}`).evaluate((element) => {
           const chart =
-            element.localName === 'aeliqo-investigation' ? element.shadowRoot!.querySelector('aeliqo-trend')! : element;
+            element.localName === 'varendo-investigation'
+              ? element.shadowRoot!.querySelector('varendo-trend')!
+              : element;
           const labels = [
             ...chart.shadowRoot!.querySelectorAll<SVGTextElement>(
               'svg text.axis-x-tick,svg text.axis-y-tick,svg text.axis-title',
@@ -225,7 +229,7 @@ for (const component of components.components)
         expect(intersections).toEqual([]);
       }
       if (variant === 'narrow-dark-rtl' && ['relationship', 'tree', 'treemap', 'timeline'].includes(id)) {
-        const intersections = await page.locator(`aeliqo-${id}`).evaluate((element) => {
+        const intersections = await page.locator(`varendo-${id}`).evaluate((element) => {
           const labels = [...element.shadowRoot!.querySelectorAll<SVGTextElement>('svg text:not(.sr-only)')];
           const boxes = labels.map((label) => ({ text: label.textContent ?? '', box: label.getBoundingClientRect() }));
           return boxes.flatMap((left, index) =>
@@ -244,7 +248,7 @@ for (const component of components.components)
         expect(intersections).toEqual([]);
       }
       if (variant === 'narrow-dark-rtl' && ['tree', 'treemap'].includes(id)) {
-        const contrasts = await page.locator(`aeliqo-${id}`).evaluate((element) => {
+        const contrasts = await page.locator(`varendo-${id}`).evaluate((element) => {
           const rgb = (value: string) =>
             value
               .match(/[\d.]+/g)!
@@ -272,12 +276,12 @@ for (const component of components.components)
       }
       if (variant === 'narrow-dark-rtl' && id === 'quality-panel') {
         const columns = await page
-          .locator('aeliqo-quality-panel')
+          .locator('varendo-quality-panel')
           .evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('dl')!).gridTemplateColumns);
         expect(columns.trim().split(/\s+/)).toHaveLength(1);
       }
       if (variant === 'narrow-dark-rtl' && ['tree', 'treemap', 'relationship', 'timeline'].includes(id)) {
-        const host = page.locator(`aeliqo-${id}`);
+        const host = page.locator(`varendo-${id}`);
         await verifyScrollableGraphic(host);
         for (const width of [240, 320]) {
           await host.evaluate((element, width) => ((element as HTMLElement).style.width = `${width}px`), width);
@@ -286,7 +290,7 @@ for (const component of components.components)
         await host.evaluate((element) => ((element as HTMLElement).style.width = ''));
       }
       if (variant === 'narrow-dark-rtl' && id === 'timeline') {
-        const layout = await page.locator(`aeliqo-${id}`).evaluate((element) => {
+        const layout = await page.locator(`varendo-${id}`).evaluate((element) => {
           const root = element.shadowRoot!;
           const viewport = root.querySelector<HTMLElement>('[part="viewport"]')!;
           const data = root.querySelector<HTMLElement>('[part="data"]')!;
@@ -299,8 +303,8 @@ for (const component of components.components)
         expect(layout.dataOverflow).toBeLessThanOrEqual(1);
       }
       if (variant === 'narrow-dark-rtl' && id === 'investigation') {
-        const layout = await page.locator('aeliqo-investigation').evaluate((element) => {
-          const trend = element.shadowRoot!.querySelector('aeliqo-trend')!;
+        const layout = await page.locator('varendo-investigation').evaluate((element) => {
+          const trend = element.shadowRoot!.querySelector('varendo-trend')!;
           const root = trend.shadowRoot!;
           root.querySelector<HTMLDetailsElement>('[part="data-details"]')!.open = true;
           const viewport = root.querySelector<HTMLElement>('[part="viewport"]')!;
@@ -320,7 +324,7 @@ for (const component of components.components)
         expect(layout.graphicEnd).toBeGreaterThanOrEqual(-1);
       }
       if (variant === 'narrow-dark-rtl' && ['relationship', 'tree', 'treemap'].includes(id)) {
-        const layout = await page.locator(`aeliqo-${id}`).evaluate((element) => {
+        const layout = await page.locator(`varendo-${id}`).evaluate((element) => {
           const root = element.shadowRoot!;
           const host = element.getBoundingClientRect();
           const viewport = root.querySelector<HTMLElement>('[part="viewport"]')!;
@@ -350,7 +354,7 @@ for (const component of components.components)
         ).toBe(true);
       }
       if (variant === 'narrow-dark-rtl' && id === 'heatmap') {
-        const labels = await page.locator('aeliqo-heatmap').evaluate((element) => {
+        const labels = await page.locator('varendo-heatmap').evaluate((element) => {
           const svg = element.shadowRoot!.querySelector('svg')!;
           const graphic = svg.getBoundingClientRect();
           return [...svg.querySelectorAll<SVGTextElement>('text')].map((label) => {
@@ -373,7 +377,7 @@ for (const component of components.components)
         }
       }
       if (variant === 'narrow-dark-rtl' && id === 'calendar-grid') {
-        const layout = await page.locator('aeliqo-calendar-grid').evaluate((element) => {
+        const layout = await page.locator('varendo-calendar-grid').evaluate((element) => {
           const root = element.shadowRoot!;
           const host = element.getBoundingClientRect();
           const data = root.querySelector<HTMLElement>('[part="data"]')!;
@@ -393,9 +397,9 @@ for (const component of components.components)
         ).toBe(true);
       }
       if (variant === 'narrow-dark-rtl' && id === 'breakdown') {
-        const layout = await page.locator('aeliqo-breakdown').evaluate((element) => {
+        const layout = await page.locator('varendo-breakdown').evaluate((element) => {
           const host = element.getBoundingClientRect();
-          const table = element.shadowRoot!.querySelector('aeliqo-table')!;
+          const table = element.shadowRoot!.querySelector('varendo-table')!;
           const root = table.shadowRoot!;
           const scroll = root.querySelector<HTMLElement>('[part="scroll"]')!;
           const caption = root.querySelector('caption')!.getBoundingClientRect();
@@ -429,7 +433,7 @@ for (const component of components.components)
         ).toBe(true);
       }
       if (variant === 'narrow-dark-rtl' && id === 'combobox') {
-        const layout = await page.locator('aeliqo-combobox').evaluate((element) => {
+        const layout = await page.locator('varendo-combobox').evaluate((element) => {
           const host = element.getBoundingClientRect();
           const root = element.shadowRoot!;
           const nodes = [
@@ -480,7 +484,7 @@ for (const component of components.components)
         ].includes(id)
       ) {
         await page.emulateMedia({ forcedColors: 'active' });
-        const controls = await page.locator(`aeliqo-${id} button:not([part="close"])`).evaluateAll((buttons) =>
+        const controls = await page.locator(`varendo-${id} button:not([part="close"])`).evaluateAll((buttons) =>
           buttons.map((button) => {
             const style = getComputedStyle(button);
             return {

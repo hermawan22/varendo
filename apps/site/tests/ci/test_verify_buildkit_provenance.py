@@ -69,8 +69,8 @@ def fixture(statement_change=None):
             "Labels": {
                 "org.opencontainers.image.revision": SOURCE,
                 "org.opencontainers.image.source": "https://github.com/hermawan22/varendo",
-                "com.aeliqo.sdk.revision": SDK_REVISION,
-                "com.aeliqo.sdk.version": SDK_VERSION,
+                "com.varendo.sdk.revision": SDK_REVISION,
+                "com.varendo.sdk.version": SDK_VERSION,
             },
         },
     }
@@ -99,7 +99,7 @@ def fixture(statement_change=None):
     statement = {
         "_type": PROVENANCE.STATEMENT_TYPE,
         "predicateType": PROVENANCE.PREDICATE_TYPE,
-        "subject": [{"name": "pkg:docker/aeliqo-web", "digest": {"sha256": image_digest.removeprefix("sha256:")}}],
+        "subject": [{"name": "pkg:docker/varendo-web", "digest": {"sha256": image_digest.removeprefix("sha256:")}}],
         "predicate": {
             "buildDefinition": {
                 "buildType": PROVENANCE.BUILD_TYPE,
@@ -113,8 +113,8 @@ def fixture(statement_change=None):
                             "build-arg:SDK_VERSION": SDK_VERSION,
                             "label:org.opencontainers.image.revision": SOURCE,
                             "label:org.opencontainers.image.source": "https://github.com/hermawan22/varendo",
-                            "label:com.aeliqo.sdk.revision": SDK_REVISION,
-                            "label:com.aeliqo.sdk.version": SDK_VERSION,
+                            "label:com.varendo.sdk.revision": SDK_REVISION,
+                            "label:com.varendo.sdk.version": SDK_VERSION,
                         },
                     },
                 },

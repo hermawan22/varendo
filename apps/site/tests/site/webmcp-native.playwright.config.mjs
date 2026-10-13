@@ -1,6 +1,6 @@
 import { defineConfig } from '@playwright/test';
 import { testPort } from '../shared/port.mjs';
-const port = await testPort('AELIQO_NATIVE_PLAYGROUND_PORT');
+const port = await testPort('VARENDO_NATIVE_PLAYGROUND_PORT');
 export default defineConfig({
   testDir: '.',
   testMatch: 'webmcp-native.spec.ts',

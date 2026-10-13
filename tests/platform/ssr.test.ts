@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { html } from 'lit';
-import { renderAeliqo } from '../../packages/web/src/server.js';
+import { renderVarendo } from '../../packages/web/src/server.js';
 import { scopeText } from '../../packages/web/src/data/shared.js';
 
 describe('SSR boundary', () => {
@@ -8,18 +8,18 @@ describe('SSR boundary', () => {
     expect(globalThis.window).toBeUndefined();
     const escapedValue = '<script>window.serverSecret = true</script>';
 
-    const output = await renderAeliqo(html`
+    const output = await renderVarendo(html`
       <main>
-        <aeliqo-text-field label="Name" value=${escapedValue} name="person"></aeliqo-text-field>
-        <aeliqo-table
+        <varendo-text-field label="Name" value=${escapedValue} name="person"></varendo-text-field>
+        <varendo-table
           caption="People"
           .columns=${[
             { key: 'name', label: 'Name' },
             { key: 'role', label: 'Role' },
           ]}
           .rows=${[{ name: 'Ada', role: 'Engineer' }]}
-        ></aeliqo-table>
-        <aeliqo-chart
+        ></varendo-table>
+        <varendo-chart
           title="Activity"
           summary="A trend with an accessible data table."
           unit="events"
@@ -27,11 +27,11 @@ describe('SSR boundary', () => {
             { label: 'Mon', value: 3 },
             { label: 'Tue', value: 5 },
           ]}
-        ></aeliqo-chart>
+        ></varendo-chart>
       </main>
     `);
 
-    expect(output).toContain('<aeliqo-text-field');
+    expect(output).toContain('<varendo-text-field');
     expect(output).toContain('shadowrootmode="open"');
     expect(output).toContain('<table');
     expect(output).toContain('<svg');
@@ -41,8 +41,8 @@ describe('SSR boundary', () => {
   });
 
   it('reports non-finite chart values without emitting invalid SVG geometry', async () => {
-    const output = await renderAeliqo(html`
-      <aeliqo-chart title="Invalid activity" .points=${[{ label: 'Bad', value: Number.NaN }]}></aeliqo-chart>
+    const output = await renderVarendo(html`
+      <varendo-chart title="Invalid activity" .points=${[{ label: 'Bad', value: Number.NaN }]}></varendo-chart>
     `);
 
     expect(output).toContain('Chart unavailable: values must be finite.');
@@ -51,14 +51,14 @@ describe('SSR boundary', () => {
   });
 
   it('keeps SVG geometry finite for finite extreme values', async () => {
-    const output = await renderAeliqo(html`
-      <aeliqo-chart
+    const output = await renderVarendo(html`
+      <varendo-chart
         title="Extreme activity"
         .points=${[
           { label: 'Low', value: -Number.MAX_VALUE },
           { label: 'High', value: Number.MAX_VALUE },
         ]}
-      ></aeliqo-chart>
+      ></varendo-chart>
     `);
 
     expect(output).not.toContain('NaN');
@@ -67,15 +67,15 @@ describe('SSR boundary', () => {
   });
 
   it('renders Indonesian chart chrome and accessible text for an Indonesian host locale', async () => {
-    const output = await renderAeliqo(html`
-      <aeliqo-chart
+    const output = await renderVarendo(html`
+      <varendo-chart
         lang="id-ID"
         scope="Menampilkan 2 dari 3 rekaman"
         .points=${[
           { label: 'Jan', value: 4 },
           { label: 'Feb', value: null },
         ]}
-      ></aeliqo-chart>
+      ></varendo-chart>
     `);
 
     const visible = output.replace(/<!--.*?-->/gs, '');

@@ -10,7 +10,7 @@ import {
 import type { ValidatedPresentation } from '@varendo/core/presentation';
 import { stableDataRecordKey } from '../data/shared.js';
 import { rowIdentity } from '../region/data-registry-selection.js';
-import type { AeliqoRegionResult } from '../region/types.js';
+import type { VarendoRegionResult } from '../region/types.js';
 
 export type RenderContinuity =
   | { readonly kind: 'replace' }
@@ -27,7 +27,7 @@ interface ContinuityInput {
   readonly interaction: InteractionState | undefined;
   readonly current: CommitPreconditions;
   readonly results: readonly Result[];
-  readonly bindings: readonly AeliqoRegionResult[];
+  readonly bindings: readonly VarendoRegionResult[];
   readonly previousAuthority: string | undefined;
   readonly currentAuthority: string | undefined;
 }
@@ -104,7 +104,7 @@ function pairFor(value: Value, previous: ValidatedPresentation, pairs: readonly 
   return pairs.find((pair) => pair.previous.ref.outputId === outputId);
 }
 
-function memberSelection(keys: readonly string[], result: Result, bindings: readonly AeliqoRegionResult[]): boolean {
+function memberSelection(keys: readonly string[], result: Result, bindings: readonly VarendoRegionResult[]): boolean {
   if (result.identity.length === 0 || new Set(keys).size !== keys.length) return false;
   const matches = bindings.filter((binding) => canonical(binding.ref) === canonical(result.ref));
   const binding = matches[0];
@@ -122,7 +122,7 @@ function memberSelection(keys: readonly string[], result: Result, bindings: read
   return keys.every((key) => members.has(key)) || keys.every((key) => dataMembers.has(key));
 }
 
-function retainSelection(value: Value, pair: ResultPair, bindings: readonly AeliqoRegionResult[]): Outcome<Value> {
+function retainSelection(value: Value, pair: ResultPair, bindings: readonly VarendoRegionResult[]): Outcome<Value> {
   if (value.payload.kind !== 'selection') return failure('A selection payload is required.');
   const selection = value.payload.selection;
   if (selection.mode === 'clear') return { ok: true, value };
@@ -148,7 +148,7 @@ function retainSelection(value: Value, pair: ResultPair, bindings: readonly Aeli
   };
 }
 
-function retainValue(value: Value, pair: ResultPair, bindings: readonly AeliqoRegionResult[]): Outcome<Value> {
+function retainValue(value: Value, pair: ResultPair, bindings: readonly VarendoRegionResult[]): Outcome<Value> {
   if (value.payload.kind === 'selection') return retainSelection(value, pair, bindings);
   if (value.payload.outputId !== pair.next.ref.outputId)
     return failure('The interaction output does not match its candidate Result owner.');

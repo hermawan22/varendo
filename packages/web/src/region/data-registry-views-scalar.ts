@@ -1,6 +1,6 @@
 import type { Outcome, Result, SemanticType } from '@varendo/core';
-import type { AeliqoDataColumn } from '../data/index.js';
-import type { AeliqoDataResolvedConfig, AeliqoValidatedBinding } from './data-registry-types.js';
+import type { VarendoDataColumn } from '../data/index.js';
+import type { VarendoDataResolvedConfig, VarendoValidatedBinding } from './data-registry-types.js';
 import { columns } from './data-registry-columns.js';
 import {
   allowedKeys,
@@ -44,12 +44,12 @@ interface DeltaFieldPair {
 
 interface ResolvedKeyValueFields {
   readonly ids: readonly string[];
-  readonly columns: readonly AeliqoDataColumn[];
+  readonly columns: readonly VarendoDataColumn[];
 }
 
 interface ResolvedDetailFields {
   readonly fields: readonly string[];
-  readonly columns: readonly AeliqoDataColumn[];
+  readonly columns: readonly VarendoDataColumn[];
   readonly identity: readonly string[];
 }
 
@@ -57,7 +57,7 @@ function keyValueColumn(
   raw: unknown,
   fields: ReadonlyMap<string, Result['fields'][number]>,
   seen: ReadonlySet<string>,
-): Outcome<AeliqoDataColumn> {
+): Outcome<VarendoDataColumn> {
   const item = object(raw);
   if (
     item === undefined ||
@@ -95,7 +95,7 @@ function isExplicitFractionRatioType(current: SemanticType, baseline: SemanticTy
   return isFractionRatio(current) && isFractionRatio(baseline);
 }
 
-function metricColumn(field: NumericField): AeliqoDataColumn {
+function metricColumn(field: NumericField): VarendoDataColumn {
   return {
     key: field.id,
     label: field.descriptor.label,
@@ -105,8 +105,8 @@ function metricColumn(field: NumericField): AeliqoDataColumn {
 
 export function resolveMetric(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
-): Outcome<AeliqoDataResolvedConfig> {
+  binding: VarendoValidatedBinding,
+): Outcome<VarendoDataResolvedConfig> {
   if (!allowedKeys(input, ['field', 'identityValues', 'rowIdentity', 'label'])) {
     return failure('config', 'Metric configuration contains an unknown property.');
   }
@@ -143,7 +143,7 @@ function resolveDeltaInputs(input: Readonly<Record<string, unknown>>): Outcome<D
 
 function resolveDeltaSelectors(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
+  binding: VarendoValidatedBinding,
   observations: DeltaInputPair,
 ): Outcome<DeltaSelectorPair> {
   const current = observationSelector(input, observations.current, binding.result, 'Current');
@@ -153,7 +153,7 @@ function resolveDeltaSelectors(
   return { ok: true, value: { current: current.value, baseline: baseline.value } };
 }
 
-function resolveDeltaFields(binding: AeliqoValidatedBinding, observations: DeltaInputPair): Outcome<DeltaFieldPair> {
+function resolveDeltaFields(binding: VarendoValidatedBinding, observations: DeltaInputPair): Outcome<DeltaFieldPair> {
   const current = scalarField(binding.result, observations.current.field, 'currentField');
   if (!current.ok) return current;
   const baseline = scalarField(binding.result, observations.baseline.field, 'baselineField');
@@ -186,8 +186,8 @@ function deltaFields(current: NumericField, baseline: NumericField): readonly st
 
 export function resolveDelta(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
-): Outcome<AeliqoDataResolvedConfig> {
+  binding: VarendoValidatedBinding,
+): Outcome<VarendoDataResolvedConfig> {
   if (
     !allowedKeys(input, [
       'currentField',
@@ -243,7 +243,7 @@ function resolveKeyValueFields(raw: unknown, result: Result): Outcome<ResolvedKe
   const fields = fieldMap(result);
   const ids: string[] = [];
   const seen = new Set<string>();
-  const output: AeliqoDataColumn[] = [];
+  const output: VarendoDataColumn[] = [];
   for (const rawItem of raw) {
     const column = keyValueColumn(rawItem, fields, seen);
     if (!column.ok) return column;
@@ -256,8 +256,8 @@ function resolveKeyValueFields(raw: unknown, result: Result): Outcome<ResolvedKe
 
 export function resolveKeyValue(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
-): Outcome<AeliqoDataResolvedConfig> {
+  binding: VarendoValidatedBinding,
+): Outcome<VarendoDataResolvedConfig> {
   if (!allowedKeys(input, ['items', 'identityValues', 'rowIdentity'])) {
     return failure('config', 'KeyValue configuration contains an unknown property.');
   }
@@ -297,11 +297,11 @@ function checkAuthorizedFields(
 
 function resolveDetailColumns(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
+  binding: VarendoValidatedBinding,
   fields: readonly string[] | undefined,
   authorizedColumns: ReadonlySet<string>,
-): Outcome<readonly AeliqoDataColumn[]> {
-  let fallback: readonly AeliqoDataColumn[] | undefined;
+): Outcome<readonly VarendoDataColumn[]> {
+  let fallback: readonly VarendoDataColumn[] | undefined;
   if (input.columns === undefined) {
     fallback = binding.columns.filter((column) => fields === undefined || fields.includes(column.key));
   }
@@ -313,7 +313,10 @@ function resolveDetailColumns(
   return resolved;
 }
 
-function validateDetailColumnSelection(columns: readonly AeliqoDataColumn[], fields: readonly string[]): Outcome<void> {
+function validateDetailColumnSelection(
+  columns: readonly VarendoDataColumn[],
+  fields: readonly string[],
+): Outcome<void> {
   if (columns.length !== fields.length || fields.some((field) => !columns.some((column) => column.key === field))) {
     return failure('field', 'Detail columns must be included in the configured fields.');
   }
@@ -322,7 +325,7 @@ function validateDetailColumnSelection(columns: readonly AeliqoDataColumn[], fie
 
 function resolveDetailFields(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
+  binding: VarendoValidatedBinding,
 ): Outcome<ResolvedDetailFields> {
   const fields = validateDetailFields(input.fields, binding.result);
   if (!fields.ok) return fields;
@@ -344,8 +347,8 @@ function resolveDetailFields(
 
 export function resolveDetail(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
-): Outcome<AeliqoDataResolvedConfig> {
+  binding: VarendoValidatedBinding,
+): Outcome<VarendoDataResolvedConfig> {
   if (
     !allowedKeys(input, [
       'fields',

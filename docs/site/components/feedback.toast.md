@@ -7,9 +7,9 @@ contract: 'Bounded transient feedback; essential errors remain persistently avai
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -29,19 +29,19 @@ tones remain open until dismissed. Keep important failures available in a persis
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 Set `duration` to zero for a notification that remains visible until the host
 or user dismisses it. Timed notifications are capped at 60 seconds; a
@@ -52,11 +52,11 @@ elsewhere if a user may need to read or act on it after the toast closes.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -64,9 +64,9 @@ Allow long messages to wrap within the available width. Place transient feedback
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -75,7 +75,7 @@ Allow long messages to wrap within the available width. Place transient feedback
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

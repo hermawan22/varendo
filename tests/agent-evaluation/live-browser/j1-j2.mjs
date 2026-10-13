@@ -1,7 +1,7 @@
 import { defineResource } from '@varendo/core';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { createLocalDataService } from '@varendo/runtime/data';
-import { createAeliqoApp } from '@varendo/web/app';
+import { createVarendoApp } from '@varendo/web/app';
 import { createAppToolEndpoint } from '@varendo/agent/app';
 import { PLAYGROUND_RESOURCES, PLAYGROUND_RECORDS } from '../../../apps/site/src/playground/scenarios.ts';
 import { attendanceDayFilter } from '../../../examples/vnext/attendance/period.ts';
@@ -104,7 +104,7 @@ export async function openJ1(target) {
     functionRegistry: functions.value,
     authorize: () => ({ ok: true, value: { scopeDigest: 'synthetic-local', policyRevision: '1' } }),
   });
-  const app = createAeliqoApp({
+  const app = createVarendoApp({
     resources: [{ resource, data }],
     authority: {
       read: () => ({
@@ -187,7 +187,7 @@ export async function openJ2(target) {
     sourceLimits: { rows: 100, bytes: 100_000 },
     authorize: () => ({ ok: true, value: { scopeDigest: 'attendance-live-scope', policyRevision: '1' } }),
   });
-  const app = createAeliqoApp({
+  const app = createVarendoApp({
     resources: [{ resource, data: service }],
     authority: {
       read: () => ({

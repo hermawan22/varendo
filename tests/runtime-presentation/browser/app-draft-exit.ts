@@ -3,7 +3,7 @@ import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { createLocalDataService } from '@varendo/runtime/data';
 import { ActionRegistry, createActionPort } from '@varendo/runtime/actions';
 import { z } from 'zod';
-import { createAeliqoApp } from '../../../packages/web/src/app/app.js';
+import { createVarendoApp } from '../../../packages/web/src/app/app.js';
 
 const control = <T extends HTMLElement>(id: string) => document.querySelector<T>('#' + id)!;
 const formMode = new URLSearchParams(location.search).get('form');
@@ -94,7 +94,7 @@ const actionPort = createActionPort({
     issueConfirmation: () => ({ ok: true, value: undefined }),
   },
 });
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [{ resource: people, data }],
   actionPort,
   authority: {

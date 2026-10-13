@@ -133,7 +133,7 @@ async function startLargeSourceFixture(): Promise<LargeSourceFixture> {
 async function openFixture(page: Page): Promise<void> {
   await page.goto('/tests/performance/browser.html');
   await page.waitForFunction(
-    () => (window as Window & { aeliqoPerformance?: PerformanceApi }).aeliqoPerformance?.ready === true,
+    () => (window as Window & { varendoPerformance?: PerformanceApi }).varendoPerformance?.ready === true,
   );
 }
 
@@ -143,7 +143,7 @@ test('runs small, medium, large-window, reducer and teardown workloads', async (
   let result: any;
   try {
     result = await page.evaluate(async (sourceUrl): Promise<any> => {
-      const api = (window as Window & { aeliqoPerformance?: PerformanceApi }).aeliqoPerformance;
+      const api = (window as Window & { varendoPerformance?: PerformanceApi }).varendoPerformance;
       if (api === undefined) throw new Error('Performance API is unavailable.');
       const all = (await api.runAll({ timed: false, sourceUrl })) as any;
       return {
@@ -185,8 +185,8 @@ test('records first/subsequent observations with a Chromium layout/paint trace',
   const sourceGuard = await createSourceGuard(process.cwd());
   const sourceCommit = sourceGuard.commit;
   test.skip(
-    process.env.AELIQO_RUN_PERFORMANCE !== '1',
-    'Set AELIQO_RUN_PERFORMANCE=1 to run timing workloads in isolation.',
+    process.env.VARENDO_RUN_PERFORMANCE !== '1',
+    'Set VARENDO_RUN_PERFORMANCE=1 to run timing workloads in isolation.',
   );
   test.skip(testInfo.project.use.browserName !== 'chromium', 'The CDP timeline trace is Chromium-specific.');
   await openFixture(page);
@@ -212,7 +212,7 @@ test('records first/subsequent observations with a Chromium layout/paint trace',
   let report: unknown;
   try {
     report = await page.evaluate(async (sourceUrl): Promise<any> => {
-      const api = (window as Window & { aeliqoPerformance?: PerformanceApi }).aeliqoPerformance;
+      const api = (window as Window & { varendoPerformance?: PerformanceApi }).varendoPerformance;
       if (api === undefined) throw new Error('Performance API is unavailable.');
       return api.runAll({ timed: true, sourceUrl });
     }, source.url);
@@ -251,7 +251,7 @@ test('records first/subsequent observations with a Chromium layout/paint trace',
     targetedReducerWithinBudget: reducerDispatchP95Ms !== null && reducerDispatchP95Ms <= 4,
     largeGeometryWithinBudget: measured.large?.sample?.mountedRows <= 100,
     tracePhasesAvailable,
-    enforced: process.env.AELIQO_ENFORCE_PERFORMANCE_BUDGETS !== '0',
+    enforced: process.env.VARENDO_ENFORCE_PERFORMANCE_BUDGETS !== '0',
   };
   const sourceChangedDuringRun = !(await sourceGuard.current());
   const output = testInfo.outputPath('performance-report.json');

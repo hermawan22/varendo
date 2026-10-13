@@ -9,7 +9,7 @@ import {
 } from '@varendo/core/presentation';
 import type { FeatureDefinition } from '@varendo/core/features';
 import {
-  createAeliqoRuntime,
+  createVarendoRuntime,
   type LocalSurfaceScope,
   type RequestResult,
   type RuntimeCommittedReceipt,
@@ -17,14 +17,14 @@ import {
   type SurfaceController,
 } from '@varendo/runtime';
 import { z } from 'zod';
-import { AELIQO_DATA_CONFIG_SCHEMAS, AELIQO_DATA_REFS } from '../../../packages/web/src/region/data-registry.js';
+import { VARENDO_DATA_CONFIG_SCHEMAS, VARENDO_DATA_REFS } from '../../../packages/web/src/region/data-registry.js';
 import {
   experience,
   presentationPolicy,
   registryFor,
   withoutDataRevision,
 } from '../../../packages/web/src/app/context.js';
-import { AELIQO_FOUNDATION_REFS } from '../../../packages/web/src/foundation/manifest.js';
+import { VARENDO_FOUNDATION_REFS } from '../../../packages/web/src/foundation/manifest.js';
 import { dataColumns } from '../../../packages/web/src/recipes/standard-data.js';
 import { defineRecipe } from '../../../packages/web/src/recipes/define.js';
 import { standardDataRecipe } from '../../../packages/web/src/recipes/standard.js';
@@ -35,9 +35,9 @@ const REGION_ID = 'workspace-region';
 const WORKSPACE_FEATURE_ID = 'workspace';
 const WORKSPACE_LAYOUT_REF = { id: 'orders.workspace-layout', revision: '1' } as const;
 const WORKSPACE_SELECTION_REF = { id: 'orders.workspace-selection', revision: '1' } as const;
-const SPLIT = AELIQO_FOUNDATION_REFS.splitPane;
-const TABLE = AELIQO_DATA_REFS.table;
-const DETAIL = AELIQO_DATA_REFS.detail;
+const SPLIT = VARENDO_FOUNDATION_REFS.splitPane;
+const TABLE = VARENDO_DATA_REFS.table;
+const DETAIL = VARENDO_DATA_REFS.detail;
 
 const environment: PresentationEnvironment = {
   inlineSize: { state: 'known', value: 1024 },
@@ -233,7 +233,7 @@ function transferFor(
     sameRef(previous.representation, target.representation) &&
     previous.role === target.role
   )
-    return { fromNode: previous.id, toNode: target.id, mapping: { id: 'aeliqo.state.identity', revision: '1' } };
+    return { fromNode: previous.id, toNode: target.id, mapping: { id: 'varendo.state.identity', revision: '1' } };
   const kind = previous.id === target.id ? 'transfer' : 'archive';
   const mapping = mappings.find(
     (candidate) =>
@@ -285,7 +285,7 @@ function planForMode(
     representation: DETAIL,
     result: context.result!.ref,
     config: {
-      schema: AELIQO_DATA_CONFIG_SCHEMAS.detail,
+      schema: VARENDO_DATA_CONFIG_SCHEMAS.detail,
       values: {
         fields: columns.map((column) => column.key),
         columns,
@@ -460,7 +460,7 @@ export function createWorkspaceFixture(): WorkspaceFixtureContract {
   const intentsRegistry = createIntentRegistry();
   const runtimeId = `workspace-runtime-${sourceFixture.runtimeId}`;
   const scopeId = sourceFixture.scope.getSnapshot().scopeInstanceId;
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId,
     resources: [{ resource: peopleFeature.resource, data: sourceFixture.source }],
     intents: intentsRegistry,

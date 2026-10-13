@@ -14,7 +14,7 @@ import {
   type ActionSchema,
 } from '@varendo/runtime/actions';
 import { createLocalDataService, type DataRecord, type DataValue, type LocalDataService } from '@varendo/runtime/data';
-import type { AeliqoFormState } from '@varendo/web/app';
+import type { VarendoFormState } from '@varendo/web/app';
 import { PLAYGROUND_RECORDS, PLAYGROUND_RESOURCES } from './scenarios.js';
 import { failure, isRecord } from './guards.js';
 
@@ -236,12 +236,12 @@ export function readPlaygroundFormState(
   revisions: Map<string, string>,
   resource: ResourceDefinition,
   intent: Extract<Intent, { readonly kind: 'create' | 'edit' }>,
-): Outcome<AeliqoFormState> {
+): Outcome<VarendoFormState> {
   if (intent.kind === 'create') return { ok: true as const, value: { values: {}, entityRevision: 'new' } };
   const rows = records[resource.id] ?? [];
   const selected = rows.find((row) => Object.entries(intent.identity).every(([field, value]) => row[field] === value));
   if (selected === undefined)
-    return failure<AeliqoFormState>('playground.form-missing', 'The selected record is no longer available.');
+    return failure<VarendoFormState>('playground.form-missing', 'The selected record is no longer available.');
   return {
     ok: true as const,
     value: { values: structuredClone(selected), entityRevision: revisions.get(recordKey(selected)) ?? '1' },

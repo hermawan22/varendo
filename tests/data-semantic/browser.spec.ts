@@ -1,35 +1,35 @@
 import { expect, test } from '@playwright/test';
 
 type SemanticWindow = Window & {
-  aeliqoDataSemanticReady?: boolean;
-  aeliqoDataSemanticEvents?: readonly { nodeId: string; portId: string; payload: Record<string, unknown> }[];
-  aeliqoDataSemanticRequests?: readonly { kind: string; nodeId: string; portId: string }[];
+  varendoDataSemanticReady?: boolean;
+  varendoDataSemanticEvents?: readonly { nodeId: string; portId: string; payload: Record<string, unknown> }[];
+  varendoDataSemanticRequests?: readonly { kind: string; nodeId: string; portId: string }[];
 };
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/tests/data-semantic/index.html');
-  await expect.poll(() => page.evaluate(() => (window as SemanticWindow).aeliqoDataSemanticReady)).toBe(true);
+  await expect.poll(() => page.evaluate(() => (window as SemanticWindow).varendoDataSemanticReady)).toBe(true);
 });
 
 test('renders metric, delta and detail from one validated semantic region', async ({ page }) => {
   const region = page.locator('#region');
-  await expect(region.locator('aeliqo-metric [part=number]')).toHaveText('12.50');
-  await expect(region.locator('aeliqo-delta [part=number]')).toHaveText('+2.5');
-  await expect(region.locator('aeliqo-detail [part=fact][data-field=name] dd')).toHaveText('Ada');
-  await expect(region.locator('aeliqo-key-value')).toHaveCount(1);
-  await expect(region.locator('aeliqo-selection-summary')).toHaveCount(1);
-  await expect(region.locator('aeliqo-record-list [part=scope]')).toContainText('Showing 2 of 3 records');
+  await expect(region.locator('varendo-metric [part=number]')).toHaveText('12.50');
+  await expect(region.locator('varendo-delta [part=number]')).toHaveText('+2.5');
+  await expect(region.locator('varendo-detail [part=fact][data-field=name] dd')).toHaveText('Ada');
+  await expect(region.locator('varendo-key-value')).toHaveCount(1);
+  await expect(region.locator('varendo-selection-summary')).toHaveCount(1);
+  await expect(region.locator('varendo-record-list [part=scope]')).toContainText('Showing 2 of 3 records');
 });
 
 test('filter typing stays draft-only and Apply emits a typed semantic payload', async ({ page }) => {
   const region = page.locator('#region');
-  const filter = region.locator('aeliqo-filter-builder');
+  const filter = region.locator('varendo-filter-builder');
   const value = filter.locator('input[part=value]');
   await value.fill('Ada');
-  expect(await page.evaluate(() => (window as SemanticWindow).aeliqoDataSemanticEvents?.length ?? 0)).toBe(0);
+  expect(await page.evaluate(() => (window as SemanticWindow).varendoDataSemanticEvents?.length ?? 0)).toBe(0);
   await filter.locator('button[part=apply]').click();
   await expect
-    .poll(() => page.evaluate(() => (window as SemanticWindow).aeliqoDataSemanticEvents?.at(-1)))
+    .poll(() => page.evaluate(() => (window as SemanticWindow).varendoDataSemanticEvents?.at(-1)))
     .toMatchObject({
       nodeId: 'filter-builder',
       portId: 'filter',
@@ -43,10 +43,10 @@ test('filter typing stays draft-only and Apply emits a typed semantic payload', 
 
 test('selection uses stable row identity when the host reorders authorized rows', async ({ page }) => {
   const region = page.locator('#region');
-  const list = region.locator('aeliqo-record-list');
+  const list = region.locator('varendo-record-list');
   await list.locator('button[part=record-button]').first().click();
   await expect
-    .poll(() => page.evaluate(() => (window as SemanticWindow).aeliqoDataSemanticEvents?.at(-1)))
+    .poll(() => page.evaluate(() => (window as SemanticWindow).varendoDataSemanticEvents?.at(-1)))
     .toMatchObject({
       nodeId: 'record-list',
       portId: 'selection',
@@ -77,15 +77,15 @@ test('selection uses stable row identity when the host reorders authorized rows'
 
 test('load-more stays a host callback and clearing results revokes rendered data', async ({ page }) => {
   const region = page.locator('#region');
-  await region.locator('aeliqo-card-collection button[part=load-more]').click();
+  await region.locator('varendo-card-collection button[part=load-more]').click();
   await expect
-    .poll(() => page.evaluate(() => (window as SemanticWindow).aeliqoDataSemanticRequests?.at(-1)))
+    .poll(() => page.evaluate(() => (window as SemanticWindow).varendoDataSemanticRequests?.at(-1)))
     .toEqual({ kind: 'load-more', nodeId: 'card-collection', portId: 'load-more' });
   await page.evaluate(async () => {
     const region = document.querySelector('#region') as any;
     region.clear();
     await region.updateComplete;
   });
-  await expect(region.locator('aeliqo-metric')).toHaveCount(0);
-  await expect(region.locator('aeliqo-card-collection')).toHaveCount(0);
+  await expect(region.locator('varendo-metric')).toHaveCount(0);
+  await expect(region.locator('varendo-card-collection')).toHaveCount(0);
 });

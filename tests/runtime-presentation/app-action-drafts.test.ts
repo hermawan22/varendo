@@ -8,10 +8,10 @@ import type {
   ActionOutcome,
 } from '../../packages/runtime/src/actions/index.js';
 import type { WebAppContext, WebRegion } from '../../packages/web/src/app/context.js';
-import type { AeliqoAppActionEvent } from '../../packages/web/src/app/types.js';
-import type { AeliqoSemanticInteractionRequest } from '../../packages/web/src/region/types.js';
+import type { VarendoAppActionEvent } from '../../packages/web/src/app/types.js';
+import type { VarendoSemanticInteractionRequest } from '../../packages/web/src/region/types.js';
 import { createInteractionHandler, cancelActiveAction } from '../../packages/web/src/app/interaction.js';
-import { AeliqoFieldElement } from '../../packages/web/src/input/base.js';
+import { VarendoFieldElement } from '../../packages/web/src/input/base.js';
 import { adaptRegion } from '../../packages/web/src/app/render.js';
 import * as presentationPlan from '../../packages/web/src/app/presentation-plan.js';
 import type { RuntimePresentationInput } from '../../packages/runtime/src/app/index.js';
@@ -39,12 +39,12 @@ function deferred<T>() {
 function fixture(actionMatches = true) {
   let taskRevision = 'task-1';
   let principalKey = 'user';
-  let captured: Extract<AeliqoAppActionEvent, { state: 'preview' }> | undefined;
+  let captured: Extract<VarendoAppActionEvent, { state: 'preview' }> | undefined;
   const execution = deferred<ActionOutcome<ActionExecution>>();
   const beforePreview = deferred<{ ok: true; value: ActionPreview }>();
   const reset = vi.fn();
-  const control = Object.assign(Object.create(AeliqoFieldElement.prototype), {
-    dataset: { aeliqoNodeId: 'name' },
+  const control = Object.assign(Object.create(VarendoFieldElement.prototype), {
+    dataset: { varendoNodeId: 'name' },
     reset,
   });
   const binding: Record<string, unknown> = {
@@ -76,7 +76,7 @@ function fixture(actionMatches = true) {
   const context = {
     disposed: false,
     options: {
-      onActionEvent: (event: AeliqoAppActionEvent) => {
+      onActionEvent: (event: VarendoAppActionEvent) => {
         if (event.state === 'preview') captured = event;
       },
       authority: {
@@ -107,7 +107,7 @@ function fixture(actionMatches = true) {
     nodeId: 'form',
     portId: 'submit',
     payload: { kind: 'action-request', action, input: {} },
-  } as unknown as AeliqoSemanticInteractionRequest;
+  } as unknown as VarendoSemanticInteractionRequest;
   const settled = vi.fn();
   const handler = createInteractionHandler(context, settled);
   return {
@@ -396,7 +396,7 @@ it.each(['cancelled', 'executed'] as const)(
       expect(state.region.drafts.get('name')).toBe(outcome === 'cancelled' ? draft : undefined);
       expect(state.reset).toHaveBeenCalledTimes(outcome === 'cancelled' ? 0 : 1);
       await vi.waitFor(() => expect(publication.apply).toHaveBeenCalledOnce());
-      expect(state.region.element.ownerDocument.defaultView?.customElements.get('aeliqo-text-field')).toBeDefined();
+      expect(state.region.element.ownerDocument.defaultView?.customElements.get('varendo-text-field')).toBeDefined();
     } finally {
       prepare.mockRestore();
     }

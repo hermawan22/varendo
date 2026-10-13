@@ -8,11 +8,11 @@ export function createContextCapability(
   options: AppToolEndpointOptions,
 ): AgentCapabilityManifest<Record<string, never>, AgentJsonValue> {
   return {
-    ref: { id: 'aeliqo.app.context', revision: '1' },
+    ref: { id: 'varendo.app.context', revision: '1' },
     operation: 'catalog.read',
     label: 'Inspect the current Varendo context',
     description:
-      'Lists the resources this Region can show: their fields, meanings (measures), views with their purpose (viewGuide), time grains, and examples: ready-to-send intents for aeliqo_render. Call it first. Returns metadata, never records or credentials.',
+      'Lists the resources this Region can show: their fields, meanings (measures), views with their purpose (viewGuide), time grains, and examples: ready-to-send intents for varendo_render. Call it first. Returns metadata, never records or credentials.',
     parse(input) {
       return record(input) && Object.keys(input).length === 0
         ? { ok: true, value: {} }

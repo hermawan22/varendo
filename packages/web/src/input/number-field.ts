@@ -1,9 +1,9 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
-import { AeliqoInputChangeEvent, AeliqoInputCommitEvent } from './events.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
+import { VarendoInputChangeEvent, VarendoInputCommitEvent } from './events.js';
 import { formatLocalizedDecimal, parseLocalizedDecimal } from './locale.js';
 
-export interface AeliqoNumberChange {
+export interface VarendoNumberChange {
   readonly text: string;
   readonly value: string | undefined;
   readonly valid: boolean;
@@ -47,9 +47,9 @@ function stepAligned(value: string, minimum: string | undefined, step: string | 
 }
 
 /** Locale-aware decimal editing whose exact canonical value remains a string. */
-export class AeliqoNumberFieldElement extends AeliqoFieldElement<AeliqoNumberChange> {
+export class VarendoNumberFieldElement extends VarendoFieldElement<VarendoNumberChange> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     text: { type: String },
     value: { type: String, reflect: true },
     defaultValue: { attribute: 'default-value', type: String },
@@ -83,7 +83,7 @@ export class AeliqoNumberFieldElement extends AeliqoFieldElement<AeliqoNumberCha
     this.syncNative();
   }
 
-  protected override isCurrentValidationValue(value: AeliqoNumberChange): boolean {
+  protected override isCurrentValidationValue(value: VarendoNumberChange): boolean {
     const current = this.numberValue();
     return (
       value.value === this.value &&
@@ -148,16 +148,16 @@ export class AeliqoNumberFieldElement extends AeliqoFieldElement<AeliqoNumberCha
     this.text = input.value;
     const detail = this.numberValue();
     this.value = detail.value;
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value: detail }));
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value: detail }));
     void this.validateProposed(detail);
     this.syncNative();
   };
 
   private readonly handleCommit = (): void => {
-    this.dispatchEvent(new AeliqoInputCommitEvent({ source: 'user', value: this.numberValue() }));
+    this.dispatchEvent(new VarendoInputCommitEvent({ source: 'user', value: this.numberValue() }));
   };
 
-  private numberValue(): AeliqoNumberChange {
+  private numberValue(): VarendoNumberChange {
     const parsed = parseLocalizedDecimal(this.text, this.locale);
     const valid = this.isValid(parsed.canonical);
     return { text: this.text, value: valid ? parsed.canonical : undefined, valid };
@@ -196,12 +196,12 @@ export class AeliqoNumberFieldElement extends AeliqoFieldElement<AeliqoNumberCha
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       .input-wrap {
         align-items: center;
         display: flex;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
       }
       .input-wrap input {
         flex: 1 1 auto;
@@ -210,7 +210,7 @@ export class AeliqoNumberFieldElement extends AeliqoFieldElement<AeliqoNumberCha
       [part='unit'] {
         flex: 0 0 auto;
         white-space: nowrap;
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
       }
     `,
   ];

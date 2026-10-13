@@ -1,23 +1,23 @@
-import { AeliqoCardCollectionElement } from '../../packages/web/src/data/card-collection.js';
-import { AeliqoDeltaElement } from '../../packages/web/src/data/delta.js';
-import { AeliqoDetailElement } from '../../packages/web/src/data/detail.js';
-import { AeliqoFilterBuilderElement } from '../../packages/web/src/data/filter-builder.js';
-import { AeliqoKeyValueElement } from '../../packages/web/src/data/key-value.js';
-import { AeliqoMetricElement } from '../../packages/web/src/data/metric.js';
-import { AeliqoRecordListElement } from '../../packages/web/src/data/record-list.js';
-import { AeliqoSelectionSummaryElement } from '../../packages/web/src/data/selection-summary.js';
-import { AeliqoTableElement } from '../../packages/web/src/elements/aeliqo-table.js';
+import { VarendoCardCollectionElement } from '../../packages/web/src/data/card-collection.js';
+import { VarendoDeltaElement } from '../../packages/web/src/data/delta.js';
+import { VarendoDetailElement } from '../../packages/web/src/data/detail.js';
+import { VarendoFilterBuilderElement } from '../../packages/web/src/data/filter-builder.js';
+import { VarendoKeyValueElement } from '../../packages/web/src/data/key-value.js';
+import { VarendoMetricElement } from '../../packages/web/src/data/metric.js';
+import { VarendoRecordListElement } from '../../packages/web/src/data/record-list.js';
+import { VarendoSelectionSummaryElement } from '../../packages/web/src/data/selection-summary.js';
+import { VarendoTableElement } from '../../packages/web/src/elements/varendo-table.js';
 
 const registrations: readonly [string, CustomElementConstructor][] = [
-  ['aeliqo-metric', AeliqoMetricElement],
-  ['aeliqo-delta', AeliqoDeltaElement],
-  ['aeliqo-key-value', AeliqoKeyValueElement],
-  ['aeliqo-detail', AeliqoDetailElement],
-  ['aeliqo-record-list', AeliqoRecordListElement],
-  ['aeliqo-card-collection', AeliqoCardCollectionElement],
-  ['aeliqo-table', AeliqoTableElement],
-  ['aeliqo-filter-builder', AeliqoFilterBuilderElement],
-  ['aeliqo-selection-summary', AeliqoSelectionSummaryElement],
+  ['varendo-metric', VarendoMetricElement],
+  ['varendo-delta', VarendoDeltaElement],
+  ['varendo-key-value', VarendoKeyValueElement],
+  ['varendo-detail', VarendoDetailElement],
+  ['varendo-record-list', VarendoRecordListElement],
+  ['varendo-card-collection', VarendoCardCollectionElement],
+  ['varendo-table', VarendoTableElement],
+  ['varendo-filter-builder', VarendoFilterBuilderElement],
+  ['varendo-selection-summary', VarendoSelectionSummaryElement],
 ];
 for (const [name, constructor] of registrations) customElements.define(name, constructor);
 
@@ -32,7 +32,7 @@ const columns = [
 ] as const;
 const fixture = document.querySelector<HTMLElement>('#fixture')!;
 
-const table = document.createElement('aeliqo-table') as AeliqoTableElement;
+const table = document.createElement('varendo-table') as VarendoTableElement;
 table.id = 'table';
 table.caption = 'People';
 table.columns = columns;
@@ -42,7 +42,7 @@ table.selection = 'multiple';
 table.totalRows = 100;
 table.scope = { loaded: 2, filteredTotal: 100, kind: 'filtered' };
 fixture.append(table);
-const grid = document.createElement('aeliqo-table') as AeliqoTableElement;
+const grid = document.createElement('varendo-table') as VarendoTableElement;
 grid.id = 'grid';
 grid.mode = 'grid';
 grid.columns = columns;
@@ -55,67 +55,67 @@ grid.overscan = 0;
 grid.totalRows = 100;
 grid.scope = { loaded: 2, filteredTotal: 100, kind: 'filtered' };
 fixture.append(grid);
-const filter = document.createElement('aeliqo-filter-builder') as AeliqoFilterBuilderElement;
+const filter = document.createElement('varendo-filter-builder') as VarendoFilterBuilderElement;
 filter.id = 'filter';
 filter.fields = [{ id: 'name', label: 'Name', type: 'text' }];
 fixture.append(filter);
-const cards = document.createElement('aeliqo-card-collection') as AeliqoCardCollectionElement;
+const cards = document.createElement('varendo-card-collection') as VarendoCardCollectionElement;
 cards.id = 'cards';
 cards.columns = columns;
 cards.rows = rows;
 cards.identity = ['id'];
 cards.hasMore = true;
 fixture.append(cards);
-const metric = document.createElement('aeliqo-metric') as AeliqoMetricElement;
+const metric = document.createElement('varendo-metric') as VarendoMetricElement;
 metric.id = 'metric';
 metric.label = 'Revenue';
 metric.value = { decimal: '100000000000000000.01' };
 metric.unit = 'USD';
 metric.scope = { label: 'Current month' };
 fixture.append(metric);
-const delta = document.createElement('aeliqo-delta') as AeliqoDeltaElement;
+const delta = document.createElement('varendo-delta') as VarendoDeltaElement;
 delta.id = 'delta';
 delta.current = 0.62;
 delta.baseline = 0.5;
 delta.mode = 'percentage-point';
 fixture.append(delta);
-const keyValue = document.createElement('aeliqo-key-value') as AeliqoKeyValueElement;
+const keyValue = document.createElement('varendo-key-value') as VarendoKeyValueElement;
 keyValue.id = 'key-value';
 keyValue.items = [{ key: 'owner', label: 'Owner', value: 'Ada' }];
 fixture.append(keyValue);
-const detail = document.createElement('aeliqo-detail') as AeliqoDetailElement;
+const detail = document.createElement('varendo-detail') as VarendoDetailElement;
 detail.id = 'detail';
 detail.fields = columns;
 detail.identity = ['id'];
 detail.record = rows[0];
 fixture.append(detail);
-const list = document.createElement('aeliqo-record-list') as AeliqoRecordListElement;
+const list = document.createElement('varendo-record-list') as VarendoRecordListElement;
 list.id = 'list';
 list.columns = columns;
 list.rows = rows;
 list.identity = ['id'];
 list.selection = 'single';
 fixture.append(list);
-const summary = document.createElement('aeliqo-selection-summary') as AeliqoSelectionSummaryElement;
+const summary = document.createElement('varendo-selection-summary') as VarendoSelectionSummaryElement;
 summary.id = 'summary';
 summary.entity = 'person';
 summary.selectedKeys = ['string:1:a'];
 fixture.append(summary);
 
 const events: { readonly type: string; readonly detail: unknown }[] = [];
-fixture.addEventListener('aeliqo-record-list-selection', (event) =>
+fixture.addEventListener('varendo-record-list-selection', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-table-selection', (event) =>
+fixture.addEventListener('varendo-table-selection', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-table-window', (event) =>
+fixture.addEventListener('varendo-table-window', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-filter-change', (event) =>
+fixture.addEventListener('varendo-filter-change', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-data-load-more', (event) =>
+fixture.addEventListener('varendo-data-load-more', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
 (window as unknown as { dataFixture: { events: typeof events } }).dataFixture = { events };

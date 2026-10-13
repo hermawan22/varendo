@@ -60,7 +60,7 @@ jobs:
           node --experimental-strip-types scripts/release/verify-export-registry.mjs \
             --version "$release_version" --source "$SOURCE_SHA" \
             --output artifacts/pages-release-policy/export-consumer.json
-          printf 'AELIQO_EXPORT_VERIFIED_VERSION=%s\n' "$release_version" >> "$GITHUB_ENV"
+          printf 'VARENDO_EXPORT_VERIFIED_VERSION=%s\n' "$release_version" >> "$GITHUB_ENV"
       - name: Build Pages
         run: pnpm site:build:pages
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa

@@ -1,8 +1,8 @@
-import { registerAeliqoElements } from '../../packages/web/src/index.js';
+import { registerVarendoElements } from '../../packages/web/src/index.js';
 import type { VisualizationInputs } from '../../packages/web/src/visualization/types.js';
 import type { Result } from '../../packages/core/src/index.js';
 import { result as source } from '../contracts/fixtures.js';
-registerAeliqoElements();
+registerVarendoElements();
 const type = {
   value: 'instant',
   nullable: true,
@@ -32,7 +32,7 @@ const rows = [
 ];
 const views: HTMLElement[] = [];
 for (const view of ['matrix', 'timeline', 'calendar-grid'] as const) {
-  const element = document.createElement(`aeliqo-${view}`) as HTMLElement & VisualizationInputs;
+  const element = document.createElement(`varendo-${view}`) as HTMLElement & VisualizationInputs;
   Object.assign(element, {
     label: view,
     context: { results: [result] },
@@ -48,7 +48,7 @@ for (const view of ['matrix', 'timeline', 'calendar-grid'] as const) {
           : { date: 'start' }),
     },
   });
-  element.addEventListener('aeliqo-visualization-select', (event) =>
+  element.addEventListener('varendo-visualization-select', (event) =>
     Object.assign(window, { selection: (event as CustomEvent).detail }),
   );
   document.querySelector('main')!.append(element);

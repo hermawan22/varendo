@@ -1,5 +1,5 @@
 import { expect, test, type Locator } from '@playwright/test';
-import type { AeliqoHierarchyElementBase } from '../../packages/web/src/visualization/hierarchy/index.js';
+import type { VarendoHierarchyElementBase } from '../../packages/web/src/visualization/hierarchy/index.js';
 
 for (const direction of ['ltr', 'rtl']) {
   for (const family of ['hierarchy', 'temporal']) {
@@ -9,11 +9,11 @@ for (const direction of ['ltr', 'rtl']) {
       const tags = family === 'hierarchy' ? ['tree', 'treemap', 'relationship'] : ['timeline', 'calendar-grid'];
       for (const width of [240, 320, 480]) {
         for (const tag of tags) {
-          const host = page.locator(`aeliqo-${tag}`);
+          const host = page.locator(`varendo-${tag}`);
           await host.evaluate(
             (element, settings) => {
               element.setAttribute('dir', settings.direction);
-              element.setAttribute('data-aeliqo-theme', settings.direction === 'rtl' ? 'dark' : 'light');
+              element.setAttribute('data-varendo-theme', settings.direction === 'rtl' ? 'dark' : 'light');
               (element as HTMLElement).style.width = `${settings.width}px`;
             },
             { direction, width },
@@ -37,7 +37,7 @@ for (const direction of ['ltr', 'rtl']) {
       }
       await page.screenshot({ path: info.outputPath(`${family}-${direction}-480.png`), fullPage: true });
       await page.emulateMedia({ forcedColors: 'active' });
-      const button = page.locator(`aeliqo-${tags[0]} [part="data"] button`).first();
+      const button = page.locator(`varendo-${tags[0]} [part="data"] button`).first();
       await button.focus();
       await expect(button).toHaveCSS('outline-style', 'solid');
     });
@@ -47,7 +47,7 @@ for (const direction of ['ltr', 'rtl']) {
 test('matrix retains readable columns and keyboard scrolling in a 240px container', async ({ page, browserName }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/tests/visualization/temporal.html');
-  const host = page.locator('aeliqo-matrix');
+  const host = page.locator('varendo-matrix');
   await host.evaluate((element) => {
     (element as HTMLElement).style.width = '240px';
   });
@@ -61,7 +61,9 @@ for (const family of ['hierarchy', 'temporal']) {
   test(`${family} exact data reflows at 320px with enlarged text`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 900 });
     await page.goto(`/tests/visualization/${family === 'hierarchy' ? 'index' : 'temporal'}.html`);
-    await expect(page.locator(family === 'hierarchy' ? 'aeliqo-tree td' : 'aeliqo-timeline td').first()).toBeVisible();
+    await expect(
+      page.locator(family === 'hierarchy' ? 'varendo-tree td' : 'varendo-timeline td').first(),
+    ).toBeVisible();
     for (const scale of ['200%', '400%']) {
       await page.evaluate((size) => {
         document.documentElement.style.fontSize = size;
@@ -102,7 +104,7 @@ for (const direction of ['ltr', 'rtl']) {
   test(`investigation caution keeps text inside its border padding in enlarged ${direction}`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 800 });
     await page.goto('/tests/compound/index.html');
-    const host = page.locator('aeliqo-investigation');
+    const host = page.locator('varendo-investigation');
     const caution = host.locator('[part="caution"]');
     await expect(caution).toContainText('They do not establish causal claims.');
     for (const size of ['32px', '64px']) {
@@ -111,7 +113,7 @@ for (const direction of ['ltr', 'rtl']) {
           document.documentElement.dir = settings.direction;
           document.documentElement.style.fontSize = settings.size;
           (element as HTMLElement).style.width = '328px';
-          element.setAttribute('data-aeliqo-theme', 'dark');
+          element.setAttribute('data-varendo-theme', 'dark');
         },
         { direction, size },
       );
@@ -153,7 +155,7 @@ for (const tag of ['timeline', 'calendar-grid']) {
   for (const direction of ['ltr', 'rtl']) {
     test(`${tag} Select labels fit narrow ${direction} controls at enlarged text`, async ({ page }, info) => {
       await page.goto('/tests/visualization/temporal.html');
-      const host = page.locator(`aeliqo-${tag}`);
+      const host = page.locator(`varendo-${tag}`);
       for (const width of [176, 240, 320, 480, 752]) {
         await page.setViewportSize({ width: Math.max(320, width + 48), height: 900 });
         for (const textScale of [1, 2]) {
@@ -226,11 +228,11 @@ for (const font of ['system-ui', 'monospace']) {
       page,
     }, info) => {
       await page.goto('/tests/visualization/index.html');
-      const host = page.locator('aeliqo-tree');
+      const host = page.locator('varendo-tree');
       await expect(host.locator('tbody tr')).toHaveCount(3);
       await host.evaluate(async (element, fontFamily) => {
         (element as HTMLElement).style.fontFamily = fontFamily;
-        const view = element as AeliqoHierarchyElementBase;
+        const view = element as VarendoHierarchyElementBase;
         const result = view.context!.results[0]!;
         const rows = Array.from({ length: 30 }, (_, index) => ({
           id: index === 0 ? 'root' : `node-${index}`,

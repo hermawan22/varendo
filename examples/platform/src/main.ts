@@ -1,15 +1,15 @@
 import './csp-bootstrap.js';
-import { registerAeliqoElements } from '@varendo/web';
-import { AeliqoInputChangeEvent, type AeliqoTextFieldElement } from '@varendo/web/inputs';
-import type { AeliqoTableElement } from '@varendo/web/data';
-import type { AeliqoChartElement } from '@varendo/web/chart';
+import { registerVarendoElements } from '@varendo/web';
+import { VarendoInputChangeEvent, type VarendoTextFieldElement } from '@varendo/web/inputs';
+import type { VarendoTableElement } from '@varendo/web/data';
+import type { VarendoChartElement } from '@varendo/web/chart';
 
-registerAeliqoElements();
+registerVarendoElements();
 
 const form = document.querySelector<HTMLFormElement>('#standalone-form');
-const input = document.querySelector<AeliqoTextFieldElement>('#standalone-form aeliqo-text-field');
-const table = document.querySelector<AeliqoTableElement>('#standalone-table');
-const chart = document.querySelector<AeliqoChartElement>('#standalone-chart');
+const input = document.querySelector<VarendoTextFieldElement>('#standalone-form varendo-text-field');
+const table = document.querySelector<VarendoTableElement>('#standalone-table');
+const chart = document.querySelector<VarendoChartElement>('#standalone-chart');
 const status = document.querySelector<HTMLElement>('#standalone-status');
 
 if (form === null || input === null || table === null || chart === null || status === null) {
@@ -35,8 +35,8 @@ chart.points = [
   { label: 'Wed', value: 4 },
 ];
 
-input.addEventListener('aeliqo-input-change', (event: Event) => {
-  if (!(event instanceof AeliqoInputChangeEvent)) {
+input.addEventListener('varendo-input-change', (event: Event) => {
+  if (!(event instanceof VarendoInputChangeEvent)) {
     return;
   }
   input.value = event.detail.value;

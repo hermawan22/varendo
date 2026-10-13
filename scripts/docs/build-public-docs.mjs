@@ -41,8 +41,8 @@ function command(commandName, args) {
   return execFileAsync(commandName, args, { cwd: root, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
 }
 
-const sourceMarker = /<aeliqo-source data-label="([^"]+)" data-path="([^"]+)"><\/aeliqo-source>/gu;
-const projectMarker = /<aeliqo-project data-scenario="([^"]+)"><\/aeliqo-project>/gu;
+const sourceMarker = /<varendo-source data-label="([^"]+)" data-path="([^"]+)"><\/varendo-source>/gu;
+const projectMarker = /<varendo-project data-scenario="([^"]+)"><\/varendo-project>/gu;
 
 async function hydrateSourceMarkup(markup) {
   const matches = [...markup.matchAll(sourceMarker)];
@@ -108,7 +108,7 @@ function classDeclaration(text, name) {
 export async function loadCanonicalExamples() {
   const moduleUrl = pathToFileURL(resolve(root, 'examples/catalog/index.ts')).href;
   const script = `import(${JSON.stringify(moduleUrl)}).then(({catalogExamples})=>process.stdout.write(JSON.stringify(catalogExamples)))`;
-  const loaderDirectory = await mkdtemp(join(tmpdir(), 'aeliqo-catalog-loader-'));
+  const loaderDirectory = await mkdtemp(join(tmpdir(), 'varendo-catalog-loader-'));
   const loaderPath = join(loaderDirectory, 'loader.mjs');
   try {
     await writeFile(
@@ -194,7 +194,7 @@ async function loadComponentGenerationData() {
   return { declarations, componentSources, canonicalById, canonicalExamples, projectTemplates };
 }
 
-const releaseStatusMarker = '<aeliqo-release-status></aeliqo-release-status>';
+const releaseStatusMarker = '<varendo-release-status></varendo-release-status>';
 
 function renderReleaseStatus(body, releaseStatus) {
   const message =
@@ -261,7 +261,7 @@ function componentCatalogPage(components) {
 async function buildComponentPages(components, { declarations, componentSources, canonicalById }) {
   const pages = [];
   for (const component of components) {
-    const className = `Aeliqo${component.name}Element`;
+    const className = `Varendo${component.name}Element`;
     const api = declarations.map((source) => classDeclaration(source.text, className)).find(Boolean);
     if (!api) throw new Error(`Missing built public declaration ${className}`);
     const metadata = componentApi(componentSources, className);
@@ -413,7 +413,7 @@ async function main() {
     packageVersions: versions,
     pages: (await buildPublicPages({ releaseStatus })).map((page) => ({ ...page, path: docsArtifactPath(page.path) })),
   });
-  const artifactName = `aeliqo-public-docs-${docsVersion}.json`;
+  const artifactName = `varendo-public-docs-${docsVersion}.json`;
   const artifactBytes = Buffer.from(`${JSON.stringify(artifact, null, 2)}\n`);
   const catalogFiles = await catalogArtifactFiles();
   const manifest = assertPublicDocsManifest({

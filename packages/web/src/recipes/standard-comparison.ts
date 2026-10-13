@@ -1,7 +1,7 @@
 import type { Outcome, PresentationPlan } from '@varendo/core';
-import { AELIQO_FOUNDATION_REFS } from '../foundation/manifest.js';
-import { AELIQO_OPERATION_REFS } from '../region/registry.js';
-import { AELIQO_DATA_CONFIG_SCHEMAS, AELIQO_DATA_REFS } from '../region/data-registry.js';
+import { VARENDO_FOUNDATION_REFS } from '../foundation/manifest.js';
+import { VARENDO_OPERATION_REFS } from '../region/registry.js';
+import { VARENDO_DATA_CONFIG_SCHEMAS, VARENDO_DATA_REFS } from '../region/data-registry.js';
 import { dataColumns } from './standard-data.js';
 import type { RecipeContext } from './types.js';
 
@@ -23,16 +23,16 @@ export function comparisonSplitPlan(context: RecipeContext): Outcome<Presentatio
   )
     return undefined;
   const need = context.task.needs[0];
-  if (need === undefined || !sameRef(need.operation, AELIQO_OPERATION_REFS.compare)) return undefined;
+  if (need === undefined || !sameRef(need.operation, VARENDO_OPERATION_REFS.compare)) return undefined;
   const columns = dataColumns(context, false);
   if (columns.length === 0) return undefined;
   const children = context.intent.identities.map((identityValues, index) => ({
     id: `comparison.${index === 0 ? 'left' : 'right'}`,
     role: 'detail',
-    representation: AELIQO_DATA_REFS.detail,
+    representation: VARENDO_DATA_REFS.detail,
     result: context.result!.ref,
     config: {
-      schema: AELIQO_DATA_CONFIG_SCHEMAS.detail,
+      schema: VARENDO_DATA_CONFIG_SCHEMAS.detail,
       values: {
         fields: columns.map((column) => column.key),
         columns,
@@ -57,7 +57,7 @@ export function comparisonSplitPlan(context: RecipeContext): Outcome<Presentatio
         {
           id: 'comparison',
           role: 'structure',
-          representation: AELIQO_FOUNDATION_REFS.splitPane,
+          representation: VARENDO_FOUNDATION_REFS.splitPane,
           config: {
             schema: { id: 'foundation.split-pane.config', revision: '1' },
             values: {
@@ -84,9 +84,9 @@ export function comparisonSplitPlan(context: RecipeContext): Outcome<Presentatio
 function comparisonTransfers(incumbent: PresentationPlan | undefined): PresentationPlan['stateTransfer'] | undefined {
   if (incumbent === undefined) return [];
   const expected = new Map([
-    ['comparison', { role: 'structure', ref: AELIQO_FOUNDATION_REFS.splitPane }],
-    ['comparison.left', { role: 'detail', ref: AELIQO_DATA_REFS.detail }],
-    ['comparison.right', { role: 'detail', ref: AELIQO_DATA_REFS.detail }],
+    ['comparison', { role: 'structure', ref: VARENDO_FOUNDATION_REFS.splitPane }],
+    ['comparison.left', { role: 'detail', ref: VARENDO_DATA_REFS.detail }],
+    ['comparison.right', { role: 'detail', ref: VARENDO_DATA_REFS.detail }],
   ]);
   if (incumbent.rootId !== 'comparison' || incumbent.nodes.length !== expected.size) return undefined;
   for (const node of incumbent.nodes) {
@@ -97,7 +97,7 @@ function comparisonTransfers(incumbent: PresentationPlan | undefined): Presentat
   return incumbent.nodes.map((node) => ({
     fromNode: node.id,
     toNode: node.id,
-    mapping: { id: 'aeliqo.state.identity', revision: '1' },
+    mapping: { id: 'varendo.state.identity', revision: '1' },
   }));
 }
 

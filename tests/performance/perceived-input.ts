@@ -1,6 +1,6 @@
-import { AeliqoTextFieldElement } from '@varendo/web/inputs';
-import { AeliqoTableElement } from '@varendo/web/table';
-import type { AeliqoTableColumn, AeliqoTableRow } from '@varendo/web/data';
+import { VarendoTextFieldElement } from '@varendo/web/inputs';
+import { VarendoTableElement } from '@varendo/web/table';
+import type { VarendoTableColumn, VarendoTableRow } from '@varendo/web/data';
 
 type TimingStatus = 'observed' | 'missing-or-threshold-censored';
 
@@ -78,26 +78,26 @@ type PerceivedInputApi = {
 
 declare global {
   interface Window {
-    aeliqoPerceivedInput?: PerceivedInputApi;
+    varendoPerceivedInput?: PerceivedInputApi;
   }
 }
 
-const input = document.querySelector<AeliqoTextFieldElement>('#query');
-const table = document.querySelector<AeliqoTableElement>('#records');
+const input = document.querySelector<VarendoTextFieldElement>('#query');
+const table = document.querySelector<VarendoTableElement>('#records');
 const visibleResult = document.querySelector<HTMLOutputElement>('#visible-result');
 if (input === null || table === null || visibleResult === null)
   throw new Error('Perceived input fixture is incomplete.');
 
-if (!customElements.get('aeliqo-text-field')) customElements.define('aeliqo-text-field', AeliqoTextFieldElement);
-if (!customElements.get('aeliqo-table')) customElements.define('aeliqo-table', AeliqoTableElement);
+if (!customElements.get('varendo-text-field')) customElements.define('varendo-text-field', VarendoTextFieldElement);
+if (!customElements.get('varendo-table')) customElements.define('varendo-table', VarendoTableElement);
 
-const columns: readonly AeliqoTableColumn[] = [
+const columns: readonly VarendoTableColumn[] = [
   { key: 'id', label: 'ID' },
   { key: 'label', label: 'Label' },
   { key: 'value', label: 'Value', align: 'end' },
 ];
 
-function makeRows(): readonly AeliqoTableRow[] {
+function makeRows(): readonly VarendoTableRow[] {
   return Array.from({ length: 100 }, (_, index) => ({
     id: `row-${index + 1}`,
     label: `Local row ${index + 1}`,
@@ -276,7 +276,7 @@ input.addEventListener('keyup', (event) => {
     state.keyupEventTimestampMs = eventTimestamp(event.timeStamp);
 });
 
-input.addEventListener('aeliqo-input-change', (event) => {
+input.addEventListener('varendo-input-change', (event) => {
   const state = activeInteraction;
   if (state === undefined) return;
   const detail = (event as CustomEvent<{ readonly value?: unknown }>).detail;
@@ -363,7 +363,7 @@ if (typeof PerformanceObserver !== 'undefined') {
   }
 }
 
-window.aeliqoPerceivedInput = {
+window.varendoPerceivedInput = {
   ready: true,
   fixture: {
     rowCount: allRows.length,

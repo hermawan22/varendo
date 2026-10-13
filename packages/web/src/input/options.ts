@@ -1,11 +1,11 @@
-export interface AeliqoOption {
+export interface VarendoOption {
   readonly value: string;
   readonly label: string;
   readonly description?: string;
   readonly disabled?: boolean;
 }
 
-export function validOptions(options: readonly AeliqoOption[]): boolean {
+export function validOptions(options: readonly VarendoOption[]): boolean {
   if (options.length > 500) return false;
   const values = new Set<string>();
   for (const option of options) {

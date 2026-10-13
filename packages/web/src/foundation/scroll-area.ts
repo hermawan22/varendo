@@ -1,17 +1,17 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from './base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from './base.js';
 
-export type AeliqoScrollAreaAxis = 'x' | 'y' | 'both';
+export type VarendoScrollAreaAxis = 'x' | 'y' | 'both';
 
 /** Native overflow region with an optional accessible name and keyboard focus. */
-export class AeliqoScrollAreaElement extends AeliqoFoundationElement {
+export class VarendoScrollAreaElement extends VarendoFoundationElement {
   static readonly properties = {
     axis: { type: String },
     label: { type: String },
     tabIndex: { attribute: 'tabindex', type: Number },
   };
 
-  axis: AeliqoScrollAreaAxis = 'y';
+  axis: VarendoScrollAreaAxis = 'y';
   label = '';
   tabIndex = 0;
 
@@ -24,7 +24,7 @@ export class AeliqoScrollAreaElement extends AeliqoFoundationElement {
   }
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: block;
@@ -38,7 +38,7 @@ export class AeliqoScrollAreaElement extends AeliqoFoundationElement {
         max-inline-size: 100%;
         min-block-size: 0;
         min-inline-size: 0;
-        outline-offset: var(--aeliqo-focus-offset, 0.125rem);
+        outline-offset: var(--varendo-focus-offset, 0.125rem);
       }
       .axis-x {
         overflow-x: auto;

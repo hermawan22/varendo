@@ -7,7 +7,7 @@ export function observePlotTheme(host: HTMLElement, repaint: () => void): () => 
   while (ancestor) {
     observer.observe(ancestor, {
       attributes: true,
-      attributeFilter: ['data-aeliqo-theme', 'data-theme', 'class', 'style'],
+      attributeFilter: ['data-varendo-theme', 'data-theme', 'class', 'style'],
     });
     const root = ancestor.getRootNode();
     ancestor = ancestor.parentElement ?? (root instanceof ShadowRoot ? root.host : null);

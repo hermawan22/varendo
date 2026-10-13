@@ -7,9 +7,9 @@ contract: 'Searchable choice with APG behavior; stale remote options cannot over
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -32,19 +32,19 @@ owns query sourcing and persistence.
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 Changing `value` or replacing `validator` cancels validation for the
 previous value and clears its validator-owned error. An independently supplied
@@ -63,11 +63,11 @@ loading until enough characters are typed.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -75,9 +75,9 @@ Keep the query draft and selected value distinct at narrow widths. Test long opt
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -86,7 +86,7 @@ Keep the query draft and selected value distinct at narrow widths. Test long opt
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

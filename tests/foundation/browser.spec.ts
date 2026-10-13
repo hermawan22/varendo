@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/tests/foundation/index.html');
   await expect
     .poll(() =>
-      page.evaluate(() => (window as typeof window & { aeliqoFoundationReady?: boolean }).aeliqoFoundationReady),
+      page.evaluate(() => (window as typeof window & { varendoFoundationReady?: boolean }).varendoFoundationReady),
     )
     .toBe(true);
 });
@@ -21,13 +21,13 @@ test('native action controls submit, reset and cancellation exactly once', async
         () =>
           (
             window as typeof window & {
-              aeliqoFoundationStats: () => {
+              varendoFoundationStats: () => {
                 submits: number;
                 resets: number;
                 submittedEntries: readonly [string, FormDataEntryValue][];
               };
             }
-          ).aeliqoFoundationStats().submits,
+          ).varendoFoundationStats().submits,
       ),
     )
     .toBe(1);
@@ -37,13 +37,13 @@ test('native action controls submit, reset and cancellation exactly once', async
         () =>
           (
             window as typeof window & {
-              aeliqoFoundationStats: () => {
+              varendoFoundationStats: () => {
                 submits: number;
                 resets: number;
                 submittedEntries: readonly [string, FormDataEntryValue][];
               };
             }
-          ).aeliqoFoundationStats().submittedEntries,
+          ).varendoFoundationStats().submittedEntries,
       ),
     )
     .toEqual([
@@ -53,8 +53,8 @@ test('native action controls submit, reset and cancellation exactly once', async
   expect(
     await page.evaluate(() =>
       (
-        window as typeof window & { aeliqoFoundationEvents: { kind: string; event: CustomEvent }[] }
-      ).aeliqoFoundationEvents
+        window as typeof window & { varendoFoundationEvents: { kind: string; event: CustomEvent }[] }
+      ).varendoFoundationEvents
         .filter((entry) => entry.kind === 'action')
         .map((entry) => entry.event.detail),
     ),
@@ -66,8 +66,8 @@ test('native action controls submit, reset and cancellation exactly once', async
       page.evaluate(
         () =>
           (
-            window as typeof window & { aeliqoFoundationStats: () => { submits: number; resets: number } }
-          ).aeliqoFoundationStats().submits,
+            window as typeof window & { varendoFoundationStats: () => { submits: number; resets: number } }
+          ).varendoFoundationStats().submits,
       ),
     )
     .toBe(1);
@@ -77,8 +77,8 @@ test('native action controls submit, reset and cancellation exactly once', async
       page.evaluate(
         () =>
           (
-            window as typeof window & { aeliqoFoundationStats: () => { submits: number; resets: number } }
-          ).aeliqoFoundationStats().resets,
+            window as typeof window & { varendoFoundationStats: () => { submits: number; resets: number } }
+          ).varendoFoundationStats().resets,
       ),
     )
     .toBe(1);
@@ -98,8 +98,8 @@ test('native action controls submit, reset and cancellation exactly once', async
       page.evaluate(
         () =>
           (
-            window as typeof window & { aeliqoFoundationStats: () => { submits: number; resets: number } }
-          ).aeliqoFoundationStats().submits,
+            window as typeof window & { varendoFoundationStats: () => { submits: number; resets: number } }
+          ).varendoFoundationStats().submits,
       ),
     )
     .toBe(1);
@@ -113,8 +113,8 @@ test('links, identity fallback, hierarchy and composed foundations retain semant
   await expect(page.locator('#avatar').locator('[part=initials]')).toHaveText('AL');
   await expect(page.locator('#avatar').locator('[part=avatar]')).toHaveAttribute('role', 'img');
   await expect(page.locator('#heading').locator('h3')).toHaveClass(/display/);
-  await expect(page.locator('#composition').locator('aeliqo-stack')).toHaveCount(1);
-  await expect(page.locator('#composition').locator('aeliqo-grid')).toHaveCount(1);
+  await expect(page.locator('#composition').locator('varendo-stack')).toHaveCount(1);
+  await expect(page.locator('#composition').locator('varendo-grid')).toHaveCount(1);
   await expect(page.locator('#scroll').locator('[part=scroll]')).toHaveAttribute('role', 'region');
   await expect(page.locator('#scroll').locator('[part=scroll]')).toHaveAttribute('aria-label', 'Results');
 });
@@ -164,7 +164,7 @@ test('split pane provides keyboard and RTL pointer semantics', async ({ page }) 
   const split = page.locator('#split');
   const splitter = split.locator('[part=splitter]');
   await expect(splitter).toHaveAttribute('aria-orientation', 'vertical');
-  await expect(splitter).toHaveAttribute('aria-controls', 'aeliqo-split-primary');
+  await expect(splitter).toHaveAttribute('aria-controls', 'varendo-split-primary');
   await expect(splitter).toHaveAccessibleName('Resize panes');
   await expect(split.locator('[part=start]')).toHaveAttribute('role', 'region');
   await expect(split.locator('[part=start]')).toHaveAttribute('aria-label', 'Primary pane');
@@ -215,7 +215,7 @@ test('split pane provides keyboard and RTL pointer semantics', async ({ page }) 
   const vertical = page.locator('#vertical-split');
   const verticalSplitter = vertical.locator('[part=splitter]');
   await expect(verticalSplitter).toHaveAttribute('aria-orientation', 'horizontal');
-  await expect(verticalSplitter).toHaveAttribute('aria-controls', 'aeliqo-split-primary');
+  await expect(verticalSplitter).toHaveAttribute('aria-controls', 'varendo-split-primary');
   const height = async (): Promise<number> => (await vertical.locator('[part=start]').boundingBox())?.height ?? 0;
   const initialHeight = await height();
   await vertical.evaluate((element) => {
@@ -246,7 +246,7 @@ test('split pane provides keyboard and RTL pointer semantics', async ({ page }) 
   await expect.poll(height).toBeLessThan(minimumHeight + 10);
 
   const eventCount = await page.evaluate(
-    () => (window as typeof window & { aeliqoFoundationEvents: unknown[] }).aeliqoFoundationEvents.length,
+    () => (window as typeof window & { varendoFoundationEvents: unknown[] }).varendoFoundationEvents.length,
   );
   expect(eventCount).toBeGreaterThanOrEqual(8);
 });
@@ -276,13 +276,13 @@ test('split pane rejects malformed numeric properties without exposing NaN geome
 test('mount and dispose leaves no foundation nodes behind', async ({ page }) => {
   await page.evaluate(() => {
     for (let index = 0; index < 100; index += 1) {
-      const element = document.createElement('aeliqo-split-pane');
+      const element = document.createElement('varendo-split-pane');
       element.innerHTML = '<span slot="start">start</span><span slot="end">end</span>';
       document.body.append(element);
       element.remove();
     }
   });
-  await expect(page.locator('body > aeliqo-split-pane')).toHaveCount(0);
+  await expect(page.locator('body > varendo-split-pane')).toHaveCount(0);
 });
 
 test('forced colors, RTL and large text preserve visible controls', async ({ page }) => {
@@ -304,11 +304,11 @@ test('forced colors, RTL and large text preserve visible controls', async ({ pag
 test('validated foundation composition dispatches host requests and preserves focused nodes', async ({ page }) => {
   await page.goto('/tests/foundation/semantic.html');
   const region = page.locator('#semantic');
-  await expect(region.locator('[data-aeliqo-node-id]')).toHaveCount(13);
-  await expect(region.locator('aeliqo-heading')).toHaveText('Account preferences');
-  const button = region.locator('aeliqo-button button');
+  await expect(region.locator('[data-varendo-node-id]')).toHaveCount(13);
+  await expect(region.locator('varendo-heading')).toHaveText('Account preferences');
+  const button = region.locator('varendo-button button');
   await button.click();
-  await region.locator('aeliqo-link a').click();
+  await region.locator('varendo-link a').click();
   const state = () =>
     page.evaluate(() => {
       const f = (window as any).foundationSemantic;
@@ -334,7 +334,7 @@ test('validated foundation composition dispatches host requests and preserves fo
     ],
   });
   expect(new URL(page.url()).pathname).toBe('/tests/foundation/semantic.html');
-  const splitter = region.locator('aeliqo-split-pane [part=splitter]');
+  const splitter = region.locator('varendo-split-pane [part=splitter]');
   await splitter.focus();
   await splitter.press('ArrowRight');
   await expect(splitter).toHaveAttribute('aria-valuenow', '55');
@@ -350,9 +350,9 @@ for (const variant of ['light', 'dark', 'mobile', 'rtl-large', 'forced-colors'] 
     if (variant === 'mobile') await page.setViewportSize({ width: 360, height: 800 });
     if (variant === 'forced-colors') await page.emulateMedia({ forcedColors: 'active' });
     await page.goto('/tests/foundation/semantic.html');
-    await expect(page.locator('#semantic aeliqo-button button')).toBeVisible();
+    await expect(page.locator('#semantic varendo-button button')).toBeVisible();
     if (variant === 'dark')
-      await page.locator('#semantic').evaluate((e) => e.setAttribute('data-aeliqo-theme', 'dark'));
+      await page.locator('#semantic').evaluate((e) => e.setAttribute('data-varendo-theme', 'dark'));
     if (variant === 'rtl-large')
       await page.evaluate(() => {
         document.documentElement.dir = 'rtl';

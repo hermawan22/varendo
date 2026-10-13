@@ -1,12 +1,12 @@
 import type { Outcome, Result } from '@varendo/core';
 import type { InteractionPort } from '@varendo/core/interaction';
-import type { AeliqoSelectionMode } from '../data/index.js';
-import type { AeliqoDataRegistryOptions } from './data-registry-types.js';
+import type { VarendoSelectionMode } from '../data/index.js';
+import type { VarendoDataRegistryOptions } from './data-registry-types.js';
 import { boundedText, failure } from './data-registry-common.js';
 
 function trustedEntity(
   result: Result,
-  options: AeliqoDataRegistryOptions,
+  options: VarendoDataRegistryOptions,
   required: boolean,
 ): Outcome<string | undefined> {
   if (options.resolveEntity === undefined) {
@@ -27,10 +27,10 @@ function trustedEntity(
 }
 
 export function selectionPort(
-  mode: AeliqoSelectionMode,
+  mode: VarendoSelectionMode,
   result: Result,
   identity: readonly string[],
-  options: AeliqoDataRegistryOptions,
+  options: VarendoDataRegistryOptions,
 ): Outcome<readonly InteractionPort[]> {
   if (mode === 'none') return { ok: true, value: [] };
   const entity = trustedEntity(result, options, true);
@@ -52,7 +52,7 @@ export function selectionPort(
 
 export function selectionSummaryEntity(
   result: Result,
-  options: AeliqoDataRegistryOptions,
+  options: VarendoDataRegistryOptions,
 ): Outcome<string | undefined> {
   return trustedEntity(result, options, false);
 }

@@ -1,6 +1,6 @@
 /** Typed input events are user proposals; the host remains authoritative. */
 
-type AeliqoInputSource = 'user';
+type VarendoInputSource = 'user';
 
 type EventInitLike = {
   readonly bubbles?: boolean;
@@ -25,120 +25,120 @@ const EventBase: typeof Event =
         preventDefault(): void {}
       } as unknown as typeof Event);
 
-export interface AeliqoInputChangeDetail<T> {
-  readonly source: AeliqoInputSource;
+export interface VarendoInputChangeDetail<T> {
+  readonly source: VarendoInputSource;
   readonly value: T;
   readonly composing?: boolean;
 }
 
-export class AeliqoInputChangeEvent<T> extends EventBase {
-  readonly detail: AeliqoInputChangeDetail<T>;
+export class VarendoInputChangeEvent<T> extends EventBase {
+  readonly detail: VarendoInputChangeDetail<T>;
 
-  constructor(detail: AeliqoInputChangeDetail<T>) {
-    super('aeliqo-input-change', { bubbles: true, composed: true, cancelable: true });
+  constructor(detail: VarendoInputChangeDetail<T>) {
+    super('varendo-input-change', { bubbles: true, composed: true, cancelable: true });
     this.detail = detail;
   }
 }
 
-export interface AeliqoInputCommitDetail<T> {
-  readonly source: AeliqoInputSource;
+export interface VarendoInputCommitDetail<T> {
+  readonly source: VarendoInputSource;
   readonly value: T;
 }
 
-export class AeliqoInputCommitEvent<T> extends EventBase {
-  readonly detail: AeliqoInputCommitDetail<T>;
+export class VarendoInputCommitEvent<T> extends EventBase {
+  readonly detail: VarendoInputCommitDetail<T>;
 
-  constructor(detail: AeliqoInputCommitDetail<T>) {
-    super('aeliqo-input-commit', { bubbles: true, composed: true, cancelable: true });
+  constructor(detail: VarendoInputCommitDetail<T>) {
+    super('varendo-input-commit', { bubbles: true, composed: true, cancelable: true });
     this.detail = detail;
   }
 }
 
-export type AeliqoValidationState = 'idle' | 'pending' | 'valid' | 'invalid';
+export type VarendoValidationState = 'idle' | 'pending' | 'valid' | 'invalid';
 
-export interface AeliqoValidationDetail {
-  readonly source: AeliqoInputSource;
-  readonly state: AeliqoValidationState;
+export interface VarendoValidationDetail {
+  readonly source: VarendoInputSource;
+  readonly state: VarendoValidationState;
   readonly message: string;
 }
 
-export class AeliqoValidationEvent extends EventBase {
-  readonly detail: AeliqoValidationDetail;
+export class VarendoValidationEvent extends EventBase {
+  readonly detail: VarendoValidationDetail;
 
-  constructor(detail: AeliqoValidationDetail) {
-    super('aeliqo-validation', { bubbles: true, composed: true });
+  constructor(detail: VarendoValidationDetail) {
+    super('varendo-validation', { bubbles: true, composed: true });
     this.detail = detail;
   }
 }
 
-export interface AeliqoFormSubmitDetail {
-  readonly source: AeliqoInputSource;
+export interface VarendoFormSubmitDetail {
+  readonly source: VarendoInputSource;
   readonly submitter: string | undefined;
 }
 
-export class AeliqoFormSubmitEvent extends EventBase {
-  readonly detail: AeliqoFormSubmitDetail;
+export class VarendoFormSubmitEvent extends EventBase {
+  readonly detail: VarendoFormSubmitDetail;
 
-  constructor(detail: AeliqoFormSubmitDetail) {
-    super('aeliqo-form-submit', { bubbles: true, composed: true, cancelable: true });
+  constructor(detail: VarendoFormSubmitDetail) {
+    super('varendo-form-submit', { bubbles: true, composed: true, cancelable: true });
     this.detail = detail;
   }
 }
 
-export class AeliqoFormResetEvent extends EventBase {
+export class VarendoFormResetEvent extends EventBase {
   constructor() {
-    super('aeliqo-form-reset', { bubbles: true, composed: true, cancelable: true });
+    super('varendo-form-reset', { bubbles: true, composed: true, cancelable: true });
   }
 }
 
-export interface AeliqoSearchDetail {
-  readonly source: AeliqoInputSource;
+export interface VarendoSearchDetail {
+  readonly source: VarendoInputSource;
   readonly query: string;
 }
 
 /** A committed search query. The host decides whether and how to execute it. */
-export class AeliqoSearchEvent extends EventBase {
-  readonly detail: AeliqoSearchDetail;
+export class VarendoSearchEvent extends EventBase {
+  readonly detail: VarendoSearchDetail;
 
-  constructor(detail: AeliqoSearchDetail) {
-    super('aeliqo-search', { bubbles: true, composed: true, cancelable: true });
+  constructor(detail: VarendoSearchDetail) {
+    super('varendo-search', { bubbles: true, composed: true, cancelable: true });
     this.detail = detail;
   }
 }
 
 /** A combobox query draft is separate from its selected value. */
-export interface AeliqoComboboxQueryDetail {
-  readonly source: AeliqoInputSource;
+export interface VarendoComboboxQueryDetail {
+  readonly source: VarendoInputSource;
   readonly query: string;
 }
 
-export class AeliqoComboboxQueryEvent extends EventBase {
-  readonly detail: AeliqoComboboxQueryDetail;
+export class VarendoComboboxQueryEvent extends EventBase {
+  readonly detail: VarendoComboboxQueryDetail;
 
-  constructor(detail: AeliqoComboboxQueryDetail) {
-    super('aeliqo-combobox-query', { bubbles: true, composed: true, cancelable: true });
+  constructor(detail: VarendoComboboxQueryDetail) {
+    super('varendo-combobox-query', { bubbles: true, composed: true, cancelable: true });
     this.detail = detail;
   }
 }
 
-export interface AeliqoFileMetadata {
+export interface VarendoFileMetadata {
   readonly name: string;
   readonly size: number;
   readonly type: string;
   readonly lastModified: number;
 }
 
-export interface AeliqoFileChangeDetail {
-  readonly source: AeliqoInputSource;
-  readonly files: readonly AeliqoFileMetadata[];
+export interface VarendoFileChangeDetail {
+  readonly source: VarendoInputSource;
+  readonly files: readonly VarendoFileMetadata[];
 }
 
 /** File selections expose metadata only; the host owns any subsequent upload. */
-export class AeliqoFileChangeEvent extends EventBase {
-  readonly detail: AeliqoFileChangeDetail;
+export class VarendoFileChangeEvent extends EventBase {
+  readonly detail: VarendoFileChangeDetail;
 
-  constructor(detail: AeliqoFileChangeDetail) {
-    super('aeliqo-file-change', { bubbles: true, composed: true, cancelable: true });
+  constructor(detail: VarendoFileChangeDetail) {
+    super('varendo-file-change', { bubbles: true, composed: true, cancelable: true });
     this.detail = detail;
   }
 }

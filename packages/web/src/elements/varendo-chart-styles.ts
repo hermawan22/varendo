@@ -1,11 +1,11 @@
 import { css } from 'lit';
-import { aeliqoThemeStyles } from '../styles/theme.js';
+import { varendoThemeStyles } from '../styles/theme.js';
 
-export const aeliqoChartStyles = [
-  aeliqoThemeStyles,
+export const varendoChartStyles = [
+  varendoThemeStyles,
   css`
     :host {
-      color: var(--aeliqo-chart-color, var(--aeliqo-color-text, #18202a));
+      color: var(--varendo-chart-color, var(--varendo-color-text, #18202a));
       display: block;
       max-inline-size: 100%;
     }
@@ -16,8 +16,8 @@ export const aeliqoChartStyles = [
 
     figcaption {
       display: grid;
-      gap: var(--aeliqo-space-4, 0.25rem);
-      margin-block-end: var(--aeliqo-space-12, 0.75rem);
+      gap: var(--varendo-space-4, 0.25rem);
+      margin-block-end: var(--varendo-space-12, 0.75rem);
     }
 
     [part='summary'],
@@ -25,21 +25,21 @@ export const aeliqoChartStyles = [
     [part='scope'],
     [part='error'],
     [part='gap'] {
-      color: var(--aeliqo-chart-muted, var(--aeliqo-color-muted, #495464));
+      color: var(--varendo-chart-muted, var(--varendo-color-muted, #495464));
       font-size: 0.9em;
     }
 
     svg {
-      background: var(--aeliqo-chart-background, var(--aeliqo-color-canvas, #fff));
+      background: var(--varendo-chart-background, var(--varendo-color-canvas, #fff));
       block-size: 11.25rem;
-      border: var(--aeliqo-control-border-width, 1px) solid
-        var(--aeliqo-chart-border, var(--aeliqo-color-border, #c9d0d8));
+      border: var(--varendo-control-border-width, 1px) solid
+        var(--varendo-chart-border, var(--varendo-color-border, #c9d0d8));
       box-sizing: border-box;
       inline-size: 100%;
     }
 
     line {
-      stroke: var(--aeliqo-chart-rule, var(--aeliqo-color-border, #8d98a5));
+      stroke: var(--varendo-chart-rule, var(--varendo-color-border, #8d98a5));
       stroke-width: 1;
     }
 
@@ -57,20 +57,20 @@ export const aeliqoChartStyles = [
 
     [part='line'] {
       fill: none;
-      stroke: var(--aeliqo-chart-line, var(--aeliqo-visualization-series1, #0b63ce));
+      stroke: var(--varendo-chart-line, var(--varendo-visualization-series1, #0b63ce));
       stroke-linecap: round;
       stroke-linejoin: round;
       stroke-width: 3;
     }
 
     [part='line'].color-1 {
-      stroke: var(--aeliqo-visualization-series2, #7c3aed);
+      stroke: var(--varendo-visualization-series2, #7c3aed);
     }
     [part='line'].color-2 {
-      stroke: var(--aeliqo-visualization-series3, #0f766e);
+      stroke: var(--varendo-visualization-series3, #0f766e);
     }
     [part='line'].color-3 {
-      stroke: var(--aeliqo-visualization-series4, #b45309);
+      stroke: var(--varendo-visualization-series4, #b45309);
     }
 
     [part='line'].style-1,
@@ -95,48 +95,48 @@ export const aeliqoChartStyles = [
     }
 
     [part='point'] {
-      fill: var(--aeliqo-chart-point, var(--aeliqo-color-canvas, #fff));
-      stroke: var(--aeliqo-chart-line, var(--aeliqo-visualization-series1, #0b63ce));
+      fill: var(--varendo-chart-point, var(--varendo-color-canvas, #fff));
+      stroke: var(--varendo-chart-line, var(--varendo-visualization-series1, #0b63ce));
       stroke-width: 2;
     }
 
     [part='point'].color-1 {
-      stroke: var(--aeliqo-visualization-series2, #7c3aed);
+      stroke: var(--varendo-visualization-series2, #7c3aed);
     }
     [part='point'].color-2 {
-      stroke: var(--aeliqo-visualization-series3, #0f766e);
+      stroke: var(--varendo-visualization-series3, #0f766e);
     }
     [part='point'].color-3 {
-      stroke: var(--aeliqo-visualization-series4, #b45309);
+      stroke: var(--varendo-visualization-series4, #b45309);
     }
 
     [part='legend-marker'].color-1 {
-      border-block-start-color: var(--aeliqo-visualization-series2, #7c3aed);
+      border-block-start-color: var(--varendo-visualization-series2, #7c3aed);
     }
     [part='legend-marker'].color-2 {
-      border-block-start-color: var(--aeliqo-visualization-series3, #0f766e);
+      border-block-start-color: var(--varendo-visualization-series3, #0f766e);
     }
     [part='legend-marker'].color-3 {
-      border-block-start-color: var(--aeliqo-visualization-series4, #b45309);
+      border-block-start-color: var(--varendo-visualization-series4, #b45309);
     }
 
     [part='legend'] {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--aeliqo-space-8, 0.5rem) var(--aeliqo-space-16, 1rem);
+      gap: var(--varendo-space-8, 0.5rem) var(--varendo-space-16, 1rem);
       list-style: none;
-      margin: var(--aeliqo-space-8, 0.5rem) 0 0;
+      margin: var(--varendo-space-8, 0.5rem) 0 0;
       padding: 0;
     }
 
     [part='legend'] li {
       align-items: center;
       display: inline-flex;
-      gap: var(--aeliqo-space-4, 0.25rem);
+      gap: var(--varendo-space-4, 0.25rem);
     }
 
     [part='legend-marker'] {
-      border-block-start: 0.2rem solid var(--aeliqo-chart-line, var(--aeliqo-visualization-series1, #0b63ce));
+      border-block-start: 0.2rem solid var(--varendo-chart-line, var(--varendo-visualization-series1, #0b63ce));
       display: inline-block;
       inline-size: 1.25rem;
     }
@@ -160,25 +160,26 @@ export const aeliqoChartStyles = [
     }
 
     details {
-      margin-block-start: var(--aeliqo-space-12, 0.75rem);
+      margin-block-start: var(--varendo-space-12, 0.75rem);
     }
 
     details:focus-within {
-      outline: var(--aeliqo-focus-width, 0.1875rem) solid var(--aeliqo-chart-focus, var(--aeliqo-color-focus, #0b63ce));
-      outline-offset: var(--aeliqo-focus-offset, 0.1875rem);
+      outline: var(--varendo-focus-width, 0.1875rem) solid
+        var(--varendo-chart-focus, var(--varendo-color-focus, #0b63ce));
+      outline-offset: var(--varendo-focus-offset, 0.1875rem);
     }
 
     table {
       border-collapse: collapse;
-      margin-block-start: var(--aeliqo-space-8, 0.5rem);
+      margin-block-start: var(--varendo-space-8, 0.5rem);
       min-inline-size: min(100%, 20rem);
     }
 
     th,
     td {
-      border-block-end: var(--aeliqo-control-border-width, 1px) solid
-        var(--aeliqo-chart-rule, var(--aeliqo-color-border, #c9d0d8));
-      padding: var(--aeliqo-space-4, 0.25rem) var(--aeliqo-space-8, 0.5rem);
+      border-block-end: var(--varendo-control-border-width, 1px) solid
+        var(--varendo-chart-rule, var(--varendo-color-border, #c9d0d8));
+      padding: var(--varendo-space-4, 0.25rem) var(--varendo-space-8, 0.5rem);
       text-align: start;
     }
   `,

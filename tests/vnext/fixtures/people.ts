@@ -2,9 +2,9 @@ import type { Intent } from '@varendo/core';
 import { defineDataFeature } from '@varendo/core/features';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import {
-  createAeliqoRuntime,
+  createVarendoRuntime,
   createLocalDataBinding,
-  type AeliqoRuntime,
+  type VarendoRuntime,
   type DataSurfaceBindings,
   type SurfaceController,
   type SurfaceReadContext,
@@ -44,7 +44,7 @@ export interface PeopleSurfaceState {
 }
 
 export interface PeopleFixtureContract {
-  readonly runtime: AeliqoRuntime;
+  readonly runtime: VarendoRuntime;
   readonly runtimeId: string;
   readonly scope: LocalSurfaceScope;
   readonly feature: typeof peopleFeature;
@@ -137,7 +137,7 @@ export function createPeopleFixture(): PeopleFixtureContract {
     },
   });
   const source = bindings.service;
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId,
     resources: [{ resource: peopleFeature.resource, data: source }],
     authority: {

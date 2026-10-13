@@ -1,8 +1,8 @@
 import type { Result, Task } from '@varendo/core';
 import type { ValidatedPresentation, PresentationEnvironment } from '@varendo/core/presentation';
 import type { RuntimeCommittedReceipt } from '@varendo/runtime/app';
-import type { AeliqoRegionResult } from '../region/types.js';
-import type { AeliqoInputBindings } from '../region/input-registry.js';
+import type { VarendoRegionResult } from '../region/types.js';
+import type { VarendoInputBindings } from '../region/input-registry.js';
 import type { WebRenderReceipt } from './types.js';
 import { diagnostic, failedAfterRuntime, type WebAppContext, type WebRegion } from './context.js';
 import { beginPresentation, presentationCurrent } from './presentation-operation.js';
@@ -14,11 +14,11 @@ export async function present(
   context: WebAppContext,
   region: WebRegion,
   receipt: RuntimeCommittedReceipt,
-  results: readonly AeliqoRegionResult[],
+  results: readonly VarendoRegionResult[],
   descriptors: readonly Result[],
   requestId: string,
   expectedSequence: number,
-  inputs?: AeliqoInputBindings,
+  inputs?: VarendoInputBindings,
   signal?: AbortSignal,
 ): Promise<WebRenderReceipt> {
   const operation = beginPresentation(region, signal);

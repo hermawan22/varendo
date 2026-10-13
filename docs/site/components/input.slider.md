@@ -7,9 +7,9 @@ contract: 'Bounded quantity with keyboard and text alternative; steps and units 
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -30,19 +30,19 @@ constrain edits, while the host decides what to retain or persist.
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 Changing `value` or `unit` or replacing `validator` cancels validation for the
 previous value and clears its validator-owned error. An independently supplied
@@ -53,11 +53,11 @@ ignored.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -65,9 +65,9 @@ Give the track its own row in narrow forms. Keep its numeric label and unit visi
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -76,7 +76,7 @@ Give the track its own row in narrow forms. Keep its numeric label and unit visi
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

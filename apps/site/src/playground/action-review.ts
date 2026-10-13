@@ -1,6 +1,6 @@
-import type { AeliqoAppActionEvent } from '@varendo/web/app';
+import type { VarendoAppActionEvent } from '@varendo/web/app';
 
-type PendingAction = Extract<AeliqoAppActionEvent, { readonly state: 'preview' }>;
+type PendingAction = Extract<VarendoAppActionEvent, { readonly state: 'preview' }>;
 
 interface ActionReviewOptions {
   readonly dialog: HTMLDialogElement;
@@ -15,7 +15,7 @@ interface ActionReviewOptions {
 }
 
 export interface ActionReviewController {
-  readonly handle: (event: AeliqoAppActionEvent) => void;
+  readonly handle: (event: VarendoAppActionEvent) => void;
   reset(): void;
 }
 
@@ -54,7 +54,7 @@ class ActionReviewState implements ActionReviewController {
     });
   }
 
-  handle = (event: AeliqoAppActionEvent): void => {
+  handle = (event: VarendoAppActionEvent): void => {
     if (event.state === 'preview') {
       this.showPreview(event);
       return;

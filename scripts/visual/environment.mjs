@@ -57,7 +57,7 @@ async function fonts() {
           join(homedir(), '.fonts'),
           join(homedir(), '.local/share/fonts'),
         ];
-  const directories = process.env.AELIQO_VISUAL_FONT_DIRS?.split(delimiter) ?? defaults;
+  const directories = process.env.VARENDO_VISUAL_FONT_DIRS?.split(delimiter) ?? defaults;
   const paths = [];
   for (const directory of directories)
     paths.push(...(await files(directory)).filter((path) => /\.(ttf|otf|ttc|woff2?)$/iu.test(path)));
@@ -95,7 +95,7 @@ export async function environment(root) {
 }
 
 export function runnerIdentity(env) {
-  const container = env.AELIQO_VISUAL_CONTAINER_DIGEST ?? null;
+  const container = env.VARENDO_VISUAL_CONTAINER_DIGEST ?? null;
   return {
     container,
     hostImage:

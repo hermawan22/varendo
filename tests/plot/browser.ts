@@ -1,7 +1,7 @@
-import { AeliqoPlotElement } from '../../packages/web/src/plot/index.js';
+import { VarendoPlotElement } from '../../packages/web/src/plot/index.js';
 import { result, ref } from '../contracts/fixtures.js';
-customElements.define('aeliqo-plot', AeliqoPlotElement);
-const plot = document.createElement('aeliqo-plot') as AeliqoPlotElement;
+customElements.define('varendo-plot', VarendoPlotElement);
+const plot = document.createElement('varendo-plot') as VarendoPlotElement;
 plot.label = 'Weekly amount';
 plot.result = {
   ...result,

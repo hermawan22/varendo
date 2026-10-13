@@ -18,13 +18,13 @@ import {
 import { createContextCapability } from './context-capability.js';
 import { agentIntentSchema } from './intent-schema.js';
 import { createRenderCapability } from './render-capability.js';
-import type { AeliqoAppToolEndpoint, AppToolEndpointOptions } from './types.js';
+import type { VarendoAppToolEndpoint, AppToolEndpointOptions } from './types.js';
 import { bounded, failure, grants, toolSchema } from './values.js';
 
 const refs = Object.freeze({
-  context: { id: 'aeliqo.app.context', revision: '1' },
-  render: { id: 'aeliqo.app.render', revision: '1' },
-  action: { id: 'aeliqo.app.action', revision: '1' },
+  context: { id: 'varendo.app.context', revision: '1' },
+  render: { id: 'varendo.app.render', revision: '1' },
+  action: { id: 'varendo.app.action', revision: '1' },
 });
 
 const contextSchema = toolSchema({ type: 'object', properties: {}, additionalProperties: false });
@@ -70,14 +70,14 @@ function registerOne<TInput, TOutput>(
 
 function standardTools(): readonly AgentToolBinding[] {
   return [
-    { name: 'aeliqo_context', capability: refs.context, operation: 'catalog.read', inputSchema: contextSchema },
+    { name: 'varendo_context', capability: refs.context, operation: 'catalog.read', inputSchema: contextSchema },
     {
-      name: 'aeliqo_render',
+      name: 'varendo_render',
       capability: refs.render,
       operation: 'task.evaluate',
       inputSchema: toolSchema(agentIntentSchema()),
     },
-    { name: 'aeliqo_act', capability: refs.action, operation: 'action.propose', inputSchema: actionSchema },
+    { name: 'varendo_act', capability: refs.action, operation: 'action.propose', inputSchema: actionSchema },
   ];
 }
 
@@ -122,14 +122,14 @@ function endpointLimits(options: AppToolEndpointOptions): OptionalEndpointLimits
   };
 }
 
-function validateOptions(options: AppToolEndpointOptions): Outcome<AeliqoAppToolEndpoint> | undefined {
+function validateOptions(options: AppToolEndpointOptions): Outcome<VarendoAppToolEndpoint> | undefined {
   if (options === null || typeof options !== 'object' || !bounded(options.regionId) || !bounded(options.goalEpoch))
-    return failure<AeliqoAppToolEndpoint>(
+    return failure<VarendoAppToolEndpoint>(
       'agent.app.invalid',
       'A standard tool endpoint requires one mounted Region and goal epoch.',
     );
   if (options.context !== undefined && (options.context === null || typeof options.context.read !== 'function'))
-    return failure<AeliqoAppToolEndpoint>(
+    return failure<VarendoAppToolEndpoint>(
       'agent.app.invalid-context',
       'A custom discovery port requires a trusted read function.',
     );
@@ -142,7 +142,7 @@ function wrapEndpoint(
   closeActions: boolean,
   guard?: () => Outcome<void>,
   onClose?: () => void,
-): AeliqoAppToolEndpoint {
+): VarendoAppToolEndpoint {
   let closed = false;
   const lifetime = new AbortController();
   return Object.freeze({
@@ -172,7 +172,7 @@ function wrapEndpoint(
 }
 
 /** Creates the three standard tools around one expiring, freshly-authorized Region pairing. */
-export function createAppToolEndpoint(options: AppToolEndpointOptions): Outcome<AeliqoAppToolEndpoint> {
+export function createAppToolEndpoint(options: AppToolEndpointOptions): Outcome<VarendoAppToolEndpoint> {
   const invalid = validateOptions(options);
   if (invalid !== undefined) return invalid;
   return buildEndpoint(Object.freeze({ ...options }), createActionCapabilityState(options), true);
@@ -184,7 +184,7 @@ export function createSharedAppToolEndpoint(
   actionState: ReturnType<typeof createActionCapabilityState>,
   guard: () => Outcome<void>,
   onClose: () => void,
-): Outcome<AeliqoAppToolEndpoint> {
+): Outcome<VarendoAppToolEndpoint> {
   return buildEndpoint(options, actionState, false, guard, onClose);
 }
 
@@ -194,7 +194,7 @@ function buildEndpoint(
   closeActions: boolean,
   guard?: () => Outcome<void>,
   onClose?: () => void,
-): Outcome<AeliqoAppToolEndpoint> {
+): Outcome<VarendoAppToolEndpoint> {
   const invalid = validateOptions(options);
   if (invalid !== undefined) return invalid;
   const initial = options.runtime.context(options.regionId);

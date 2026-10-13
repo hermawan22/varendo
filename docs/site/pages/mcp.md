@@ -16,15 +16,15 @@ render returns `renderer-ready` after the browser commits it.
 
 Use Node.js **24.20.0**, pnpm **11.24.0**, and Git. These commands copy only the
 example out of the source checkout; its dependencies use exact registry
-versions rather than workspace links. All five 0.1.0 packages are published
-and passed registry consumer and provenance verification. See the
-[package guide](/reference/packages/) for the exact-version installation contract:
+versions rather than workspace links. This checkout targets the unpublished
+0.2.0 candidate; its registry install works only after 0.2.0 is published.
+See the [package guide](/reference/packages/) for the exact-version installation contract:
 
 ```bash
-git clone --depth 1 --filter=blob:none --sparse https://github.com/hermawan22/varendo.git aeliqo-source
-git -C aeliqo-source sparse-checkout set examples/local-agent
-cp -R aeliqo-source/examples/local-agent ./aeliqo-local-agent
-cd aeliqo-local-agent
+git clone --depth 1 --filter=blob:none --sparse https://github.com/hermawan22/varendo.git varendo-source
+git -C varendo-source sparse-checkout set examples/local-agent
+cp -R varendo-source/examples/local-agent ./varendo-local-agent
+cd varendo-local-agent
 corepack enable
 corepack prepare pnpm@11.24.0 --activate
 pnpm install
@@ -32,7 +32,7 @@ pnpm dev
 ```
 
 `pnpm dev` typechecks and builds the Vanilla/Vite UI, then starts the Node
-host. The example pins `@varendo/core`, `runtime`, `web`, and `agent` to **0.1.0**.
+host. The example pins `@varendo/core`, `runtime`, `web`, and `agent` to **0.2.0**.
 Keep its `pnpm-workspace.yaml` when copying it: this gives the independent
 installation its own workspace boundary.
 
@@ -52,7 +52,7 @@ For a client that accepts Streamable HTTP, use the printed token:
 ```json
 {
   "mcpServers": {
-    "aeliqo-local": {
+    "varendo-local": {
       "type": "streamable-http",
       "url": "http://127.0.0.1:4174/mcp",
       "headers": { "Authorization": "Bearer <printed-token>" }
@@ -67,12 +67,12 @@ your copied example. `node` must resolve to the pinned Node installation:
 ```json
 {
   "mcpServers": {
-    "aeliqo-local": {
+    "varendo-local": {
       "command": "node",
-      "args": ["/absolute/path/aeliqo-local-agent/runner/mcp-stdio.mjs"],
+      "args": ["/absolute/path/varendo-local-agent/runner/mcp-stdio.mjs"],
       "env": {
-        "AELIQO_LOCAL_URL": "http://127.0.0.1:4174",
-        "AELIQO_MCP_TOKEN": "<printed-token>"
+        "VARENDO_LOCAL_URL": "http://127.0.0.1:4174",
+        "VARENDO_MCP_TOKEN": "<printed-token>"
       }
     }
   }
@@ -81,13 +81,13 @@ your copied example. `node` must resolve to the pinned Node installation:
 
 The stdio bridge uses stdout only for MCP frames. Leave the Node host running;
 the child connects to it over loopback. The token stays in the terminal and
-client configuration, never the page. Use `AELIQO_LOCAL_PORT=4175 pnpm dev`
+client configuration, never the page. Use `VARENDO_LOCAL_PORT=4175 pnpm dev`
 if port 4174 is occupied, and update the client URL to the printed address.
 
 ## Render a different view
 
 Ask your client: **Show People as cards.** It should discover these tools,
-call `aeliqo_context`, then call `aeliqo_render` with a bounded intent:
+call `varendo_context`, then call `varendo_render` with a bounded intent:
 
 ```json
 {
@@ -102,11 +102,11 @@ call `aeliqo_context`, then call `aeliqo_render` with a bounded intent:
 
 | Tool             | Purpose                                                                     | Evidence                                      |
 | ---------------- | --------------------------------------------------------------------------- | --------------------------------------------- |
-| `aeliqo_context` | Discover current registered resources, fields, meanings, actions, and views | An `accepted` context receipt                 |
-| `aeliqo_render`  | Validate and render a structured intent                                     | `renderer-ready` after browser acknowledgment |
-| `aeliqo_act`     | Propose a registered application action                                     | A staged receipt subject to host policy       |
+| `varendo_context` | Discover current registered resources, fields, meanings, actions, and views | An `accepted` context receipt                 |
+| `varendo_render`  | Validate and render a structured intent                                     | `renderer-ready` after browser acknowledgment |
+| `varendo_act`     | Propose a registered application action                                     | A staged receipt subject to host policy       |
 
-The People example registers no business actions. Discovering `aeliqo_act`
+The People example registers no business actions. Discovering `varendo_act`
 does not grant permission to execute an action. Unknown fields and views fail validation and
 leave the last valid UI intact. No agent HTML or code is executed.
 

@@ -1,6 +1,6 @@
 ---
 id: 'what-is'
-path: '/start/what-is-aeliqo/'
+path: '/start/what-is-varendo/'
 section: 'Get started'
 title: 'What is Varendo?'
 description: 'Understand how application requests, registered data, and available space determine a view.'

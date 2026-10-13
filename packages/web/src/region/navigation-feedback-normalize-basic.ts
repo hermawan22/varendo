@@ -1,8 +1,8 @@
 import type { Outcome } from '@varendo/core';
 import type {
-  AeliqoNavigationFeedbackAction,
-  AeliqoNavigationFeedbackContent,
-  AeliqoNavigationFeedbackRoute,
+  VarendoNavigationFeedbackAction,
+  VarendoNavigationFeedbackContent,
+  VarendoNavigationFeedbackRoute,
 } from './navigation-feedback-types.js';
 import {
   MAX_ITEMS,
@@ -18,11 +18,11 @@ import {
   scalarRecord,
 } from './navigation-feedback-support.js';
 
-export function normalizeContents(value: unknown): Outcome<readonly AeliqoNavigationFeedbackContent[]> {
+export function normalizeContents(value: unknown): Outcome<readonly VarendoNavigationFeedbackContent[]> {
   if (value === undefined) return { ok: true, value: [] };
   if (!Array.isArray(value) || value.length > MAX_ITEMS) return fail('bindings', 'contents must be a bounded array.');
   const seen = new Set<string>();
-  const result: AeliqoNavigationFeedbackContent[] = [];
+  const result: VarendoNavigationFeedbackContent[] = [];
   for (const item of value) {
     const candidate = record(item);
     if (
@@ -39,11 +39,11 @@ export function normalizeContents(value: unknown): Outcome<readonly AeliqoNaviga
   return { ok: true, value: result };
 }
 
-export function normalizeRoutes(value: unknown): Outcome<readonly AeliqoNavigationFeedbackRoute[]> {
+export function normalizeRoutes(value: unknown): Outcome<readonly VarendoNavigationFeedbackRoute[]> {
   if (value === undefined) return { ok: true, value: [] };
   if (!Array.isArray(value) || value.length > MAX_ITEMS) return fail('bindings', 'routes must be a bounded array.');
   const seen = new Set<string>();
-  const result: AeliqoNavigationFeedbackRoute[] = [];
+  const result: VarendoNavigationFeedbackRoute[] = [];
   for (const item of value) {
     const candidate = record(item);
     if (
@@ -70,11 +70,11 @@ export function normalizeRoutes(value: unknown): Outcome<readonly AeliqoNavigati
   return { ok: true, value: result };
 }
 
-export function normalizeActions(value: unknown): Outcome<readonly AeliqoNavigationFeedbackAction[]> {
+export function normalizeActions(value: unknown): Outcome<readonly VarendoNavigationFeedbackAction[]> {
   if (value === undefined) return { ok: true, value: [] };
   if (!Array.isArray(value) || value.length > MAX_ITEMS) return fail('bindings', 'actions must be a bounded array.');
   const seen = new Set<string>();
-  const result: AeliqoNavigationFeedbackAction[] = [];
+  const result: VarendoNavigationFeedbackAction[] = [];
   for (const item of value) {
     const candidate = record(item);
     if (

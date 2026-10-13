@@ -1,18 +1,18 @@
 import { css, html, LitElement, nothing } from 'lit';
-import { aeliqoThemeStyles } from '../styles/theme.js';
-import { AELIQO_WEB_VERSION } from '../version.js';
-import type { AeliqoDataScope, AeliqoDataStatus, AeliqoDataValue } from './types.js';
+import { varendoThemeStyles } from '../styles/theme.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
+import type { VarendoDataScope, VarendoDataStatus, VarendoDataValue } from './types.js';
 import { dataStyles, dataStatusMessage, displaysStatusBanner, scopeText, statusTemplate } from './shared.js';
-import { calculateAeliqoDelta, type AeliqoDeltaMode } from './delta-calculation.js';
+import { calculateVarendoDelta, type VarendoDeltaMode } from './delta-calculation.js';
 
-export { calculateAeliqoDelta, type AeliqoDeltaMode } from './delta-calculation.js';
+export { calculateVarendoDelta, type VarendoDeltaMode } from './delta-calculation.js';
 
-const DISPLAYABLE_STATUSES: ReadonlySet<AeliqoDataStatus> = new Set(['ready', 'partial', 'stale']);
+const DISPLAYABLE_STATUSES: ReadonlySet<VarendoDataStatus> = new Set(['ready', 'partial', 'stale']);
 
 /** Displays a comparison supplied by the host. Percentage points and
  * relative percentage change use distinct modes and labels. */
-export class AeliqoDeltaElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoDeltaElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     label: { type: String },
     current: { attribute: false },
@@ -26,13 +26,13 @@ export class AeliqoDeltaElement extends LitElement {
   };
 
   label = 'Change';
-  current: AeliqoDataValue | undefined = undefined;
-  baseline: AeliqoDataValue | undefined = undefined;
-  mode: AeliqoDeltaMode = 'absolute';
+  current: VarendoDataValue | undefined = undefined;
+  baseline: VarendoDataValue | undefined = undefined;
+  mode: VarendoDeltaMode = 'absolute';
   compatible = true;
   unit = '';
-  scope: AeliqoDataScope | undefined = undefined;
-  status: AeliqoDataStatus = 'ready';
+  scope: VarendoDataScope | undefined = undefined;
+  status: VarendoDataStatus = 'ready';
   message = '';
 
   protected override render() {
@@ -53,7 +53,7 @@ export class AeliqoDeltaElement extends LitElement {
   private presentation() {
     const canDisplay = this.canDisplayStatus();
     const result = canDisplay
-      ? calculateAeliqoDelta(this.current, this.baseline, this.validMode, this.compatible)
+      ? calculateVarendoDelta(this.current, this.baseline, this.validMode, this.compatible)
       : undefined;
     const unavailable = !canDisplay || result?.status !== 'ready';
     return {
@@ -72,7 +72,7 @@ export class AeliqoDeltaElement extends LitElement {
     return DISPLAYABLE_STATUSES.has(this.status);
   }
 
-  private renderedValue(canDisplay: boolean, result: ReturnType<typeof calculateAeliqoDelta> | undefined): string {
+  private renderedValue(canDisplay: boolean, result: ReturnType<typeof calculateVarendoDelta> | undefined): string {
     if (!canDisplay) return dataStatusMessage(this.status, this.message) ?? 'Value unavailable.';
     if (result?.status !== 'ready') return dataStatusMessage('unavailable', this.message) ?? 'Value unavailable.';
     return result.display ?? '—';
@@ -89,7 +89,7 @@ export class AeliqoDeltaElement extends LitElement {
     }
   }
 
-  private renderUnit(view: ReturnType<AeliqoDeltaElement['presentation']>) {
+  private renderUnit(view: ReturnType<VarendoDeltaElement['presentation']>) {
     if (this.unit.length === 0 || view.mode !== 'absolute' || view.unavailable) return nothing;
     return html`<span part="unit">${this.unit}</span>`;
   }
@@ -104,46 +104,46 @@ export class AeliqoDeltaElement extends LitElement {
     return statusTemplate(this.status, this.message);
   }
 
-  private get validMode(): AeliqoDeltaMode {
+  private get validMode(): VarendoDeltaMode {
     return this.mode === 'relative' || this.mode === 'percentage-point' ? this.mode : 'absolute';
   }
 
   static readonly styles = [
-    aeliqoThemeStyles,
+    varendoThemeStyles,
     dataStyles,
     css`
       dl {
         margin: 0;
       }
       dt {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
       }
       dd {
         align-items: baseline;
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-4, 0.25rem);
-        margin: var(--aeliqo-space-4, 0.25rem) 0 0;
+        gap: var(--varendo-space-4, 0.25rem);
+        margin: var(--varendo-space-4, 0.25rem) 0 0;
       }
       [part='number'] {
-        font-size: var(--aeliqo-typography-font-size-heading, 1.5rem);
+        font-size: var(--varendo-typography-font-size-heading, 1.5rem);
         font-variant-numeric: tabular-nums;
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
         overflow-wrap: anywhere;
       }
       [part='unit'],
       [part='mode'],
       [part='scope'] {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
       }
       [part='mode'],
       [part='scope'] {
-        margin-block-start: var(--aeliqo-space-4, 0.25rem);
+        margin-block-start: var(--varendo-space-4, 0.25rem);
       }
       dd.unavailable [part='number'] {
-        color: var(--aeliqo-color-muted, #475569);
+        color: var(--varendo-color-muted, #475569);
         font-size: inherit;
         font-weight: 400;
       }

@@ -1,18 +1,18 @@
 import { html } from 'lit';
-import { renderAeliqo } from '@varendo/web/server';
-import { HydrateAeliqo } from './hydrate';
+import { renderVarendo } from '@varendo/web/server';
+import { HydrateVarendo } from './hydrate';
 import { AdaptivePeople } from './adaptive-people';
 
 export const dynamic = 'force-dynamic';
 export default async function Page() {
-  const markup = await renderAeliqo(
-    html`<form><aeliqo-text-field label="Next person" name="person" value="Ada"></aeliqo-text-field></form>`,
+  const markup = await renderVarendo(
+    html`<form><varendo-text-field label="Next person" name="person" value="Ada"></varendo-text-field></form>`,
   );
   return (
     <main>
       <h1>Varendo in Next.js</h1>
-      <div id="aeliqo-server-proof" dangerouslySetInnerHTML={{ __html: markup }} />
-      <HydrateAeliqo />
+      <div id="varendo-server-proof" dangerouslySetInnerHTML={{ __html: markup }} />
+      <HydrateVarendo />
       <AdaptivePeople />
     </main>
   );

@@ -12,7 +12,7 @@ test('keeps manual adaptive controls usable without a model connection', async (
 
   await page.goto('/');
   await expect(page.locator('#page-status')).toHaveText('Ready');
-  await expect(page.locator('#people-host aeliqo-table')).toHaveCount(1);
+  await expect(page.locator('#people-host varendo-table')).toHaveCount(1);
   await page.getByRole('button', { name: 'Cards' }).click();
   await expect(page.locator('#people-status')).toContainText('renderer-ready:data.card-collection');
   await expect(page.getByText('Sam Rivera')).toBeVisible();

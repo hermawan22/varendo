@@ -20,7 +20,7 @@ import { createMcpStdioServer } from '@varendo/agent/mcp';
 
 createMcpStdioServer({
   createEndpoint: () => createPairedEndpoint(),
-  name: 'my-aeliqo-server',
+  name: 'my-varendo-server',
   version: '1.0.0',
   maxBufferSize: 10 * 1024 * 1024,
 });
@@ -40,7 +40,7 @@ An application-owned agent can connect with the official stdio client:
 import { connectMcpStdioClient } from '@varendo/agent/mcp';
 
 const endpoint = await connectMcpStdioClient({
-  server: { command: 'my-aeliqo-server', args: [] },
+  server: { command: 'my-varendo-server', args: [] },
   targetRegionId: 'region-1',
   goalEpoch: 'goal-7',
 });

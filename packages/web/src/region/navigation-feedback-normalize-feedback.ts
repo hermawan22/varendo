@@ -1,9 +1,9 @@
 import type { Outcome } from '@varendo/core';
-import type { AeliqoEmptyStateKind } from '../feedback/empty-state.js';
+import type { VarendoEmptyStateKind } from '../feedback/empty-state.js';
 import type {
-  AeliqoFeedbackBinding,
-  AeliqoNavigationFeedbackAction,
-  AeliqoNavigationFeedbackContent,
+  VarendoFeedbackBinding,
+  VarendoNavigationFeedbackAction,
+  VarendoNavigationFeedbackContent,
 } from './navigation-feedback-types.js';
 import {
   EMPTY_STATE_KINDS,
@@ -33,13 +33,13 @@ const CONTENT_REFERENCE_KEYS = ['labelRef', 'contentRef', 'headingRef', 'message
 
 export function normalizeFeedback(
   value: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
-): Outcome<readonly AeliqoFeedbackBinding[]> {
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
+): Outcome<readonly VarendoFeedbackBinding[]> {
   const source = boundedArray(value, 'feedback');
   if (!source.ok) return source;
   const seen = new Set<string>();
-  const result: AeliqoFeedbackBinding[] = [];
+  const result: VarendoFeedbackBinding[] = [];
   for (const raw of source.value) {
     const entry = normalizeFeedbackEntry(raw, contents, actions, seen);
     if (!entry.ok) return entry;
@@ -51,10 +51,10 @@ export function normalizeFeedback(
 
 function normalizeFeedbackEntry(
   raw: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
   seen: ReadonlySet<string>,
-): Outcome<AeliqoFeedbackBinding> {
+): Outcome<VarendoFeedbackBinding> {
   const entry = record(raw);
   if (!validFeedbackIdentity(entry, seen)) return fail('bindings', 'Feedback bindings require unique bounded IDs.');
   if (!validFeedbackContent(entry, contents))
@@ -77,7 +77,7 @@ function validFeedbackIdentity(
 
 function validFeedbackContent(
   entry: Record<string, unknown>,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
 ): boolean {
   for (const key of CONTENT_REFERENCE_KEYS) {
     if (entry[key] === undefined) continue;
@@ -88,7 +88,7 @@ function validFeedbackContent(
 
 function validFeedbackAction(
   entry: Record<string, unknown>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
 ): boolean {
   return entry.actionRef === undefined || requireAction(actions, entry.actionRef);
 }
@@ -96,7 +96,7 @@ function validFeedbackAction(
 function validFeedbackKind(entry: Record<string, unknown>): boolean {
   if (entry.kind === undefined) return true;
   if (typeof entry.kind !== 'string') return false;
-  return EMPTY_STATE_KINDS.includes(entry.kind as AeliqoEmptyStateKind);
+  return EMPTY_STATE_KINDS.includes(entry.kind as VarendoEmptyStateKind);
 }
 
 function feedbackProgressError(entry: Record<string, unknown>): string | undefined {
@@ -119,7 +119,7 @@ function progressExceedsMaximum(value: unknown, maximum: unknown): boolean {
   return typeof value === 'number' && typeof maximum === 'number' && value > maximum;
 }
 
-function feedbackValue(entry: Record<string, unknown>): AeliqoFeedbackBinding {
+function feedbackValue(entry: Record<string, unknown>): VarendoFeedbackBinding {
   return {
     id: entry.id as string,
     ...(entry.labelRef === undefined ? {} : { labelRef: entry.labelRef as string }),
@@ -128,7 +128,7 @@ function feedbackValue(entry: Record<string, unknown>): AeliqoFeedbackBinding {
     ...(entry.messageRef === undefined ? {} : { messageRef: entry.messageRef as string }),
     ...(entry.actionLabelRef === undefined ? {} : { actionLabelRef: entry.actionLabelRef as string }),
     ...(entry.actionRef === undefined ? {} : { actionRef: entry.actionRef as string }),
-    ...(entry.kind === undefined ? {} : { kind: entry.kind as AeliqoEmptyStateKind }),
+    ...(entry.kind === undefined ? {} : { kind: entry.kind as VarendoEmptyStateKind }),
     ...(entry.progressValue === undefined ? {} : { progressValue: entry.progressValue as number }),
     ...(entry.progressMax === undefined ? {} : { progressMax: entry.progressMax as number }),
   };

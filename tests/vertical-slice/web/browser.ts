@@ -1,14 +1,14 @@
-import { registerAeliqoElements } from '../../../packages/web/src/register.js';
-import type { AeliqoRegionElement } from '../../../packages/web/src/region/aeliqo-region.js';
-import type { AeliqoRegionResult } from '../../../packages/web/src/region/types.js';
-import type { AeliqoTableColumn } from '../../../packages/web/src/types.js';
+import { registerVarendoElements } from '../../../packages/web/src/register.js';
+import type { VarendoRegionElement } from '../../../packages/web/src/region/varendo-region.js';
+import type { VarendoRegionResult } from '../../../packages/web/src/region/types.js';
+import type { VarendoTableColumn } from '../../../packages/web/src/types.js';
 import type { Result, ResultRef } from '../../../packages/core/src/index.js';
 import type { InteractionPort } from '../../../packages/core/src/interaction/index.js';
 import type { ValidatedPresentation } from '../../../packages/core/src/presentation/index.js';
 
-registerAeliqoElements();
+registerVarendoElements();
 
-const region = document.querySelector<AeliqoRegionElement>('#region')!;
+const region = document.querySelector<VarendoRegionElement>('#region')!;
 const ref: ResultRef = {
   id: 'rows-result',
   revision: '1',
@@ -144,7 +144,7 @@ const selectionRows = [
   { 'employee.id': 'e2', department: 'Sales' },
 ];
 const selectionResult = result([textField, departmentField], selectionRows.length, ['employee.id'], 'selection');
-const tableColumns: readonly AeliqoTableColumn[] = [
+const tableColumns: readonly VarendoTableColumn[] = [
   { key: 'employee.id', label: 'Employee ID' },
   { key: 'department', label: 'Department' },
 ];
@@ -197,7 +197,7 @@ function mountFilters(order: readonly string[] = ['filter-a', 'filter-b']): void
     [{ id: 'filter', direction: 'output', payload: 'filter' }],
   );
   region.results = [
-    { ref: selectionResult.ref, rows: selectionRows, columns: tableColumns } satisfies AeliqoRegionResult,
+    { ref: selectionResult.ref, rows: selectionRows, columns: tableColumns } satisfies VarendoRegionResult,
   ];
   region.presentation = presentation(order, [filterA, filterB]);
 }
@@ -222,7 +222,7 @@ function mountSelection(): void {
     ],
   );
   region.results = [
-    { ref: selectionResult.ref, rows: selectionRows, columns: tableColumns } satisfies AeliqoRegionResult,
+    { ref: selectionResult.ref, rows: selectionRows, columns: tableColumns } satisfies VarendoRegionResult,
   ];
   region.presentation = presentation(['table'], [table]);
 }
@@ -236,7 +236,7 @@ function mountTrend(): void {
     ['week', 'employee.id', 'absence'],
     trendResult,
   );
-  region.results = [{ ref: trendResult.ref, rows: trendRows } satisfies AeliqoRegionResult];
+  region.results = [{ ref: trendResult.ref, rows: trendRows } satisfies VarendoRegionResult];
   region.presentation = presentation(['trend'], [trend]);
 }
 
@@ -249,14 +249,14 @@ function mountSubMillisecondTrend(): void {
     ['week', 'employee.id', 'absence'],
     subMillisecondResult,
   );
-  region.results = [{ ref: subMillisecondResult.ref, rows: subMillisecondTrendRows } satisfies AeliqoRegionResult];
+  region.results = [{ ref: subMillisecondResult.ref, rows: subMillisecondTrendRows } satisfies VarendoRegionResult];
   region.presentation = presentation(['trend'], [trend]);
 }
 
 region.onSemanticInteraction = (event) => events.push(event);
 Object.assign(window, {
-  aeliqoReady: true,
-  aeliqoEvents: events,
+  varendoReady: true,
+  varendoEvents: events,
   mountFilters,
   mountSelection,
   mountTrend,

@@ -116,7 +116,7 @@ export function createRenderCapability(
   renderPort: AppRenderPort,
 ): AgentCapabilityManifest<IntentInput, AgentJsonValue> {
   return {
-    ref: { id: 'aeliqo.app.render', revision: '1' },
+    ref: { id: 'varendo.app.render', revision: '1' },
     operation: 'task.evaluate',
     label: 'Render a registered Varendo intent',
     description: RENDER_TOOL_DESCRIPTION,

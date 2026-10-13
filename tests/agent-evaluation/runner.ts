@@ -83,7 +83,7 @@ function validModel(value: unknown): value is ModelConfig {
     !boundedText(value.model, 128) ||
     !boundedText(value.expectedReportedModel, 256) ||
     typeof value.credentialEnvironment !== 'string' ||
-    !/^AELIQO_EVAL_[A-Z0-9_]{1,80}$/.test(value.credentialEnvironment) ||
+    !/^VARENDO_EVAL_[A-Z0-9_]{1,80}$/.test(value.credentialEnvironment) ||
     !object(value.auth) ||
     !['bearer', 'header'].includes(String(value.auth.scheme)) ||
     !Array.isArray(value.capabilities) ||

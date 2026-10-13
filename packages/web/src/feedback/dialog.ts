@@ -1,10 +1,10 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
 import { nextFrame, emitAction, safeElementId } from '../navigation/shared.js';
 import { OverlayFocus } from './focus-trap.js';
-import { aeliqoFeedbackStyles } from './shared.js';
+import { varendoFeedbackStyles } from './shared.js';
 
-export class AeliqoDialogElement extends AeliqoFoundationElement {
+export class VarendoDialogElement extends VarendoFoundationElement {
   static readonly properties = {
     open: { type: Boolean, reflect: true },
     heading: { type: String },
@@ -12,14 +12,14 @@ export class AeliqoDialogElement extends AeliqoFoundationElement {
     closeOnEscape: { type: Boolean, attribute: 'close-on-escape' },
   };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
-    ...aeliqoFeedbackStyles,
+    ...varendoFoundationThemeStyles,
+    ...varendoFeedbackStyles,
     css`
       dialog {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: 0.0625rem solid var(--aeliqo-color-border, #64748b);
-        border-radius: var(--aeliqo-radius-large, 0.875rem);
-        box-shadow: var(--aeliqo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: 0.0625rem solid var(--varendo-color-border, #64748b);
+        border-radius: var(--varendo-radius-large, 0.875rem);
+        box-shadow: var(--varendo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
         color: inherit;
         inline-size: min(40rem, calc(100vw - 2rem));
         max-block-size: min(80vh, 48rem);
@@ -30,16 +30,16 @@ export class AeliqoDialogElement extends AeliqoFoundationElement {
       }
       [part='header'] {
         align-items: center;
-        border-block-end: 0.0625rem solid var(--aeliqo-color-border, #64748b);
+        border-block-end: 0.0625rem solid var(--varendo-color-border, #64748b);
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         justify-content: space-between;
-        padding: var(--aeliqo-space-12, 0.75rem) min(var(--aeliqo-space-16, 1rem), 5vw);
+        padding: var(--varendo-space-12, 0.75rem) min(var(--varendo-space-16, 1rem), 5vw);
       }
       [part='content'] {
         overflow: auto;
-        padding: var(--aeliqo-space-16, 1rem) min(var(--aeliqo-space-16, 1rem), 5vw);
+        padding: var(--varendo-space-16, 1rem) min(var(--varendo-space-16, 1rem), 5vw);
       }
       [part='header'] h2 {
         flex: 1 1 auto;
@@ -52,17 +52,17 @@ export class AeliqoDialogElement extends AeliqoFoundationElement {
         border: 0;
         cursor: pointer;
         flex-shrink: 0;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        min-inline-size: var(--aeliqo-control-min-target, 2.75rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        min-inline-size: var(--varendo-control-min-target, 2.75rem);
       }
       ::slotted(button) {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid var(--aeliqo-color-border, #64748b);
-        color: var(--aeliqo-color-text, #111827);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: var(--varendo-control-border-width, 0.0625rem) solid var(--varendo-color-border, #64748b);
+        color: var(--varendo-color-text, #111827);
         font: inherit;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        min-inline-size: var(--aeliqo-control-min-target, 2.75rem);
-        padding: var(--aeliqo-space-8, 0.5rem) var(--aeliqo-control-inline-padding, 0.875rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        min-inline-size: var(--varendo-control-min-target, 2.75rem);
+        padding: var(--varendo-space-8, 0.5rem) var(--varendo-control-inline-padding, 0.875rem);
       }
       @media (forced-colors: active) {
         ::slotted(button) {
@@ -132,7 +132,7 @@ export class AeliqoDialogElement extends AeliqoFoundationElement {
   }
 
   private close(): void {
-    if (emitAction(this, 'aeliqo-dialog-close', {})) this.open = false;
+    if (emitAction(this, 'varendo-dialog-close', {})) this.open = false;
   }
   private cancel(event: Event): void {
     if (!this.closeOnEscape) {
@@ -149,7 +149,7 @@ export class AeliqoDialogElement extends AeliqoFoundationElement {
     this.overlayFocus.trapTab(event, dialog);
   }
   protected override render() {
-    const headingId = safeElementId(`${this.id || 'aeliqo-dialog'}-heading`, 'aeliqo-dialog-heading');
+    const headingId = safeElementId(`${this.id || 'varendo-dialog'}-heading`, 'varendo-dialog-heading');
     return html`<dialog part="dialog" aria-labelledby=${headingId} @cancel=${this.cancel} @keydown=${this.keydown}>
       <div part="header">
         <h2 id=${headingId}>${this.heading}</h2>

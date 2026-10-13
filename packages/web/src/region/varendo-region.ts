@@ -1,8 +1,8 @@
-import { renderAeliqoVisualizationPresentationNode } from './visualization-renderer.js';
-import { AELIQO_VISUALIZATION_REFS } from './visualization-registry.js';
-import { renderAeliqoDataPresentationNode } from './data-presentation.js';
-import { AELIQO_DATA_REFS } from './data-registry.js';
-import type { AeliqoRegionDataRequestHandler } from './types.js';
+import { renderVarendoVisualizationPresentationNode } from './visualization-renderer.js';
+import { VARENDO_VISUALIZATION_REFS } from './visualization-registry.js';
+import { renderVarendoDataPresentationNode } from './data-presentation.js';
+import { VARENDO_DATA_REFS } from './data-registry.js';
+import type { VarendoRegionDataRequestHandler } from './types.js';
 import {
   filterPort,
   filterPredicates,
@@ -31,17 +31,17 @@ import { css, html, LitElement, nothing, type TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { MovableNodeParts, movableNode } from './movable-node-parts.js';
 import type { PropertyValues } from 'lit';
-import { AELIQO_WEB_VERSION } from '../version.js';
-import { aeliqoThemeStyles } from '../styles/theme.js';
-import '../elements/aeliqo-table.js';
-import '../elements/aeliqo-chart.js';
-import { stableTableRowKey } from '../elements/aeliqo-table.js';
-import type { AeliqoTableSelectionDetail } from '../types.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
+import { varendoThemeStyles } from '../styles/theme.js';
+import '../elements/varendo-table.js';
+import '../elements/varendo-chart.js';
+import { stableTableRowKey } from '../elements/varendo-table.js';
+import type { VarendoTableSelectionDetail } from '../types.js';
 import type {
-  AeliqoRegionResult,
-  AeliqoSemanticInteractionHandler,
-  AeliqoSemanticInteractionRequest,
-  AeliqoViewDefinition,
+  VarendoRegionResult,
+  VarendoSemanticInteractionHandler,
+  VarendoSemanticInteractionRequest,
+  VarendoViewDefinition,
 } from './types.js';
 
 /**
@@ -49,8 +49,8 @@ import type {
  * host-resolved descriptors and bounded rows; query, authority and route
  * decisions remain outside this element.
  */
-export class AeliqoRegionElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoRegionElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     presentation: { attribute: false },
     results: { attribute: false },
@@ -61,11 +61,11 @@ export class AeliqoRegionElement extends LitElement {
   };
 
   presentation: ValidatedPresentation | undefined = undefined;
-  results: readonly AeliqoRegionResult[] = [];
+  results: readonly VarendoRegionResult[] = [];
   interaction: InteractionState | undefined = undefined;
-  onSemanticInteraction: AeliqoSemanticInteractionHandler | undefined = undefined;
-  onDataRequest: AeliqoRegionDataRequestHandler | undefined = undefined;
-  viewRenderers: readonly AeliqoViewDefinition[] = [];
+  onSemanticInteraction: VarendoSemanticInteractionHandler | undefined = undefined;
+  onDataRequest: VarendoRegionDataRequestHandler | undefined = undefined;
+  viewRenderers: readonly VarendoViewDefinition[] = [];
   private readonly nodeParts = new MovableNodeParts();
   private synchronousPublication = false;
   private publicationOwner: symbol | undefined;
@@ -140,9 +140,9 @@ export class AeliqoRegionElement extends LitElement {
     const active = this.shadowRoot?.activeElement;
     const elementConstructor = globalThis.HTMLElement;
     if (elementConstructor === undefined || !(active instanceof elementConstructor)) return;
-    const nodeHost = active.closest<HTMLElement>('[data-aeliqo-node-id]');
+    const nodeHost = active.closest<HTMLElement>('[data-varendo-node-id]');
     if (nodeHost === null) return;
-    this.focusedNodeId = nodeHost.dataset.aeliqoNodeId;
+    this.focusedNodeId = nodeHost.dataset.varendoNodeId;
     const nested = active.shadowRoot?.activeElement;
     this.focusedElement = nested instanceof HTMLElement ? nested : active;
   }
@@ -168,8 +168,8 @@ export class AeliqoRegionElement extends LitElement {
       focusedElement.focus();
       return;
     }
-    const target = [...(this.shadowRoot?.querySelectorAll<HTMLElement>('[data-aeliqo-node-id]') ?? [])].find(
-      (candidate) => candidate.dataset.aeliqoNodeId === nodeId,
+    const target = [...(this.shadowRoot?.querySelectorAll<HTMLElement>('[data-varendo-node-id]') ?? [])].find(
+      (candidate) => candidate.dataset.varendoNodeId === nodeId,
     );
     if (target === undefined) return;
     (replacementForFocusedElement(target, focusedElement) ?? target).focus();
@@ -246,11 +246,11 @@ export class AeliqoRegionElement extends LitElement {
         const gap =
           typeof values.gap === 'number' && Number.isSafeInteger(values.gap) && values.gap >= 0 && values.gap <= 64
             ? `${values.gap}px`
-            : 'var(--aeliqo-space-24, 1.5rem)';
+            : 'var(--varendo-space-24, 1.5rem)';
         return html`<div
           part="stack"
-          data-aeliqo-role="stack"
-          data-aeliqo-node-id=${resolved.node.id}
+          data-varendo-role="stack"
+          data-varendo-node-id=${resolved.node.id}
           style=${`gap:${gap}`}
         >
           ${children()}
@@ -313,7 +313,7 @@ export class AeliqoRegionElement extends LitElement {
     node: ValidatedPresentation['nodes'][number],
   ): TemplateResult | typeof nothing | undefined {
     if (
-      !Object.values(AELIQO_VISUALIZATION_REFS).some(
+      !Object.values(VARENDO_VISUALIZATION_REFS).some(
         (ref) => ref.id === node.manifest.id && ref.revision === node.manifest.revision,
       )
     )
@@ -322,7 +322,7 @@ export class AeliqoRegionElement extends LitElement {
     if (current === undefined || node.result === undefined) return html`<p part="status">Data unavailable.</p>`;
     const context = current.visualizationContext ?? { results: [node.result] };
     const entity = node.config.ports.find((port) => port.id === 'selection' && port.payload === 'selection')?.entity;
-    const rendered = renderAeliqoVisualizationPresentationNode(
+    const rendered = renderVarendoVisualizationPresentationNode(
       node,
       { result: node.result, context, datasets: [{ result: current.ref, rows: current.rows }] },
       {
@@ -333,12 +333,12 @@ export class AeliqoRegionElement extends LitElement {
     );
     return rendered === nothing
       ? html`<p part="status">Data unavailable.</p>`
-      : html`<div data-aeliqo-node-id=${node.node.id}>${rendered}</div>`;
+      : html`<div data-varendo-node-id=${node.node.id}>${rendered}</div>`;
   }
 
   private renderData(node: ValidatedPresentation['nodes'][number]): TemplateResult | typeof nothing | undefined {
     if (
-      !Object.values(AELIQO_DATA_REFS).some(
+      !Object.values(VARENDO_DATA_REFS).some(
         (ref) => ref.id === node.manifest.id && ref.revision === node.manifest.revision,
       )
     )
@@ -346,7 +346,7 @@ export class AeliqoRegionElement extends LitElement {
     const current = resultFor(node, this.results);
     if (current === undefined || node.result === undefined) return html`<p part="status">Data unavailable.</p>`;
     const entity = node.config.ports.find((port) => port.payload === 'selection')?.entity;
-    const rendered = renderAeliqoDataPresentationNode(
+    const rendered = renderVarendoDataPresentationNode(
       node,
       {
         result: node.result,
@@ -389,9 +389,9 @@ export class AeliqoRegionElement extends LitElement {
     const selectionPort = resolved.config.ports.find((candidate) => candidate.payload === 'selection');
     const entity = selectionPort?.entity ?? 'row';
     const display = tableDisplayState(resolved, bound);
-    return html`<aeliqo-table
-      data-aeliqo-node-id=${nodeId}
-      data-aeliqo-theme="inherit"
+    return html`<varendo-table
+      data-varendo-node-id=${nodeId}
+      data-varendo-theme="inherit"
       .columns=${columns}
       .rows=${bound?.rows ?? []}
       .caption=${text(values.caption)}
@@ -404,8 +404,8 @@ export class AeliqoRegionElement extends LitElement {
       .scope=${bound?.scope}
       .status=${display.status}
       .message=${display.message}
-      @aeliqo-table-selection=${(event: Event) => this.handleTableSelection(event, resolved)}
-    ></aeliqo-table>`;
+      @varendo-table-selection=${(event: Event) => this.handleTableSelection(event, resolved)}
+    ></varendo-table>`;
   }
 
   private renderFilter(
@@ -414,14 +414,14 @@ export class AeliqoRegionElement extends LitElement {
   ): TemplateResult {
     const field = text(values.field);
     const current = getFilterValue(resolved.node.id, field, this.interaction);
-    return html`<aeliqo-text-field
-      data-aeliqo-node-id=${resolved.node.id}
-      data-aeliqo-theme="inherit"
+    return html`<varendo-text-field
+      data-varendo-node-id=${resolved.node.id}
+      data-varendo-theme="inherit"
       .label=${getFieldLabel(resolved, field)}
       .description=${text(values.placeholder)}
       .value=${current}
-      @aeliqo-input-change=${(event: Event) => this.handleFilter(event, resolved, values)}
-    ></aeliqo-text-field>`;
+      @varendo-input-change=${(event: Event) => this.handleFilter(event, resolved, values)}
+    ></varendo-text-field>`;
   }
 
   private handleTableSelection(event: Event, resolved: ValidatedPresentation['nodes'][number]): void {
@@ -438,10 +438,10 @@ export class AeliqoRegionElement extends LitElement {
   }
 
   private tableSelectionRequest(
-    detail: AeliqoTableSelectionDetail,
+    detail: VarendoTableSelectionDetail,
     resolved: ValidatedPresentation['nodes'][number],
     port: ValidatedPresentation['nodes'][number]['config']['ports'][number],
-  ): AeliqoSemanticInteractionRequest | undefined {
+  ): VarendoSemanticInteractionRequest | undefined {
     if (detail.mode === 'clear') {
       if (detail.entity !== port.entity) return undefined;
       return {
@@ -467,7 +467,7 @@ export class AeliqoRegionElement extends LitElement {
   }
 
   private selectionMatchesResult(
-    detail: AeliqoTableSelectionDetail,
+    detail: VarendoTableSelectionDetail,
     resolved: ValidatedPresentation['nodes'][number],
     port: ValidatedPresentation['nodes'][number]['config']['ports'][number],
   ): boolean {
@@ -503,15 +503,15 @@ export class AeliqoRegionElement extends LitElement {
     }
   }
 
-  private emit(request: AeliqoSemanticInteractionRequest): void {
+  private emit(request: VarendoSemanticInteractionRequest): void {
     this.onSemanticInteraction?.(request);
   }
 
   static readonly styles = [
-    aeliqoThemeStyles,
+    varendoThemeStyles,
     css`
       :host {
-        color: var(--aeliqo-color-text, #18202a);
+        color: var(--varendo-color-text, #18202a);
         display: block;
       }
       [part='region'] {
@@ -524,7 +524,7 @@ export class AeliqoRegionElement extends LitElement {
         min-inline-size: 0;
       }
       [part='unsupported'] {
-        color: var(--aeliqo-color-muted, #495464);
+        color: var(--varendo-color-muted, #495464);
       }
     `,
   ];

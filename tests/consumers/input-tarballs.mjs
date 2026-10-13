@@ -20,7 +20,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/input-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-input-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-input-consumer-'));
 const consumerReal = await realpath(consumer);
 
 function run(argv, cwd, encoding = 'utf8') {
@@ -84,7 +84,7 @@ for (const name of packageNames) {
   assert.notEqual(manifest.private, true);
   await clearCompiledOutput(join(directory, 'dist'));
   run(['pnpm', 'build'], directory);
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));
@@ -232,38 +232,38 @@ await writeFile(
   join(consumer, 'consumer.tsx'),
   `
 import React from 'react';
-import {AeliqoTextField, AeliqoTextArea, AeliqoNumberField, AeliqoCheckbox, AeliqoRadioGroup, AeliqoSwitch, AeliqoSelect, AeliqoCombobox, AeliqoDateField, AeliqoDateRange, AeliqoSlider, AeliqoSearchField, AeliqoFileInput, AeliqoFieldGroup, AeliqoForm} from '@varendo/react/inputs';
-import {AeliqoTextFieldElement, AeliqoTextAreaElement, AeliqoNumberFieldElement, AeliqoCheckboxElement, AeliqoRadioGroupElement, AeliqoSwitchElement, AeliqoSelectElement, AeliqoComboboxElement, AeliqoDateFieldElement, AeliqoDateRangeElement, AeliqoSliderElement, AeliqoSearchFieldElement, AeliqoFileInputElement, AeliqoFieldGroupElement, AeliqoFormElement} from '@varendo/web/inputs';
-import {AeliqoTextFieldElement as TextFieldByPath} from '@varendo/web/text-field';
-import type {AeliqoInputChangeDetail, AeliqoInputCommitDetail, AeliqoValidationDetail, AeliqoSearchDetail, AeliqoFileChangeDetail, AeliqoFormSubmitDetail, AeliqoDateRangeValue} from '@varendo/web/inputs';
-import {createAeliqoPresentationRegistry, type AeliqoInputBindings} from '@varendo/web/region';
-const semanticBindings = {revision:'inputs-1',inputs:[{id:'name',ref:{id:'input.text-field',revision:'1'},config:{label:'Name'},draft:{entity:'profile',key:'self',field:'name',entityRevision:'1',type:{value:'text',nullable:false}}}]} satisfies AeliqoInputBindings;
-const semanticRegistry = createAeliqoPresentationRegistry({inputs:semanticBindings});
+import {VarendoTextField, VarendoTextArea, VarendoNumberField, VarendoCheckbox, VarendoRadioGroup, VarendoSwitch, VarendoSelect, VarendoCombobox, VarendoDateField, VarendoDateRange, VarendoSlider, VarendoSearchField, VarendoFileInput, VarendoFieldGroup, VarendoForm} from '@varendo/react/inputs';
+import {VarendoTextFieldElement, VarendoTextAreaElement, VarendoNumberFieldElement, VarendoCheckboxElement, VarendoRadioGroupElement, VarendoSwitchElement, VarendoSelectElement, VarendoComboboxElement, VarendoDateFieldElement, VarendoDateRangeElement, VarendoSliderElement, VarendoSearchFieldElement, VarendoFileInputElement, VarendoFieldGroupElement, VarendoFormElement} from '@varendo/web/inputs';
+import {VarendoTextFieldElement as TextFieldByPath} from '@varendo/web/text-field';
+import type {VarendoInputChangeDetail, VarendoInputCommitDetail, VarendoValidationDetail, VarendoSearchDetail, VarendoFileChangeDetail, VarendoFormSubmitDetail, VarendoDateRangeValue} from '@varendo/web/inputs';
+import {createVarendoPresentationRegistry, type VarendoInputBindings} from '@varendo/web/region';
+const semanticBindings = {revision:'inputs-1',inputs:[{id:'name',ref:{id:'input.text-field',revision:'1'},config:{label:'Name'},draft:{entity:'profile',key:'self',field:'name',entityRevision:'1',type:{value:'text',nullable:false}}}]} satisfies VarendoInputBindings;
+const semanticRegistry = createVarendoPresentationRegistry({inputs:semanticBindings});
 void semanticRegistry;
 
 const app = <>
-  <AeliqoTextField label='Name' onValueChange={event => { const value: string = event.detail.value; void value; }} onValueCommit={event => { const value: string = event.detail.value; void value; }} onValidation={event => { const state: AeliqoValidationDetail['state'] = event.detail.state; void state; }} />
-  <AeliqoTextArea label='Notes' onValueChange={event => { const value: string = event.detail.value; void value; }} />
-  <AeliqoNumberField label='Amount' onValueChange={event => { const valid: boolean = event.detail.value.valid; void valid; }} />
-  <AeliqoCheckbox label='Agree' onValueChange={event => { const checked: boolean = event.detail.value; void checked; }} />
-  <AeliqoRadioGroup label='Role' onValueChange={event => { const value: string = event.detail.value; void value; }} />
-  <AeliqoSwitch label='Enabled' onValueChange={event => { const checked: boolean = event.detail.value; void checked; }} />
-  <AeliqoSelect label='Country' onValueChange={event => { const value: string = event.detail.value; void value; }} />
-  <AeliqoCombobox label='Person' onValueChange={event => { const value: string = event.detail.value; void value; }} onQueryChange={event => { const query: string = event.detail.query; void query; }} />
-  <AeliqoDateField label='Date' onValueChange={event => { const value: string = event.detail.value; void value; }} />
-  <AeliqoDateRange label='Period' onValueChange={event => { const range: AeliqoDateRangeValue = event.detail.value; void range; }} />
-  <AeliqoSlider label='Progress' onValueChange={event => { const value: number = event.detail.value.value; void value; }} />
-  <AeliqoSearchField label='Search' onValueChange={event => { const value: string = event.detail.value; void value; }} onSearch={event => { const query: string = event.detail.query; void query; }} />
-  <AeliqoFileInput label='Attachment' onFilesChange={event => { const files: readonly AeliqoFileChangeDetail['files'][number][] = event.detail.files; void files; }} />
-  <AeliqoFieldGroup legend='Group' />
-  <AeliqoForm label='Form' onSubmit={event => { const submitter: string | undefined = event.detail.submitter; void submitter; }} onReset={event => { const type: string = event.type; void type; }} />
+  <VarendoTextField label='Name' onValueChange={event => { const value: string = event.detail.value; void value; }} onValueCommit={event => { const value: string = event.detail.value; void value; }} onValidation={event => { const state: VarendoValidationDetail['state'] = event.detail.state; void state; }} />
+  <VarendoTextArea label='Notes' onValueChange={event => { const value: string = event.detail.value; void value; }} />
+  <VarendoNumberField label='Amount' onValueChange={event => { const valid: boolean = event.detail.value.valid; void valid; }} />
+  <VarendoCheckbox label='Agree' onValueChange={event => { const checked: boolean = event.detail.value; void checked; }} />
+  <VarendoRadioGroup label='Role' onValueChange={event => { const value: string = event.detail.value; void value; }} />
+  <VarendoSwitch label='Enabled' onValueChange={event => { const checked: boolean = event.detail.value; void checked; }} />
+  <VarendoSelect label='Country' onValueChange={event => { const value: string = event.detail.value; void value; }} />
+  <VarendoCombobox label='Person' onValueChange={event => { const value: string = event.detail.value; void value; }} onQueryChange={event => { const query: string = event.detail.query; void query; }} />
+  <VarendoDateField label='Date' onValueChange={event => { const value: string = event.detail.value; void value; }} />
+  <VarendoDateRange label='Period' onValueChange={event => { const range: VarendoDateRangeValue = event.detail.value; void range; }} />
+  <VarendoSlider label='Progress' onValueChange={event => { const value: number = event.detail.value.value; void value; }} />
+  <VarendoSearchField label='Search' onValueChange={event => { const value: string = event.detail.value; void value; }} onSearch={event => { const query: string = event.detail.query; void query; }} />
+  <VarendoFileInput label='Attachment' onFilesChange={event => { const files: readonly VarendoFileChangeDetail['files'][number][] = event.detail.files; void files; }} />
+  <VarendoFieldGroup legend='Group' />
+  <VarendoForm label='Form' onSubmit={event => { const submitter: string | undefined = event.detail.submitter; void submitter; }} onReset={event => { const type: string = event.type; void type; }} />
 </>;
 void app;
-void [AeliqoTextFieldElement, AeliqoTextAreaElement, AeliqoNumberFieldElement, AeliqoCheckboxElement, AeliqoRadioGroupElement, AeliqoSwitchElement, AeliqoSelectElement, AeliqoComboboxElement, AeliqoDateFieldElement, AeliqoDateRangeElement, AeliqoSliderElement, AeliqoSearchFieldElement, AeliqoFileInputElement, AeliqoFieldGroupElement, AeliqoFormElement, TextFieldByPath];
-const inputDetail: AeliqoInputChangeDetail<string> | AeliqoInputCommitDetail<string> = {source: 'user', value: 'typed'};
-const searchDetail: AeliqoSearchDetail = {source: 'user', query: 'typed'};
-const fileDetail: AeliqoFileChangeDetail = {source: 'user', files: []};
-const submitDetail: AeliqoFormSubmitDetail = {source: 'user', submitter: undefined};
+void [VarendoTextFieldElement, VarendoTextAreaElement, VarendoNumberFieldElement, VarendoCheckboxElement, VarendoRadioGroupElement, VarendoSwitchElement, VarendoSelectElement, VarendoComboboxElement, VarendoDateFieldElement, VarendoDateRangeElement, VarendoSliderElement, VarendoSearchFieldElement, VarendoFileInputElement, VarendoFieldGroupElement, VarendoFormElement, TextFieldByPath];
+const inputDetail: VarendoInputChangeDetail<string> | VarendoInputCommitDetail<string> = {source: 'user', value: 'typed'};
+const searchDetail: VarendoSearchDetail = {source: 'user', query: 'typed'};
+const fileDetail: VarendoFileChangeDetail = {source: 'user', files: []};
+const submitDetail: VarendoFormSubmitDetail = {source: 'user', submitter: undefined};
 void [inputDetail, searchDetail, fileDetail, submitDetail];
 `,
 );
@@ -300,20 +300,20 @@ import '@varendo/react/ssr';
 import {createElement} from 'react';
 import {renderToString} from 'react-dom/server';
 import {html} from 'lit';
-import {renderAeliqo} from '@varendo/web/server';
-import {AeliqoTextField, AeliqoForm} from '@varendo/react/inputs';
-const markup = await renderAeliqo(html\`<aeliqo-text-field label="SSR name" default-value="Ada"></aeliqo-text-field><aeliqo-number-field label="SSR amount" default-value="10.50"></aeliqo-number-field><aeliqo-checkbox label="SSR agree" default-checked></aeliqo-checkbox><aeliqo-radio-group label="SSR role" .options=\${[{value:'a',label:'Admin'}]} default-value="a"></aeliqo-radio-group><aeliqo-switch label="SSR switch" default-checked></aeliqo-switch><aeliqo-select label="SSR country" .options=\${[{value:'id',label:'Indonesia'}]} default-value="id"></aeliqo-select><aeliqo-combobox label="SSR person" .options=\${[{value:'ada',label:'Ada'}]} default-value="ada"></aeliqo-combobox><aeliqo-date-field label="SSR date" default-value="2026-09-08"></aeliqo-date-field><aeliqo-date-range label="SSR range" default-start="2026-09-01" default-end="2026-09-08"></aeliqo-date-range><aeliqo-slider label="SSR progress" default-value="20"></aeliqo-slider><aeliqo-search-field label="SSR search" default-value="Ada"></aeliqo-search-field><aeliqo-file-input label="SSR file"></aeliqo-file-input><aeliqo-field-group legend="SSR group"></aeliqo-field-group><aeliqo-form label="SSR form"></aeliqo-form>\`);
+import {renderVarendo} from '@varendo/web/server';
+import {VarendoTextField, VarendoForm} from '@varendo/react/inputs';
+const markup = await renderVarendo(html\`<varendo-text-field label="SSR name" default-value="Ada"></varendo-text-field><varendo-number-field label="SSR amount" default-value="10.50"></varendo-number-field><varendo-checkbox label="SSR agree" default-checked></varendo-checkbox><varendo-radio-group label="SSR role" .options=\${[{value:'a',label:'Admin'}]} default-value="a"></varendo-radio-group><varendo-switch label="SSR switch" default-checked></varendo-switch><varendo-select label="SSR country" .options=\${[{value:'id',label:'Indonesia'}]} default-value="id"></varendo-select><varendo-combobox label="SSR person" .options=\${[{value:'ada',label:'Ada'}]} default-value="ada"></varendo-combobox><varendo-date-field label="SSR date" default-value="2026-09-08"></varendo-date-field><varendo-date-range label="SSR range" default-start="2026-09-01" default-end="2026-09-08"></varendo-date-range><varendo-slider label="SSR progress" default-value="20"></varendo-slider><varendo-search-field label="SSR search" default-value="Ada"></varendo-search-field><varendo-file-input label="SSR file"></varendo-file-input><varendo-field-group legend="SSR group"></varendo-field-group><varendo-form label="SSR form"></varendo-form>\`);
 assert.match(markup, /shadowrootmode="open"/);
 for (const text of ['SSR name','SSR amount','SSR agree','SSR role','SSR switch','SSR country','SSR person','SSR date','SSR range','SSR progress','SSR search','SSR file','SSR group','SSR form']) assert.match(markup, new RegExp(text));
-const reactMarkup = renderToString(createElement(AeliqoTextField, {label: 'React SSR name', value: 'Ada'}));
-assert.match(reactMarkup, /aeliqo-text-field/);
+const reactMarkup = renderToString(createElement(VarendoTextField, {label: 'React SSR name', value: 'Ada'}));
+assert.match(reactMarkup, /varendo-text-field/);
 assert.match(reactMarkup, /React SSR name/);
 assert.match(reactMarkup, /shadowrootmode="open"/);
-const secondRequest=renderToString(createElement(AeliqoTextField,{label:'Second request'}));
+const secondRequest=renderToString(createElement(VarendoTextField,{label:'Second request'}));
 assert(!secondRequest.includes('Ada'));
 assert(!secondRequest.includes('React SSR name'));
-const reactForm = renderToString(createElement(AeliqoForm, {label: 'React SSR form'}));
-assert.match(reactForm, /aeliqo-form/);
+const reactForm = renderToString(createElement(VarendoForm, {label: 'React SSR form'}));
+assert.match(reactForm, /varendo-form/);
 console.log(JSON.stringify({webBytes: markup.length, reactBytes: reactMarkup.length + reactForm.length}));
 `,
 );
@@ -322,56 +322,56 @@ const ssrOutput = run(['node', join(consumer, 'ssr.mjs')], consumer).trim();
 await writeFile(
   join(consumer, 'browser-entry.ts'),
   `
-import {AeliqoTextFieldElement} from '@varendo/web/text-field';
-import {AeliqoTextAreaElement} from '@varendo/web/text-area';
-import {AeliqoNumberFieldElement} from '@varendo/web/number-field';
-import {AeliqoCheckboxElement} from '@varendo/web/checkbox';
-import {AeliqoRadioGroupElement} from '@varendo/web/radio-group';
-import {AeliqoSwitchElement} from '@varendo/web/switch';
-import {AeliqoSelectElement} from '@varendo/web/select';
-import {AeliqoComboboxElement} from '@varendo/web/combobox';
-import {AeliqoDateFieldElement} from '@varendo/web/date-field';
-import {AeliqoDateRangeElement} from '@varendo/web/date-range';
-import {AeliqoSliderElement} from '@varendo/web/slider';
-import {AeliqoSearchFieldElement} from '@varendo/web/search-field';
-import {AeliqoFileInputElement} from '@varendo/web/file-input';
-import {AeliqoFieldGroupElement} from '@varendo/web/field-group';
-import {AeliqoFormElement} from '@varendo/web/form';
+import {VarendoTextFieldElement} from '@varendo/web/text-field';
+import {VarendoTextAreaElement} from '@varendo/web/text-area';
+import {VarendoNumberFieldElement} from '@varendo/web/number-field';
+import {VarendoCheckboxElement} from '@varendo/web/checkbox';
+import {VarendoRadioGroupElement} from '@varendo/web/radio-group';
+import {VarendoSwitchElement} from '@varendo/web/switch';
+import {VarendoSelectElement} from '@varendo/web/select';
+import {VarendoComboboxElement} from '@varendo/web/combobox';
+import {VarendoDateFieldElement} from '@varendo/web/date-field';
+import {VarendoDateRangeElement} from '@varendo/web/date-range';
+import {VarendoSliderElement} from '@varendo/web/slider';
+import {VarendoSearchFieldElement} from '@varendo/web/search-field';
+import {VarendoFileInputElement} from '@varendo/web/file-input';
+import {VarendoFieldGroupElement} from '@varendo/web/field-group';
+import {VarendoFormElement} from '@varendo/web/form';
 const definitions = [
-  ['aeliqo-text-field', AeliqoTextFieldElement], ['aeliqo-text-area', AeliqoTextAreaElement], ['aeliqo-number-field', AeliqoNumberFieldElement],
-  ['aeliqo-checkbox', AeliqoCheckboxElement], ['aeliqo-radio-group', AeliqoRadioGroupElement], ['aeliqo-switch', AeliqoSwitchElement],
-  ['aeliqo-select', AeliqoSelectElement], ['aeliqo-combobox', AeliqoComboboxElement], ['aeliqo-date-field', AeliqoDateFieldElement],
-  ['aeliqo-date-range', AeliqoDateRangeElement], ['aeliqo-slider', AeliqoSliderElement], ['aeliqo-search-field', AeliqoSearchFieldElement],
-  ['aeliqo-file-input', AeliqoFileInputElement], ['aeliqo-field-group', AeliqoFieldGroupElement], ['aeliqo-form', AeliqoFormElement],
+  ['varendo-text-field', VarendoTextFieldElement], ['varendo-text-area', VarendoTextAreaElement], ['varendo-number-field', VarendoNumberFieldElement],
+  ['varendo-checkbox', VarendoCheckboxElement], ['varendo-radio-group', VarendoRadioGroupElement], ['varendo-switch', VarendoSwitchElement],
+  ['varendo-select', VarendoSelectElement], ['varendo-combobox', VarendoComboboxElement], ['varendo-date-field', VarendoDateFieldElement],
+  ['varendo-date-range', VarendoDateRangeElement], ['varendo-slider', VarendoSliderElement], ['varendo-search-field', VarendoSearchFieldElement],
+  ['varendo-file-input', VarendoFileInputElement], ['varendo-field-group', VarendoFieldGroupElement], ['varendo-form', VarendoFormElement],
 ];
 for (const [tag, constructor] of definitions) if (!customElements.get(tag)) customElements.define(tag, constructor);
 const root = document.querySelector('#fixture');
 if (!root) throw new Error('input fixture root missing');
 const form = document.createElement('form'); form.id = 'native-form'; root.append(form);
-const text = new AeliqoTextFieldElement(); text.id = 'text'; text.label = 'Name'; text.name = 'person'; text.defaultValue = 'Ada';
-const area = new AeliqoTextAreaElement(); area.label = 'Notes'; area.name = 'notes'; area.defaultValue = 'Draft';
-const number = new AeliqoNumberFieldElement(); number.label = 'Amount'; number.name = 'amount'; number.defaultValue = '1234.50';
-const check = new AeliqoCheckboxElement(); check.label = 'Agree'; check.name = 'agree'; check.value = 'yes'; check.defaultChecked = true;
-const radio = new AeliqoRadioGroupElement(); radio.label = 'Role'; radio.name = 'role'; radio.defaultValue = 'admin'; radio.options = [{value: 'admin', label: 'Admin'}, {value: 'user', label: 'User'}];
-const sw = new AeliqoSwitchElement(); sw.label = 'Enabled'; sw.name = 'enabled'; sw.value = 'yes'; sw.defaultChecked = true;
-const select = new AeliqoSelectElement(); select.label = 'Country'; select.name = 'country'; select.defaultValue = 'id'; select.options = [{value: 'id', label: 'Indonesia'}, {value: 'us', label: 'United States'}];
-const combo = new AeliqoComboboxElement(); combo.label = 'Person'; combo.name = 'personChoice'; combo.defaultValue = 'ada'; combo.options = [{value: 'ada', label: 'Ada'}, {value: 'grace', label: 'Grace'}];
-const date = new AeliqoDateFieldElement(); date.label = 'Date'; date.name = 'date'; date.defaultValue = '2026-09-08';
-const range = new AeliqoDateRangeElement(); range.label = 'Period'; range.name = 'period'; range.defaultStart = '2026-09-01'; range.defaultEnd = '2026-09-08';
-const slider = new AeliqoSliderElement(); slider.label = 'Progress'; slider.name = 'progress'; slider.defaultValue = 40;
-const search = new AeliqoSearchFieldElement(); search.label = 'Search'; search.name = 'search'; search.defaultValue = 'Ada';
-const file = new AeliqoFileInputElement(); file.label = 'Attachment'; file.name = 'attachment';
+const text = new VarendoTextFieldElement(); text.id = 'text'; text.label = 'Name'; text.name = 'person'; text.defaultValue = 'Ada';
+const area = new VarendoTextAreaElement(); area.label = 'Notes'; area.name = 'notes'; area.defaultValue = 'Draft';
+const number = new VarendoNumberFieldElement(); number.label = 'Amount'; number.name = 'amount'; number.defaultValue = '1234.50';
+const check = new VarendoCheckboxElement(); check.label = 'Agree'; check.name = 'agree'; check.value = 'yes'; check.defaultChecked = true;
+const radio = new VarendoRadioGroupElement(); radio.label = 'Role'; radio.name = 'role'; radio.defaultValue = 'admin'; radio.options = [{value: 'admin', label: 'Admin'}, {value: 'user', label: 'User'}];
+const sw = new VarendoSwitchElement(); sw.label = 'Enabled'; sw.name = 'enabled'; sw.value = 'yes'; sw.defaultChecked = true;
+const select = new VarendoSelectElement(); select.label = 'Country'; select.name = 'country'; select.defaultValue = 'id'; select.options = [{value: 'id', label: 'Indonesia'}, {value: 'us', label: 'United States'}];
+const combo = new VarendoComboboxElement(); combo.label = 'Person'; combo.name = 'personChoice'; combo.defaultValue = 'ada'; combo.options = [{value: 'ada', label: 'Ada'}, {value: 'grace', label: 'Grace'}];
+const date = new VarendoDateFieldElement(); date.label = 'Date'; date.name = 'date'; date.defaultValue = '2026-09-08';
+const range = new VarendoDateRangeElement(); range.label = 'Period'; range.name = 'period'; range.defaultStart = '2026-09-01'; range.defaultEnd = '2026-09-08';
+const slider = new VarendoSliderElement(); slider.label = 'Progress'; slider.name = 'progress'; slider.defaultValue = 40;
+const search = new VarendoSearchFieldElement(); search.label = 'Search'; search.name = 'search'; search.defaultValue = 'Ada';
+const file = new VarendoFileInputElement(); file.label = 'Attachment'; file.name = 'attachment';
 const all = [text, area, number, check, radio, sw, select, combo, date, range, slider, search, file];
 for (const element of all) form.append(element);
-const group = new AeliqoFieldGroupElement(); group.legend = 'Group'; const groupedField=new AeliqoTextFieldElement(); groupedField.label='Group name'; group.append(groupedField); root.append(group);
-const appForm = new AeliqoFormElement(); appForm.id = 'app-form'; const appField = new AeliqoTextFieldElement(); appField.label = 'App field'; appForm.append(appField); const submit = document.createElement('button'); submit.type = 'submit'; submit.textContent = 'Submit'; appForm.append(submit); const reset = document.createElement('button'); reset.type = 'reset'; reset.textContent = 'Reset'; appForm.append(reset); root.append(appForm);
+const group = new VarendoFieldGroupElement(); group.legend = 'Group'; const groupedField=new VarendoTextFieldElement(); groupedField.label='Group name'; group.append(groupedField); root.append(group);
+const appForm = new VarendoFormElement(); appForm.id = 'app-form'; const appField = new VarendoTextFieldElement(); appField.label = 'App field'; appForm.append(appField); const submit = document.createElement('button'); submit.type = 'submit'; submit.textContent = 'Submit'; appForm.append(submit); const reset = document.createElement('button'); reset.type = 'reset'; reset.textContent = 'Reset'; appForm.append(reset); root.append(appForm);
 const ready = Promise.all(all.map(element => element.updateComplete));
 const valueEvents: string[] = []; const queryEvents: string[] = []; const searchEvents: string[] = []; const files: string[] = []; let submitted = 0; let resetCount = 0;
-text.addEventListener('aeliqo-input-change', event => { const value = (event as CustomEvent<{value: string}>).detail.value; valueEvents.push(value); text.value = value; });
-combo.addEventListener('aeliqo-combobox-query', event => queryEvents.push((event as CustomEvent<{query: string}>).detail.query));
-search.addEventListener('aeliqo-search', event => searchEvents.push((event as CustomEvent<{query: string}>).detail.query));
-file.addEventListener('aeliqo-file-change', event => files.push((event as CustomEvent<{files: readonly {name: string}[]}>).detail.files[0]?.name ?? ''));
-appForm.addEventListener('aeliqo-form-submit', () => { submitted += 1; }); appForm.addEventListener('aeliqo-form-reset', () => { resetCount += 1; });
+text.addEventListener('varendo-input-change', event => { const value = (event as CustomEvent<{value: string}>).detail.value; valueEvents.push(value); text.value = value; });
+combo.addEventListener('varendo-combobox-query', event => queryEvents.push((event as CustomEvent<{query: string}>).detail.query));
+search.addEventListener('varendo-search', event => searchEvents.push((event as CustomEvent<{query: string}>).detail.query));
+file.addEventListener('varendo-file-change', event => files.push((event as CustomEvent<{files: readonly {name: string}[]}>).detail.files[0]?.name ?? ''));
+appForm.addEventListener('varendo-form-submit', () => { submitted += 1; }); appForm.addEventListener('varendo-form-reset', () => { resetCount += 1; });
 Object.assign(window, {inputFixture: {form, text, area, number, check, radio, sw, select, combo, date, range, slider, search, file, all, appForm, appField, submit, reset, valueEvents, queryEvents, searchEvents, files, get submitted() { return submitted; }, get resetCount() { return resetCount; }, ready}});
 `,
 );
@@ -520,10 +520,10 @@ try {
   assert.equal(interactions.submitted, 1);
   assert.equal(interactions.resetCount, 1);
   const regressions = await page.evaluate(async () => {
-    const wrapper = document.createElement('aeliqo-form');
+    const wrapper = document.createElement('varendo-form');
     const native = document.createElement('form');
     const ranges = [wrapper, native].map((form) => {
-      const range = document.createElement('aeliqo-date-range');
+      const range = document.createElement('varendo-date-range');
       range.name = 'period';
       range.defaultStart = '2026-09-01';
       range.defaultEnd = '2026-09-08';
@@ -551,7 +551,7 @@ try {
     wrapper.remove();
     native.remove();
 
-    const number = document.createElement('aeliqo-number-field');
+    const number = document.createElement('varendo-number-field');
     number.min = '0';
     number.max = '0';
     number.step = '0.1';
@@ -564,17 +564,17 @@ try {
     }
     number.remove();
 
-    const legendForm = document.createElement('aeliqo-form');
+    const legendForm = document.createElement('varendo-form');
     const legendNative = document.createElement('form');
     const legendMarkup =
-      '<fieldset disabled><legend><input name="first" value="included"><aeliqo-text-field name="custom-first" default-value="included"></aeliqo-text-field></legend><legend><input name="later" value="excluded"><aeliqo-text-field name="custom-later" default-value="excluded"></aeliqo-text-field></legend><input name="body" value="excluded"><aeliqo-text-field name="custom-body" default-value="excluded"></aeliqo-text-field><fieldset disabled><legend><aeliqo-text-field name="inner-first" default-value="excluded"></aeliqo-text-field></legend></fieldset></fieldset>';
+      '<fieldset disabled><legend><input name="first" value="included"><varendo-text-field name="custom-first" default-value="included"></varendo-text-field></legend><legend><input name="later" value="excluded"><varendo-text-field name="custom-later" default-value="excluded"></varendo-text-field></legend><input name="body" value="excluded"><varendo-text-field name="custom-body" default-value="excluded"></varendo-text-field><fieldset disabled><legend><varendo-text-field name="inner-first" default-value="excluded"></varendo-text-field></legend></fieldset></fieldset>';
     legendForm.innerHTML = legendMarkup;
     legendNative.innerHTML = legendMarkup;
     document.body.append(legendForm, legendNative);
     await Promise.all([
       legendForm.updateComplete,
       ...[legendForm, legendNative].flatMap((form) =>
-        [...form.querySelectorAll('aeliqo-text-field')].map((field) => field.updateComplete),
+        [...form.querySelectorAll('varendo-text-field')].map((field) => field.updateComplete),
       ),
     ]);
     const legendEntries = [[...legendForm.formData().entries()], [...new FormData(legendNative).entries()]];
@@ -584,7 +584,7 @@ try {
     const validation = [];
     for (const kind of ['number-field', 'date-range']) {
       for (const hostError of ['', 'Host rejected this record']) {
-        const field = document.createElement('aeliqo-' + kind);
+        const field = document.createElement('varendo-' + kind);
         field.start = '2026-09-01';
         field.end = '2026-09-03';
         let finish;
@@ -619,10 +619,10 @@ try {
       }
     }
 
-    const summaryForm = document.createElement('aeliqo-form');
+    const summaryForm = document.createElement('varendo-form');
     summaryForm.id = 'installed-summary';
     summaryForm.innerHTML =
-      '<aeliqo-text-field label="Required name" required></aeliqo-text-field><button type="submit">Save</button>';
+      '<varendo-text-field label="Required name" required></varendo-text-field><button type="submit">Save</button>';
     document.body.append(summaryForm);
     await summaryForm.updateComplete;
     return {
@@ -669,7 +669,7 @@ try {
   const summaryForm = page.locator('#installed-summary');
   for (const method of ['click', 'Enter']) {
     if (method === 'click') await summaryForm.locator('button').click();
-    else await summaryForm.locator('aeliqo-text-field').locator('input').press('Enter');
+    else await summaryForm.locator('varendo-text-field').locator('input').press('Enter');
     await page.waitForFunction(() => {
       const form = document.querySelector('#installed-summary');
       return form.shadowRoot.activeElement === form.shadowRoot.querySelector('[part=error-summary]');

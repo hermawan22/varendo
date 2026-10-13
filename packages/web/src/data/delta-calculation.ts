@@ -1,5 +1,5 @@
 import { validateScalar } from '@varendo/core';
-import type { AeliqoDataValue, AeliqoDeltaResult } from './types.js';
+import type { VarendoDataValue, VarendoDeltaResult } from './types.js';
 import {
   decimalInput,
   decimalIsZero,
@@ -10,30 +10,30 @@ import {
   timesHundred,
 } from './delta-decimal.js';
 
-export type AeliqoDeltaMode = 'absolute' | 'relative' | 'percentage-point';
+export type VarendoDeltaMode = 'absolute' | 'relative' | 'percentage-point';
 
-type UnavailableReason = NonNullable<AeliqoDeltaResult['reason']>;
+type UnavailableReason = NonNullable<VarendoDeltaResult['reason']>;
 
-function unavailable(reason: UnavailableReason): AeliqoDeltaResult {
+function unavailable(reason: UnavailableReason): VarendoDeltaResult {
   return { status: 'unavailable', reason };
 }
 
-const DELTA_MODES: readonly AeliqoDeltaMode[] = ['absolute', 'relative', 'percentage-point'];
+const DELTA_MODES: readonly VarendoDeltaMode[] = ['absolute', 'relative', 'percentage-point'];
 
-function isDeltaMode(mode: string): mode is AeliqoDeltaMode {
-  return DELTA_MODES.includes(mode as AeliqoDeltaMode);
+function isDeltaMode(mode: string): mode is VarendoDeltaMode {
+  return DELTA_MODES.includes(mode as VarendoDeltaMode);
 }
 
-function hasInvalidDecimal(value: AeliqoDataValue | undefined): boolean {
+function hasInvalidDecimal(value: VarendoDataValue | undefined): boolean {
   if (value === null || typeof value !== 'object') return false;
   return !validateScalar(value, { value: 'decimal', nullable: false }).ok;
 }
 
-function hasInvalidInput(current: AeliqoDataValue | undefined, baseline: AeliqoDataValue | undefined): boolean {
+function hasInvalidInput(current: VarendoDataValue | undefined, baseline: VarendoDataValue | undefined): boolean {
   return hasInvalidDecimal(current) || hasInvalidDecimal(baseline);
 }
 
-function numeric(value: AeliqoDataValue | undefined): number | undefined {
+function numeric(value: VarendoDataValue | undefined): number | undefined {
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   const text = decimalInput(value);
   if (text === undefined) return undefined;
@@ -42,8 +42,8 @@ function numeric(value: AeliqoDataValue | undefined): number | undefined {
 }
 
 function exactValue(
-  current: AeliqoDataValue | undefined,
-  baseline: AeliqoDataValue | undefined,
+  current: VarendoDataValue | undefined,
+  baseline: VarendoDataValue | undefined,
   value: string,
 ): string | number {
   if (typeof current === 'number' && typeof baseline === 'number') return Number(value);
@@ -51,11 +51,11 @@ function exactValue(
 }
 
 function exactAbsoluteDelta(
-  current: AeliqoDataValue | undefined,
-  baseline: AeliqoDataValue | undefined,
-  mode: AeliqoDeltaMode,
+  current: VarendoDataValue | undefined,
+  baseline: VarendoDataValue | undefined,
+  mode: VarendoDeltaMode,
   difference: string | undefined,
-): AeliqoDeltaResult | undefined {
+): VarendoDeltaResult | undefined {
   if (difference === undefined || (mode !== 'absolute' && mode !== 'percentage-point')) return undefined;
   const value = exactValue(current, baseline, difference);
   if (typeof value === 'number' && !Number.isFinite(value)) return unavailable('invalid');
@@ -66,12 +66,12 @@ function exactAbsoluteDelta(
 }
 
 function exactRelativeDelta(
-  current: AeliqoDataValue | undefined,
-  baseline: AeliqoDataValue | undefined,
+  current: VarendoDataValue | undefined,
+  baseline: VarendoDataValue | undefined,
   currentText: string | undefined,
   baselineText: string | undefined,
   difference: string | undefined,
-): AeliqoDeltaResult | undefined {
+): VarendoDeltaResult | undefined {
   if (currentText === undefined || baselineText === undefined) return undefined;
   const ratio = difference === undefined ? undefined : divideDecimal(difference, baselineText);
   if (ratio === undefined && decimalIsZero(baselineText)) return unavailable('zero-denominator');
@@ -87,7 +87,7 @@ function exactRelativeDelta(
   return undefined;
 }
 
-function approximateDisplay(value: number, mode: AeliqoDeltaMode): string {
+function approximateDisplay(value: number, mode: VarendoDeltaMode): string {
   if (mode === 'relative') return `${formatApproximatePercent(value)}%`;
   if (mode === 'percentage-point') return `${formatApproximatePercent(value)} pp`;
   return `${value > 0 ? '+' : ''}${decimalText(value)}`;
@@ -100,10 +100,10 @@ function formatApproximatePercent(value: number): string {
 }
 
 function approximateDelta(
-  current: AeliqoDataValue | undefined,
-  baseline: AeliqoDataValue | undefined,
-  mode: AeliqoDeltaMode,
-): AeliqoDeltaResult {
+  current: VarendoDataValue | undefined,
+  baseline: VarendoDataValue | undefined,
+  mode: VarendoDeltaMode,
+): VarendoDeltaResult {
   const currentNumber = numeric(current);
   const baselineNumber = numeric(baseline);
   if (currentNumber === undefined) return unavailable('missing-current');
@@ -116,12 +116,12 @@ function approximateDelta(
 }
 
 /** Calculate a delta only when the two values are explicitly compatible. */
-export function calculateAeliqoDelta(
-  current: AeliqoDataValue | undefined,
-  baseline: AeliqoDataValue | undefined,
-  mode: AeliqoDeltaMode = 'absolute',
+export function calculateVarendoDelta(
+  current: VarendoDataValue | undefined,
+  baseline: VarendoDataValue | undefined,
+  mode: VarendoDeltaMode = 'absolute',
   compatible = true,
-): AeliqoDeltaResult {
+): VarendoDeltaResult {
   if (!compatible) return unavailable('incompatible');
   if (!isDeltaMode(mode)) return unavailable('invalid');
   if (hasInvalidInput(current, baseline)) return unavailable('invalid');
@@ -129,10 +129,10 @@ export function calculateAeliqoDelta(
 }
 
 function exactDelta(
-  current: AeliqoDataValue | undefined,
-  baseline: AeliqoDataValue | undefined,
-  mode: AeliqoDeltaMode,
-): AeliqoDeltaResult | undefined {
+  current: VarendoDataValue | undefined,
+  baseline: VarendoDataValue | undefined,
+  mode: VarendoDeltaMode,
+): VarendoDeltaResult | undefined {
   const currentText = decimalInput(current);
   const baselineText = decimalInput(baseline);
   const difference = exactDifference(currentText, baselineText);

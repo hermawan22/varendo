@@ -1,5 +1,5 @@
 import { createLocalDataService, type AuthorizeRead } from '@varendo/runtime/data';
-import { createAeliqoApp, type WebRenderReceipt } from '@varendo/web/app';
+import { createVarendoApp, type WebRenderReceipt } from '@varendo/web/app';
 import { records, resource, functionRegistry, dailyAttendanceIntent } from './data.js';
 const ref = (id: string) => ({ id, revision: '1' }) as const;
 
@@ -11,7 +11,7 @@ const authorize: AuthorizeRead = async ({ context }) =>
         diagnostics: [{ code: 'attendance.denied', message: 'The host denied this read.', retryable: false }],
       };
 
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [
     {
       resource,

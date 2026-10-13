@@ -36,7 +36,7 @@ test('the agent endpoint reaches actual J1–J3 renderers and retains DOM after 
     expect(opened).toBe(true);
     const discovered = await page.evaluate(() => window.liveHost.discover());
     expect(discovered.ok).toBe(true);
-    const context = await page.evaluate(() => window.liveHost.invoke('aeliqo_context', {}, 'offline-context'));
+    const context = await page.evaluate(() => window.liveHost.invoke('varendo_context', {}, 'offline-context'));
     expect(context, `${journey}: ${JSON.stringify(context)}`).toMatchObject({ ok: true, value: { state: 'accepted' } });
     if (journey === 'J2')
       expect(context.value.value.resources[0]).toMatchObject({
@@ -73,14 +73,14 @@ test('the agent endpoint reaches actual J1–J3 renderers and retains DOM after 
         ],
       });
     const rendered = await page.evaluate(
-      (value) => window.liveHost.invoke('aeliqo_render', value, 'offline-render'),
+      (value) => window.liveHost.invoke('varendo_render', value, 'offline-render'),
       intents[journey],
     );
     expect(rendered, `${journey}: ${JSON.stringify(rendered)}`).toMatchObject({
       ok: true,
       value: { state: 'renderer-ready' },
     });
-    const selector = journey === 'J2' ? 'aeliqo-chart' : 'aeliqo-table';
+    const selector = journey === 'J2' ? 'varendo-chart' : 'varendo-table';
     await expect(page.locator(`#journey-region ${selector}`).first()).toBeVisible();
     const before = await page.locator(`#journey-region ${selector}`).count();
     if (journey === 'J3') {
@@ -94,7 +94,7 @@ test('the agent endpoint reaches actual J1–J3 renderers and retains DOM after 
       ]);
     }
     const invalid = await page.evaluate(() =>
-      window.liveHost.invoke('aeliqo_render', { version: '1', kind: 'browse', resource: 'secret' }, 'offline-invalid'),
+      window.liveHost.invoke('varendo_render', { version: '1', kind: 'browse', resource: 'secret' }, 'offline-invalid'),
     );
     // An unknown resource is rejected before rendering; generated id and version no longer make it malformed.
     expect(invalid.ok).toBe(true);
@@ -115,8 +115,8 @@ test('a synthetic model must use the scoped bridge before the J1–J3 DOM can ch
         return {
           calls:
             requests === 1
-              ? [{ id: 'context', name: 'aeliqo_context', input: {} }]
-              : [{ id: 'render', name: 'aeliqo_render', input: intents[journey] }],
+              ? [{ id: 'context', name: 'varendo_context', input: {} }]
+              : [{ id: 'render', name: 'varendo_render', input: intents[journey] }],
           usage: { inputTokens: 100, outputTokens: 25 },
         };
       },
@@ -158,7 +158,7 @@ test('a synthetic model must use the scoped bridge before the J1–J3 DOM can ch
       },
     });
     expect(result, journey).toMatchObject({ ok: true, value: { stop: 'renderer-ready' } });
-    const selector = journey === 'J2' ? 'aeliqo-chart' : 'aeliqo-table';
+    const selector = journey === 'J2' ? 'varendo-chart' : 'varendo-table';
     await expect(page.locator(`#journey-region ${selector}`).first()).toBeVisible();
   }
 });
@@ -171,11 +171,11 @@ test('J2 rejects a model-supplied alternate period instead of silently replacing
     filter: { op: 'compare', field: 'day', comparison: 'gte', value: '2026-08-01' },
   };
   const result = await page.evaluate(
-    (value) => window.liveHost.invoke('aeliqo_render', value, 'wrong-period'),
+    (value) => window.liveHost.invoke('varendo_render', value, 'wrong-period'),
     alternate,
   );
   expect(result).toMatchObject({ ok: true, value: { state: 'failed' } });
-  await expect(page.locator('#journey-region aeliqo-chart')).toHaveCount(0);
+  await expect(page.locator('#journey-region varendo-chart')).toHaveCount(0);
 });
 
 test('J2 lowers the approved local-day period from the model to the bounded civil filter', async ({ page }) => {
@@ -201,13 +201,13 @@ test('J2 lowers the approved local-day period from the model to the bounded civi
     sort: [{ field: 'day', direction: 'asc' }],
   };
   const rendered = await page.evaluate(
-    (value) => window.liveHost.invoke('aeliqo_render', value, 'approved-period'),
+    (value) => window.liveHost.invoke('varendo_render', value, 'approved-period'),
     proposed,
   );
   expect(rendered, JSON.stringify(rendered)).toMatchObject({ ok: true, value: { state: 'renderer-ready' } });
-  await expect(page.locator('#journey-region aeliqo-chart')).toBeVisible();
+  await expect(page.locator('#journey-region varendo-chart')).toBeVisible();
   await expect(page.locator('[data-testid="approved-period"]')).toContainText('Periode 1–5 September 2026');
-  await expect(page.locator('#journey-region aeliqo-chart')).toHaveAttribute('lang', 'id-ID');
+  await expect(page.locator('#journey-region varendo-chart')).toHaveAttribute('lang', 'id-ID');
   const snapshot = await page.evaluate(() => window.liveHost.snapshot());
   expect(snapshot.text).toContain('Tingkat kehadiran');
   expect(snapshot.text).toContain('Lihat tabel data');
@@ -222,7 +222,7 @@ test('J2 lowers the approved local-day period from the model to the bounded civi
   ]);
   const wrong = { ...proposed, period: { ...proposed.period, toExclusive: '2026-09-07T00:00:00+07:00' } };
   const denied = await page.evaluate(
-    (value) => window.liveHost.invoke('aeliqo_render', value, 'alternate-period'),
+    (value) => window.liveHost.invoke('varendo_render', value, 'alternate-period'),
     wrong,
   );
   expect(denied).toMatchObject({ ok: true, value: { state: 'failed' } });
@@ -251,7 +251,7 @@ test('J2 fills omitted temporal metadata from its registered local-day field', a
     },
   };
   const rendered = await page.evaluate(
-    (value) => window.liveHost.invoke('aeliqo_render', value, 'inferred-temporal-metadata'),
+    (value) => window.liveHost.invoke('varendo_render', value, 'inferred-temporal-metadata'),
     proposed,
   );
   expect(rendered).toMatchObject({ ok: true, value: { state: 'renderer-ready' } });
@@ -265,7 +265,7 @@ test('J2 fills omitted temporal metadata from its registered local-day field', a
   ]);
   const wrong = { ...proposed, time: { ...proposed.time, timezone: 'UTC' } };
   const denied = await page.evaluate(
-    (value) => window.liveHost.invoke('aeliqo_render', value, 'wrong-temporal-metadata'),
+    (value) => window.liveHost.invoke('varendo_render', value, 'wrong-temporal-metadata'),
     wrong,
   );
   expect(denied).toMatchObject({ ok: true, value: { state: 'failed' } });

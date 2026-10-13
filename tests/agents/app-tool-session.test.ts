@@ -4,7 +4,7 @@ import { defineResource, type Outcome } from '../../packages/core/src/index.js';
 import { createQueryFunctionRegistry } from '../../packages/core/src/expressions/index.js';
 import * as appTools from '../../packages/agent/src/app/index.js';
 import { connectMcpHttpClient, createMcpHttpHandler } from '../../packages/agent/src/mcp/index.js';
-import { createAeliqoRuntime } from '../../packages/runtime/src/app/index.js';
+import { createVarendoRuntime } from '../../packages/runtime/src/app/index.js';
 import { createLocalDataService } from '../../packages/runtime/src/data/index.js';
 import { ActionRegistry, createActionPort } from '../../packages/runtime/src/actions/index.js';
 import type { OperationGrant } from '../../packages/core/src/contracts/agent/index.js';
@@ -73,7 +73,7 @@ function setup() {
     functionRegistry: functions.value,
     authorize: () => ({ ok: true, value: { scopeDigest: authority.scopeDigest, policyRevision: 'policy' } }),
   });
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     resources: [{ resource, data }],
     actionPort,
     authority: {
@@ -125,7 +125,7 @@ function setup() {
   };
 }
 
-function previewId(outcome: Awaited<ReturnType<appTools.AeliqoAppToolEndpoint['invoke']>>): string {
+function previewId(outcome: Awaited<ReturnType<appTools.VarendoAppToolEndpoint['invoke']>>): string {
   if (
     !outcome.ok ||
     outcome.value.value === null ||
@@ -139,11 +139,11 @@ function previewId(outcome: Awaited<ReturnType<appTools.AeliqoAppToolEndpoint['i
   return id;
 }
 
-async function preview(session: appTools.AeliqoAppToolSession) {
+async function preview(session: appTools.VarendoAppToolSession) {
   const endpoint = session.createEndpoint(ownerIdentity);
   if (!endpoint.ok) throw new Error('Fixture endpoint rejected');
   const outcome = await endpoint.value.invoke(
-    'aeliqo_act',
+    'varendo_act',
     { mode: 'preview', action: { id: 'save', revision: '1' }, input: {}, idempotencyKey: 'save-1' },
     { requestId: 'preview' },
   );
@@ -183,22 +183,22 @@ it('preserves host-confirmed action state through fresh stock MCP HTTP endpoints
   try {
     expect(await client.discover()).toMatchObject({ ok: true });
     const outcome = await client.invoke(
-      'aeliqo_act',
+      'varendo_act',
       { mode: 'preview', action: { id: 'save', revision: '1' }, input: {}, idempotencyKey: 'save-1' },
       { requestId: 'preview' },
     );
     previewId(outcome);
     expect(outcome).toMatchObject({ ok: true, value: { state: 'needs-choice' } });
     const id = previewId(outcome);
-    expect(await client.invoke('aeliqo_act', { mode: 'execute', previewId: id }, { requestId: 'early' })).toMatchObject(
-      { ok: true, value: { state: 'needs-choice' } },
-    );
+    expect(
+      await client.invoke('varendo_act', { mode: 'execute', previewId: id }, { requestId: 'early' }),
+    ).toMatchObject({ ok: true, value: { state: 'needs-choice' } });
     expect(await fixture.session.confirmAction(id)).toMatchObject({ ok: true });
     expect(
-      await client.invoke('aeliqo_act', { mode: 'execute', previewId: id }, { requestId: 'execute' }),
+      await client.invoke('varendo_act', { mode: 'execute', previewId: id }, { requestId: 'execute' }),
     ).toMatchObject({ ok: true, value: { state: 'accepted', value: { state: 'executed' } } });
     expect(
-      await client.invoke('aeliqo_act', { mode: 'execute', previewId: id }, { requestId: 'replay' }),
+      await client.invoke('varendo_act', { mode: 'execute', previewId: id }, { requestId: 'replay' }),
     ).toMatchObject({ ok: true, value: { state: 'stale' } });
     expect(fixture.executions()).toBe(1);
     expect(closedEndpoints).toBeGreaterThan(4);
@@ -266,7 +266,7 @@ it.each(['expiry', 'principal', 'scope', 'close', 'revocation', 'execute-grant']
       if (boundary === 'execute-grant')
         fixture.authority.grants = fixture.authority.grants.filter((grant) => grant !== 'action.execute');
       const executed = await endpoint.value.invoke(
-        'aeliqo_act',
+        'varendo_act',
         { mode: 'execute', previewId: id },
         { requestId: 'execute' },
       );
@@ -343,7 +343,7 @@ it.each(['principal', 'scope'] as const)(
       expect(await client.discover()).toMatchObject({ ok: true });
       token = 'other-token';
       const other = await client.invoke(
-        'aeliqo_act',
+        'varendo_act',
         { mode: 'execute', previewId: id },
         { requestId: 'other-execute' },
       );
@@ -351,7 +351,7 @@ it.each(['principal', 'scope'] as const)(
       expect(fixture.executions()).toBe(0);
       token = 'owner-token';
       expect(
-        await client.invoke('aeliqo_act', { mode: 'execute', previewId: id }, { requestId: 'owner-execute' }),
+        await client.invoke('varendo_act', { mode: 'execute', previewId: id }, { requestId: 'owner-execute' }),
       ).toMatchObject({ ok: true, value: { state: 'accepted' } });
       expect(fixture.executions()).toBe(1);
     } finally {
@@ -384,7 +384,7 @@ it('closing one borrowed endpoint aborts its pending host confirmation without a
     const fresh = fixture.session.createEndpoint(ownerIdentity);
     if (!fresh.ok) throw new Error('Fixture endpoint rejected');
     expect(
-      await fresh.value.invoke('aeliqo_act', { mode: 'execute', previewId: id }, { requestId: 'execute' }),
+      await fresh.value.invoke('varendo_act', { mode: 'execute', previewId: id }, { requestId: 'execute' }),
     ).toMatchObject({ ok: true, value: { state: 'stale' } });
     expect(fixture.executions()).toBe(0);
     fresh.value.close();

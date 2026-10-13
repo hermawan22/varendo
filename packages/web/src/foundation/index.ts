@@ -1,37 +1,37 @@
-export { AeliqoButtonElement } from './button.js';
-export { AeliqoIconButtonElement } from './icon-button.js';
-export { AeliqoLinkElement } from './link.js';
-export { AeliqoTextElement } from './text.js';
-export { AeliqoHeadingElement } from './heading.js';
-export { AeliqoBadgeElement } from './badge.js';
-export { AeliqoAvatarElement } from './avatar.js';
-export { AeliqoSeparatorElement } from './separator.js';
-export { AeliqoSurfaceElement } from './surface.js';
-export { AeliqoStackElement } from './stack.js';
-export { AeliqoGridElement } from './grid.js';
-export { AeliqoSplitPaneElement } from './split-pane.js';
-export { AeliqoScrollAreaElement } from './scroll-area.js';
-export { AeliqoActionEvent, AeliqoLinkEvent, AeliqoSplitChangeEvent } from './events.js';
-export { AELIQO_FOUNDATION_MANIFESTS, AELIQO_FOUNDATION_REFS, getAeliqoFoundationManifest } from './manifest.js';
-export type { AeliqoActionDetail, AeliqoActionKind, AeliqoLinkDetail, AeliqoSplitChangeDetail } from './events.js';
+export { VarendoButtonElement } from './button.js';
+export { VarendoIconButtonElement } from './icon-button.js';
+export { VarendoLinkElement } from './link.js';
+export { VarendoTextElement } from './text.js';
+export { VarendoHeadingElement } from './heading.js';
+export { VarendoBadgeElement } from './badge.js';
+export { VarendoAvatarElement } from './avatar.js';
+export { VarendoSeparatorElement } from './separator.js';
+export { VarendoSurfaceElement } from './surface.js';
+export { VarendoStackElement } from './stack.js';
+export { VarendoGridElement } from './grid.js';
+export { VarendoSplitPaneElement } from './split-pane.js';
+export { VarendoScrollAreaElement } from './scroll-area.js';
+export { VarendoActionEvent, VarendoLinkEvent, VarendoSplitChangeEvent } from './events.js';
+export { VARENDO_FOUNDATION_MANIFESTS, VARENDO_FOUNDATION_REFS, getVarendoFoundationManifest } from './manifest.js';
+export type { VarendoActionDetail, VarendoActionKind, VarendoLinkDetail, VarendoSplitChangeDetail } from './events.js';
 export type {
-  AeliqoFoundationConfig,
-  AeliqoFoundationDiagnostic,
-  AeliqoFoundationId,
-  AeliqoFoundationManifest,
-  AeliqoFoundationOutcome,
-  AeliqoFoundationRef,
+  VarendoFoundationConfig,
+  VarendoFoundationDiagnostic,
+  VarendoFoundationId,
+  VarendoFoundationManifest,
+  VarendoFoundationOutcome,
+  VarendoFoundationRef,
 } from './manifest.js';
-export type { AeliqoButtonSize, AeliqoButtonVariant } from './button.js';
-export type { AeliqoIconButtonSize } from './icon-button.js';
-export type { AeliqoLinkTarget } from './link.js';
-export type { AeliqoTextAs } from './text.js';
-export type { AeliqoHeadingLevel, AeliqoHeadingSize } from './heading.js';
-export type { AeliqoBadgeTone } from './badge.js';
-export type { AeliqoAvatarSize } from './avatar.js';
-export type { AeliqoSeparatorOrientation } from './separator.js';
-export type { AeliqoSurfaceAs, AeliqoSurfaceTone } from './surface.js';
-export type { AeliqoStackAlign, AeliqoStackDirection, AeliqoStackGap, AeliqoStackJustify } from './stack.js';
-export type { AeliqoGridColumns, AeliqoGridGap } from './grid.js';
-export type { AeliqoSplitOrientation } from './split-pane.js';
-export type { AeliqoScrollAreaAxis } from './scroll-area.js';
+export type { VarendoButtonSize, VarendoButtonVariant } from './button.js';
+export type { VarendoIconButtonSize } from './icon-button.js';
+export type { VarendoLinkTarget } from './link.js';
+export type { VarendoTextAs } from './text.js';
+export type { VarendoHeadingLevel, VarendoHeadingSize } from './heading.js';
+export type { VarendoBadgeTone } from './badge.js';
+export type { VarendoAvatarSize } from './avatar.js';
+export type { VarendoSeparatorOrientation } from './separator.js';
+export type { VarendoSurfaceAs, VarendoSurfaceTone } from './surface.js';
+export type { VarendoStackAlign, VarendoStackDirection, VarendoStackGap, VarendoStackJustify } from './stack.js';
+export type { VarendoGridColumns, VarendoGridGap } from './grid.js';
+export type { VarendoSplitOrientation } from './split-pane.js';
+export type { VarendoScrollAreaAxis } from './scroll-area.js';

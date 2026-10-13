@@ -7,7 +7,7 @@ import {
   setAnalyticsConsent,
   startGoogleAnalytics,
 } from '../../src/analytics.js';
-import { isPublicAeliqoSite, parseMonitoringConfig, startBasicTelemetry, webVitalData } from '../../src/telemetry.js';
+import { isPublicVarendoSite, parseMonitoringConfig, startBasicTelemetry, webVitalData } from '../../src/telemetry.js';
 
 function storage() {
   const values = new Map<string, string>();
@@ -53,10 +53,10 @@ describe('public telemetry boundary', () => {
   });
 
   it('allows only the public HTTPS Varendo origins', () => {
-    expect(isPublicAeliqoSite({ hostname: 'hermawan22.github.io', protocol: 'https:' } as Location)).toBe(true);
-    expect(isPublicAeliqoSite({ hostname: 'hermawan22.github.io', protocol: 'https:' } as Location)).toBe(true);
-    expect(isPublicAeliqoSite({ hostname: 'preview.aeliqo.com', protocol: 'https:' } as Location)).toBe(false);
-    expect(isPublicAeliqoSite({ hostname: 'hermawan22.github.io', protocol: 'http:' } as Location)).toBe(false);
+    expect(isPublicVarendoSite({ hostname: 'hermawan22.github.io', protocol: 'https:' } as Location)).toBe(true);
+    expect(isPublicVarendoSite({ hostname: 'hermawan22.github.io', protocol: 'https:' } as Location)).toBe(true);
+    expect(isPublicVarendoSite({ hostname: 'preview.aeliqo.com', protocol: 'https:' } as Location)).toBe(false);
+    expect(isPublicVarendoSite({ hostname: 'hermawan22.github.io', protocol: 'http:' } as Location)).toBe(false);
   });
 
   it('rejects disabled, malformed, and credential-like monitoring configurations', () => {
@@ -140,7 +140,7 @@ describe('consented Google Analytics boundary', () => {
     const documentRef = {
       querySelector: (selector: string) =>
         selector.startsWith('script')
-          ? (appended.find((script) => selector.includes(script.dataset.aeliqoGa ?? '')) ?? null)
+          ? (appended.find((script) => selector.includes(script.dataset.varendoGa ?? '')) ?? null)
           : null,
       createElement: () => ({ dataset: {} }),
       head: { append: (script: (typeof appended)[number]) => appended.push(script) },

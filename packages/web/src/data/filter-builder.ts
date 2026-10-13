@@ -1,32 +1,32 @@
 import { css, html, LitElement, nothing } from 'lit';
-import { aeliqoThemeStyles } from '../styles/theme.js';
-import { AELIQO_WEB_VERSION } from '../version.js';
-import type { AeliqoDataStatus, AeliqoFieldOption, AeliqoFilterPredicate } from './types.js';
-import { AeliqoFilterChangeEvent } from './events.js';
+import { varendoThemeStyles } from '../styles/theme.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
+import type { VarendoDataStatus, VarendoFieldOption, VarendoFilterPredicate } from './types.js';
+import { VarendoFilterChangeEvent } from './events.js';
 import { dataStyles, statusTemplate } from './shared.js';
-import type { AeliqoFilterClause, AeliqoFilterOperator } from './filter-builder-types.js';
-import type { AeliqoFilterLogical, PredicateProjection } from './filter-builder-internal-types.js';
+import type { VarendoFilterClause, VarendoFilterOperator } from './filter-builder-types.js';
+import type { VarendoFilterLogical, PredicateProjection } from './filter-builder-internal-types.js';
 import { MAX_PREDICATE_NODES } from './filter-builder-limits.js';
 import {
-  buildAeliqoPredicate,
+  buildVarendoPredicate,
   clausesSourceSignature,
-  combineAeliqoPredicates,
+  combineVarendoPredicates,
   predicateSourceSignature,
   predicateText,
   projectPredicate,
-  validateAeliqoPredicate,
+  validateVarendoPredicate,
 } from './filter-builder-logic.js';
 
-export type { AeliqoFilterClause, AeliqoFilterOperator } from './filter-builder-types.js';
-export { buildAeliqoPredicate, combineAeliqoPredicates, validateAeliqoPredicate } from './filter-builder-logic.js';
+export type { VarendoFilterClause, VarendoFilterOperator } from './filter-builder-types.js';
+export { buildVarendoPredicate, combineVarendoPredicates, validateVarendoPredicate } from './filter-builder-logic.js';
 
 const DRAFT_SOURCE_PROPERTIES = ['predicate', 'clauses', 'logical', 'entity', 'fields'] as const;
 const MAX_MANUAL_CLAUSES = MAX_PREDICATE_NODES - 1;
 
 /** Builds a typed predicate locally and only emits it on an explicit Apply.
  * Typing, composition and IME input never execute a query. */
-export class AeliqoFilterBuilderElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoFilterBuilderElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     fields: { attribute: false },
     predicate: { attribute: false },
@@ -41,21 +41,21 @@ export class AeliqoFilterBuilderElement extends LitElement {
     message: { type: String },
   };
 
-  fields: readonly AeliqoFieldOption[] = [];
-  predicate: AeliqoFilterPredicate | undefined = undefined;
-  inherited: AeliqoFilterPredicate | undefined = undefined;
+  fields: readonly VarendoFieldOption[] = [];
+  predicate: VarendoFilterPredicate | undefined = undefined;
+  inherited: VarendoFilterPredicate | undefined = undefined;
   entity = '';
   scopeLabel = 'Current authorized scope';
   applyLabel = 'Apply filter';
   autoApply = false;
-  clauses: readonly AeliqoFilterClause[] = [];
+  clauses: readonly VarendoFilterClause[] = [];
   logical: 'and' | 'or' = 'and';
-  status: AeliqoDataStatus = 'ready';
+  status: VarendoDataStatus = 'ready';
   message = '';
 
-  private clauseDrafts: AeliqoFilterClause[] = [];
-  private logicalMode: AeliqoFilterLogical = 'and';
-  private unsupportedPredicate: AeliqoFilterPredicate | undefined = undefined;
+  private clauseDrafts: VarendoFilterClause[] = [];
+  private logicalMode: VarendoFilterLogical = 'and';
+  private unsupportedPredicate: VarendoFilterPredicate | undefined = undefined;
   private draftSourceSignature: string | undefined;
   private draftInitialized = false;
   private draftInteracted = false;
@@ -180,7 +180,7 @@ export class AeliqoFilterBuilderElement extends LitElement {
     return statusTemplate(this.status, this.message);
   }
 
-  private renderClause(clause: AeliqoFilterClause, index: number) {
+  private renderClause(clause: VarendoFilterClause, index: number) {
     return html`<div part="clause" data-clause-index=${index}>
       <label part="field-label"
         >Field ${index + 1}
@@ -235,7 +235,7 @@ export class AeliqoFilterBuilderElement extends LitElement {
     </div>`;
   }
 
-  private clauseNeedsValue(clause: AeliqoFilterClause): boolean {
+  private clauseNeedsValue(clause: VarendoFilterClause): boolean {
     return clause.operator !== 'is-null' && clause.operator !== 'not-null';
   }
 
@@ -246,7 +246,7 @@ export class AeliqoFilterBuilderElement extends LitElement {
     return Number.isSafeInteger(index) && index >= 0 && index < this.clauseDrafts.length ? index : undefined;
   }
 
-  private updateClause(index: number, update: Partial<AeliqoFilterClause>): void {
+  private updateClause(index: number, update: Partial<VarendoFilterClause>): void {
     const clause = this.clauseDrafts[index];
     if (clause === undefined) return;
     this.clauseDrafts = this.clauseDrafts.map((candidate, position) =>
@@ -306,7 +306,7 @@ export class AeliqoFilterBuilderElement extends LitElement {
     const target = event.currentTarget;
     const index = this.clauseIndex(event);
     if (!(target instanceof HTMLSelectElement) || index === undefined) return;
-    const operator = target.value as AeliqoFilterOperator;
+    const operator = target.value as VarendoFilterOperator;
     this.updateClause(index, { operator });
     if (this.autoApply) this.apply();
   };
@@ -335,16 +335,16 @@ export class AeliqoFilterBuilderElement extends LitElement {
   private readonly apply = (): void => {
     if (this.unsupportedPredicate !== undefined) return;
     const local = this.buildPredicate();
-    const checked = validateAeliqoPredicate(local);
+    const checked = validateVarendoPredicate(local);
     if (!checked.ok || local === undefined) {
       this.validationMessage = checked.ok ? 'Choose a valid filter.' : checked.message;
       this.requestUpdate();
       return;
     }
     this.validationMessage = '';
-    const predicate = combineAeliqoPredicates(local, this.inherited);
+    const predicate = combineVarendoPredicates(local, this.inherited);
     this.dispatchEvent(
-      new AeliqoFilterChangeEvent({
+      new VarendoFilterChangeEvent({
         ...(predicate === undefined ? {} : { predicate }),
         ...(this.inherited === undefined ? {} : { inherited: this.inherited }),
         scopeLabel: this.scopeLabel,
@@ -353,22 +353,22 @@ export class AeliqoFilterBuilderElement extends LitElement {
     );
   };
 
-  private buildPredicate(): AeliqoFilterPredicate | undefined {
+  private buildPredicate(): VarendoFilterPredicate | undefined {
     const predicates = this.clauseDrafts.map((clause) =>
-      buildAeliqoPredicate(
+      buildVarendoPredicate(
         clause,
         this.fields.find((field) => field.id === clause.field),
         this.entity,
       ),
     );
     if (predicates.some((predicate) => predicate === undefined)) return undefined;
-    const valid = predicates as AeliqoFilterPredicate[];
+    const valid = predicates as VarendoFilterPredicate[];
     if (valid.length === 1) return valid[0];
     return { op: this.logicalMode, predicates: valid };
   }
 
   static readonly styles = [
-    aeliqoThemeStyles,
+    varendoThemeStyles,
     dataStyles,
     css`
       :host {
@@ -381,56 +381,56 @@ export class AeliqoFilterBuilderElement extends LitElement {
         border: 0;
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         margin: 0;
         min-inline-size: 0;
         padding: 0;
       }
       legend {
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
         padding: 0;
       }
       [part='clauses'] {
         display: grid;
         flex-basis: 100%;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
       }
       [part='clause'] {
         align-items: end;
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
       }
       label {
         display: grid;
-        gap: var(--aeliqo-space-4, 0.25rem);
+        gap: var(--varendo-space-4, 0.25rem);
         max-inline-size: 100%;
         min-inline-size: min(100%, 9rem);
       }
       [part='scope'] {
-        color: var(--aeliqo-color-muted, #475569);
+        color: var(--varendo-color-muted, #475569);
         flex-basis: 100%;
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
       }
       [part='unsupported-predicate'],
       [part='inherited-predicate'] {
-        background: var(--aeliqo-color-surface-muted, #f1f5f9);
-        border-inline-start: 0.1875rem solid var(--aeliqo-color-warning, #b45309);
+        background: var(--varendo-color-surface-muted, #f1f5f9);
+        border-inline-start: 0.1875rem solid var(--varendo-color-warning, #b45309);
         flex-basis: 100%;
-        padding: var(--aeliqo-space-8, 0.5rem);
+        padding: var(--varendo-space-8, 0.5rem);
       }
       select,
       input,
       [part='add-condition'],
       [part='remove-condition'],
       [part='apply'] {
-        background: var(--aeliqo-color-surface, #fff);
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid var(--aeliqo-color-border, #94a3b8);
-        border-radius: var(--aeliqo-radius-small, 0.375rem);
+        background: var(--varendo-color-surface, #fff);
+        border: var(--varendo-control-border-width, 0.0625rem) solid var(--varendo-color-border, #94a3b8);
+        border-radius: var(--varendo-radius-small, 0.375rem);
         color: inherit;
         font: inherit;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        padding-inline: var(--aeliqo-space-8, 0.5rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        padding-inline: var(--varendo-space-8, 0.5rem);
       }
       select,
       input {
@@ -443,13 +443,13 @@ export class AeliqoFilterBuilderElement extends LitElement {
       }
       [part='apply'] {
         align-self: end;
-        background: var(--aeliqo-color-accent, #4338ca);
-        border-color: var(--aeliqo-color-accent, #4338ca);
-        color: var(--aeliqo-color-on-accent, #fff);
+        background: var(--varendo-color-accent, #4338ca);
+        border-color: var(--varendo-color-accent, #4338ca);
+        color: var(--varendo-color-on-accent, #fff);
         cursor: pointer;
       }
       [part='validation'] {
-        color: var(--aeliqo-color-danger, #b91c1c);
+        color: var(--varendo-color-danger, #b91c1c);
         flex-basis: 100%;
         margin: 0;
       }

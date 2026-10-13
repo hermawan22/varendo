@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { html } from 'lit';
-import { renderAeliqo } from '../../packages/web/src/server.js';
+import { renderVarendo } from '../../packages/web/src/server.js';
 import { type PresentationPlan } from '../../packages/core/src/index.js';
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
 import {
@@ -13,10 +13,10 @@ import {
   recordEditorPresentationRecipe,
   searchResultsPresentationRecipe,
 } from '../../packages/web/src/compound/recipes.js';
-import { AELIQO_OPERATION_REFS, AELIQO_PRESENTATION_REFS } from '../../packages/web/src/region/registry.js';
-import { AELIQO_DATA_REFS } from '../../packages/web/src/region/data-registry.js';
-import { AELIQO_INPUT_REFS } from '../../packages/web/src/input/manifest.js';
-import { AELIQO_VISUALIZATION_REFS } from '../../packages/web/src/region/visualization-registry.js';
+import { VARENDO_OPERATION_REFS, VARENDO_PRESENTATION_REFS } from '../../packages/web/src/region/registry.js';
+import { VARENDO_DATA_REFS } from '../../packages/web/src/region/data-registry.js';
+import { VARENDO_INPUT_REFS } from '../../packages/web/src/input/manifest.js';
+import { VARENDO_VISUALIZATION_REFS } from '../../packages/web/src/region/visualization-registry.js';
 import {
   dataNode,
   explorerInput,
@@ -39,19 +39,19 @@ import {
   readNeed,
 } from './fixtures.js';
 
-const read = AELIQO_OPERATION_REFS.read;
-const selection = AELIQO_OPERATION_REFS.selection;
-const filter = AELIQO_OPERATION_REFS.filter;
+const read = VARENDO_OPERATION_REFS.read;
+const selection = VARENDO_OPERATION_REFS.selection;
+const filter = VARENDO_OPERATION_REFS.filter;
 
 // Explorer is shared with the browser fixture so both paths validate the same wire input.
 
 function comparisonInput() {
   const needs = [readNeed(['id', 'name', 'amount'])] as const;
-  const allowed = [AELIQO_PRESENTATION_REFS.stack, AELIQO_VISUALIZATION_REFS.matrix];
+  const allowed = [VARENDO_PRESENTATION_REFS.stack, VARENDO_VISUALIZATION_REFS.matrix];
   const context = presentationContext([peopleResult], needs, allowed);
   return recipeInput(
     'comparison',
-    [visualizationNode('matrix', AELIQO_VISUALIZATION_REFS.matrix, matrixSpec)],
+    [visualizationNode('matrix', VARENDO_VISUALIZATION_REFS.matrix, matrixSpec)],
     context,
     [{ needId: 'read', nodeIds: ['matrix'], operations: [read] }],
   );
@@ -60,13 +60,13 @@ function comparisonInput() {
 function breakdownInput() {
   const needs = [readNeed()] as const;
   const context = presentationContext([peopleResult], needs, [
-    AELIQO_PRESENTATION_REFS.stack,
-    AELIQO_DATA_REFS.metric,
-    AELIQO_DATA_REFS.recordList,
+    VARENDO_PRESENTATION_REFS.stack,
+    VARENDO_DATA_REFS.metric,
+    VARENDO_DATA_REFS.recordList,
   ]);
   const parts = [
-    dataNode('metric', AELIQO_DATA_REFS.metric, 'metric', { field: 'amount', identityValues: { id: 'a' } }),
-    dataNode('record-list', AELIQO_DATA_REFS.recordList, 'recordList', { selection: 'none' }),
+    dataNode('metric', VARENDO_DATA_REFS.metric, 'metric', { field: 'amount', identityValues: { id: 'a' } }),
+    dataNode('record-list', VARENDO_DATA_REFS.recordList, 'recordList', { selection: 'none' }),
   ];
   return recipeInput('breakdown', parts, context, [
     { needId: 'read', nodeIds: ['metric', 'record-list'], operations: [read] },
@@ -76,17 +76,17 @@ function breakdownInput() {
 export function investigationInput() {
   const needs = [temporalReadNeed()] as const;
   const context = presentationContext([temporalResult], needs, [
-    AELIQO_PRESENTATION_REFS.stack,
-    AELIQO_VISUALIZATION_REFS.trend,
-    AELIQO_VISUALIZATION_REFS.timeline,
-    AELIQO_DATA_REFS.detail,
+    VARENDO_PRESENTATION_REFS.stack,
+    VARENDO_VISUALIZATION_REFS.trend,
+    VARENDO_VISUALIZATION_REFS.timeline,
+    VARENDO_DATA_REFS.detail,
   ]);
   const parts = [
-    visualizationNode('trend', AELIQO_VISUALIZATION_REFS.trend, trendSpec, temporalRef),
-    visualizationNode('timeline', AELIQO_VISUALIZATION_REFS.timeline, timelineSpec, temporalRef),
+    visualizationNode('trend', VARENDO_VISUALIZATION_REFS.trend, trendSpec, temporalRef),
+    visualizationNode('timeline', VARENDO_VISUALIZATION_REFS.timeline, timelineSpec, temporalRef),
     dataNode(
       'detail',
-      AELIQO_DATA_REFS.detail,
+      VARENDO_DATA_REFS.detail,
       'detail',
       { fields: ['id', 'date', 'amount'], identityValues: { id: 'a' } },
       temporalRef,
@@ -100,13 +100,13 @@ export function investigationInput() {
 function searchInput() {
   const needs = [readNeed()] as const;
   const context = presentationContext([peopleResult], needs, [
-    AELIQO_PRESENTATION_REFS.stack,
-    AELIQO_INPUT_REFS.searchField,
-    AELIQO_DATA_REFS.recordList,
+    VARENDO_PRESENTATION_REFS.stack,
+    VARENDO_INPUT_REFS.searchField,
+    VARENDO_DATA_REFS.recordList,
   ]);
   const parts = [
-    inputNode('search', AELIQO_INPUT_REFS.searchField, 'input'),
-    dataNode('record-list', AELIQO_DATA_REFS.recordList, 'recordList', { selection: 'none' }),
+    inputNode('search', VARENDO_INPUT_REFS.searchField, 'input'),
+    dataNode('record-list', VARENDO_DATA_REFS.recordList, 'recordList', { selection: 'none' }),
   ];
   return recipeInput('search-results', parts, context, [
     { needId: 'read', nodeIds: ['record-list'], operations: [read] },
@@ -115,15 +115,18 @@ function searchInput() {
 
 function formInput(id: 'record-editor' | 'form-flow') {
   const context = formContext();
-  const parts = [inputNode('form', AELIQO_INPUT_REFS.form, 'structure')];
+  const parts = [inputNode('form', VARENDO_INPUT_REFS.form, 'structure')];
   return recipeInput(id, parts, context, [{ needId: 'save', nodeIds: ['form'], operations: [saveAction] }]);
 }
 
 function qualityPanelInput() {
   const needs = [readNeed(['id', 'name', 'amount'])] as const;
-  const context = presentationContext([peopleResult], needs, [AELIQO_PRESENTATION_REFS.stack, AELIQO_DATA_REFS.detail]);
+  const context = presentationContext([peopleResult], needs, [
+    VARENDO_PRESENTATION_REFS.stack,
+    VARENDO_DATA_REFS.detail,
+  ]);
   const parts = [
-    dataNode('detail', AELIQO_DATA_REFS.detail, 'detail', {
+    dataNode('detail', VARENDO_DATA_REFS.detail, 'detail', {
       fields: ['id', 'name', 'amount'],
       identityValues: { id: 'a' },
     }),
@@ -148,7 +151,7 @@ describe('canonical compound recipes over the production primitive registry', ()
     const result = make(supplied as any);
     expect(result.ok, JSON.stringify(result)).toBe(true);
     if (!result.ok) return;
-    expect(result.value.plan.nodes[0]?.representation).toEqual(AELIQO_PRESENTATION_REFS.stack);
+    expect(result.value.plan.nodes[0]?.representation).toEqual(VARENDO_PRESENTATION_REFS.stack);
     expect(result.value.plan.rootId).toBe(`${supplied.id}:compound-root`);
     expect(result.value.plan.nodes.length).toBe(supplied.parts.length + 1);
     expect(
@@ -210,7 +213,7 @@ describe('canonical compound recipes over the production primitive registry', ()
   });
 });
 
-describe('canonical plans render through AeliqoRegion SSR', () => {
+describe('canonical plans render through VarendoRegion SSR', () => {
   it('renders the expanded explorer primitives and materialized rows', async () => {
     const supplied = explorerInput();
     const result = explorerPresentationRecipe(supplied as any);
@@ -223,8 +226,8 @@ describe('canonical plans render through AeliqoRegion SSR', () => {
     );
     expect(checked.ok).toBe(true);
     if (!checked.ok) return;
-    const markup = await renderAeliqo(
-      html`<aeliqo-region
+    const markup = await renderVarendo(
+      html`<varendo-region
         .presentation=${checked.value}
         .results=${[
           {
@@ -235,11 +238,11 @@ describe('canonical plans render through AeliqoRegion SSR', () => {
             ],
           },
         ]}
-      ></aeliqo-region>`,
+      ></varendo-region>`,
     );
-    expect(markup).toContain('aeliqo-filter-builder');
-    expect(markup).toContain('aeliqo-record-list');
-    expect(markup).toContain('aeliqo-detail');
+    expect(markup).toContain('varendo-filter-builder');
+    expect(markup).toContain('varendo-record-list');
+    expect(markup).toContain('varendo-detail');
     expect(markup).toContain('Ada');
     expect(markup).toContain('shadowrootmode="open"');
   });
@@ -256,8 +259,8 @@ describe('canonical plans render through AeliqoRegion SSR', () => {
     );
     expect(checked.ok).toBe(true);
     if (!checked.ok) return;
-    const markup = await renderAeliqo(
-      html`<aeliqo-region
+    const markup = await renderVarendo(
+      html`<varendo-region
         .presentation=${checked.value}
         .results=${[
           {
@@ -268,11 +271,11 @@ describe('canonical plans render through AeliqoRegion SSR', () => {
             ],
           },
         ]}
-      ></aeliqo-region>`,
+      ></varendo-region>`,
     );
-    expect(markup).toContain('aeliqo-trend');
-    expect(markup).toContain('aeliqo-timeline');
-    expect(markup).toContain('aeliqo-detail');
+    expect(markup).toContain('varendo-trend');
+    expect(markup).toContain('varendo-timeline');
+    expect(markup).toContain('varendo-detail');
     expect(markup).toContain('2026-09-08');
   });
 });

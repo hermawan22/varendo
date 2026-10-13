@@ -11,7 +11,7 @@ import { availableParallelism, cpus, release, totalmem } from 'node:os';
 import { join, resolve } from 'node:path';
 import { defineDataFeature } from '@varendo/core/features';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
-import { createAeliqoRuntime, createLocalDataBinding } from '@varendo/runtime';
+import { createVarendoRuntime, createLocalDataBinding } from '@varendo/runtime';
 import { z } from 'zod';
 
 const root = resolve(import.meta.dirname, '../..');
@@ -108,7 +108,7 @@ function createModuleWorkload(count) {
       yield* source.execute(...args);
     },
   };
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId: `performance-module-runtime-${count}`,
     resources: [{ resource: feature.resource, data: source }],
     authority: {
@@ -205,7 +205,7 @@ async function measureTier(declaredFeatureCount) {
 
 const tiers = [];
 for (const declaredFeatureCount of [10, 100, 1_000]) tiers.push(await measureTier(declaredFeatureCount));
-const outputDirectory = process.env.AELIQO_PERFORMANCE_OUTPUT ?? join(root, 'artifacts/performance-workloads');
+const outputDirectory = process.env.VARENDO_PERFORMANCE_OUTPUT ?? join(root, 'artifacts/performance-workloads');
 await mkdir(outputDirectory, { recursive: true });
 const report = {
   task: 'T19',

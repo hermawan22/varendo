@@ -1,16 +1,16 @@
 import {
-  AeliqoAreaElement,
-  AeliqoBarElement,
-  AeliqoCalendarGridElement,
-  AeliqoHeatmapElement,
-  AeliqoHistogramElement,
-  AeliqoMatrixElement,
-  AeliqoRelationshipElement,
-  AeliqoScatterElement,
-  AeliqoTimelineElement,
-  AeliqoTrendElement,
-  AeliqoTreeElement,
-  AeliqoTreemapElement,
+  VarendoAreaElement,
+  VarendoBarElement,
+  VarendoCalendarGridElement,
+  VarendoHeatmapElement,
+  VarendoHistogramElement,
+  VarendoMatrixElement,
+  VarendoRelationshipElement,
+  VarendoScatterElement,
+  VarendoTimelineElement,
+  VarendoTrendElement,
+  VarendoTreeElement,
+  VarendoTreemapElement,
 } from '@varendo/web/visualization';
 import type { VisualizationSpec } from '@varendo/core/visualization';
 import type { VisualizationBindingContext } from '@varendo/core/visualization';
@@ -37,18 +37,18 @@ import { catalogMountSource, catalogSource } from './source.js';
 import { visualizationKeyboard } from './visualization-keyboard.js';
 
 const sourceImports = `import {
-  AeliqoAreaElement,
-  AeliqoBarElement,
-  AeliqoCalendarGridElement,
-  AeliqoHeatmapElement,
-  AeliqoHistogramElement,
-  AeliqoMatrixElement,
-  AeliqoRelationshipElement,
-  AeliqoScatterElement,
-  AeliqoTimelineElement,
-  AeliqoTrendElement,
-  AeliqoTreeElement,
-  AeliqoTreemapElement,
+  VarendoAreaElement,
+  VarendoBarElement,
+  VarendoCalendarGridElement,
+  VarendoHeatmapElement,
+  VarendoHistogramElement,
+  VarendoMatrixElement,
+  VarendoRelationshipElement,
+  VarendoScatterElement,
+  VarendoTimelineElement,
+  VarendoTrendElement,
+  VarendoTreeElement,
+  VarendoTreemapElement,
   } from "@varendo/web/visualization";
 `;
 
@@ -64,7 +64,7 @@ import type {VisualizationDataset} from "@varendo/web/visualization";`;
 const sourceSetup = `${sourceTypeImports}
 
 const catalogRef: ResultRef = {
-  id: "aeliqo-catalog-example",
+  id: "varendo-catalog-example",
   revision: "1",
   outputId: "people",
   queryDigest: "catalog-query",
@@ -154,7 +154,7 @@ const catalogVisualizationDataset: VisualizationDataset = {result: catalogRef, r
 const catalogVisualizationContext: VisualizationBindingContext = {results: [catalogResult], catalog};
 const histogramSpec = catalogVisualizationSpecs.histogram as Extract<VisualizationSpec, {view: "histogram"}>;
 const histogramContext: VisualizationBindingContext = {...catalogVisualizationContext, histograms: [{result: catalogRef, bins: histogramSpec.bins}]};
-const hierarchyRef: ResultRef = {...catalogRef, id: "aeliqo-catalog-hierarchy", outputId: "nodes"};
+const hierarchyRef: ResultRef = {...catalogRef, id: "varendo-catalog-hierarchy", outputId: "nodes"};
 const hierarchyRows: readonly Readonly<Record<string, Scalar>>[] = [
   {id: "company", parent: null, label: "Company", amount: 3},
   {id: "research", parent: "company", label: "Research", amount: 2},
@@ -178,7 +178,7 @@ const hierarchyDataset: VisualizationDataset = {result: hierarchyRef, rows: hier
 const hierarchySpec: VisualizationSpec = {version: "1", view: "tree", result: hierarchyRef, node: ["id"], parent: ["parent"], label: "label"};
 const treemapSpec: VisualizationSpec = {...hierarchySpec, view: "treemap", value: "amount", meaning: {id: "amount", revision: "1"}};
 const hierarchyContext: VisualizationBindingContext = {results: [hierarchyResult], catalog};
-const relationshipRef: ResultRef = {...catalogRef, id: "aeliqo-catalog-relationship", outputId: "edges"};
+const relationshipRef: ResultRef = {...catalogRef, id: "varendo-catalog-relationship", outputId: "edges"};
 const relationshipRows: readonly Readonly<Record<string, Scalar>>[] = [
   {edge: "e1", source: "research", target: "company"},
   {edge: "e2", source: "product", target: "company"},
@@ -245,7 +245,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The spec declares temporal x and measure y; dataset rows and Result lineage are supplied by the host.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'The trend renders only the supplied Result scope and selection identifies the chosen row.',
   },
   bar: {
@@ -255,7 +255,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Ordinal dimensions and exact measure encodings come from the typed spec; the component does not aggregate new data.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'Bars reflect the supplied team/person encodings and preserve result scope.',
   },
   area: {
@@ -264,7 +264,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The spec states stacking and missing-value policy; rendering never fills or invents missing rows.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'The area preserves the declared missing-value treatment and exposes equivalent data access.',
   },
   scatter: {
@@ -273,7 +273,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Both axes are explicit measure encodings; no trend or causal claim is inferred from position.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'Points are drawn from supplied rows and any selection remains tied to Result identity.',
   },
   histogram: {
@@ -283,7 +283,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Bin boundaries and measure are declared in the spec; the renderer does not silently choose a binning policy.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'Bins render according to the declared boundary policy and remain scope-labelled.',
   },
   heatmap: {
@@ -292,7 +292,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Both ordinal dimensions and the color measure are explicit; color does not replace text labels.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'Cells preserve both dimensions and expose an accessible equivalent representation.',
   },
   matrix: {
@@ -301,7 +301,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Column IDs come from the temporal spec and rows remain tied to the supplied result.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'The matrix exposes the declared temporal columns without changing grain.',
   },
   timeline: {
@@ -310,7 +310,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The timeline start field is explicit and dates retain calendar semantics from the Result descriptor.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'Events are placed on the declared date axis and remain linked to result identities.',
   },
   'calendar-grid': {
@@ -319,7 +319,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Calendar placement follows the spec and declared calendar descriptor; missing dates are not invented.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'The calendar preserves date meaning and exposes the supplied rows through accessible data.',
   },
   tree: {
@@ -328,7 +328,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Parent and node fields define hierarchy; the renderer does not infer relationships from labels.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'The hierarchy preserves parent relationships and emits stable node selections.',
   },
   treemap: {
@@ -337,7 +337,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The amount meaning and hierarchy fields are explicit; area is not treated as an unqualified metric.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'Treemap area follows the declared amount meaning and retains hierarchy scope.',
   },
   relationship: {
@@ -347,7 +347,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Relationship identity and cardinality come from the catalog context; an edge does not establish causation.',
     states: ['ready', 'partial', 'empty', 'error'],
     keyboard: visualizationKeyboard,
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome: 'The graph displays only declared edges and labels them as evidence within the supplied scope.',
   },
 };
@@ -371,7 +371,7 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
       'Enter selects the focused mark',
       'accessible data table remains available',
     ],
-    events: ['aeliqo-visualization-select'],
+    events: ['varendo-visualization-select'],
     expectedOutcome:
       'The actual renderer shows the typed view, preserves Result scope, and exposes an equivalent accessible data representation.',
     ...componentNotes[id],
@@ -422,70 +422,70 @@ const histogramContext: VisualizationBindingContext = {
 export const visualizationExamples: readonly CatalogExampleDefinition[] = [
   mount('trend', (root) =>
     configure(
-      createCatalogElement<AeliqoTrendElement>('aeliqo-trend', root, AeliqoTrendElement),
+      createCatalogElement<VarendoTrendElement>('varendo-trend', root, VarendoTrendElement),
       catalogVisualizationSpecs.trend,
       catalogVisualizationContext,
     ),
   ),
   mount('bar', (root) =>
     configure(
-      createCatalogElement<AeliqoBarElement>('aeliqo-bar', root, AeliqoBarElement),
+      createCatalogElement<VarendoBarElement>('varendo-bar', root, VarendoBarElement),
       catalogVisualizationSpecs.bar,
       catalogVisualizationContext,
     ),
   ),
   mount('area', (root) =>
     configure(
-      createCatalogElement<AeliqoAreaElement>('aeliqo-area', root, AeliqoAreaElement),
+      createCatalogElement<VarendoAreaElement>('varendo-area', root, VarendoAreaElement),
       catalogVisualizationSpecs.area,
       catalogVisualizationContext,
     ),
   ),
   mount('scatter', (root) =>
     configure(
-      createCatalogElement<AeliqoScatterElement>('aeliqo-scatter', root, AeliqoScatterElement),
+      createCatalogElement<VarendoScatterElement>('varendo-scatter', root, VarendoScatterElement),
       catalogVisualizationSpecs.scatter,
       catalogVisualizationContext,
     ),
   ),
   mount('histogram', (root) =>
     configure(
-      createCatalogElement<AeliqoHistogramElement>('aeliqo-histogram', root, AeliqoHistogramElement),
+      createCatalogElement<VarendoHistogramElement>('varendo-histogram', root, VarendoHistogramElement),
       histogramSpec,
       histogramContext,
     ),
   ),
   mount('heatmap', (root) =>
     configure(
-      createCatalogElement<AeliqoHeatmapElement>('aeliqo-heatmap', root, AeliqoHeatmapElement),
+      createCatalogElement<VarendoHeatmapElement>('varendo-heatmap', root, VarendoHeatmapElement),
       catalogVisualizationSpecs.heatmap,
       catalogVisualizationContext,
     ),
   ),
   mount('matrix', (root) =>
     configure(
-      createCatalogElement<AeliqoMatrixElement>('aeliqo-matrix', root, AeliqoMatrixElement),
+      createCatalogElement<VarendoMatrixElement>('varendo-matrix', root, VarendoMatrixElement),
       catalogTemporalSpecs.matrix,
       catalogVisualizationContext,
     ),
   ),
   mount('timeline', (root) =>
     configure(
-      createCatalogElement<AeliqoTimelineElement>('aeliqo-timeline', root, AeliqoTimelineElement),
+      createCatalogElement<VarendoTimelineElement>('varendo-timeline', root, VarendoTimelineElement),
       catalogTemporalSpecs.timeline,
       catalogVisualizationContext,
     ),
   ),
   mount('calendar-grid', (root) =>
     configure(
-      createCatalogElement<AeliqoCalendarGridElement>('aeliqo-calendar-grid', root, AeliqoCalendarGridElement),
+      createCatalogElement<VarendoCalendarGridElement>('varendo-calendar-grid', root, VarendoCalendarGridElement),
       catalogTemporalSpecs['calendar-grid'],
       catalogVisualizationContext,
     ),
   ),
   mount('tree', (root) =>
     configure(
-      createCatalogElement<AeliqoTreeElement>('aeliqo-tree', root, AeliqoTreeElement),
+      createCatalogElement<VarendoTreeElement>('varendo-tree', root, VarendoTreeElement),
       hierarchySpec,
       hierarchyContext,
       [hierarchyDataset],
@@ -493,7 +493,7 @@ export const visualizationExamples: readonly CatalogExampleDefinition[] = [
   ),
   mount('treemap', (root) =>
     configure(
-      createCatalogElement<AeliqoTreemapElement>('aeliqo-treemap', root, AeliqoTreemapElement),
+      createCatalogElement<VarendoTreemapElement>('varendo-treemap', root, VarendoTreemapElement),
       treemapSpec,
       hierarchyContext,
       [hierarchyDataset],
@@ -501,7 +501,7 @@ export const visualizationExamples: readonly CatalogExampleDefinition[] = [
   ),
   mount('relationship', (root) =>
     configure(
-      createCatalogElement<AeliqoRelationshipElement>('aeliqo-relationship', root, AeliqoRelationshipElement),
+      createCatalogElement<VarendoRelationshipElement>('varendo-relationship', root, VarendoRelationshipElement),
       relationshipSpec,
       relationshipContext,
       [relationshipDataset],

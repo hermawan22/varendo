@@ -1,15 +1,15 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-import { AELIQO_PRESENTATION_MANIFESTS } from '@varendo/web/region';
+import { VARENDO_PRESENTATION_MANIFESTS } from '@varendo/web/region';
 import { STANDARD_VIEW_REFS, standardFormRecipe } from '@varendo/web/recipes';
 
 const catalog = JSON.parse(
   await readFile(new URL('../../catalog/components.json', import.meta.url), 'utf8'),
 ).components;
-const semanticRepresentations = new Set(AELIQO_PRESENTATION_MANIFESTS.map((manifest) => manifest.ref.id));
+const semanticRepresentations = new Set(VARENDO_PRESENTATION_MANIFESTS.map((manifest) => manifest.ref.id));
 const adaptiveViews = new Set(Object.values(STANDARD_VIEW_REFS).map((ref) => ref.id));
-// The legacy data.trend recipe renders aeliqo-chart, not the catalog's visualization.trend element.
+// The legacy data.trend recipe renders varendo-chart, not the catalog's visualization.trend element.
 adaptiveViews.delete('data.trend');
 if (standardFormRecipe.intents.includes('create') && standardFormRecipe.intents.includes('edit'))
   adaptiveViews.add('input.form');

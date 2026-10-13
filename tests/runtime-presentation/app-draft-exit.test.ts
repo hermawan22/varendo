@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { InteractionPayload } from '../../packages/core/src/index.js';
 import type { RuntimeRenderInput, RuntimeRenderReceipt } from '../../packages/runtime/src/app/types.js';
-import type { AeliqoAppOptions } from '../../packages/web/src/app/types.js';
+import type { VarendoAppOptions } from '../../packages/web/src/app/types.js';
 import type { WebAppContext, WebRegion } from '../../packages/web/src/app/context.js';
 import { renderRequest } from '../../packages/web/src/app/render.js';
 
@@ -23,7 +23,7 @@ const authority = {
   readContext: {},
 };
 
-function fixture(onDraftExit?: AeliqoAppOptions['onDraftExit']) {
+function fixture(onDraftExit?: VarendoAppOptions['onDraftExit']) {
   const previous = { marker: 'previous presentation' };
   const element = { presentation: previous, revoke: vi.fn(), interaction: { marker: 'dirty state' } };
   const region = {
@@ -41,7 +41,7 @@ function fixture(onDraftExit?: AeliqoAppOptions['onDraftExit']) {
     requestId: 'target',
     diagnostics: [{ code: 'fixture.target-failed', message: 'Target failure', retryable: false }],
   }));
-  const read = vi.fn<AeliqoAppOptions['authority']['read']>(() => ({ ok: true, value: authority }));
+  const read = vi.fn<VarendoAppOptions['authority']['read']>(() => ({ ok: true, value: authority }));
   const context = {
     options: { authority: { read }, ...(onDraftExit ? { onDraftExit } : {}) },
     runtime: { render, snapshot: () => undefined },

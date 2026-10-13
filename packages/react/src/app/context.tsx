@@ -1,40 +1,40 @@
 import React, { createContext, useContext, type PropsWithChildren } from 'react';
-import type { AeliqoRuntime } from '@varendo/runtime/app';
-import type { AeliqoApp } from '@varendo/web/app';
+import type { VarendoRuntime } from '@varendo/runtime/app';
+import type { VarendoApp } from '@varendo/web/app';
 
-const AeliqoAppContext = createContext<AeliqoApp | undefined>(undefined);
-const AeliqoRuntimeContext = createContext<AeliqoRuntime | undefined>(undefined);
+const VarendoAppContext = createContext<VarendoApp | undefined>(undefined);
+const VarendoRuntimeContext = createContext<VarendoRuntime | undefined>(undefined);
 
-export type AeliqoProviderProps = PropsWithChildren &
-  ({ readonly app: AeliqoApp; readonly runtime?: never } | { readonly runtime: AeliqoRuntime; readonly app?: never });
+export type VarendoProviderProps = PropsWithChildren &
+  ({ readonly app: VarendoApp; readonly runtime?: never } | { readonly runtime: VarendoRuntime; readonly app?: never });
 
 /** Shares one application-owned Varendo instance. The provider never disposes an instance it did not create. */
-export function AeliqoProvider({ app, runtime, children }: AeliqoProviderProps): React.JSX.Element {
+export function VarendoProvider({ app, runtime, children }: VarendoProviderProps): React.JSX.Element {
   if (app !== undefined && runtime !== undefined)
-    throw new TypeError('AeliqoProvider accepts either app or runtime, not both.');
+    throw new TypeError('VarendoProvider accepts either app or runtime, not both.');
   const resolvedRuntime = runtime ?? app?.runtime;
-  if (resolvedRuntime === undefined) throw new TypeError('AeliqoProvider requires an application or runtime.');
+  if (resolvedRuntime === undefined) throw new TypeError('VarendoProvider requires an application or runtime.');
   return (
-    <AeliqoRuntimeContext.Provider value={resolvedRuntime}>
-      <AeliqoAppContext.Provider value={app}>{children}</AeliqoAppContext.Provider>
-    </AeliqoRuntimeContext.Provider>
+    <VarendoRuntimeContext.Provider value={resolvedRuntime}>
+      <VarendoAppContext.Provider value={app}>{children}</VarendoAppContext.Provider>
+    </VarendoRuntimeContext.Provider>
   );
 }
 
-export function useAeliqoApp(): AeliqoApp {
-  const app = useContext(AeliqoAppContext);
-  if (app === undefined) throw new Error('Varendo React bindings require an AeliqoProvider.');
+export function useVarendoApp(): VarendoApp {
+  const app = useContext(VarendoAppContext);
+  if (app === undefined) throw new Error('Varendo React bindings require an VarendoProvider.');
   return app;
 }
 
 /** Reads the application-owned runtime without taking ownership of its lifecycle. */
-export function useAeliqoRuntime(): AeliqoRuntime {
-  const runtime = useContext(AeliqoRuntimeContext);
-  if (runtime === undefined) throw new Error('Varendo React bindings require an AeliqoProvider runtime.');
+export function useVarendoRuntime(): VarendoRuntime {
+  const runtime = useContext(VarendoRuntimeContext);
+  if (runtime === undefined) throw new Error('Varendo React bindings require an VarendoProvider runtime.');
   return runtime;
 }
 
 /** Internal optional read for hooks that also support a providerless local path. */
-export function useOptionalAeliqoRuntime(): AeliqoRuntime | undefined {
-  return useContext(AeliqoRuntimeContext);
+export function useOptionalVarendoRuntime(): VarendoRuntime | undefined {
+  return useContext(VarendoRuntimeContext);
 }

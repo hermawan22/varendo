@@ -11,7 +11,7 @@ const root = resolve(import.meta.dirname, '../..');
 const evidenceRoot = join(root, 'artifacts/export-consumers');
 await mkdir(evidenceRoot, { recursive: true });
 const evidenceDirectory = await mkdtemp(join(evidenceRoot, 'run-'));
-const consumerRoot = await mkdtemp(join(tmpdir(), 'aeliqo-export-consumers-'));
+const consumerRoot = await mkdtemp(join(tmpdir(), 'varendo-export-consumers-'));
 
 function run(command, args, cwd, timeout = 300_000) {
   const result = spawnSync(command, args, {
@@ -32,7 +32,7 @@ const tarballs = {};
 for (const name of ['core', 'runtime', 'web', 'react', 'agent']) {
   const packageDirectory = join(root, 'packages', name);
   run('pnpm', ['build'], packageDirectory);
-  const tarball = join(evidenceDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(evidenceDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run('pnpm', ['pack', '--out', tarball], packageDirectory);
   tarballs[`@varendo/${name}`] = tarball;
 }
@@ -42,7 +42,7 @@ const rootManifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8
 const componentConsumer = join(consumerRoot, 'component-subpaths');
 await mkdir(componentConsumer, { recursive: true });
 const componentTypeImports = catalog.map((component) => {
-  const className = `Aeliqo${component.name.replace(/[^A-Za-z0-9]+(.)/gu, (_match, letter) => letter.toUpperCase())}Element`;
+  const className = `Varendo${component.name.replace(/[^A-Za-z0-9]+(.)/gu, (_match, letter) => letter.toUpperCase())}Element`;
   const subpath = component.id.slice(component.id.indexOf('.') + 1);
   return { className, subpath };
 });
@@ -50,7 +50,7 @@ await writeFile(
   join(componentConsumer, 'package.json'),
   `${JSON.stringify(
     {
-      name: 'aeliqo-component-subpath-consumer',
+      name: 'varendo-component-subpath-consumer',
       private: true,
       type: 'module',
       dependencies: {
@@ -69,12 +69,12 @@ await writeFile(
 await writeFile(
   join(componentConsumer, 'components.ts'),
   [
-    `import { registerAeliqoElements } from '@varendo/web';`,
+    `import { registerVarendoElements } from '@varendo/web';`,
     ...componentTypeImports.map(
       ({ className, subpath }) => `import type { ${className} } from '@varendo/web/${subpath}';`,
     ),
     '',
-    'export const register = registerAeliqoElements;',
+    'export const register = registerVarendoElements;',
     `export type DocumentedComponents = [${componentTypeImports.map(({ className }) => className).join(', ')}];`,
   ].join('\n'),
 );
@@ -110,7 +110,7 @@ await writeFile(
   join(rootApiConsumer, 'package.json'),
   `${JSON.stringify(
     {
-      name: 'aeliqo-public-root-api-consumer',
+      name: 'varendo-public-root-api-consumer',
       private: true,
       type: 'module',
       dependencies: {
@@ -130,26 +130,26 @@ await writeFile(
   join(rootApiConsumer, 'public-api.ts'),
   `import { compileIntent, defineResource, parseCatalog } from '@varendo/core';
 import type { Catalog, Intent, Task } from '@varendo/core';
-import { createAeliqoRuntime } from '@varendo/runtime';
-import type { AeliqoRuntimeOptions } from '@varendo/runtime';
-import { createAeliqoApp } from '@varendo/web/app';
-import { defineRecipe, registerAeliqoElements, standardDataRecipe } from '@varendo/web';
-import type { AeliqoApp } from '@varendo/web/app';
+import { createVarendoRuntime } from '@varendo/runtime';
+import type { VarendoRuntimeOptions } from '@varendo/runtime';
+import { createVarendoApp } from '@varendo/web/app';
+import { defineRecipe, registerVarendoElements, standardDataRecipe } from '@varendo/web';
+import type { VarendoApp } from '@varendo/web/app';
 import type { RecipeDefinition } from '@varendo/web';
-import { AeliqoProvider, AeliqoRegion, registerAeliqoReactElements, useAeliqoApp, useAeliqoRegionState, useAeliqoRender } from '@varendo/react';
-import type { AeliqoProviderProps, AeliqoRegionProps } from '@varendo/react';
+import { VarendoProvider, VarendoRegion, registerVarendoReactElements, useVarendoApp, useVarendoRegionState, useVarendoRender } from '@varendo/react';
+import type { VarendoProviderProps, VarendoRegionProps } from '@varendo/react';
 import { createAppToolEndpoint } from '@varendo/agent';
 
 export const publicApi = [
-  compileIntent, defineResource, parseCatalog, createAeliqoRuntime,
-  createAeliqoApp, defineRecipe, registerAeliqoElements, standardDataRecipe,
-  AeliqoProvider, AeliqoRegion, registerAeliqoReactElements,
-  useAeliqoApp, useAeliqoRegionState, useAeliqoRender, createAppToolEndpoint,
+  compileIntent, defineResource, parseCatalog, createVarendoRuntime,
+  createVarendoApp, defineRecipe, registerVarendoElements, standardDataRecipe,
+  VarendoProvider, VarendoRegion, registerVarendoReactElements,
+  useVarendoApp, useVarendoRegionState, useVarendoRender, createAppToolEndpoint,
 ];
 
 export type PublicApiContracts = [
-  Catalog, Intent, Task, AeliqoRuntimeOptions, AeliqoApp, RecipeDefinition,
-  AeliqoProviderProps, AeliqoRegionProps,
+  Catalog, Intent, Task, VarendoRuntimeOptions, VarendoApp, RecipeDefinition,
+  VarendoProviderProps, VarendoRegionProps,
 ];
 `,
 );
@@ -191,21 +191,21 @@ const [core, runtime, web, webApp, react, agent] = await Promise.all([
 assert.equal(typeof core.defineResource, 'function');
 assert.equal(typeof core.compileIntent, 'function');
 assert.equal(typeof core.parseCatalog, 'function');
-assert.equal(typeof runtime.createAeliqoRuntime, 'function');
-assert.equal(typeof webApp.createAeliqoApp, 'function');
+assert.equal(typeof runtime.createVarendoRuntime, 'function');
+assert.equal(typeof webApp.createVarendoApp, 'function');
 assert.equal(typeof web.defineRecipe, 'function');
 assert.equal(typeof web.standardDataRecipe, 'object');
-assert.equal(web.standardDataRecipe.ref.id, 'aeliqo.recipe.data');
-assert.equal(typeof web.registerAeliqoElements, 'function');
-assert.equal(typeof react.AeliqoProvider, 'function');
-assert.equal(typeof react.AeliqoRegion, 'function');
-assert.equal(typeof react.registerAeliqoReactElements, 'function');
-assert.equal(typeof react.useAeliqoRender, 'function');
+assert.equal(web.standardDataRecipe.ref.id, 'varendo.recipe.data');
+assert.equal(typeof web.registerVarendoElements, 'function');
+assert.equal(typeof react.VarendoProvider, 'function');
+assert.equal(typeof react.VarendoRegion, 'function');
+assert.equal(typeof react.registerVarendoReactElements, 'function');
+assert.equal(typeof react.useVarendoRender, 'function');
 assert.equal(typeof agent.createAppToolEndpoint, 'function');
-assert.equal('AeliqoInput' in react, false);
-assert.equal('AeliqoChart' in react, false);
-assert.equal('AeliqoTextField' in react, false);
-assert.equal('AeliqoTable' in react, false);
+assert.equal('VarendoInput' in react, false);
+assert.equal('VarendoChart' in react, false);
+assert.equal('VarendoTextField' in react, false);
+assert.equal('VarendoTable' in react, false);
 assert.equal(typeof window, 'undefined');
 process.stdout.write('All five clean tarball package roots import without a browser.\\n');
 `,

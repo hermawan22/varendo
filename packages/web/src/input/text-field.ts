@@ -1,6 +1,6 @@
-import { AeliqoTextControlElement } from './text-control.js';
+import { VarendoTextControlElement } from './text-control.js';
 
 /** Single-line native text field with controlled/uncontrolled IME-safe editing. */
-export class AeliqoTextFieldElement extends AeliqoTextControlElement {
+export class VarendoTextFieldElement extends VarendoTextControlElement {
   protected readonly multiline = false;
 }

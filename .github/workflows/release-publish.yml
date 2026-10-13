@@ -102,7 +102,7 @@ jobs:
           fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-package-release-policy-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: varendo-package-release-policy-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: artifacts/package-release-policy
           if-no-files-found: error
           retention-days: 30
@@ -137,13 +137,13 @@ jobs:
           QUALITY_RUN_ID: ${{ needs.policy.outputs.quality_run_id }}
         run: |
           mkdir -p artifacts/quality-evidence
-          gh run download "$QUALITY_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "aeliqo-quality-evidence-$GITHUB_SHA" --dir artifacts/quality-evidence
+          gh run download "$QUALITY_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "varendo-quality-evidence-$GITHUB_SHA" --dir artifacts/quality-evidence
           test -f artifacts/quality-evidence/artifacts/product-ci/ci.json
           cp -R artifacts/quality-evidence/artifacts/product-ci artifacts/product-ci
           pnpm build:platform
           pnpm build:agent
           pnpm test:release-tooling
-          AELIQO_CI_EVIDENCE_PATH=artifacts/quality-evidence/artifacts/product-ci/ci.json node scripts/release/verify-quality-evidence.mjs
+          VARENDO_CI_EVIDENCE_PATH=artifacts/quality-evidence/artifacts/product-ci/ci.json node scripts/release/verify-quality-evidence.mjs
       - name: Reinstall and exercise the published RC before stable
         if: inputs.stage == 'stable'
         env:
@@ -153,7 +153,7 @@ jobs:
           RC_RUN_ID: ${{ inputs.rc_run_id }}
         run: |
           mkdir -p artifacts/approved-rc
-          gh run download "$RC_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "aeliqo-npm-publication-$RC_VERSION-$RC_SOURCE_SHA" --dir artifacts/approved-rc
+          gh run download "$RC_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "varendo-npm-publication-$RC_VERSION-$RC_SOURCE_SHA" --dir artifacts/approved-rc
           APPROVED_DIR=artifacts/approved-rc/release-candidate
           test -f "$APPROVED_DIR/manifest.json"
           test -f "$APPROVED_DIR/publication.json"
@@ -187,7 +187,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: aeliqo-npm-publication-${{ inputs.version }}-${{ github.sha }}
+          name: varendo-npm-publication-${{ inputs.version }}-${{ github.sha }}
           path: |
             artifacts/release-candidate
             artifacts/release-rc-consumer.json

@@ -24,7 +24,7 @@ async function readReports() {
 }
 try {
   assert.equal(process.env.VISUAL_SHARD_RESULT, 'success', 'A browser shard failed, was skipped or cancelled');
-  for (const key of ['AELIQO_VISUAL_PROJECT', 'AELIQO_VISUAL_BATCH', 'AELIQO_VISUAL_GREP'])
+  for (const key of ['VARENDO_VISUAL_PROJECT', 'VARENDO_VISUAL_BATCH', 'VARENDO_VISUAL_GREP'])
     assert.ok(!process.env[key], 'Full aggregate rejects selection filters');
   const source = output(root, 'git', ['rev-parse', 'HEAD']);
   assert.equal(source, process.env.SOURCE_SHA, 'Aggregate checkout differs from expected source');

@@ -23,7 +23,7 @@ test('advisory visual job probes only an unapproved baseline and otherwise keeps
     /if: github.event_name != 'pull_request' && !\(github.event_name == 'workflow_dispatch' && inputs.visual_probe\)/u,
   );
   assert.ok(gate.includes(`image: mcr.microsoft.com/playwright@${digest}`));
-  assert.ok(gate.includes(`AELIQO_VISUAL_CONTAINER_DIGEST: ${digest}`));
+  assert.ok(gate.includes(`VARENDO_VISUAL_CONTAINER_DIGEST: ${digest}`));
   assert.match(
     gate,
     /if \[ "\$\(node -p "require\('\.\/scripts\/visual\/baseline\.json'\)\.status"\)" = unapproved \]; then/u,
@@ -40,12 +40,12 @@ test('owner-dispatched full probe uses one matrix and the same runner', () => {
   assert.match(probe, /needs: policy/u);
   assert.match(probe, /if:.*github.event_name == 'workflow_dispatch'.*inputs.visual_probe/u);
   assert.ok(probe.includes(`image: mcr.microsoft.com/playwright@${digest}`));
-  assert.ok(probe.includes(`AELIQO_VISUAL_CONTAINER_DIGEST: ${digest}`));
+  assert.ok(probe.includes(`VARENDO_VISUAL_CONTAINER_DIGEST: ${digest}`));
   assert.match(probe, /run: node scripts\/visual\/run.mjs --probe --shard/u);
   for (const field of [
     "node-version: '24.20.0'",
     'pnpm@11.24.0',
-    'AELIQO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts',
+    'VARENDO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts',
     'TZ: UTC',
     'LANG: C.UTF-8',
   ]) {
@@ -85,7 +85,7 @@ for (const name of ['visual-shards', 'visual-probe-shards'])
     assert.match(block, /browser: \[chromium, firefox, webkit\]/u);
     assert.match(block, /timeout-minutes: 360/u);
     assert.match(block, /shard-report-\$\{\{ env.SOURCE_SHA \}\}-\$\{\{ matrix.browser \}\}/u);
-    assert.doesNotMatch(block, /AELIQO_VISUAL_(PROJECT|BATCH|GREP):/u);
+    assert.doesNotMatch(block, /VARENDO_VISUAL_(PROJECT|BATCH|GREP):/u);
     if (name === 'visual-probe-shards') assert.doesNotMatch(block, /continue-on-error/u);
   });
 for (const name of ['visual', 'visual-probe'])

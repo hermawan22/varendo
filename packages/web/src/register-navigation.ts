@@ -1,16 +1,16 @@
 import {
-  AeliqoTabsElement,
-  AeliqoBreadcrumbElement,
-  AeliqoPaginationElement,
-  AeliqoMenuElement,
-  AeliqoTreeNavElement,
+  VarendoTabsElement,
+  VarendoBreadcrumbElement,
+  VarendoPaginationElement,
+  VarendoMenuElement,
+  VarendoTreeNavElement,
 } from './navigation/index.js';
 import type { ElementRegistration } from './register-elements.js';
 
 export const registrations: readonly ElementRegistration[] = [
-  { name: 'aeliqo-tabs', constructor: AeliqoTabsElement },
-  { name: 'aeliqo-breadcrumb', constructor: AeliqoBreadcrumbElement },
-  { name: 'aeliqo-pagination', constructor: AeliqoPaginationElement },
-  { name: 'aeliqo-menu', constructor: AeliqoMenuElement },
-  { name: 'aeliqo-tree-nav', constructor: AeliqoTreeNavElement },
+  { name: 'varendo-tabs', constructor: VarendoTabsElement },
+  { name: 'varendo-breadcrumb', constructor: VarendoBreadcrumbElement },
+  { name: 'varendo-pagination', constructor: VarendoPaginationElement },
+  { name: 'varendo-menu', constructor: VarendoMenuElement },
+  { name: 'varendo-tree-nav', constructor: VarendoTreeNavElement },
 ];

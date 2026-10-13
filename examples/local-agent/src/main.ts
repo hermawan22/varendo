@@ -1,5 +1,5 @@
-import { registerAeliqoElements } from '@varendo/web/register';
-registerAeliqoElements();
+import { registerVarendoElements } from '@varendo/web/register';
+registerVarendoElements();
 import './style.css';
 import { createLocalSession } from './session.js';
 import { connectLocalHost, type LocalHostConnection } from './local-host.js';
@@ -36,8 +36,8 @@ function stop(message = 'Disconnected. Start a new session to reconnect your MCP
 }
 
 async function start() {
-  const response = await fetch('/api/aeliqo/session', {
-    headers: { accept: 'application/json', 'x-aeliqo-session-bootstrap': '1' },
+  const response = await fetch('/api/varendo/session', {
+    headers: { accept: 'application/json', 'x-varendo-session-bootstrap': '1' },
   });
   if (!response.ok) throw new Error(`Session unavailable (${response.status}).`);
   const settings = (await response.json()) as { expiresAt: number; modelConfigured: boolean };
@@ -70,7 +70,7 @@ async function sendPrompt(event: SubmitEvent) {
   send.disabled = true;
   receipt.textContent = 'Agent working…';
   try {
-    const response = await fetch('/api/aeliqo/prompt', {
+    const response = await fetch('/api/varendo/prompt', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ prompt: prompt.value.trim() }),

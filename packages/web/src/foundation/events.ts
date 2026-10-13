@@ -1,4 +1,4 @@
-export type AeliqoActionKind = 'button' | 'icon-button' | 'link';
+export type VarendoActionKind = 'button' | 'icon-button' | 'link';
 
 type EventInitLike = {
   readonly bubbles?: boolean;
@@ -24,17 +24,17 @@ const EventBase: typeof Event =
         preventDefault(): void {}
       } as unknown as typeof Event);
 
-export interface AeliqoActionDetail {
+export interface VarendoActionDetail {
   readonly source: 'user';
-  readonly action: AeliqoActionKind;
+  readonly action: VarendoActionKind;
   readonly type: 'button' | 'submit' | 'reset';
 }
 
-export class AeliqoActionEvent extends EventBase {
-  readonly detail: AeliqoActionDetail;
+export class VarendoActionEvent extends EventBase {
+  readonly detail: VarendoActionDetail;
 
-  constructor(detail: AeliqoActionDetail) {
-    super('aeliqo-action', {
+  constructor(detail: VarendoActionDetail) {
+    super('varendo-action', {
       bubbles: true,
       composed: true,
       cancelable: true,
@@ -43,18 +43,18 @@ export class AeliqoActionEvent extends EventBase {
   }
 }
 
-export interface AeliqoLinkDetail {
+export interface VarendoLinkDetail {
   /** Preserve browser new-tab/download modifier behavior in semantic hosts. */
   readonly modified?: boolean;
   readonly source: 'user';
   readonly target: '_self' | '_blank';
 }
 
-export class AeliqoLinkEvent extends EventBase {
-  readonly detail: AeliqoLinkDetail;
+export class VarendoLinkEvent extends EventBase {
+  readonly detail: VarendoLinkDetail;
 
-  constructor(detail: AeliqoLinkDetail) {
-    super('aeliqo-link', {
+  constructor(detail: VarendoLinkDetail) {
+    super('varendo-link', {
       bubbles: true,
       composed: true,
       cancelable: true,
@@ -63,17 +63,17 @@ export class AeliqoLinkEvent extends EventBase {
   }
 }
 
-export interface AeliqoSplitChangeDetail {
+export interface VarendoSplitChangeDetail {
   readonly source: 'user';
   readonly orientation: 'horizontal' | 'vertical';
   readonly position: number;
 }
 
-export class AeliqoSplitChangeEvent extends EventBase {
-  readonly detail: AeliqoSplitChangeDetail;
+export class VarendoSplitChangeEvent extends EventBase {
+  readonly detail: VarendoSplitChangeDetail;
 
-  constructor(detail: AeliqoSplitChangeDetail) {
-    super('aeliqo-split-change', {
+  constructor(detail: VarendoSplitChangeDetail) {
+    super('varendo-split-change', {
       bubbles: true,
       composed: true,
     });

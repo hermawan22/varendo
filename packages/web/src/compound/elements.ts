@@ -1,3 +1,3 @@
-export { AeliqoExplorerElement, AeliqoComparisonElement, AeliqoBreakdownElement } from './elements-data.js';
-export { AeliqoInvestigationElement, AeliqoSearchResultsElement } from './elements-reports.js';
-export { AeliqoRecordEditorElement, AeliqoFormFlowElement, AeliqoQualityPanelElement } from './elements-inputs.js';
+export { VarendoExplorerElement, VarendoComparisonElement, VarendoBreakdownElement } from './elements-data.js';
+export { VarendoInvestigationElement, VarendoSearchResultsElement } from './elements-reports.js';
+export { VarendoRecordEditorElement, VarendoFormFlowElement, VarendoQualityPanelElement } from './elements-inputs.js';

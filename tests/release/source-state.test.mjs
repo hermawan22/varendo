@@ -15,7 +15,7 @@ function git(directory, ...args) {
 }
 
 test('release source status rejects tracked and non-ignored untracked changes', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-source-state-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-source-state-'));
   try {
     git(directory, 'init', '--quiet');
     await writeFile(join(directory, '.gitignore'), 'ignored.txt\n');

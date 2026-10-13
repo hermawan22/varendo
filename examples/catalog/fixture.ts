@@ -1,10 +1,10 @@
 import type { Catalog, MeaningDefinition, PlotUnit, Result, ResultRef, Scalar, VisualizationSpec } from '@varendo/core';
 import type { VisualizationBindingContext } from '@varendo/core/visualization';
 import type { VisualizationDataset } from '@varendo/web/visualization';
-import type { AeliqoDataColumn, AeliqoDataScope, AeliqoFieldOption } from '@varendo/web/data';
+import type { VarendoDataColumn, VarendoDataScope, VarendoFieldOption } from '@varendo/web/data';
 
 export const catalogRef: ResultRef = {
-  id: 'aeliqo-catalog-example',
+  id: 'varendo-catalog-example',
   revision: '1',
   outputId: 'people',
   queryDigest: 'catalog-query',
@@ -15,7 +15,7 @@ const text = { value: 'text', nullable: false } as const;
 const integer = { value: 'integer', nullable: false } as const;
 const date = { value: 'date', nullable: false, temporal: { calendar: 'gregory', grain: 'day' } } as const;
 
-export const catalogColumns: readonly AeliqoDataColumn[] = [
+export const catalogColumns: readonly VarendoDataColumn[] = [
   { key: 'id', label: 'ID', type: 'text', sortable: true },
   { key: 'name', label: 'Name', type: 'text', sortable: true },
   { key: 'team', label: 'Team', type: 'text' },
@@ -23,7 +23,7 @@ export const catalogColumns: readonly AeliqoDataColumn[] = [
   { key: 'amount', label: 'Amount', type: 'integer', align: 'end' },
 ];
 
-export const catalogFields: readonly AeliqoFieldOption[] = [
+export const catalogFields: readonly VarendoFieldOption[] = [
   { id: 'name', label: 'Name', type: 'text' },
   { id: 'team', label: 'Team', type: 'text' },
   { id: 'amount', label: 'Amount', type: 'integer' },
@@ -44,7 +44,7 @@ export const catalogRows: readonly Readonly<Record<string, Scalar>>[] = [
   },
 ];
 
-export const catalogScope: AeliqoDataScope = {
+export const catalogScope: VarendoDataScope = {
   loaded: catalogRows.length,
   filteredTotal: catalogRows.length,
   populationDigest: catalogRef.scopeDigest,
@@ -210,7 +210,7 @@ export const catalogTemporalSpecs: Readonly<Record<'matrix' | 'timeline' | 'cale
   'calendar-grid': { version: '1', view: 'calendar-grid', result: catalogRef, date: 'date' },
 };
 
-export const hierarchyRef: ResultRef = { ...catalogRef, id: 'aeliqo-catalog-hierarchy', outputId: 'nodes' };
+export const hierarchyRef: ResultRef = { ...catalogRef, id: 'varendo-catalog-hierarchy', outputId: 'nodes' };
 export const hierarchyRows: readonly Readonly<Record<string, Scalar>>[] = [
   { id: 'company', parent: null, label: 'Company', amount: 3 },
   { id: 'research', parent: 'company', label: 'Research', amount: 2 },
@@ -245,7 +245,7 @@ export const treemapSpec: VisualizationSpec = {
   meaning: { id: 'amount', revision: '1' },
 };
 
-export const relationshipRef: ResultRef = { ...catalogRef, id: 'aeliqo-catalog-relationship', outputId: 'edges' };
+export const relationshipRef: ResultRef = { ...catalogRef, id: 'varendo-catalog-relationship', outputId: 'edges' };
 export const relationshipRows: readonly Readonly<Record<string, Scalar>>[] = [
   { edge: 'e1', source: 'research', target: 'company' },
   { edge: 'e2', source: 'product', target: 'company' },
@@ -304,16 +304,17 @@ export function createCatalogElement<T extends HTMLElement>(
 ): T {
   const registry = container.ownerDocument.defaultView?.customElements;
   if (registry === undefined) throw new Error('A live custom element registry is required for catalog previews.');
-  const current = registry.get(tagName) as (CustomElementConstructor & { readonly aeliqoVersion?: string }) | undefined;
-  const next = constructor as CustomElementConstructor & { readonly aeliqoVersion?: string };
+  const current = registry.get(tagName) as
+    (CustomElementConstructor & { readonly varendoVersion?: string }) | undefined;
+  const next = constructor as CustomElementConstructor & { readonly varendoVersion?: string };
   if (current === undefined) registry.define(tagName, constructor);
   else if (
     current !== constructor &&
-    (next.aeliqoVersion === undefined || current.aeliqoVersion !== next.aeliqoVersion)
+    (next.varendoVersion === undefined || current.varendoVersion !== next.varendoVersion)
   )
     throw new Error(`Cannot register ${tagName}: an incompatible custom element is already defined.`);
   const element = container.ownerDocument.createElement(tagName) as T;
-  element.setAttribute('data-aeliqo-theme', 'light');
+  element.setAttribute('data-varendo-theme', 'light');
   container.append(element);
   return element;
 }

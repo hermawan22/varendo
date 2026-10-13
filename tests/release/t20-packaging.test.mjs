@@ -119,7 +119,7 @@ async function installConsumer(consumer, artifacts, version) {
     join(consumer, 'package.json'),
     `${JSON.stringify(
       {
-        name: 'aeliqo-t20-clean-consumer',
+        name: 'varendo-t20-clean-consumer',
         private: true,
         type: 'module',
         dependencies: {
@@ -186,7 +186,7 @@ async function writeConsumerSources(consumer, fixtureDirectory) {
     join(consumer, 'legacy-run.mjs'),
     [
       "const modules = await Promise.all([import('@varendo/core'), import('@varendo/runtime'), import('@varendo/web'), import('@varendo/react'), import('@varendo/agent')]);",
-      "const names = ['defineResource', 'createAeliqoRuntime', 'registerAeliqoElements', 'AeliqoProvider', 'createAppToolEndpoint'];",
+      "const names = ['defineResource', 'createVarendoRuntime', 'registerVarendoElements', 'VarendoProvider', 'createAppToolEndpoint'];",
       "for (const [module, name] of modules.map((module, index) => [module, names[index]])) if (typeof module[name] !== 'function') throw new Error(`Missing legacy export ${name}`);",
       'console.log(JSON.stringify({legacy: true}));',
     ].join('\n') + '\n',
@@ -195,7 +195,7 @@ async function writeConsumerSources(consumer, fixtureDirectory) {
     join(consumer, 'new-run.mjs'),
     [
       "const entries = await Promise.all([import('@varendo/core/features'), import('@varendo/runtime/surfaces'), import('@varendo/runtime/scopes'), import('@varendo/react/surface'), import('@varendo/agent/browser')]);",
-      "for (const [module, names] of [[entries[0], ['defineDataFeature', 'defineFeature', 'inferLocalDataShape']], [entries[1], ['createLocalDataBinding', 'createLocalDataSurface']], [entries[3], ['AdaptiveSurface', 'AeliqoScope', 'ViewSurface', 'defineReactViews', 'useSurface', 'useSurfaceState']], [entries[4], ['connectAgent', 'createScopedSurfaceEndpoint']]]) for (const name of names) if (!(name in module)) throw new Error(`Missing vNext export ${name}`);",
+      "for (const [module, names] of [[entries[0], ['defineDataFeature', 'defineFeature', 'inferLocalDataShape']], [entries[1], ['createLocalDataBinding', 'createLocalDataSurface']], [entries[3], ['AdaptiveSurface', 'VarendoScope', 'ViewSurface', 'defineReactViews', 'useSurface', 'useSurfaceState']], [entries[4], ['connectAgent', 'createScopedSurfaceEndpoint']]]) for (const name of names) if (!(name in module)) throw new Error(`Missing vNext export ${name}`);",
       "if (typeof entries[2] !== 'object') throw new Error('Runtime scope entry did not load');",
       "const local = entries[1].createLocalDataSurface({ data: [{ id: 'ada', name: 'Ada' }], getRowId: row => row.id });",
       "try { const receipt = await local.surface.request({ kind: 'browse' }); if (receipt.status !== 'committed' || local.surface.getSnapshot().state.rows[0]?.name !== 'Ada') throw new Error('Packed local surface did not browse rows'); } finally { local.dispose(); }",
@@ -211,9 +211,9 @@ async function writeConsumerSources(consumer, fixtureDirectory) {
     [
       "import { defineDataFeature } from '@varendo/core/features';",
       "import { createLocalDataBinding, createLocalDataSurface } from '@varendo/runtime/surfaces';",
-      "import { registerAeliqoElements } from '@varendo/web';",
+      "import { registerVarendoElements } from '@varendo/web';",
       "import { AdaptiveSurface, defineReactViews, useDataSurface } from '@varendo/react/surface';",
-      'globalThis.__aeliqoT20NoAgent = { defineDataFeature, createLocalDataBinding, createLocalDataSurface, registerAeliqoElements, AdaptiveSurface, defineReactViews, useDataSurface };',
+      'globalThis.__varendoT20NoAgent = { defineDataFeature, createLocalDataBinding, createLocalDataSurface, registerVarendoElements, AdaptiveSurface, defineReactViews, useDataSurface };',
     ].join('\n') + '\n',
   );
 }
@@ -353,7 +353,10 @@ async function readQualificationInputs() {
   const packagePage = await readFile(join(root, 'docs/site/pages/packages.md'), 'utf8');
   assert.equal(metadata.version, RELEASE_VERSION);
   assert.match(sourceVersion, /^\d+\.\d+\.\d+$/u);
-  assert.equal(metadata.previousVersion, null);
+  assert.ok(
+    metadata.previousVersion === null || /^\d+\.\d+\.\d+$/u.test(metadata.previousVersion),
+    'Release metadata previousVersion must be null or a stable version',
+  );
   assert.equal(matrix.candidate.upstreamVersion, metadata.upstreamVersion);
   assert.notEqual(metadata.previousVersion, metadata.version);
   assert.ok(['candidate', 'stable'].includes(metadata.status), 'Release status must be candidate or stable');
@@ -396,7 +399,7 @@ test('T20 packages, migrates, and qualifies support from packed artifacts', asyn
   const evidenceRoot = join(root, 'artifacts/t20-qualification');
   await mkdir(evidenceRoot, { recursive: true });
   const runDirectory = await mkdtemp(join(evidenceRoot, 'run-'));
-  const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-t20-consumer-'));
+  const consumer = await mkdtemp(join(tmpdir(), 'varendo-t20-consumer-'));
   try {
     const [canonicalNotice, canonicalLicense] = await Promise.all([
       readFile(join(root, 'NOTICE')),
@@ -427,7 +430,7 @@ test('T20 packages, migrates, and qualifies support from packed artifacts', asyn
       })),
     );
     const report = {
-      schema: 'aeliqo.t20-qualification.v1',
+      schema: 'varendo.t20-qualification.v1',
       sourceRevision: run('git', ['rev-parse', 'HEAD'], root, 30_000).trim(),
       stableVersion: metadata.previousVersion,
       candidate: matrix.candidate,

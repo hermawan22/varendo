@@ -95,7 +95,7 @@ function stateTransfers(
 ): PresentationPlan['stateTransfer'] {
   return (previous?.nodes ?? []).map((node) => {
     if (nodes.some((next) => next.id === node.id))
-      return { fromNode: node.id, toNode: node.id, mapping: { id: 'aeliqo.state.identity', revision: '1' } };
+      return { fromNode: node.id, toNode: node.id, mapping: { id: 'varendo.state.identity', revision: '1' } };
     return {
       fromNode: node.id,
       toNode: 'workspace',
@@ -186,7 +186,7 @@ export const LAYOUT_VIEWS = [
           }
           .demo-page-header {
             padding: 1rem;
-            border-bottom: 1px solid var(--aeliqo-color-border);
+            border-bottom: 1px solid var(--varendo-color-border);
           }
           .demo-page-header h3 {
             margin: 0;
@@ -197,7 +197,7 @@ export const LAYOUT_VIEWS = [
             gap: 1rem;
           }
           .demo-page-body > *,
-          .demo-page-body [data-aeliqo-node-id] {
+          .demo-page-body [data-varendo-node-id] {
             min-width: 0;
           }
           .demo-page-nav {

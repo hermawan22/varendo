@@ -1,9 +1,9 @@
 import type { InteractionState, ResultRef, Scalar, SemanticType } from '@varendo/core';
 import { validateScalar } from '@varendo/core';
-import type { AeliqoSelectionScope } from '../data/selection-summary.js';
+import type { VarendoSelectionScope } from '../data/selection-summary.js';
 import { stableDataRecordKey } from '../data/shared.js';
-import type { AeliqoFilterChangeDetail, AeliqoFilterPredicate } from '../data/types.js';
-import type { AeliqoDataResolvedNode } from './data-registry.js';
+import type { VarendoFilterChangeDetail, VarendoFilterPredicate } from '../data/types.js';
+import type { VarendoDataResolvedNode } from './data-registry.js';
 import { allowedKeys, COMPARISON_OPERATORS } from './data-registry-common.js';
 import {
   exactKeys,
@@ -15,7 +15,7 @@ import {
   selectionPort,
 } from './data-renderer-shared.js';
 
-export function validScopeDetail(value: unknown, node: AeliqoDataResolvedNode): boolean {
+export function validScopeDetail(value: unknown, node: VarendoDataResolvedNode): boolean {
   if (value === undefined) return true;
   const scope = exactRecord(
     value,
@@ -34,7 +34,7 @@ function validScopeCounts(scope: Record<string, unknown>): boolean {
   return true;
 }
 
-function validScopeDigest(scope: Record<string, unknown>, node: AeliqoDataResolvedNode): boolean {
+function validScopeDigest(scope: Record<string, unknown>, node: VarendoDataResolvedNode): boolean {
   if (!Object.hasOwn(scope, 'populationDigest')) return true;
   return typeof scope.populationDigest === 'string' && scope.populationDigest === node.scope.populationDigest;
 }
@@ -49,7 +49,7 @@ function validScopeLabel(scope: Record<string, unknown>): boolean {
 }
 
 export function selectedKeys(
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   interaction: InteractionState | undefined,
 ): readonly string[] {
   const selection = validatedSelection(node, interaction);
@@ -57,11 +57,11 @@ export function selectedKeys(
 }
 
 export function selectedSummary(
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   interaction: InteractionState | undefined,
 ): {
   readonly keys: readonly string[];
-  readonly scope?: AeliqoSelectionScope;
+  readonly scope?: VarendoSelectionScope;
 } {
   const selection = validatedSelection(node, interaction);
   if (selection === undefined || selection.mode === 'clear') return { keys: [] };
@@ -81,9 +81,9 @@ export function selectedSummary(
 }
 
 export function currentFilter(
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   interaction: InteractionState | undefined,
-): AeliqoFilterChangeDetail | undefined {
+): VarendoFilterChangeDetail | undefined {
   try {
     const payload = interactionPayload(node, interaction, 'filter', 'filter');
     if (payload === undefined || payload.outputId !== node.result.ref.outputId || !Array.isArray(payload.predicates))
@@ -98,19 +98,19 @@ export function currentFilter(
   }
 }
 
-function filterPredicate(predicates: unknown[]): AeliqoFilterPredicate | undefined {
+function filterPredicate(predicates: unknown[]): VarendoFilterPredicate | undefined {
   if (predicates.length === 0) return undefined;
-  if (predicates.length === 1) return predicates[0] as AeliqoFilterPredicate;
-  return { op: 'and', predicates: predicates as AeliqoFilterPredicate[] };
+  if (predicates.length === 1) return predicates[0] as VarendoFilterPredicate;
+  return { op: 'and', predicates: predicates as VarendoFilterPredicate[] };
 }
 
 export function configuredPredicate(
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   key: 'predicate' | 'inherited',
-): AeliqoFilterPredicate | undefined {
+): VarendoFilterPredicate | undefined {
   try {
     const candidate = node.config.values[key];
-    return validatePredicate(candidate, node) ? (candidate as AeliqoFilterPredicate) : undefined;
+    return validatePredicate(candidate, node) ? (candidate as VarendoFilterPredicate) : undefined;
   } catch {
     return undefined;
   }
@@ -127,19 +127,19 @@ type ValidatedSelection =
   | {
       readonly mode: 'predicate';
       readonly entity: string;
-      readonly predicate: AeliqoFilterPredicate;
+      readonly predicate: VarendoFilterPredicate;
       readonly queryDigest: string;
       readonly populationDigest: string;
     };
 
-function validPopulationDigest(node: AeliqoDataResolvedNode): string | undefined {
+function validPopulationDigest(node: VarendoDataResolvedNode): string | undefined {
   return typeof node.scope.populationDigest === 'string' && node.scope.populationDigest.length > 0
     ? node.scope.populationDigest
     : undefined;
 }
 
 function validatedSelection(
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   interaction: InteractionState | undefined,
 ): ValidatedSelection | undefined {
   const payload = interactionPayload(node, interaction, 'selection', 'selection');
@@ -154,7 +154,7 @@ function validatedSelection(
 
 function validateSelectionMode(
   selection: Record<string, unknown>,
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   entity: string,
 ): ValidatedSelection | undefined {
   switch (selection.mode) {
@@ -175,7 +175,7 @@ function validClearSelection(selection: Record<string, unknown>): boolean {
 
 function idsSelection(
   selection: Record<string, unknown>,
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   entity: string,
 ): ValidatedSelection | undefined {
   if (!allowedKeys(selection, ['mode', 'entity', 'keys', 'result'])) return undefined;
@@ -187,7 +187,7 @@ function idsSelection(
 
 function predicateSelection(
   selection: Record<string, unknown>,
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   entity: string,
 ): ValidatedSelection | undefined {
   if (!allowedKeys(selection, ['mode', 'entity', 'predicate', 'queryDigest', 'populationDigest'])) return undefined;
@@ -199,7 +199,7 @@ function predicateSelection(
   return {
     mode: 'predicate',
     entity,
-    predicate: selection.predicate as AeliqoFilterPredicate,
+    predicate: selection.predicate as VarendoFilterPredicate,
     queryDigest,
     populationDigest,
   };
@@ -215,7 +215,7 @@ function normalizedScalar(value: unknown): Scalar | undefined {
 }
 
 export function validKeys(
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   keys: readonly string[],
   interaction: InteractionState | undefined,
   entity: string,
@@ -237,12 +237,12 @@ export function validKeys(
 }
 
 interface PredicateValidationContext {
-  readonly fields: ReadonlyMap<string, AeliqoDataResolvedNode['result']['fields'][number]>;
+  readonly fields: ReadonlyMap<string, VarendoDataResolvedNode['result']['fields'][number]>;
   readonly allowedFields: ReadonlySet<string>;
   readonly seen: WeakSet<object>;
 }
 
-export function validatePredicate(value: unknown, node: AeliqoDataResolvedNode): boolean {
+export function validatePredicate(value: unknown, node: VarendoDataResolvedNode): boolean {
   try {
     const fields = new Map(node.result.fields.map((field) => [field.id, field]));
     const allowedFields = node.config.fields.length === 0 ? new Set(fields.keys()) : new Set(node.config.fields);
@@ -317,7 +317,7 @@ function validLeafPredicate(predicate: Record<string, unknown>, context: Predica
 function predicateField(
   predicate: Record<string, unknown>,
   context: PredicateValidationContext,
-): AeliqoDataResolvedNode['result']['fields'][number] | undefined {
+): VarendoDataResolvedNode['result']['fields'][number] | undefined {
   if (typeof predicate.field !== 'string') return undefined;
   if (!context.allowedFields.has(predicate.field)) return undefined;
   if (Object.hasOwn(predicate, 'entity') && predicate.entity !== undefined) return undefined;
@@ -346,7 +346,7 @@ function validScalar(value: unknown, fieldType: SemanticType): boolean {
   return scalar !== undefined && validateScalar(scalar, fieldType).ok;
 }
 
-export function hasMore(node: AeliqoDataResolvedNode): boolean {
+export function hasMore(node: VarendoDataResolvedNode): boolean {
   const population =
     node.result.counts.population.kind === 'exact' ? node.result.counts.population.value : node.scope.filteredTotal;
   return Number.isSafeInteger(population) && (population as number) > node.rows.length;

@@ -1,6 +1,6 @@
 import { scalarIdentity, validateScalar, type Outcome, type Result, type Scalar } from '@varendo/core';
-import type { AeliqoDataRecord } from '../data/index.js';
-import type { AeliqoValidatedBinding } from './data-registry-types.js';
+import type { VarendoDataRecord } from '../data/index.js';
+import type { VarendoValidatedBinding } from './data-registry-types.js';
 import { allowedKeys, failure, fieldMap, object } from './data-registry-common.js';
 
 export interface DeltaObservationInput {
@@ -9,7 +9,7 @@ export interface DeltaObservationInput {
 }
 
 export interface SelectedRow {
-  readonly row: AeliqoDataRecord;
+  readonly row: VarendoDataRecord;
   readonly index: number;
 }
 
@@ -41,7 +41,7 @@ export function aliasedObservation(
   };
 }
 
-export function rowIdentity(row: AeliqoDataRecord, result: Result): Outcome<string> {
+export function rowIdentity(row: VarendoDataRecord, result: Result): Outcome<string> {
   const fields = fieldMap(result);
   const parts: string[] = [];
   for (const id of result.identity) {
@@ -148,7 +148,7 @@ export function observationSelector(
   return { ok: true, value: observation.selector };
 }
 
-function findRowIndex(requested: Readonly<Record<string, Scalar>>, binding: AeliqoValidatedBinding): Outcome<number> {
+function findRowIndex(requested: Readonly<Record<string, Scalar>>, binding: VarendoValidatedBinding): Outcome<number> {
   const requestedKey = identityKey(requested, binding.result);
   if (!requestedKey.ok) return requestedKey;
   for (let index = 0; index < binding.rows.length; index += 1) {
@@ -160,7 +160,7 @@ function findRowIndex(requested: Readonly<Record<string, Scalar>>, binding: Aeli
 
 export function selectOne(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
+  binding: VarendoValidatedBinding,
 ): Outcome<SelectedRow> {
   if (binding.rows.length === 0) {
     return failure('binding', 'The authorized Result has no supplied row for a scalar view.');

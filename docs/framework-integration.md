@@ -15,17 +15,17 @@ checks.
 
 Install `@varendo/web`, register elements once at the application boundary, and
 set typed properties on the element. A normal DOM listener receives the typed
-`aeliqo-input-change` event; a native `FormData` submission remains available.
+`varendo-input-change` event; a native `FormData` submission remains available.
 
 ```ts
-import { registerAeliqoElements } from '@varendo/web';
-import { AeliqoInputChangeEvent, type AeliqoTextFieldElement } from '@varendo/web/inputs';
+import { registerVarendoElements } from '@varendo/web';
+import { VarendoInputChangeEvent, type VarendoTextFieldElement } from '@varendo/web/inputs';
 
-registerAeliqoElements();
-const input = document.querySelector<AeliqoTextFieldElement>('aeliqo-text-field');
+registerVarendoElements();
+const input = document.querySelector<VarendoTextFieldElement>('varendo-text-field');
 if (!input) throw new Error('Input is missing');
-input.addEventListener('aeliqo-input-change', (event) => {
-  if (event instanceof AeliqoInputChangeEvent) {
+input.addEventListener('varendo-input-change', (event) => {
+  if (event instanceof VarendoInputChangeEvent) {
     input.value = event.detail.value;
   }
 });
@@ -34,24 +34,24 @@ input.addEventListener('aeliqo-input-change', (event) => {
 ## React
 
 Import wrappers from their family subpaths. Call
-`registerAeliqoReactElements()` once in the browser entry. React properties
+`registerVarendoReactElements()` once in the browser entry. React properties
 are controlled by the host and custom-element events become typed callback
 props.
 
 ```tsx
 import { useState } from 'react';
-import { AeliqoTextField } from '@varendo/react/inputs';
-import { AeliqoTable } from '@varendo/react/data';
-import { registerAeliqoReactElements } from '@varendo/react';
+import { VarendoTextField } from '@varendo/react/inputs';
+import { VarendoTable } from '@varendo/react/data';
+import { registerVarendoReactElements } from '@varendo/react';
 
-registerAeliqoReactElements();
+registerVarendoReactElements();
 
 export function PeopleForm() {
   const [name, setName] = useState('Ada');
   return (
     <>
-      <AeliqoTextField label="Person" value={name} onValueChange={(event) => setName(event.detail.value)} />
-      <AeliqoTable caption="People" columns={[{ key: 'name', label: 'Name' }]} rows={[{ name }]} />
+      <VarendoTextField label="Person" value={name} onValueChange={(event) => setName(event.detail.value)} />
+      <VarendoTable caption="People" columns={[{ key: 'name', label: 'Name' }]} rows={[{ name }]} />
     </>
   );
 }
@@ -74,11 +74,11 @@ not read browser globals or enable SSR as a side effect.
 ```tsx
 // server entry
 import '@varendo/react/ssr';
-import { AeliqoTextField } from '@varendo/react/inputs';
+import { VarendoTextField } from '@varendo/react/inputs';
 import { renderToString } from 'react-dom/server';
 import { createElement } from 'react';
 
-const html = renderToString(createElement(AeliqoTextField, { label: 'Person', value: 'Ada' }));
+const html = renderToString(createElement(VarendoTextField, { label: 'Person', value: 'Ada' }));
 ```
 
 The production-shaped App Router recipe is in
@@ -107,23 +107,23 @@ unqualified until they have their own runnable consumer evidence.
 
 Vue embeds the same registered custom element. Keep data in Vue state and pass
 element properties through `h` or a template. Use the event name in its DOM
-form (`onAeliqo-input-change` for `aeliqo-input-change`).
+form (`onVarendo-input-change` for `varendo-input-change`).
 
 ```ts
 import { createApp, h, ref } from 'vue';
-import { registerAeliqoElements } from '@varendo/web';
-import { AeliqoInputChangeEvent } from '@varendo/web/inputs';
+import { registerVarendoElements } from '@varendo/web';
+import { VarendoInputChangeEvent } from '@varendo/web/inputs';
 
-registerAeliqoElements();
+registerVarendoElements();
 const App = {
   setup() {
     const value = ref('Vue');
     return () =>
-      h('aeliqo-text-field', {
+      h('varendo-text-field', {
         label: 'Person',
         value: value.value,
-        'onAeliqo-input-change': (event: Event) => {
-          if (event instanceof AeliqoInputChangeEvent) value.value = event.detail.value;
+        'onVarendo-input-change': (event: Event) => {
+          if (event instanceof VarendoInputChangeEvent) value.value = event.detail.value;
         },
       });
   },

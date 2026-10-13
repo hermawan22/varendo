@@ -1,5 +1,5 @@
 import { SITE_BASE } from './base.js';
-import type { AeliqoDialogElement as AeliqoDialog } from '@varendo/web/dialog';
+import type { VarendoDialogElement as VarendoDialog } from '@varendo/web/dialog';
 import type { CatalogExampleDefinition, CatalogExampleFamily } from '../../../examples/catalog/types.js';
 
 type SearchEntry = {
@@ -9,7 +9,7 @@ type SearchEntry = {
   readonly content: string;
 };
 type SearchDialog = {
-  readonly element: AeliqoDialog;
+  readonly element: VarendoDialog;
   readonly field: HTMLInputElement;
   readonly status: HTMLParagraphElement;
   readonly results: HTMLUListElement;
@@ -92,12 +92,12 @@ function searchScore(entry: SearchEntry, query: string): number | undefined {
 async function loadSearchDialog(): Promise<SearchDialog> {
   if (searchDialog !== undefined) return searchDialog;
   searchDialog = (async () => {
-    const { AeliqoDialogElement } = await import('@varendo/web/dialog');
-    const current = customElements.get('aeliqo-dialog');
-    if (current === undefined) customElements.define('aeliqo-dialog', AeliqoDialogElement);
-    else if (current !== AeliqoDialogElement) throw Error('An incompatible documentation dialog is registered.');
+    const { VarendoDialogElement } = await import('@varendo/web/dialog');
+    const current = customElements.get('varendo-dialog');
+    if (current === undefined) customElements.define('varendo-dialog', VarendoDialogElement);
+    else if (current !== VarendoDialogElement) throw Error('An incompatible documentation dialog is registered.');
 
-    const element = new AeliqoDialogElement();
+    const element = new VarendoDialogElement();
     element.id = 'docs-search-dialog';
     element.heading = 'Search documentation';
     const form = document.createElement('form');
@@ -199,12 +199,12 @@ if (new URL(location.href).searchParams.has('q')) void openSearch();
 async function mountRecordListExamples(): Promise<void> {
   const mounts = [...document.querySelectorAll<HTMLElement>('[data-example="record-list"]')];
   if (mounts.length === 0) return;
-  const { AeliqoRecordListElement } = await import('@varendo/web/record-list');
-  const current = customElements.get('aeliqo-record-list');
-  if (current === undefined) customElements.define('aeliqo-record-list', AeliqoRecordListElement);
-  else if (current !== AeliqoRecordListElement) throw Error('An incompatible record list is registered.');
+  const { VarendoRecordListElement } = await import('@varendo/web/record-list');
+  const current = customElements.get('varendo-record-list');
+  if (current === undefined) customElements.define('varendo-record-list', VarendoRecordListElement);
+  else if (current !== VarendoRecordListElement) throw Error('An incompatible record list is registered.');
   for (const mount of mounts) {
-    const list = new AeliqoRecordListElement();
+    const list = new VarendoRecordListElement();
     list.columns = [
       { key: 'name', label: 'Name' },
       { key: 'team', label: 'Team' },
@@ -216,9 +216,9 @@ async function mountRecordListExamples(): Promise<void> {
     const pre = document.createElement('pre');
     pre.tabIndex = 0;
     const code = document.createElement('code');
-    code.textContent = `import {AeliqoRecordListElement} from '@varendo/web/record-list';
-if (!customElements.get('aeliqo-record-list')) customElements.define('aeliqo-record-list', AeliqoRecordListElement);
-const list = new AeliqoRecordListElement();
+    code.textContent = `import {VarendoRecordListElement} from '@varendo/web/record-list';
+if (!customElements.get('varendo-record-list')) customElements.define('varendo-record-list', VarendoRecordListElement);
+const list = new VarendoRecordListElement();
 list.columns = [{key:'name', label:'Name'}, {key:'team', label:'Team'}];
 list.identity = ['id'];
 list.rows = [{id:'ada', name:'Ada Chen', team:'Design'}];

@@ -1,23 +1,23 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
-import { AeliqoInputChangeEvent, AeliqoInputCommitEvent } from './events.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
+import { VarendoInputChangeEvent, VarendoInputCommitEvent } from './events.js';
 import { compareDateOnly, dateOnly } from './locale.js';
 
-export type AeliqoRangeBoundary = 'inclusive' | 'exclusive';
+export type VarendoRangeBoundary = 'inclusive' | 'exclusive';
 
-export interface AeliqoDateRangeValue {
+export interface VarendoDateRangeValue {
   readonly start: string;
   readonly end: string;
-  readonly boundary: AeliqoRangeBoundary;
+  readonly boundary: VarendoRangeBoundary;
   readonly timezone: 'calendar';
   readonly calendar: 'gregory';
   readonly valid: boolean;
 }
 
 /** Two calendar dates with explicit boundary and calendar semantics. */
-export class AeliqoDateRangeElement extends AeliqoFieldElement<AeliqoDateRangeValue> {
+export class VarendoDateRangeElement extends VarendoFieldElement<VarendoDateRangeValue> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     start: { type: String, reflect: true },
     end: { type: String, reflect: true },
     defaultStart: { attribute: 'default-start', type: String },
@@ -31,7 +31,7 @@ export class AeliqoDateRangeElement extends AeliqoFieldElement<AeliqoDateRangeVa
   end = '';
   defaultStart = '';
   defaultEnd = '';
-  boundary: AeliqoRangeBoundary = 'inclusive';
+  boundary: VarendoRangeBoundary = 'inclusive';
   timezone = 'calendar' as const;
   calendar = 'gregory' as const;
 
@@ -45,7 +45,7 @@ export class AeliqoDateRangeElement extends AeliqoFieldElement<AeliqoDateRangeVa
     this.syncNative();
   }
 
-  protected override isCurrentValidationValue(value: AeliqoDateRangeValue): boolean {
+  protected override isCurrentValidationValue(value: VarendoDateRangeValue): boolean {
     const current = this.rangeValue();
     return (
       value.start === current.start &&
@@ -139,17 +139,17 @@ export class AeliqoDateRangeElement extends AeliqoFieldElement<AeliqoDateRangeVa
   };
 
   private readonly handleCommit = (): void => {
-    this.dispatchEvent(new AeliqoInputCommitEvent({ source: 'user', value: this.rangeValue() }));
+    this.dispatchEvent(new VarendoInputCommitEvent({ source: 'user', value: this.rangeValue() }));
   };
 
   private emitChange(): void {
     const value = this.rangeValue();
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value }));
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value }));
     void this.validateProposed(value);
     this.syncNative();
   }
 
-  private rangeValue(): AeliqoDateRangeValue {
+  private rangeValue(): VarendoDateRangeValue {
     return {
       start: this.start,
       end: this.end,
@@ -223,7 +223,7 @@ export class AeliqoDateRangeElement extends AeliqoFieldElement<AeliqoDateRangeVa
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       :host {
         container-type: inline-size;
@@ -231,23 +231,23 @@ export class AeliqoDateRangeElement extends AeliqoFieldElement<AeliqoDateRangeVa
       fieldset {
         border: 0;
         display: grid;
-        gap: var(--aeliqo-space-4, 0.25rem);
+        gap: var(--varendo-space-4, 0.25rem);
         margin: 0;
         min-inline-size: 0;
         padding: 0;
       }
       legend {
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
       }
       .range-inputs {
         align-items: end;
         display: grid;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
       }
       .range-inputs label {
         display: grid;
-        gap: var(--aeliqo-space-4, 0.25rem);
+        gap: var(--varendo-space-4, 0.25rem);
       }
       @container (max-width: 28rem) {
         .range-inputs {
@@ -258,7 +258,7 @@ export class AeliqoDateRangeElement extends AeliqoFieldElement<AeliqoDateRangeVa
         }
       }
       .policy {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
         font-size: 0.9em;
       }
     `,

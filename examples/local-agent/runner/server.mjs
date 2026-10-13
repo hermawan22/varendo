@@ -15,12 +15,12 @@ import { publicPromptReceipt } from './prompt-receipt.mjs';
 const runnerRoot = fileURLToPath(new URL('..', import.meta.url));
 const siteRoot = resolve(runnerRoot, 'dist');
 const host = '127.0.0.1';
-const port = Number(process.env.AELIQO_LOCAL_PORT ?? '4174');
+const port = Number(process.env.VARENDO_LOCAL_PORT ?? '4174');
 if (!Number.isSafeInteger(port) || port < 1024 || port > 65_535)
-  throw new Error('AELIQO_LOCAL_PORT must be an unprivileged TCP port.');
+  throw new Error('VARENDO_LOCAL_PORT must be an unprivileged TCP port.');
 const origin = `http://${host}:${port}`;
-const mcpToken = process.env.AELIQO_MCP_TOKEN ?? randomBytes(24).toString('base64url');
-const sessionCookie = 'aeliqo_local_session';
+const mcpToken = process.env.VARENDO_MCP_TOKEN ?? randomBytes(24).toString('base64url');
+const sessionCookie = 'varendo_local_session';
 const sessionLifetime = 15 * 60_000;
 let session;
 let activePrompt;
@@ -114,7 +114,7 @@ async function runPrompt(prompt, broker, signal) {
     goal: 'experience',
     prompt,
     instructions:
-      'Use aeliqo_context first. Choose the authorized resource whose label, fields, meanings, and views match the user request; the active resource is context, not a restriction. Call aeliqo_render only when the request can be satisfied faithfully with that metadata. If a requested field, meaning, action, or resource is absent or ambiguous, do not substitute unrelated data; explain briefly that no validated UI change can be made. Use analyze only with exact meaning IDs and revisions returned by context. When a trend view exists but no matching meaning is registered, use browse with the raw time and value fields plus preferredView trend; never invent a meaning. For a weekly time grain, explicitly set weekStartsOn to 1 (Monday); otherwise choose a day grain. Never invent HTML, code, permissions, endpoints, or data. Do not claim success without the renderer receipt.',
+      'Use varendo_context first. Choose the authorized resource whose label, fields, meanings, and views match the user request; the active resource is context, not a restriction. Call varendo_render only when the request can be satisfied faithfully with that metadata. If a requested field, meaning, action, or resource is absent or ambiguous, do not substitute unrelated data; explain briefly that no validated UI change can be made. Use analyze only with exact meaning IDs and revisions returned by context. When a trend view exists but no matching meaning is registered, use browse with the raw time and value fields plus preferredView trend; never invent a meaning. For a weekly time grain, explicitly set weekStartsOn to 1 (Monday); otherwise choose a day grain. Never invent HTML, code, permissions, endpoints, or data. Do not claim success without the renderer receipt.',
     policy: {
       // The host enforces this sequence, so the provider can keep tool_choice on auto.
       requiredOperationSequence: [{ operation: 'catalog.read', acceptedStates: ['accepted'] }],
@@ -141,7 +141,7 @@ async function runPrompt(prompt, broker, signal) {
 
 const mcpResource = new URL('/mcp', origin);
 const mcpHandler = createMcpHttpHandler({
-  name: 'aeliqo-local-agent',
+  name: 'varendo-local-agent',
   version: manifest.version,
   allowedHostnames: [host, 'localhost'],
   allowedOriginHostnames: [host, 'localhost'],
@@ -153,7 +153,7 @@ const mcpHandler = createMcpHttpHandler({
       return new Response(JSON.stringify({ error: 'invalid_token' }), { status: 401 });
     return {
       token,
-      clientId: 'aeliqo-local-agent',
+      clientId: 'varendo-local-agent',
       scopes: ['mcp'],
       expiresAt: Math.floor(session.broker.expiresAt / 1000),
       resource: mcpResource,
@@ -229,7 +229,7 @@ async function handleSessionRoute(request, response) {
     sendJson(response, 406, { error: 'json-accept-required' });
     return;
   }
-  if (request.headers['x-aeliqo-session-bootstrap'] !== '1') {
+  if (request.headers['x-varendo-session-bootstrap'] !== '1') {
     sendJson(response, 403, { error: 'session-bootstrap-required' });
     return;
   }
@@ -401,27 +401,27 @@ async function handleStaticRoute(request, response, url) {
 
 const routeHandlers = [
   {
-    matches: (request, url) => matchesRoute(request, url, '/api/aeliqo/session', 'GET'),
+    matches: (request, url) => matchesRoute(request, url, '/api/varendo/session', 'GET'),
     handle: handleSessionRoute,
   },
   {
-    matches: (request, url) => matchesRoute(request, url, '/api/aeliqo/events', 'GET'),
+    matches: (request, url) => matchesRoute(request, url, '/api/varendo/events', 'GET'),
     handle: handleEventsRoute,
   },
   {
-    matches: (request, url) => matchesRoute(request, url, '/api/aeliqo/ack', 'POST'),
+    matches: (request, url) => matchesRoute(request, url, '/api/varendo/ack', 'POST'),
     handle: handleAcknowledgmentRoute,
   },
   {
-    matches: (request, url) => matchesRoute(request, url, '/api/aeliqo/prompt', 'POST'),
+    matches: (request, url) => matchesRoute(request, url, '/api/varendo/prompt', 'POST'),
     handle: handlePromptRoute,
   },
   {
-    matches: (request, url) => matchesRoute(request, url, '/api/aeliqo/disconnect', 'POST'),
+    matches: (request, url) => matchesRoute(request, url, '/api/varendo/disconnect', 'POST'),
     handle: handleDisconnectRoute,
   },
   {
-    matches: (request, url) => matchesRoute(request, url, '/api/aeliqo/bridge', 'POST'),
+    matches: (request, url) => matchesRoute(request, url, '/api/varendo/bridge', 'POST'),
     handle: handleBridgeRoute,
   },
   { matches: (_request, url) => url.pathname === '/mcp', handle: handleMcpRoute },
@@ -463,7 +463,7 @@ if (!existsSync(resolve(siteRoot, 'index.html'))) throw new Error('Run pnpm buil
 server.listen(port, host, () => {
   process.stderr.write(`Varendo local agent: ${origin}/\n`);
   process.stderr.write(`MCP HTTP: ${origin}/mcp (Bearer ${mcpToken})\n`);
-  process.stderr.write(`MCP stdio: AELIQO_LOCAL_URL=${origin} AELIQO_MCP_TOKEN=${mcpToken} pnpm mcp:stdio\n`);
+  process.stderr.write(`MCP stdio: VARENDO_LOCAL_URL=${origin} VARENDO_MCP_TOKEN=${mcpToken} pnpm mcp:stdio\n`);
 });
 
 function shutdown() {

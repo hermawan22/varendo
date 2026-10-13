@@ -2,7 +2,7 @@ import { html, type TemplateResult } from 'lit';
 import type { Result } from '@varendo/core';
 import type { ValidatedPresentation } from '@varendo/core/presentation';
 import { dataStatusMessage, materializedDataStatus, scopeText } from '../data/shared.js';
-import type { AeliqoChartSeries, AeliqoTableRow } from '../types.js';
+import type { VarendoChartSeries, VarendoTableRow } from '../types.js';
 import {
   decimalText,
   numericValue,
@@ -12,12 +12,12 @@ import {
   text,
   trendSummary,
 } from './element-helpers.js';
-import type { AeliqoRegionResult } from './types.js';
+import type { VarendoRegionResult } from './types.js';
 
 type ResolvedNode = ValidatedPresentation['nodes'][number];
 
 function localizedTrendSummary(
-  bound: AeliqoRegionResult | undefined,
+  bound: VarendoRegionResult | undefined,
   result: Result | undefined,
   locale: string | undefined,
 ): string {
@@ -36,7 +36,7 @@ function trendTitle(values: Record<string, unknown>, locale: string | undefined)
 export function renderTrendNode(
   resolved: ResolvedNode,
   values: Record<string, unknown>,
-  bound: AeliqoRegionResult | undefined,
+  bound: VarendoRegionResult | undefined,
   locale: string | undefined,
 ): TemplateResult {
   const labelField = text(values.labelField);
@@ -45,7 +45,7 @@ export function renderTrendNode(
     : [];
   const rawSeries = Array.isArray(values.series) ? values.series : [];
   const rows = bound?.rows ?? [];
-  const series: AeliqoChartSeries[] = rawSeries.flatMap((item) => {
+  const series: VarendoChartSeries[] = rawSeries.flatMap((item) => {
     const candidate = record(item);
     if (candidate === undefined) return [];
     const field = text(candidate.field);
@@ -56,7 +56,7 @@ export function renderTrendNode(
       string,
       {
         readonly values: readonly unknown[];
-        readonly rows: { readonly row: AeliqoTableRow; readonly index: number; readonly time: number }[];
+        readonly rows: { readonly row: VarendoTableRow; readonly index: number; readonly time: number }[];
       }
     >();
     rows.forEach((row, index) => {
@@ -99,14 +99,14 @@ export function renderTrendNode(
       };
     });
   });
-  return html`<aeliqo-chart
-    data-aeliqo-node-id=${resolved.node.id}
-    data-aeliqo-theme="inherit"
+  return html`<varendo-chart
+    data-varendo-node-id=${resolved.node.id}
+    data-varendo-theme="inherit"
     lang=${locale ?? ''}
     .title=${trendTitle(values, locale)}
     .summary=${localizedTrendSummary(bound, resolved.result, locale)}
     .scope=${scopeText(bound?.scope, locale) ?? ''}
     .series=${series}
     .points=${series[0]?.points ?? []}
-  ></aeliqo-chart>`;
+  ></varendo-chart>`;
 }

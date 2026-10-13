@@ -1,16 +1,16 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
-import { aeliqoNavigationStyles, emitAction } from './shared.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
+import { varendoNavigationStyles, emitAction } from './shared.js';
 
-export interface AeliqoTreeNavNode {
+export interface VarendoTreeNavNode {
   readonly id: string;
   readonly label: string;
-  readonly children?: readonly AeliqoTreeNavNode[];
+  readonly children?: readonly VarendoTreeNavNode[];
   readonly disabled?: boolean;
 }
 
 interface FlatNode {
-  readonly node: AeliqoTreeNavNode;
+  readonly node: VarendoTreeNavNode;
   readonly level: number;
   readonly parentId?: string;
 }
@@ -78,7 +78,7 @@ function focusTargetId(visible: readonly FlatNode[], selectedId: string, focused
   return visible[0]?.node.id ?? '';
 }
 
-export class AeliqoTreeNavElement extends AeliqoFoundationElement {
+export class VarendoTreeNavElement extends VarendoFoundationElement {
   static readonly properties = {
     nodes: { attribute: false },
     expandedIds: { attribute: false },
@@ -86,27 +86,27 @@ export class AeliqoTreeNavElement extends AeliqoFoundationElement {
     label: { type: String },
   };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
-    aeliqoNavigationStyles,
+    ...varendoFoundationThemeStyles,
+    varendoNavigationStyles,
     css`
       [part='tree'] {
         list-style: none;
         margin: 0;
-        padding: var(--aeliqo-space-4, 0.25rem);
+        padding: var(--varendo-space-4, 0.25rem);
       }
       [role='treeitem'] {
         align-items: center;
-        border-radius: var(--aeliqo-radius-small, 0.375rem);
+        border-radius: var(--varendo-radius-small, 0.375rem);
         cursor: pointer;
         display: flex;
-        gap: var(--aeliqo-space-8, 0.5rem);
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        padding-block: var(--aeliqo-space-4, 0.25rem);
-        padding-inline: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        padding-block: var(--varendo-space-4, 0.25rem);
+        padding-inline: var(--varendo-space-8, 0.5rem);
       }
       [role='treeitem'][aria-selected='true'] {
-        background: color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 14%, transparent);
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        background: color-mix(in srgb, var(--varendo-color-accent, #4338ca) 14%, transparent);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
       }
       [role='treeitem'][aria-disabled='true'] {
         cursor: not-allowed;
@@ -130,15 +130,15 @@ export class AeliqoTreeNavElement extends AeliqoFoundationElement {
         cursor: pointer;
         display: inline-grid;
         font: inherit;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        min-inline-size: var(--aeliqo-control-min-target, 2.75rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        min-inline-size: var(--varendo-control-min-target, 2.75rem);
         padding: 0;
         place-items: center;
       }
     `,
   ];
 
-  nodes: readonly AeliqoTreeNavNode[] = [];
+  nodes: readonly VarendoTreeNavNode[] = [];
   expandedIds: readonly string[] = [];
   selectedId = '';
   label = 'Navigation tree';
@@ -187,7 +187,7 @@ export class AeliqoTreeNavElement extends AeliqoFoundationElement {
     if (this.treeError) return [];
     const result: FlatNode[] = [];
     const seenIds = new Set<string>();
-    const visit = (nodes: readonly AeliqoTreeNavNode[], level: number, parentId?: string): void => {
+    const visit = (nodes: readonly VarendoTreeNavNode[], level: number, parentId?: string): void => {
       for (const node of nodes) {
         if (result.length >= MAX_TREE_NODES || seenIds.has(node.id)) return;
         seenIds.add(node.id);
@@ -198,27 +198,27 @@ export class AeliqoTreeNavElement extends AeliqoFoundationElement {
     visit(this.nodes, 1);
     return result;
   }
-  private select(node: AeliqoTreeNavNode): void {
+  private select(node: VarendoTreeNavNode): void {
     if (node.disabled) return;
-    if (!emitAction(this, 'aeliqo-tree-nav-select', { id: node.id, previousId: this.selectedId })) return;
+    if (!emitAction(this, 'varendo-tree-nav-select', { id: node.id, previousId: this.selectedId })) return;
     this.focusedId = node.id;
     this.selectedId = node.id;
   }
-  private toggle(node: AeliqoTreeNavNode): void {
+  private toggle(node: VarendoTreeNavNode): void {
     if (node.disabled) return;
     const expanded = this.isExpanded(node.id);
-    if (!emitAction(this, 'aeliqo-tree-nav-expand', { id: node.id, expanded: !expanded })) return;
+    if (!emitAction(this, 'varendo-tree-nav-expand', { id: node.id, expanded: !expanded })) return;
     if (expanded) this.internalExpanded.delete(node.id);
     else this.internalExpanded.add(node.id);
     this.focusedId = node.id;
     this.renderRoot.querySelector<HTMLElement>(`[data-tree-id="${CSS.escape(node.id)}"]`)?.focus();
     this.requestUpdate();
   }
-  private toggleFromPointer(event: Event, node: AeliqoTreeNavNode): void {
+  private toggleFromPointer(event: Event, node: VarendoTreeNavNode): void {
     event.stopPropagation();
     this.toggle(node);
   }
-  private focusNode(node: AeliqoTreeNavNode): void {
+  private focusNode(node: VarendoTreeNavNode): void {
     this.focusedId = node.id;
   }
   private keydown(event: KeyboardEvent, flat: FlatNode, index: number): void {
@@ -243,14 +243,14 @@ export class AeliqoTreeNavElement extends AeliqoFoundationElement {
     }
   }
 
-  private handleArrowRight(event: KeyboardEvent, node: AeliqoTreeNavNode): void {
+  private handleArrowRight(event: KeyboardEvent, node: VarendoTreeNavNode): void {
     event.preventDefault();
     if (!node.children?.length) return;
     if (!this.isExpanded(node.id)) return this.toggle(node);
     this.focusTreeNode(node.children[0]!.id);
   }
 
-  private handleArrowLeft(event: KeyboardEvent, parentId: string | undefined, node: AeliqoTreeNavNode): void {
+  private handleArrowLeft(event: KeyboardEvent, parentId: string | undefined, node: VarendoTreeNavNode): void {
     event.preventDefault();
     if (node.children?.length && this.isExpanded(node.id)) return this.toggle(node);
     if (parentId !== undefined) this.focusTreeNode(parentId);
@@ -263,7 +263,7 @@ export class AeliqoTreeNavElement extends AeliqoFoundationElement {
     if (target !== undefined) this.focusTreeNode(target.node.id);
   }
 
-  private selectFromKeyboard(event: KeyboardEvent, node: AeliqoTreeNavNode): void {
+  private selectFromKeyboard(event: KeyboardEvent, node: VarendoTreeNavNode): void {
     event.preventDefault();
     this.select(node);
   }
@@ -273,7 +273,7 @@ export class AeliqoTreeNavElement extends AeliqoFoundationElement {
     this.renderRoot.querySelector<HTMLElement>(`[data-tree-id="${CSS.escape(id)}"]`)?.focus();
   }
 
-  private expandedAttribute(node: AeliqoTreeNavNode, hasChildren: boolean) {
+  private expandedAttribute(node: VarendoTreeNavNode, hasChildren: boolean) {
     if (!hasChildren) return nothing;
     return this.isExpanded(node.id) ? 'true' : 'false';
   }
@@ -290,7 +290,7 @@ export class AeliqoTreeNavElement extends AeliqoFoundationElement {
       aria-expanded=${this.expandedAttribute(node, hasChildren)}
       aria-disabled=${node.disabled ? 'true' : nothing}
       tabindex=${node.id === focusId ? '0' : '-1'}
-      style=${`padding-inline-start: calc(var(--aeliqo-space-8, 0.5rem) + ${(flat.level - 1) * 1.25}rem)`}
+      style=${`padding-inline-start: calc(var(--varendo-space-8, 0.5rem) + ${(flat.level - 1) * 1.25}rem)`}
       @focus=${() => this.focusNode(node)}
       @click=${() => this.select(node)}
       @keydown=${(event: KeyboardEvent) =>

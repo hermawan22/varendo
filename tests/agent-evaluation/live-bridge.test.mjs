@@ -7,16 +7,16 @@ test('live bridge retains the exact rejected proposal and diagnostic without a p
   const page = {
     async evaluate(_callback, operation) {
       assert.equal(operation.operation, 'invoke');
-      assert.deepEqual(operation.args, ['aeliqo_render', proposal, 'j2-invalid']);
+      assert.deepEqual(operation.args, ['varendo_render', proposal, 'j2-invalid']);
       return { ok: true, value: { state: 'failed', diagnostics: [{ code: 'live.j2-invalid' }] } };
     },
   };
   const trace = [];
-  const result = await bridge(page, 'J2', trace).invoke('aeliqo_render', proposal, { requestId: 'j2-invalid' });
+  const result = await bridge(page, 'J2', trace).invoke('varendo_render', proposal, { requestId: 'j2-invalid' });
   assert.equal(result.value.state, 'failed');
   assert.deepEqual(trace, [
     {
-      operation: 'aeliqo_render',
+      operation: 'varendo_render',
       requestId: 'j2-invalid',
       input: proposal,
       state: 'failed',

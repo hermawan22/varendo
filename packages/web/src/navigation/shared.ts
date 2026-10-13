@@ -1,20 +1,20 @@
 import { css } from 'lit';
 
-export const aeliqoNavigationStyles = css`
+export const varendoNavigationStyles = css`
   :host {
-    color: var(--aeliqo-color-text, #111827);
+    color: var(--varendo-color-text, #111827);
     display: block;
     max-inline-size: 100%;
   }
 
   :is(button, a, [role='treeitem'], [role='tab']):focus-visible {
-    outline: var(--aeliqo-focus-width, 0.1875rem) solid var(--aeliqo-color-focus, #4338ca);
-    outline-offset: var(--aeliqo-focus-offset, 0.125rem);
-    box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--aeliqo-color-focus, #4338ca) 16%, transparent);
+    outline: var(--varendo-focus-width, 0.1875rem) solid var(--varendo-color-focus, #4338ca);
+    outline-offset: var(--varendo-focus-offset, 0.125rem);
+    box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--varendo-color-focus, #4338ca) 16%, transparent);
   }
 
   button {
-    border-radius: var(--aeliqo-radius-small, 0.375rem);
+    border-radius: var(--varendo-radius-small, 0.375rem);
     color: inherit;
     font: inherit;
   }
@@ -23,16 +23,16 @@ export const aeliqoNavigationStyles = css`
   [role='treeitem']:not([aria-disabled='true']):hover,
   [role='tab']:not(:disabled):hover,
   [role='menuitem']:not([aria-disabled='true']):hover {
-    background-color: var(--_aeliqo-accent-subtle, var(--aeliqo-color-surface, #f8fafc));
+    background-color: var(--_varendo-accent-subtle, var(--varendo-color-surface, #f8fafc));
   }
 
   :is([role='tab'], [role='treeitem'])[aria-selected='true'] {
-    background-color: var(--_aeliqo-accent-selected, var(--aeliqo-color-surface, #f8fafc));
+    background-color: var(--_varendo-accent-selected, var(--varendo-color-surface, #f8fafc));
   }
 
   button:disabled,
   [aria-disabled='true'] {
-    color: var(--aeliqo-color-muted, #4b5563);
+    color: var(--varendo-color-muted, #4b5563);
     cursor: not-allowed;
   }
 `;

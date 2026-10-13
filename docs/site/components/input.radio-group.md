@@ -7,9 +7,9 @@ contract: 'One selected option; native semantics or APG-equivalent keyboard beha
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -30,19 +30,19 @@ available to form submission. Disabled options stay visible, and the host decide
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 Changing `value` or replacing `validator` cancels validation for the
 previous value and clears its validator-owned error. An independently supplied
@@ -53,11 +53,11 @@ ignored.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -65,9 +65,9 @@ Vertical orientation suits narrow forms. Let long option labels wrap without cha
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -76,7 +76,7 @@ Vertical orientation suits narrow forms. Let long option labels wrap without cha
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

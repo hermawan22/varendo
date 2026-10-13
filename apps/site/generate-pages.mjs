@@ -14,7 +14,7 @@ import { RELEASE_VERSION } from '../../scripts/release/metadata.mjs';
 const root = dirname(new URL(import.meta.url).pathname);
 const siteRoot = root;
 const sourceReleaseStatus = JSON.parse(readFileSync(resolve(root, '../../release-metadata.json'), 'utf8')).status;
-const releaseStatus = process.env.AELIQO_EXPORT_VERIFIED_VERSION === RELEASE_VERSION ? 'stable' : sourceReleaseStatus;
+const releaseStatus = process.env.VARENDO_EXPORT_VERIFIED_VERSION === RELEASE_VERSION ? 'stable' : sourceReleaseStatus;
 if (releaseStatus !== 'candidate' && releaseStatus !== 'stable')
   throw new Error('Site release status must be candidate or stable.');
 export const generatedRoot = resolve(root, 'artifacts/site-source');
@@ -234,7 +234,7 @@ function pageDocument(page, shell, docsPages) {
   const layout = pageLayout(page, isDocs);
   const canonicalPath = page.surface === 'docs' && page.path === '/' ? '/docs/' : page.path;
   const canonicalUrl = `https://hermawan22.github.io/varendo${canonicalPath}`;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(page.title)} — Varendo</title><meta name="description" content="${escape(page.description)}"><link rel="canonical" href="${escape(canonicalUrl)}"><meta property="og:title" content="${escape(page.title)} — Varendo"><meta property="og:description" content="${escape(page.description)}"><meta property="og:url" content="${escape(canonicalUrl)}"><meta property="og:type" content="website">${socialMeta(`${page.title} — Varendo`, page.description)}<link rel="icon" href="/aeliqo.png"><link rel="stylesheet" href="/src/site.css"></head><body${pageAttributes(page, isDocs)}>${header}${shell.analyticsConsent}<main id="main" class="shell ${layout}" tabindex="-1">${navigation}${content.html}${toc}</main>${shell.footer}<script type="module" src="/src/site.ts"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(page.title)} — Varendo</title><meta name="description" content="${escape(page.description)}"><link rel="canonical" href="${escape(canonicalUrl)}"><meta property="og:title" content="${escape(page.title)} — Varendo"><meta property="og:description" content="${escape(page.description)}"><meta property="og:url" content="${escape(canonicalUrl)}"><meta property="og:type" content="website">${socialMeta(`${page.title} — Varendo`, page.description)}<link rel="icon" href="/varendo.png"><link rel="stylesheet" href="/src/site.css"></head><body${pageAttributes(page, isDocs)}>${header}${shell.analyticsConsent}<main id="main" class="shell ${layout}" tabindex="-1">${navigation}${content.html}${toc}</main>${shell.footer}<script type="module" src="/src/site.ts"></script></body></html>`;
 }
 
 async function writeGeneratedPages(all, shell, docsPages) {
@@ -344,9 +344,9 @@ export async function generatePages() {
     releaseStatus === 'stable'
       ? `Try the local demo with synthetic data. The React starter uses the published ${RELEASE_VERSION} packages.`
       : 'Local demo with synthetic data. See the quickstart for installation and release status.';
-  const home = (await readFile(join(siteRoot, 'index.html'), 'utf8')).replace('{{AELIQO_RELEASE_NOTE}}', releaseNote);
+  const home = (await readFile(join(siteRoot, 'index.html'), 'utf8')).replace('{{VARENDO_RELEASE_NOTE}}', releaseNote);
   await writeFile(join(generatedRoot, 'index.html'), home);
-  await copyFile(join(siteRoot, 'public/aeliqo.png'), join(generatedPublic, 'aeliqo.png'));
+  await copyFile(join(siteRoot, 'public/varendo.png'), join(generatedPublic, 'varendo.png'));
   await copyFile(join(siteRoot, 'public/og-image.png'), join(generatedPublic, 'og-image.png'));
   const shell = extractSiteShell(home);
   const { docs, docsPages, all } = await loadSitePages();

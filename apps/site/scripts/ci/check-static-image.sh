@@ -5,8 +5,8 @@ image="${1:?usage: check-static-image.sh IMAGE [REVISION]}"
 revision="${2:-unknown}"
 sdk_revision="${3:-unknown}"
 sdk_version="${4:-unknown}"
-container="aeliqo-static-$$"
-temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/aeliqo-image-check.XXXXXX")"
+container="varendo-static-$$"
+temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/varendo-image-check.XXXXXX")"
 
 test "$(docker image inspect --format '{{ index .Config.Labels "org.opencontainers.image.revision" }}' "$image")" = "$revision"
 
@@ -35,7 +35,7 @@ done
 
 curl --fail --silent "$base/healthz" | grep -qx '{"status":"ok"}'
 version="$(curl --fail --silent "$base/version")"
-printf '%s\n' "$version" | grep -Fq '"product":"aeliqo-site"'
+printf '%s\n' "$version" | grep -Fq '"product":"varendo-site"'
 printf '%s\n' "$version" | grep -Fq '"siteRevision":"'"$revision"'"'
 printf '%s\n' "$version" | grep -Fq '"sdkRevision":"'"$sdk_revision"'"'
 printf '%s\n' "$version" | grep -Fq '"sdkVersion":"'"$sdk_version"'"'

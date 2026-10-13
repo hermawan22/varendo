@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..', '..');
-const evidencePath = resolve(root, process.env.AELIQO_CI_EVIDENCE_PATH ?? 'artifacts/product-ci/ci.json');
+const evidencePath = resolve(root, process.env.VARENDO_CI_EVIDENCE_PATH ?? 'artifacts/product-ci/ci.json');
 const expectedRevision = process.env.GITHUB_SHA;
 
 if (!/^[a-f0-9]{40}$/u.test(expectedRevision ?? '')) {

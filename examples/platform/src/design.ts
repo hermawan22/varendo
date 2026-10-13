@@ -1,26 +1,26 @@
 import './csp-bootstrap.js';
-import { registerAeliqoElements } from '@varendo/web';
-import { AeliqoInputChangeEvent, type AeliqoTextFieldElement } from '@varendo/web/inputs';
-import type { AeliqoTableElement } from '@varendo/web/data';
-import type { AeliqoChartElement } from '@varendo/web/chart';
-import { aeliqoStandaloneThemeStyles, aeliqoLocaleAttributes, createAeliqoLocaleContext } from '@varendo/web/styles';
+import { registerVarendoElements } from '@varendo/web';
+import { VarendoInputChangeEvent, type VarendoTextFieldElement } from '@varendo/web/inputs';
+import type { VarendoTableElement } from '@varendo/web/data';
+import type { VarendoChartElement } from '@varendo/web/chart';
+import { varendoStandaloneThemeStyles, varendoLocaleAttributes, createVarendoLocaleContext } from '@varendo/web/styles';
 
 const stylesheet = document.createElement('style');
 stylesheet.nonce = 't02nonce';
-stylesheet.textContent = aeliqoStandaloneThemeStyles.cssText;
+stylesheet.textContent = varendoStandaloneThemeStyles.cssText;
 document.head.append(stylesheet);
-registerAeliqoElements();
+registerVarendoElements();
 const root = document.querySelector<HTMLElement>('#design-root')!;
-const team = document.querySelector<AeliqoTextFieldElement>('#team')!;
-const people = document.querySelector<AeliqoTableElement>('#people')!;
-const empty = document.querySelector<AeliqoTableElement>('#empty')!;
-const activity = document.querySelector<AeliqoChartElement>('#activity')!;
+const team = document.querySelector<VarendoTextFieldElement>('#team')!;
+const people = document.querySelector<VarendoTableElement>('#people')!;
+const empty = document.querySelector<VarendoTableElement>('#empty')!;
+const activity = document.querySelector<VarendoChartElement>('#activity')!;
 const locale = document.querySelector<HTMLSelectElement>('#locale')!;
 document.querySelector<HTMLSelectElement>('#theme')!.addEventListener('change', (event) => {
-  root.dataset.aeliqoTheme = (event.currentTarget as HTMLSelectElement).value;
+  root.dataset.varendoTheme = (event.currentTarget as HTMLSelectElement).value;
 });
-team.addEventListener('aeliqo-input-change', (event) => {
-  if (!(event instanceof AeliqoInputChangeEvent)) return;
+team.addEventListener('varendo-input-change', (event) => {
+  if (!(event instanceof VarendoInputChangeEvent)) return;
   team.value = event.detail.value;
   document.querySelector('#draft-status')!.textContent = `Draft: ${event.detail.value}`;
 });
@@ -60,7 +60,7 @@ const localeCopy = {
 } as const;
 
 function renderLocale() {
-  const attributes = aeliqoLocaleAttributes(createAeliqoLocaleContext(locale.value));
+  const attributes = varendoLocaleAttributes(createVarendoLocaleContext(locale.value));
   for (const [name, value] of Object.entries(attributes)) root.setAttribute(name, value);
   const copy = attributes.dir === 'rtl' ? localeCopy.ar : localeCopy.en;
   document.querySelector('#page-title')!.textContent = copy.pageTitle;

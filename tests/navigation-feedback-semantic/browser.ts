@@ -1,20 +1,20 @@
-import { AeliqoAlertElement } from '../../packages/web/src/feedback/alert.js';
-import { AeliqoDialogElement } from '../../packages/web/src/feedback/dialog.js';
-import { AeliqoDrawerElement } from '../../packages/web/src/feedback/drawer.js';
-import { AeliqoEmptyStateElement } from '../../packages/web/src/feedback/empty-state.js';
-import { AeliqoPopoverElement } from '../../packages/web/src/feedback/popover.js';
-import { AeliqoProgressElement } from '../../packages/web/src/feedback/progress.js';
-import { AeliqoSkeletonElement } from '../../packages/web/src/feedback/skeleton.js';
-import { AeliqoToastElement } from '../../packages/web/src/feedback/toast.js';
-import { AeliqoTooltipElement } from '../../packages/web/src/feedback/tooltip.js';
-import { AeliqoBreadcrumbElement } from '../../packages/web/src/navigation/breadcrumb.js';
-import { AeliqoMenuElement } from '../../packages/web/src/navigation/menu.js';
-import { AeliqoPaginationElement } from '../../packages/web/src/navigation/pagination.js';
-import { AeliqoTabsElement } from '../../packages/web/src/navigation/tabs.js';
-import { AeliqoTreeNavElement } from '../../packages/web/src/navigation/tree-nav.js';
-import { AeliqoRegionElement } from '../../packages/web/src/region/aeliqo-region.js';
+import { VarendoAlertElement } from '../../packages/web/src/feedback/alert.js';
+import { VarendoDialogElement } from '../../packages/web/src/feedback/dialog.js';
+import { VarendoDrawerElement } from '../../packages/web/src/feedback/drawer.js';
+import { VarendoEmptyStateElement } from '../../packages/web/src/feedback/empty-state.js';
+import { VarendoPopoverElement } from '../../packages/web/src/feedback/popover.js';
+import { VarendoProgressElement } from '../../packages/web/src/feedback/progress.js';
+import { VarendoSkeletonElement } from '../../packages/web/src/feedback/skeleton.js';
+import { VarendoToastElement } from '../../packages/web/src/feedback/toast.js';
+import { VarendoTooltipElement } from '../../packages/web/src/feedback/tooltip.js';
+import { VarendoBreadcrumbElement } from '../../packages/web/src/navigation/breadcrumb.js';
+import { VarendoMenuElement } from '../../packages/web/src/navigation/menu.js';
+import { VarendoPaginationElement } from '../../packages/web/src/navigation/pagination.js';
+import { VarendoTabsElement } from '../../packages/web/src/navigation/tabs.js';
+import { VarendoTreeNavElement } from '../../packages/web/src/navigation/tree-nav.js';
+import { VarendoRegionElement } from '../../packages/web/src/region/varendo-region.js';
 import { createPresentationRegistry, validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
-import type { AeliqoSemanticInteractionRequest } from '../../packages/web/src/region/types.js';
+import type { VarendoSemanticInteractionRequest } from '../../packages/web/src/region/types.js';
 import {
   navigationFeedbackPresentationContext,
   navigationFeedbackPresentationPlan,
@@ -22,21 +22,21 @@ import {
 } from './fixtures.js';
 
 const registrations: readonly [string, CustomElementConstructor][] = [
-  ['aeliqo-alert', AeliqoAlertElement],
-  ['aeliqo-dialog', AeliqoDialogElement],
-  ['aeliqo-drawer', AeliqoDrawerElement],
-  ['aeliqo-empty-state', AeliqoEmptyStateElement],
-  ['aeliqo-popover', AeliqoPopoverElement],
-  ['aeliqo-progress', AeliqoProgressElement],
-  ['aeliqo-skeleton', AeliqoSkeletonElement],
-  ['aeliqo-toast', AeliqoToastElement],
-  ['aeliqo-tooltip', AeliqoTooltipElement],
-  ['aeliqo-breadcrumb', AeliqoBreadcrumbElement],
-  ['aeliqo-menu', AeliqoMenuElement],
-  ['aeliqo-pagination', AeliqoPaginationElement],
-  ['aeliqo-tabs', AeliqoTabsElement],
-  ['aeliqo-tree-nav', AeliqoTreeNavElement],
-  ['aeliqo-region', AeliqoRegionElement],
+  ['varendo-alert', VarendoAlertElement],
+  ['varendo-dialog', VarendoDialogElement],
+  ['varendo-drawer', VarendoDrawerElement],
+  ['varendo-empty-state', VarendoEmptyStateElement],
+  ['varendo-popover', VarendoPopoverElement],
+  ['varendo-progress', VarendoProgressElement],
+  ['varendo-skeleton', VarendoSkeletonElement],
+  ['varendo-toast', VarendoToastElement],
+  ['varendo-tooltip', VarendoTooltipElement],
+  ['varendo-breadcrumb', VarendoBreadcrumbElement],
+  ['varendo-menu', VarendoMenuElement],
+  ['varendo-pagination', VarendoPaginationElement],
+  ['varendo-tabs', VarendoTabsElement],
+  ['varendo-tree-nav', VarendoTreeNavElement],
+  ['varendo-region', VarendoRegionElement],
 ];
 for (const [name, constructor] of registrations)
   if (customElements.get(name) === undefined) customElements.define(name, constructor);
@@ -49,12 +49,15 @@ const checked = validatePresentationPlan(
   registry.value,
 );
 if (!checked.ok) throw new Error(JSON.stringify(checked.diagnostics));
-const region = document.querySelector<AeliqoRegionElement>('#region');
+const region = document.querySelector<VarendoRegionElement>('#region');
 if (region === null) throw new Error('Semantic region fixture is missing.');
-const events: AeliqoSemanticInteractionRequest[] = [];
+const events: VarendoSemanticInteractionRequest[] = [];
 region.onSemanticInteraction = (request) => events.push(request);
 region.presentation = checked.value;
-Object.assign(window, { aeliqoNavigationFeedbackSemanticReady: true, aeliqoNavigationFeedbackSemanticEvents: events });
+Object.assign(window, {
+  varendoNavigationFeedbackSemanticReady: true,
+  varendoNavigationFeedbackSemanticEvents: events,
+});
 Object.assign(window, {
   reorderSemanticPopover: () => {
     const original = navigationFeedbackPresentationPlan();

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Result } from '@varendo/core';
-import { createAeliqoDataRegistry } from '../../packages/web/src/region/data-registry.js';
-import { renderAeliqoDataNode, type AeliqoDataHostRequest } from '../../packages/web/src/region/data-renderer.js';
+import { createVarendoDataRegistry } from '../../packages/web/src/region/data-registry.js';
+import { renderVarendoDataNode, type VarendoDataHostRequest } from '../../packages/web/src/region/data-renderer.js';
 
 const ref = {
   id: 'result',
@@ -57,7 +57,7 @@ const result: Result = {
   lineage: [],
 };
 const rows = [{ id: 'a', name: 'Ada', amount: { decimal: '12.50' } }];
-const registry = createAeliqoDataRegistry({ resolveEntity: () => 'person' });
+const registry = createVarendoDataRegistry({ resolveEntity: () => 'person' });
 function node(component: Parameters<typeof registry.resolve>[0]['component'], config: Record<string, unknown> = {}) {
   const resolved = registry.resolve(
     {
@@ -79,15 +79,15 @@ function source(template: unknown): string {
 describe('data renderer projection', () => {
   it('projects every validated data node to its shared owned element', () => {
     const tags = {
-      metric: 'aeliqo-metric',
-      delta: 'aeliqo-delta',
-      keyValue: 'aeliqo-key-value',
-      detail: 'aeliqo-detail',
-      recordList: 'aeliqo-record-list',
-      cardCollection: 'aeliqo-card-collection',
-      table: 'aeliqo-table',
-      filterBuilder: 'aeliqo-filter-builder',
-      selectionSummary: 'aeliqo-selection-summary',
+      metric: 'varendo-metric',
+      delta: 'varendo-delta',
+      keyValue: 'varendo-key-value',
+      detail: 'varendo-detail',
+      recordList: 'varendo-record-list',
+      cardCollection: 'varendo-card-collection',
+      table: 'varendo-table',
+      filterBuilder: 'varendo-filter-builder',
+      selectionSummary: 'varendo-selection-summary',
     };
     const configs: Record<string, Record<string, unknown>> = {
       metric: { field: 'amount' },
@@ -101,18 +101,18 @@ describe('data renderer projection', () => {
       selectionSummary: { selection: 'multiple' },
     };
     for (const component of Object.keys(tags) as (keyof typeof tags)[]) {
-      const template = renderAeliqoDataNode(node(component, configs[component]));
+      const template = renderVarendoDataNode(node(component, configs[component]));
       expect(source(template)).toContain(`<${tags[component]}`);
     }
   });
 
   it('emits canonical selection and filter payloads only through registered ports', () => {
-    const requests: AeliqoDataHostRequest[] = [];
+    const requests: VarendoDataHostRequest[] = [];
     const table = node('table', { selection: 'single' });
-    const tableTemplate = renderAeliqoDataNode(table, {
+    const tableTemplate = renderVarendoDataNode(table, {
       onRequest: (request) => requests.push(request),
     });
-    const selectionEvent = new CustomEvent('aeliqo-table-selection', {
+    const selectionEvent = new CustomEvent('varendo-table-selection', {
       detail: {
         mode: 'ids',
         entity: 'person',
@@ -129,10 +129,10 @@ describe('data renderer projection', () => {
     });
 
     const filter = node('filterBuilder', { field: 'name', outputId: 'people' });
-    const filterTemplate = renderAeliqoDataNode(filter, {
+    const filterTemplate = renderVarendoDataNode(filter, {
       onRequest: (request) => requests.push(request),
     });
-    const filterEvent = new CustomEvent('aeliqo-filter-change', {
+    const filterEvent = new CustomEvent('varendo-filter-change', {
       detail: {
         applied: true,
         predicate: {
@@ -152,12 +152,12 @@ describe('data renderer projection', () => {
   });
 
   it('passes host-controlled keyboard windows with exact result identity', () => {
-    const requests: AeliqoDataHostRequest[] = [];
+    const requests: VarendoDataHostRequest[] = [];
     const table = node('table', { mode: 'grid', virtualized: true });
-    const template = renderAeliqoDataNode(table, {
+    const template = renderVarendoDataNode(table, {
       onRequest: (request) => requests.push(request),
     });
-    const event = new CustomEvent('aeliqo-table-window', {
+    const event = new CustomEvent('varendo-table-window', {
       detail: {
         start: 1,
         count: 5,

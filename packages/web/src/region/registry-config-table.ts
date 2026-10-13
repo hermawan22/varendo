@@ -1,7 +1,7 @@
 import type { Outcome, Result, VersionRef } from '@varendo/core';
 import type { PresentationValues, ResolvedPresentationConfig } from '@varendo/core/presentation';
-import type { AeliqoPresentationRegistryOptions } from './registry-contracts.js';
-import { AELIQO_OPERATION_REFS } from './registry-contracts.js';
+import type { VarendoPresentationRegistryOptions } from './registry-contracts.js';
+import { VARENDO_OPERATION_REFS } from './registry-contracts.js';
 import { allowedKeys } from './data-registry-common.js';
 import {
   columns,
@@ -26,7 +26,7 @@ interface ValidatedTableInput {
 export function tableConfig(
   values: PresentationValues,
   result: Result | undefined,
-  resolveEntity: AeliqoPresentationRegistryOptions['resolveEntity'],
+  resolveEntity: VarendoPresentationRegistryOptions['resolveEntity'],
   defaultConfigs: WeakMap<Result, Outcome<ResolvedPresentationConfig>>,
 ): Outcome<ResolvedPresentationConfig> {
   if (result === undefined) return fail('binding', 'A table requires a bound result.');
@@ -103,10 +103,10 @@ function tableFields(columnList: TableColumns | undefined, result: Result): read
 }
 
 function defaultOperations(): readonly VersionRef[] {
-  return [AELIQO_OPERATION_REFS.read, AELIQO_OPERATION_REFS.compare, AELIQO_OPERATION_REFS.analyze];
+  return [VARENDO_OPERATION_REFS.read, VARENDO_OPERATION_REFS.compare, VARENDO_OPERATION_REFS.analyze];
 }
 
 function tableOperations(selection: TableSelection): readonly VersionRef[] {
   if (selection === 'none') return defaultOperations();
-  return [...defaultOperations(), AELIQO_OPERATION_REFS.selection];
+  return [...defaultOperations(), VARENDO_OPERATION_REFS.selection];
 }

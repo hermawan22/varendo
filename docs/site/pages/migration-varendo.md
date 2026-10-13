@@ -3,7 +3,7 @@ id: 'migration-varendo'
 path: '/ship/migration-varendo/'
 section: 'Releases'
 title: 'Aeliqo to Varendo'
-description: 'Move the adaptive UI framework from @aeliqo 0.7.1 to the separately versioned @varendo 0.1.0 package family.'
+description: 'Move the adaptive UI framework, formerly Aeliqo, from @aeliqo 0.7.1 to the separately versioned @varendo package family.'
 ---
 
 ## Migrate from 0.7 to 0.1
@@ -20,25 +20,25 @@ All five new package names are published at **0.1.0** from source `53406eeab8510
 | `@aeliqo/react`   | `@varendo/react`   |
 | `@aeliqo/agent`   | `@varendo/agent`   |
 
-Replace the packages used by your application together:
+Replace the packages used by your application together. The current release line is 0.2.0, which is prepared but not yet published; check the [package publication status](/reference/packages/) first:
 
 ```sh
 pnpm remove @aeliqo/core @aeliqo/runtime @aeliqo/web @aeliqo/react @aeliqo/agent
-pnpm add @varendo/core@0.1.0 @varendo/runtime@0.1.0 @varendo/web@0.1.0 @varendo/react@0.1.0 @varendo/agent@0.1.0
+pnpm add @varendo/core@0.2.0 @varendo/runtime@0.2.0 @varendo/web@0.2.0 @varendo/react@0.2.0 @varendo/agent@0.2.0
 ```
 
-Install only the packages your application actually uses. Preserve import subpaths and exported names while changing the package scope:
+Install only the packages your application actually uses. Import subpaths stay the same. Varendo 0.1.0 kept the former exported names, such as `createAeliqoApp` and `AeliqoProvider`; 0.2.0 renames them:
 
 ```ts
-import { createAeliqoApp } from '@varendo/web/app';
-import { AeliqoProvider } from '@varendo/react';
+import { createVarendoApp } from '@varendo/web/app';
+import { VarendoProvider } from '@varendo/react';
 ```
 
-Use the package guides for the supported exports. A package scope replacement also applies to dynamic imports, bundler aliases, framework transpilation lists, mocks and dependency overrides. Remove stale workspace links and reinstall from the newly verified tarballs or registry versions. Do not load both web package families in the same browser document: they register the same custom-element names and can carry different Lit instances.
+Apply the identifier mapping in the [0.1 to 0.2 guide](/ship/migration-varendo-0.2/) together with the package-scope change. Use the package guides for the supported exports. A package scope replacement also applies to dynamic imports, bundler aliases, framework transpilation lists, mocks and dependency overrides. Remove stale workspace links and reinstall from the newly verified tarballs or registry versions. Do not load both web package families in the same browser document: they register the same custom-element names and can carry different Lit instances.
 
 ## Compatibility policy
 
-Function, type and React component identifiers such as `createAeliqoApp`, `createAeliqoRuntime`, `AeliqoProvider`, `AeliqoRegion` and `registerAeliqoElements` keep their existing spellings. The `aeliqo-*` custom-element tags, CSS custom properties, event names, serialized schemas, protocol names and versions, persistence keys and diagnostic identifiers remain stable. There is no API deprecation deadline and no new aliases in 0.1.0. Package names and repository/documentation URLs are the intentional integration changes.
+In 0.1.0, function, type and React component identifiers such as `createAeliqoApp`, `createAeliqoRuntime`, `AeliqoProvider`, `AeliqoRegion` and `registerAeliqoElements` kept their former spellings. The `aeliqo-*` custom-element tags, CSS custom properties, event names, serialized schemas, protocol names, persistence keys and diagnostic identifiers also stayed unchanged, and 0.1.0 added no aliases. Package names and repository/documentation URLs were the only intentional integration changes. Varendo 0.2.0 renames all of those identifiers without aliases; the [0.1 to 0.2 guide](/ship/migration-varendo-0.2/) lists the mapping. The serialized contract version stays `1`.
 
 The existing runtime trust boundaries are unchanged. Resource `policy.expectedIssuer` and `issuer` checks still apply. `createAppToolSession` continues to target explicit application scopes. Host `onDraftExit` decisions can return `needs-input`; a committed plan is distinct from `renderer-ready`. Presentation callbacks (`onPresentation`), `stateMappings`, and `context.incumbent` retain their existing lifecycle and validation behavior. The earlier [0.6 to 0.7 guide](/ship/migration-0.6/) remains a historical record for those behavior changes.
 

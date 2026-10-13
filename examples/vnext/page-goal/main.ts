@@ -2,7 +2,7 @@ import type { Intent } from '@varendo/core';
 import { createIntentCompilerRegistry } from '@varendo/core/app';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { createLocalDataService } from '@varendo/runtime/data';
-import { createAeliqoApp } from '@varendo/web/app';
+import { createVarendoApp } from '@varendo/web/app';
 import {
   LAYOUT_INTENTS,
   LAYOUT_STATE_MAPPINGS,
@@ -32,7 +32,7 @@ const data = createLocalDataService({
 const status = document.querySelector<HTMLElement>('#status');
 const target = document.querySelector<HTMLElement>('#workspace');
 if (!status || !target) throw new Error('Missing host elements.');
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [{ resource, data }],
   intents: intents.value,
   patterns: LAYOUT_PATTERNS,

@@ -1,7 +1,7 @@
 {
   "name": "varendo",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Open-source TypeScript framework for semantic, adaptive interfaces",
   "scripts": {
     "site:verify": "pnpm --dir apps/site typecheck",
@@ -113,9 +113,9 @@
     "lint": "pnpm build:platform && node --test tests/quality/*.test.mjs && oxlint --deny-warnings packages apps examples scripts && tsc -p tsconfig.lint.json && pnpm knip && pnpm site:verify",
     "format:check": "prettier --check package.json pnpm-workspace.yaml .oxlintrc.json .prettierrc.json knip.config.js '.github/workflows/*.yml' 'tsconfig*.json' 'packages/*/package.json' 'packages/*/src/**/*.{ts,tsx,js,mjs,cjs}' 'apps/*/package.json' 'apps/**/*.{ts,tsx,js,mjs,cjs}' 'design/**/*.{ts,tsx,js,mjs,cjs}' 'docs/public-site/**/*.{js,mjs}' 'examples/**/*.{ts,tsx,js,mjs,cjs}' 'scripts/**/*.{ts,tsx,js,mjs,cjs}' 'tests/**/*.{ts,tsx,js,mjs,cjs}' catalog/components.json quality/commands.json",
     "test:boundaries": "vitest run --config tests/security/vitest.config.mjs tests/security/package-boundaries.test.ts",
-    "test:performance:runtime": "pnpm build:platform && AELIQO_RUN_PERFORMANCE=1 node tests/performance/runtime-workload.mjs",
+    "test:performance:runtime": "pnpm build:platform && VARENDO_RUN_PERFORMANCE=1 node tests/performance/runtime-workload.mjs",
     "test:performance:vnext": "pnpm build:platform && node tests/performance/vnext-workload.mjs",
-    "test:performance:browser": "AELIQO_RUN_PERFORMANCE=1 AELIQO_ENFORCE_PERFORMANCE_BUDGETS=1 playwright test --config tests/performance/playwright.config.mjs",
+    "test:performance:browser": "VARENDO_RUN_PERFORMANCE=1 VARENDO_ENFORCE_PERFORMANCE_BUDGETS=1 playwright test --config tests/performance/playwright.config.mjs",
     "test:performance:standalone": "playwright test --config tests/performance/standalone.playwright.config.mjs",
     "test:performance:perceived-input": "playwright test --config tests/performance/perceived-input.playwright.config.mjs",
     "test:performance:heap-lifecycle": "playwright test --config tests/performance/heap-lifecycle.playwright.config.mjs",

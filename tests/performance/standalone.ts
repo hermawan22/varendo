@@ -1,5 +1,5 @@
-import { AeliqoTextFieldElement } from '@varendo/web/inputs';
-import { AeliqoTableElement } from '@varendo/web/table';
+import { VarendoTextFieldElement } from '@varendo/web/inputs';
+import { VarendoTableElement } from '@varendo/web/table';
 
 export const STANDALONE_ROW_COUNT = 100;
 
@@ -72,7 +72,7 @@ type StandaloneObservation = {
 
 declare global {
   interface Window {
-    aeliqoStandalone?: {
+    varendoStandalone?: {
       readonly ready: boolean;
       readonly collect: () => StandaloneObservation;
     };
@@ -82,8 +82,8 @@ declare global {
 const fixture = document.querySelector<HTMLElement>('#fixture');
 if (fixture === null) throw new Error('Standalone fixture root is missing.');
 
-if (!customElements.get('aeliqo-text-field')) customElements.define('aeliqo-text-field', AeliqoTextFieldElement);
-if (!customElements.get('aeliqo-table')) customElements.define('aeliqo-table', AeliqoTableElement);
+if (!customElements.get('varendo-text-field')) customElements.define('varendo-text-field', VarendoTextFieldElement);
+if (!customElements.get('varendo-table')) customElements.define('varendo-table', VarendoTableElement);
 
 function makeRows(): readonly StandaloneRow[] {
   return Array.from({ length: STANDALONE_ROW_COUNT }, (_, index) => ({
@@ -143,7 +143,7 @@ function isJavascript(resource: ResourceObservation): boolean {
 
 function timingObservation(): TimingObservation {
   const resources = resourceObservations();
-  const readyMark = performance.getEntriesByName('aeliqo-standalone-fixture-ready').at(-1);
+  const readyMark = performance.getEntriesByName('varendo-standalone-fixture-ready').at(-1);
   return {
     navigation: navigationObservation(),
     resources,
@@ -153,8 +153,8 @@ function timingObservation(): TimingObservation {
 }
 
 function collect(): StandaloneObservation {
-  const input = document.querySelector('aeliqo-text-field') as AeliqoTextFieldElement | null;
-  const table = document.querySelector('aeliqo-table') as AeliqoTableElement | null;
+  const input = document.querySelector('varendo-text-field') as VarendoTextFieldElement | null;
+  const table = document.querySelector('varendo-table') as VarendoTableElement | null;
   const resources = resourceObservations();
   const javascript = resources.filter(isJavascript);
   const sum = (values: readonly (number | null)[]): number | null => {
@@ -204,11 +204,11 @@ function collect(): StandaloneObservation {
   };
 }
 
-const input = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+const input = document.createElement('varendo-text-field') as VarendoTextFieldElement;
 input.label = 'Standalone value';
 input.value = 'ready';
 
-const table = document.createElement('aeliqo-table') as AeliqoTableElement;
+const table = document.createElement('varendo-table') as VarendoTableElement;
 table.caption = 'Standalone records';
 table.columns = [
   { key: 'id', label: 'ID' },
@@ -221,5 +221,5 @@ table.rows = makeRows();
 fixture.replaceChildren(input, table);
 
 await Promise.all([input.updateComplete, table.updateComplete]);
-performance.mark('aeliqo-standalone-fixture-ready');
-window.aeliqoStandalone = { ready: true, collect };
+performance.mark('varendo-standalone-fixture-ready');
+window.varendoStandalone = { ready: true, collect };

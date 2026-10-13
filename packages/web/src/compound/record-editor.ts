@@ -1,7 +1,7 @@
-export { AeliqoRecordEditorElement } from './elements.js';
+export { VarendoRecordEditorElement } from './elements.js';
 export { recordEditorPresentationRecipe } from './recipes.js';
 export type {
-  AeliqoRecordEditorRecipeInput,
-  AeliqoRecordEditorSaveDetail,
-  AeliqoRecordEditorCancelDetail,
+  VarendoRecordEditorRecipeInput,
+  VarendoRecordEditorSaveDetail,
+  VarendoRecordEditorCancelDetail,
 } from './types.js';
