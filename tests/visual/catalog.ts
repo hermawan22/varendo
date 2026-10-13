@@ -16,8 +16,8 @@ document.getElementById('title')!.textContent = getCatalogExample(id).metadata.n
 const cleanup = catalogExample(id, container);
 async function settle(root: Element | ShadowRoot): Promise<void> {
   for (const element of root.querySelectorAll<HTMLElement>('*')) {
-    if (!element.localName.startsWith('aeliqo-')) continue;
-    element.setAttribute('data-aeliqo-theme', theme);
+    if (!element.localName.startsWith('varendo-')) continue;
+    element.setAttribute('data-varendo-theme', theme);
     await (element as HTMLElement & { updateComplete?: Promise<unknown> }).updateComplete;
     if (element.shadowRoot) await settle(element.shadowRoot);
   }
@@ -25,7 +25,7 @@ async function settle(root: Element | ShadowRoot): Promise<void> {
 await settle(container);
 await document.fonts.ready;
 Object.assign(window, {
-  aeliqoReviewReady: true,
-  disposeAeliqoReview: cleanup,
+  varendoReviewReady: true,
+  disposeVarendoReview: cleanup,
   reviewMetadata: getCatalogExample(id).metadata,
 });

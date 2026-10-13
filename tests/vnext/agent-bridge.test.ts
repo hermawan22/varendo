@@ -8,7 +8,7 @@ import { createScopeFixture } from './fixtures/scope.js';
 
 const renderCall = (intent: AgentJsonValue = { kind: 'browse' }, targetId = 'people-main') => ({
   id: 'render-1',
-  name: 'aeliqo_surface_render',
+  name: 'varendo_surface_render',
   input: { targetId, intent },
 });
 
@@ -65,9 +65,9 @@ it('exposes only bounded metadata for explicit targets and rejects another targe
   const discovered = await f.connection.discover();
   expect(discovered).toMatchObject({
     ok: true,
-    value: [{ name: 'aeliqo_surface_context' }, { name: 'aeliqo_surface_render' }],
+    value: [{ name: 'varendo_surface_context' }, { name: 'varendo_surface_render' }],
   });
-  const context = await f.connection.invoke('aeliqo_surface_context', {});
+  const context = await f.connection.invoke('varendo_surface_context', {});
   expect(context).toMatchObject({
     ok: true,
     value: { state: 'data-ready', value: { targets: [{ id: 'people-main' }] } },

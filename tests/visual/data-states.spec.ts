@@ -58,9 +58,9 @@ const COMPOUND_MESSAGE: Record<string, string> = {
 
 async function settleElement(page: StatePage, id: string): Promise<void> {
   await page.evaluate(async (componentId) => {
-    const host = document.querySelector<HTMLElement>(`#fixture aeliqo-${componentId}`) as
+    const host = document.querySelector<HTMLElement>(`#fixture varendo-${componentId}`) as
       (HTMLElement & { updateComplete?: Promise<unknown> }) | null;
-    if (host === null) throw new Error(`Missing fixture element aeliqo-${componentId}`);
+    if (host === null) throw new Error(`Missing fixture element varendo-${componentId}`);
     for (let pass = 0; pass < 4; pass += 1) {
       const roots: (Element | ShadowRoot)[] = [host];
       const pending: Promise<unknown>[] = [];
@@ -82,19 +82,19 @@ async function settleElement(page: StatePage, id: string): Promise<void> {
 async function openFixture(page: StatePage, id: string, variant: ReviewVariant): Promise<void> {
   await page.goto(`/tests/visual/index.html?component=${id}&variant=${variant}`);
   await page.waitForFunction(() =>
-    Boolean((window as typeof window & { aeliqoReviewReady?: boolean }).aeliqoReviewReady),
+    Boolean((window as typeof window & { varendoReviewReady?: boolean }).varendoReviewReady),
   );
-  await expect(page.locator(`#fixture aeliqo-${id}`)).toBeAttached();
+  await expect(page.locator(`#fixture varendo-${id}`)).toBeAttached();
   await settleElement(page, id);
 }
 
 async function mutateDataState(page: StatePage, id: string, state: string): Promise<void> {
   await page.evaluate(
     ({ componentId, nextState, message }) => {
-      const host = document.querySelector<HTMLElement>(`#fixture aeliqo-${componentId}`) as
+      const host = document.querySelector<HTMLElement>(`#fixture varendo-${componentId}`) as
         (HTMLElement & Record<string, any>) | null;
-      if (host === null) throw new Error(`Missing fixture element aeliqo-${componentId}`);
-      const original = ((host as any).__aeliqoDataStateOriginal ??= {
+      if (host === null) throw new Error(`Missing fixture element varendo-${componentId}`);
+      const original = ((host as any).__varendoDataStateOriginal ??= {
         value: host.value,
         current: host.current,
         baseline: host.baseline,
@@ -127,7 +127,7 @@ async function mutateDataState(page: StatePage, id: string, state: string): Prom
 }
 
 async function assertDataState(page: StatePage, id: string, state: string): Promise<void> {
-  const host = page.locator(`#fixture aeliqo-${id}`);
+  const host = page.locator(`#fixture varendo-${id}`);
   if (state === 'empty') {
     if (id === 'table') {
       await expect(host.locator('[part=table] tbody td')).toContainText('No rows to display.');
@@ -204,7 +204,7 @@ for (const id of DATA_COMPONENTS) {
         await mutateDataState(page, id, state);
         await assertDataState(page, id, state);
         if (id === 'card-collection' && state === 'stale' && variant === 'narrow-dark-rtl') {
-          const banner = page.locator(`#fixture aeliqo-${id} [part=status]`);
+          const banner = page.locator(`#fixture varendo-${id} [part=status]`);
           await expect(banner).toHaveAttribute('dir', 'auto');
           expect(await banner.evaluate((element) => getComputedStyle(element).direction)).toBe('ltr');
         }
@@ -217,10 +217,10 @@ for (const id of DATA_COMPONENTS) {
 async function mutateCompoundState(page: StatePage, id: string, state: string): Promise<void> {
   await page.evaluate(
     ({ componentId, nextState, message }) => {
-      const host = document.querySelector<HTMLElement>(`#fixture aeliqo-${componentId}`) as
+      const host = document.querySelector<HTMLElement>(`#fixture varendo-${componentId}`) as
         (HTMLElement & Record<string, any>) | null;
-      if (host === null) throw new Error(`Missing fixture element aeliqo-${componentId}`);
-      const original = ((host as any).__aeliqoCompoundStateOriginal ??= {
+      if (host === null) throw new Error(`Missing fixture element varendo-${componentId}`);
+      const original = ((host as any).__varendoCompoundStateOriginal ??= {
         rows: host.rows,
         groups: host.groups,
         detailRecord: host.detailRecord,
@@ -270,7 +270,7 @@ async function mutateCompoundState(page: StatePage, id: string, state: string): 
 }
 
 async function assertCompoundState(page: StatePage, id: string, state: string): Promise<void> {
-  const host = page.locator(`#fixture aeliqo-${id}`);
+  const host = page.locator(`#fixture varendo-${id}`);
   await expect(host.locator('[part=root]')).toHaveAttribute('data-status', state);
   if (id === 'search-results' && state === 'stale') {
     const status = host.locator('[part=root] > [part=status]');
@@ -287,11 +287,11 @@ async function assertCompoundState(page: StatePage, id: string, state: string): 
     await expect(host.locator('[part=query]')).toContainText('Results for');
     if (state === 'empty') {
       await expect(host.locator('[part=root] > [part=scope]')).toContainText('0 matching results');
-      await expect(host.locator('aeliqo-card-collection [part=card]')).toHaveCount(0);
+      await expect(host.locator('varendo-card-collection [part=card]')).toHaveCount(0);
     }
     if (state === 'partial') {
-      await expect(host.locator('aeliqo-card-collection')).toContainText('Ada Lovelace');
-      await expect(host.locator('aeliqo-card-collection [part=card][data-selected]')).toHaveCount(1);
+      await expect(host.locator('varendo-card-collection')).toContainText('Ada Lovelace');
+      await expect(host.locator('varendo-card-collection [part=card][data-selected]')).toHaveCount(1);
     }
   }
   if (state === 'partial' && ['explorer', 'investigation'].includes(id)) {
@@ -300,7 +300,7 @@ async function assertCompoundState(page: StatePage, id: string, state: string): 
 }
 
 async function assertCompoundSpecialState(page: StatePage, id: string, state: string): Promise<void> {
-  const host = page.locator(`#fixture aeliqo-${id}`);
+  const host = page.locator(`#fixture varendo-${id}`);
   await expect(host.locator('[part=root]')).toHaveAttribute('data-status', 'ready');
   if (id === 'comparison') {
     await expect(host.locator('[part=root] > [part=status]')).toContainText('cannot be compared');
@@ -313,17 +313,17 @@ async function assertCompoundSpecialState(page: StatePage, id: string, state: st
   } else if (id === 'form-flow') {
     await expect(host.locator('[part=root] > [part=status]')).toHaveAttribute('role', 'alert');
     await expect(host.locator('[part=root] > [part=status]')).toContainText('Name is required.');
-    await expect(host.locator('aeliqo-text-field input')).toHaveValue('');
-    await expect(host.locator('aeliqo-text-field input')).toHaveAttribute('required', '');
+    await expect(host.locator('varendo-text-field input')).toHaveValue('');
+    await expect(host.locator('varendo-text-field input')).toHaveAttribute('required', '');
   }
 }
 
 async function mutateCompoundSpecialState(page: StatePage, id: string, state: string): Promise<void> {
   await page.evaluate(
     ({ componentId, nextState }) => {
-      const host = document.querySelector<HTMLElement>(`#fixture aeliqo-${componentId}`) as
+      const host = document.querySelector<HTMLElement>(`#fixture varendo-${componentId}`) as
         (HTMLElement & Record<string, any>) | null;
-      if (host === null) throw new Error(`Missing fixture element aeliqo-${componentId}`);
+      if (host === null) throw new Error(`Missing fixture element varendo-${componentId}`);
       host.status = 'ready';
       host.message = '';
       if (componentId === 'comparison') host.compatible = false;
@@ -333,7 +333,7 @@ async function mutateCompoundSpecialState(page: StatePage, id: string, state: st
       }
       if (componentId === 'form-flow') {
         host.draft = { ...host.draft, name: '' };
-        const field = host.querySelector('aeliqo-text-field') as (HTMLElement & Record<string, any>) | null;
+        const field = host.querySelector('varendo-text-field') as (HTMLElement & Record<string, any>) | null;
         if (field === null) throw new Error('Missing form-flow name field');
         field.value = '';
         field.required = true;
@@ -385,10 +385,10 @@ for (const id of COMPOUND_COMPONENTS) {
 async function resetVisualizationFixture(page: StatePage, id: string, state: string): Promise<void> {
   await page.evaluate(
     ({ componentId, nextState }) => {
-      const host = document.querySelector<HTMLElement>(`#fixture aeliqo-${componentId}`) as
+      const host = document.querySelector<HTMLElement>(`#fixture varendo-${componentId}`) as
         (HTMLElement & Record<string, any>) | null;
-      if (host === null) throw new Error(`Missing fixture element aeliqo-${componentId}`);
-      const original = ((host as any).__aeliqoDataStateOriginal ??= {
+      if (host === null) throw new Error(`Missing fixture element varendo-${componentId}`);
+      const original = ((host as any).__varendoDataStateOriginal ??= {
         visualization: host.visualization,
         context: host.context,
         datasets: host.datasets,
@@ -421,7 +421,7 @@ async function resetVisualizationFixture(page: StatePage, id: string, state: str
 }
 
 async function assertVisualizationState(page: StatePage, id: string, state: string): Promise<void> {
-  const host = page.locator(`#fixture aeliqo-${id}`);
+  const host = page.locator(`#fixture varendo-${id}`);
   if (state === 'partial') {
     await expect(host.locator('[part=scope]')).toContainText('Partial');
     return;

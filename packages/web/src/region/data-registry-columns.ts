@@ -1,5 +1,5 @@
 import type { Outcome, Result } from '@varendo/core';
-import type { AeliqoDataColumn } from '../data/index.js';
+import type { VarendoDataColumn } from '../data/index.js';
 import { boundedText, failure, fieldMap, MAX_DATA_ITEMS, object } from './data-registry-common.js';
 
 type ColumnDescriptor = Result['fields'][number];
@@ -62,7 +62,7 @@ function normalizeColumn(
   value: unknown,
   fields: ReadonlyMap<string, ColumnDescriptor>,
   seen: ReadonlySet<string>,
-): Outcome<AeliqoDataColumn> {
+): Outcome<VarendoDataColumn> {
   const parsed = columnCandidate(value);
   if (!parsed.ok) return parsed;
   const descriptor = columnDescriptor(parsed.value, fields);
@@ -90,12 +90,12 @@ function normalizeColumn(
   };
 }
 
-function parseColumns(raw: unknown, result: Result): Outcome<readonly AeliqoDataColumn[]> {
+function parseColumns(raw: unknown, result: Result): Outcome<readonly VarendoDataColumn[]> {
   if (!Array.isArray(raw) || raw.length === 0 || raw.length > MAX_DATA_ITEMS) {
     return failure('config', 'columns must be a bounded nonempty array.');
   }
   const fields = fieldMap(result);
-  const output: AeliqoDataColumn[] = [];
+  const output: VarendoDataColumn[] = [];
   const seen = new Set<string>();
   for (const item of raw) {
     const column = normalizeColumn(item, fields, seen);
@@ -109,8 +109,8 @@ function parseColumns(raw: unknown, result: Result): Outcome<readonly AeliqoData
 export function columns(
   input: Readonly<Record<string, unknown>>,
   result: Result,
-  fallback?: readonly AeliqoDataColumn[],
-): Outcome<readonly AeliqoDataColumn[]> {
+  fallback?: readonly VarendoDataColumn[],
+): Outcome<readonly VarendoDataColumn[]> {
   if (input.columns !== undefined) return parseColumns(input.columns, result);
   if (fallback !== undefined) return parseColumns(fallback, result);
   return {

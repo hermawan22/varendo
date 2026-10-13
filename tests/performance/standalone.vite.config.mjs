@@ -11,7 +11,7 @@ function normalizeModuleId(id) {
 
 function retainedModuleGraphPlugin() {
   return {
-    name: 'aeliqo-standalone-retained-module-graph',
+    name: 'varendo-standalone-retained-module-graph',
     generateBundle(_options, bundle) {
       const retainedModules = new Set();
       const entryModules = new Set();
@@ -25,7 +25,7 @@ function retainedModuleGraphPlugin() {
       const entries = [...entryModules].sort();
       const forbidden = retained.filter((id) => forbiddenModulePattern.test(id));
       const graph = {
-        schema: 'aeliqo.performance.standalone.retained-modules.v1',
+        schema: 'varendo.performance.standalone.retained-modules.v1',
         entryModules: entries,
         retainedModules: retained,
         forbiddenModules: forbidden,

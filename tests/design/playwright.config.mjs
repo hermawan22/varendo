@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
 import { testPort } from '../shared/port.mjs';
-const port = await testPort('AELIQO_DESIGN_TEST_PORT');
+const port = await testPort('VARENDO_DESIGN_TEST_PORT');
 const origin = `http://127.0.0.1:${port}`;
 export default defineConfig({
   testDir: '.',

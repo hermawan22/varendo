@@ -1,4 +1,4 @@
-import { AeliqoCartesianElement } from './base.js';
-export class AeliqoTrendElement extends AeliqoCartesianElement {
+import { VarendoCartesianElement } from './base.js';
+export class VarendoTrendElement extends VarendoCartesianElement {
   protected readonly expectedView = 'trend' as const;
 }

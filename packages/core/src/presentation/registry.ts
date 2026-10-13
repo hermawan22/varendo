@@ -187,7 +187,7 @@ function invalidStateMapping(
   const from = manifests.find((manifest) => versionKey(manifest.ref) === fromKey);
   const to = manifests.find((manifest) => versionKey(manifest.ref) === toKey);
   return (
-    mapping.ref.id === 'aeliqo.state.identity' ||
+    mapping.ref.id === 'varendo.state.identity' ||
     !(
       seen.has(fromKey) &&
       seen.has(toKey) &&

@@ -35,7 +35,7 @@ test('keeps keyboard focus and a dirty draft through adaptive, RTL, touch, zoom,
   await page.getByRole('button', { name: 'Cards' }).click();
   await expect(page.locator('#people-status')).toContainText('renderer-ready:data.card-collection');
   await expect(draft).toHaveValue('Unsubmitted draft');
-  await expect(page.locator('#people-host aeliqo-region [part="region"]')).toHaveAttribute('dir', 'rtl');
+  await expect(page.locator('#people-host varendo-region [part="region"]')).toHaveAttribute('dir', 'rtl');
 
   const action = page.locator('[data-action="people-start-cancellable"]');
   const box = await action.boundingBox();
@@ -63,7 +63,7 @@ test('announces a resolver clarification and lets a keyboard user complete it th
   await expect(apply).toBeFocused();
   await apply.press('Enter');
   await expect(page.locator('#analysis-status')).toContainText('renderer-ready:data.trend');
-  await expect(page.locator('#analysis-host aeliqo-chart')).toHaveCount(1);
+  await expect(page.locator('#analysis-host varendo-chart')).toHaveCount(1);
   await expect(page.locator('#analysis-clarification')).toBeHidden();
 });
 
@@ -71,30 +71,32 @@ test('makes partial, unsupported, and cancelled updates truthful while retaining
   page,
 }) => {
   await page.getByRole('button', { name: 'Show partial page' }).click();
-  await expect(page.locator('#people-host aeliqo-table')).toHaveCount(1);
-  await expect(page.locator('#people-host aeliqo-table').getByRole('alert')).toContainText('Showing a partial result.');
+  await expect(page.locator('#people-host varendo-table')).toHaveCount(1);
+  await expect(page.locator('#people-host varendo-table').getByRole('alert')).toContainText(
+    'Showing a partial result.',
+  );
 
   const draft = page.getByLabel('Draft note');
   await draft.fill('Keep this during recovery');
   await page.getByRole('button', { name: 'Unsupported request' }).click();
   await expect(page.locator('#people-status')).toHaveAttribute('data-state', 'unsupported');
-  await expect(page.locator('#people-host aeliqo-table')).toHaveCount(1);
+  await expect(page.locator('#people-host varendo-table')).toHaveCount(1);
   await expect(draft).toHaveValue('Keep this during recovery');
 
   await page.getByRole('button', { name: 'Start cancellable update' }).click();
   await expect(page.locator('body')).toHaveAttribute('data-people-read-held', 'true');
   await page.getByRole('button', { name: 'Cancel update' }).click();
   await expect(page.locator('#people-status')).toHaveAttribute('data-state', 'cancelled');
-  await expect(page.locator('#people-host aeliqo-table')).toHaveCount(1);
+  await expect(page.locator('#people-host varendo-table')).toHaveCount(1);
   await expect(draft).toHaveValue('Keep this during recovery');
 });
 
 test('announces denial and immediately removes revoked presentation content', async ({ page }) => {
-  await expect(page.locator('#people-host aeliqo-table')).toHaveCount(1);
+  await expect(page.locator('#people-host varendo-table')).toHaveCount(1);
   await page.getByRole('button', { name: 'Revoke access' }).click();
   await expect(page.locator('#people-status')).toHaveAttribute('role', 'alert');
   await expect(page.locator('#people-status')).toHaveAttribute('data-state', 'denied');
-  await expect(page.locator('#people-host aeliqo-table')).toHaveCount(0);
+  await expect(page.locator('#people-host varendo-table')).toHaveCount(0);
   await expect(page.getByText('Ada Chen')).toHaveCount(0);
 });
 

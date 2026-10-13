@@ -1,8 +1,8 @@
 import { SITE_BASE } from './base.js';
-import { isPublicAeliqoSite } from './telemetry.js';
+import { isPublicVarendoSite } from './telemetry.js';
 
-const consentKey = 'aeliqo:analytics-consent:v1';
-const consentEvent = 'aeliqo:analytics-consent';
+const consentKey = 'varendo:analytics-consent:v1';
+const consentEvent = 'varendo:analytics-consent';
 const measurementIdPattern = /^G-[A-Z0-9]{6,}$/;
 
 type AnalyticsConfig = Readonly<{ enabled: true; measurementId: string }>;
@@ -53,13 +53,13 @@ export function startGoogleAnalytics(
   browser: Window = window,
   documentRef: Document = document,
 ): boolean {
-  if (!isPublicAeliqoSite(browser.location) || consent(browser) !== 'granted') return false;
-  if (documentRef.querySelector(`script[data-aeliqo-ga="${config.measurementId}"]`)) return true;
+  if (!isPublicVarendoSite(browser.location) || consent(browser) !== 'granted') return false;
+  if (documentRef.querySelector(`script[data-varendo-ga="${config.measurementId}"]`)) return true;
   const script = documentRef.createElement('script');
   script.async = true;
   script.referrerPolicy = 'no-referrer';
   script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(config.measurementId)}`;
-  script.dataset.aeliqoGa = config.measurementId;
+  script.dataset.varendoGa = config.measurementId;
   script.onload = () => {
     browser.dataLayer = browser.dataLayer ?? [];
     browser.gtag = function gtag() {
@@ -85,7 +85,7 @@ export function prepareGoogleAnalytics(
   browser: Window = window,
   documentRef: Document = document,
 ): boolean {
-  if (!isPublicAeliqoSite(browser.location)) return false;
+  if (!isPublicVarendoSite(browser.location)) return false;
   const dialog = consentDialog(documentRef);
   const current = consent(browser);
   if (current === undefined && dialog !== undefined) {
@@ -117,7 +117,7 @@ export async function prepareDeploymentAnalytics(
   browser: Window = window,
   documentRef: Document = document,
 ): Promise<boolean> {
-  if (!isPublicAeliqoSite(browser.location)) return false;
+  if (!isPublicVarendoSite(browser.location)) return false;
   try {
     const response = await browser.fetch(`${SITE_BASE}google-analytics.json`, {
       credentials: 'omit',

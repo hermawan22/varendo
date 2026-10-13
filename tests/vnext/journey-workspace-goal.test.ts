@@ -2,8 +2,8 @@ import { expect, it } from 'vitest';
 import { compileIntent, type Intent } from '@varendo/core';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { createPresentationRegistry, resolvePresentation } from '@varendo/core/presentation';
-import { createAeliqoRuntime, createLocalDataBinding } from '@varendo/runtime';
-import { createAeliqoPresentationRegistry } from '@varendo/web/region';
+import { createVarendoRuntime, createLocalDataBinding } from '@varendo/runtime';
+import { createVarendoPresentationRegistry } from '@varendo/web/region';
 import {
   REGION,
   GOAL,
@@ -52,7 +52,7 @@ it('commits a registered summary, daily trend, and employee breakdown workspace 
     },
   });
   const intents = goalRegistry();
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId: 'attendance-runtime',
     resources: [{ resource: feature.resource, data: binding.service }],
     intents,
@@ -117,7 +117,7 @@ it('commits a registered summary, daily trend, and employee breakdown workspace 
     expect(current).toBeDefined();
     if (current === undefined) return;
     const { dataRevision: _dataRevision, ...preconditions } = current;
-    const registered = createAeliqoPresentationRegistry({
+    const registered = createVarendoPresentationRegistry({
       data: receipt.outputs.map((output, index) => ({
         result: descriptors[index]!,
         rows: output.handle.snapshot().batches.flatMap((batch) => batch.rows),

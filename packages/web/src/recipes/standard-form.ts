@@ -1,5 +1,5 @@
 import type { Diagnostic, Outcome, PresentationPlan } from '@varendo/core';
-import { AELIQO_INPUT_REFS } from '../input/manifest.js';
+import { VARENDO_INPUT_REFS } from '../input/manifest.js';
 import { defineRecipe } from './define.js';
 import type { RecipeContext, RecipeDefinition } from './types.js';
 
@@ -11,7 +11,7 @@ function failure(code: string, message: string): Outcome<never> {
 function buildForm(context: RecipeContext): Outcome<PresentationPlan> {
   if (context.task.kind !== 'form' || context.inputBindings === undefined)
     return failure('web.recipe.unsupported', 'Standard form recipes require host-owned form bindings.');
-  const form = context.inputBindings.inputs.find((binding) => binding.ref.id === AELIQO_INPUT_REFS.form.id);
+  const form = context.inputBindings.inputs.find((binding) => binding.ref.id === VARENDO_INPUT_REFS.form.id);
   if (
     form === undefined ||
     form.action === undefined ||
@@ -19,12 +19,12 @@ function buildForm(context: RecipeContext): Outcome<PresentationPlan> {
     form.action.action.revision !== context.task.action.revision
   )
     return failure('web.recipe.form-binding', 'The form action is not pinned to the compiled Task action.');
-  const fields = context.inputBindings.inputs.filter((binding) => binding.ref.id !== AELIQO_INPUT_REFS.form.id);
+  const fields = context.inputBindings.inputs.filter((binding) => binding.ref.id !== VARENDO_INPUT_REFS.form.id);
   const nodes: PresentationPlan['nodes'] = [
     {
       id: 'form',
       role: 'structure',
-      representation: AELIQO_INPUT_REFS.form,
+      representation: VARENDO_INPUT_REFS.form,
       config: {
         schema: { id: 'input.form.config', revision: '1' },
         values: { bindingRef: form.id, bindingRevision: context.inputBindings.revision },
@@ -33,7 +33,7 @@ function buildForm(context: RecipeContext): Outcome<PresentationPlan> {
     },
     ...fields.map((field) => ({
       id: field.id,
-      role: field.ref.id === AELIQO_INPUT_REFS.fieldGroup.id ? 'structure' : 'input',
+      role: field.ref.id === VARENDO_INPUT_REFS.fieldGroup.id ? 'structure' : 'input',
       representation: field.ref,
       config: {
         schema: { id: `${field.ref.id}.config`, revision: '1' },
@@ -58,7 +58,7 @@ function buildForm(context: RecipeContext): Outcome<PresentationPlan> {
           : context.incumbent.nodes.map((node) => ({
               fromNode: node.id,
               toNode: node.id,
-              mapping: { id: 'aeliqo.state.identity', revision: '1' },
+              mapping: { id: 'varendo.state.identity', revision: '1' },
             })),
       diagnostics: [],
     },
@@ -66,7 +66,7 @@ function buildForm(context: RecipeContext): Outcome<PresentationPlan> {
 }
 
 export const standardFormRecipe: RecipeDefinition = defineRecipe({
-  ref: { id: 'aeliqo.recipe.form', revision: '1' },
+  ref: { id: 'varendo.recipe.form', revision: '1' },
   intents: ['create', 'edit'],
   build: buildForm,
 });

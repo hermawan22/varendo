@@ -1,48 +1,48 @@
 import { parseWireValue, type Outcome, type VersionRef } from '@varendo/core';
 import type { InteractionPort } from '@varendo/core/interaction';
-import type { AeliqoDataColumn } from '../data/index.js';
+import type { VarendoDataColumn } from '../data/index.js';
 import { createDataManifests } from './data-registry-manifests.js';
 import type {
-  AeliqoDataBinding,
-  AeliqoDataComponentId,
-  AeliqoDataManifest,
-  AeliqoDataNodeInput,
-  AeliqoDataRegistry,
-  AeliqoDataRegistryOptions,
-  AeliqoDataResolvedConfig,
-  AeliqoDataResolvedNode,
-  AeliqoValidatedBinding,
+  VarendoDataBinding,
+  VarendoDataComponentId,
+  VarendoDataManifest,
+  VarendoDataNodeInput,
+  VarendoDataRegistry,
+  VarendoDataRegistryOptions,
+  VarendoDataResolvedConfig,
+  VarendoDataResolvedNode,
+  VarendoValidatedBinding,
 } from './data-registry-types.js';
-import { AELIQO_DATA_REFS } from './data-registry-types.js';
-import { validateAeliqoDataBinding } from './data-registry-validation.js';
+import { VARENDO_DATA_REFS } from './data-registry-types.js';
+import { validateVarendoDataBinding } from './data-registry-validation.js';
 import { failure } from './data-registry-common.js';
 
-export { AELIQO_DATA_CONFIG_SCHEMAS, AELIQO_DATA_REFS } from './data-registry-types.js';
+export { VARENDO_DATA_CONFIG_SCHEMAS, VARENDO_DATA_REFS } from './data-registry-types.js';
 export type {
-  AeliqoDataBinding,
-  AeliqoDataComponentId,
-  AeliqoDataRegistry,
-  AeliqoDataRegistryOptions,
-  AeliqoDataResolvedNode,
-  AeliqoValidatedBinding,
+  VarendoDataBinding,
+  VarendoDataComponentId,
+  VarendoDataRegistry,
+  VarendoDataRegistryOptions,
+  VarendoDataResolvedNode,
+  VarendoValidatedBinding,
 } from './data-registry-types.js';
-export { validateAeliqoDataBinding } from './data-registry-validation.js';
+export { validateVarendoDataBinding } from './data-registry-validation.js';
 
 const MAX_NODE_ID = 128;
 const MAX_VALUE_KEYS = 256;
 
 interface ResolvedNodeInput {
   readonly id: string;
-  readonly component: AeliqoDataComponentId;
-  readonly manifest: AeliqoDataManifest;
+  readonly component: VarendoDataComponentId;
+  readonly manifest: VarendoDataManifest;
 }
 
-function componentFor(component: AeliqoDataNodeInput['component']): AeliqoDataComponentId | undefined {
+function componentFor(component: VarendoDataNodeInput['component']): VarendoDataComponentId | undefined {
   if (typeof component === 'string') {
-    return Object.hasOwn(AELIQO_DATA_REFS, component) ? (component as AeliqoDataComponentId) : undefined;
+    return Object.hasOwn(VARENDO_DATA_REFS, component) ? (component as VarendoDataComponentId) : undefined;
   }
-  return (Object.keys(AELIQO_DATA_REFS) as AeliqoDataComponentId[]).find((key) => {
-    const ref = AELIQO_DATA_REFS[key];
+  return (Object.keys(VARENDO_DATA_REFS) as VarendoDataComponentId[]).find((key) => {
+    const ref = VARENDO_DATA_REFS[key];
     return ref.id === component.id && ref.revision === component.revision;
   });
 }
@@ -52,8 +52,8 @@ function refKey(ref: VersionRef): string {
 }
 
 function validateNodeInput(
-  input: AeliqoDataNodeInput,
-  manifestsByRef: ReadonlyMap<string, AeliqoDataManifest>,
+  input: VarendoDataNodeInput,
+  manifestsByRef: ReadonlyMap<string, VarendoDataManifest>,
 ): Outcome<ResolvedNodeInput> {
   if (
     input === null ||
@@ -66,12 +66,12 @@ function validateNodeInput(
   }
   const component = componentFor(input.component);
   if (component === undefined) return failure('config', 'The data node representation is not registered.');
-  const manifest = manifestsByRef.get(refKey(AELIQO_DATA_REFS[component]));
+  const manifest = manifestsByRef.get(refKey(VARENDO_DATA_REFS[component]));
   if (manifest === undefined) return failure('config', 'The data node representation is not registered.');
   return { ok: true, value: { id: input.id, component, manifest } };
 }
 
-function parseNodeConfig(input: AeliqoDataNodeInput): Outcome<Readonly<Record<string, unknown>>> {
+function parseNodeConfig(input: VarendoDataNodeInput): Outcome<Readonly<Record<string, unknown>>> {
   const values = input.config ?? {};
   if (
     values === null ||
@@ -97,9 +97,9 @@ function freezePort(port: InteractionPort): InteractionPort {
 }
 
 function freezeConfig(
-  config: AeliqoDataResolvedConfig,
-  selectedColumns: readonly AeliqoDataColumn[],
-): AeliqoDataResolvedConfig {
+  config: VarendoDataResolvedConfig,
+  selectedColumns: readonly VarendoDataColumn[],
+): VarendoDataResolvedConfig {
   return Object.freeze({
     ...config,
     values: Object.freeze({ ...config.values }),
@@ -112,9 +112,9 @@ function freezeConfig(
 
 function materializeNode(
   input: ResolvedNodeInput,
-  binding: AeliqoValidatedBinding,
-  config: AeliqoDataResolvedConfig,
-): AeliqoDataResolvedNode {
+  binding: VarendoValidatedBinding,
+  config: VarendoDataResolvedConfig,
+): VarendoDataResolvedNode {
   const nodeColumns = config.columns.length === 0 ? binding.columns : config.columns;
   return Object.freeze({
     id: input.id,
@@ -129,15 +129,15 @@ function materializeNode(
 }
 
 function resolveNode(
-  input: AeliqoDataNodeInput,
-  binding: AeliqoDataBinding,
-  options: AeliqoDataRegistryOptions,
-  manifestsByRef: ReadonlyMap<string, AeliqoDataManifest>,
-): Outcome<AeliqoDataResolvedNode> {
+  input: VarendoDataNodeInput,
+  binding: VarendoDataBinding,
+  options: VarendoDataRegistryOptions,
+  manifestsByRef: ReadonlyMap<string, VarendoDataManifest>,
+): Outcome<VarendoDataResolvedNode> {
   try {
     const node = validateNodeInput(input, manifestsByRef);
     if (!node.ok) return node;
-    const checkedBinding = validateAeliqoDataBinding(binding, options);
+    const checkedBinding = validateVarendoDataBinding(binding, options);
     if (!checkedBinding.ok) return checkedBinding;
     const values = parseNodeConfig(input);
     if (!values.ok) return values;
@@ -149,10 +149,10 @@ function resolveNode(
   }
 }
 
-export function createAeliqoDataRegistry(options: AeliqoDataRegistryOptions = {}): AeliqoDataRegistry {
+export function createVarendoDataRegistry(options: VarendoDataRegistryOptions = {}): VarendoDataRegistry {
   const entries = createDataManifests();
   const manifestsByRef = new Map(entries.map((entry) => [refKey(entry.ref), entry]));
-  const resolve = (input: AeliqoDataNodeInput, binding: AeliqoDataBinding) =>
+  const resolve = (input: VarendoDataNodeInput, binding: VarendoDataBinding) =>
     resolveNode(input, binding, options, manifestsByRef);
   return Object.freeze({ manifests: entries, resolve });
 }

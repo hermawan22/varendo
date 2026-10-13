@@ -3,14 +3,14 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, it } from 'vitest';
 import {
   AdaptiveSurface,
-  AeliqoScope,
+  VarendoScope,
   ViewSurface,
   defineReactViews,
   useDataSurface,
   useSurface,
   type ReactViewProps,
 } from '../../packages/react/src/surface/index.js';
-import { AeliqoProvider, useAeliqoRuntime } from '../../packages/react/src/index.js';
+import { VarendoProvider, useVarendoRuntime } from '../../packages/react/src/index.js';
 import { createPeopleFixture, type PeopleSurfaceState } from './fixtures/people.js';
 import { createScopeFixture } from './fixtures/scope.js';
 import type { Intent } from '@varendo/core';
@@ -303,9 +303,9 @@ it('keeps an injected scope inert during server rendering and never disposes it'
   expect(fixture.scope.getSnapshot()).toMatchObject({ status: 'idle', active: false });
 
   const html = renderToStaticMarkup(
-    <AeliqoScope scope={fixture.scope}>
+    <VarendoScope scope={fixture.scope}>
       <span>host child</span>
-    </AeliqoScope>,
+    </VarendoScope>,
   );
 
   expect(html).not.toContain('host child');
@@ -319,9 +319,9 @@ it('keeps the active subtree on A while a voluntary leave guard is pending and h
   await fixture.activate('acme');
   const render = () =>
     renderToStaticMarkup(
-      <AeliqoScope scope={fixture.scope}>
+      <VarendoScope scope={fixture.scope}>
         <span>private {fixture.scope.getSnapshot().selector?.id}</span>
-      </AeliqoScope>,
+      </VarendoScope>,
     );
   const guard = fixture.host.deferGuard();
   fixture.host.setDirty(true);
@@ -351,9 +351,9 @@ it('does not server-render scoped children after initial denial or disposal', as
   await deniedState;
   const render = () =>
     renderToStaticMarkup(
-      <AeliqoScope scope={denied.scope}>
+      <VarendoScope scope={denied.scope}>
         <span>private data</span>
-      </AeliqoScope>,
+      </VarendoScope>,
     );
   expect(render()).toContain('no longer available');
   expect(render()).not.toContain('private data');
@@ -374,11 +374,11 @@ it('defers a scoped declarative surface and its data request during server rende
   }
 
   const html = renderToStaticMarkup(
-    <AeliqoProvider runtime={fixture.runtime}>
-      <AeliqoScope scope={fixture.scope}>
+    <VarendoProvider runtime={fixture.runtime}>
+      <VarendoScope scope={fixture.scope}>
         <Orders />
-      </AeliqoScope>
-    </AeliqoProvider>,
+      </VarendoScope>
+    </VarendoProvider>,
   );
 
   expect(html).toContain('pending scoped surface');
@@ -389,15 +389,15 @@ it('defers a scoped declarative surface and its data request during server rende
 it('exposes an injected runtime without taking ownership of it', () => {
   const fixture = createPeopleFixture();
   function RuntimeProbe(): React.JSX.Element {
-    const runtime = useAeliqoRuntime();
+    const runtime = useVarendoRuntime();
     return <p>{runtime === fixture.runtime ? 'same-runtime' : 'wrong-runtime'}</p>;
   }
 
   expect(
     renderToStaticMarkup(
-      <AeliqoProvider runtime={fixture.runtime}>
+      <VarendoProvider runtime={fixture.runtime}>
         <RuntimeProbe />
-      </AeliqoProvider>,
+      </VarendoProvider>,
     ),
   ).toBe('<p>same-runtime</p>');
   expect(fixture.runtime.snapshot('missing-region')).toBeUndefined();
@@ -531,9 +531,9 @@ it('rejects an implicit local authority inside an application-owned scope', asyn
   }
 
   const html = renderToStaticMarkup(
-    <AeliqoScope scope={fixture.scope}>
+    <VarendoScope scope={fixture.scope}>
       <ScopedLocal />
-    </AeliqoScope>,
+    </VarendoScope>,
   );
 
   expect(html).toContain('data.scope-incompatible');

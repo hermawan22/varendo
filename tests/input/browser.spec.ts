@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import type { AeliqoTextFieldElement, AeliqoTextAreaElement } from '../../packages/web/src/input/index.js';
+import type { VarendoTextFieldElement, VarendoTextAreaElement } from '../../packages/web/src/input/index.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/tests/input/index.html');
-  await page.waitForFunction(() => (window as Window & { aeliqoInputReady?: boolean }).aeliqoInputReady === true);
+  await page.waitForFunction(() => (window as Window & { varendoInputReady?: boolean }).varendoInputReady === true);
 });
 
 test('all input primitives render labeled native controls and preserve form data', async ({ page }) => {
@@ -67,10 +67,10 @@ test('IME drafts remain visible and search commits only after composition', asyn
     .locator('#search')
     .evaluate((element) =>
       element.addEventListener(
-        'aeliqo-search',
+        'varendo-search',
         (event) =>
-          ((window as Window & { aeliqoSearches?: string[] }).aeliqoSearches = [
-            ...((window as Window & { aeliqoSearches?: string[] }).aeliqoSearches ?? []),
+          ((window as Window & { varendoSearches?: string[] }).varendoSearches = [
+            ...((window as Window & { varendoSearches?: string[] }).varendoSearches ?? []),
             (event as CustomEvent<{ query: string }>).detail.query,
           ]),
       ),
@@ -78,7 +78,7 @@ test('IME drafts remain visible and search commits only after composition', asyn
   const search = page.locator('#search').locator('input');
   await search.fill('abc');
   await page.waitForTimeout(50);
-  expect(await page.evaluate(() => (window as Window & { aeliqoSearches?: string[] }).aeliqoSearches ?? [])).toEqual([
+  expect(await page.evaluate(() => (window as Window & { varendoSearches?: string[] }).varendoSearches ?? [])).toEqual([
     'abc',
   ]);
   void searches;
@@ -99,24 +99,24 @@ test('date range boundaries, slider keyboard, validation and cleanup are bounded
     .evaluate(
       (root) =>
         root.querySelectorAll(
-          'aeliqo-text-field, aeliqo-text-area, aeliqo-number-field, aeliqo-checkbox, aeliqo-radio-group, aeliqo-switch, aeliqo-select, aeliqo-combobox, aeliqo-date-field, aeliqo-date-range, aeliqo-slider, aeliqo-search-field, aeliqo-file-input',
+          'varendo-text-field, varendo-text-area, varendo-number-field, varendo-checkbox, varendo-radio-group, varendo-switch, varendo-select, varendo-combobox, varendo-date-field, varendo-date-range, varendo-slider, varendo-search-field, varendo-file-input',
         ).length,
     );
   expect(before).toBeGreaterThanOrEqual(13);
   await page.reload();
-  await page.waitForFunction(() => (window as Window & { aeliqoInputReady?: boolean }).aeliqoInputReady === true);
+  await page.waitForFunction(() => (window as Window & { varendoInputReady?: boolean }).varendoInputReady === true);
   await expect(page.locator('#name').locator('input')).toHaveValue('Ada');
 });
 
 test('form wrapper validates drafts before emitting its explicit host action', async ({ page }) => {
   const result = await page.locator('#app-form').evaluate(async (element) => {
     const form = element as HTMLElement & { requestSubmit: () => void; formData: () => FormData | undefined };
-    const field = element.querySelector('aeliqo-text-field') as HTMLElement & {
+    const field = element.querySelector('varendo-text-field') as HTMLElement & {
       value: string;
       updateComplete: Promise<unknown>;
     };
     let submits = 0;
-    element.addEventListener('aeliqo-form-submit', () => {
+    element.addEventListener('varendo-form-submit', () => {
       submits += 1;
     });
     form.requestSubmit();
@@ -146,7 +146,7 @@ test('form wrapper bridges slotted native buttons, Enter and form data', async (
   const result = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const form = document.createElement('aeliqo-form') as HTMLElement & {
+    const form = document.createElement('varendo-form') as HTMLElement & {
       formData: () => FormData | undefined;
       updateComplete: Promise<unknown>;
     };
@@ -163,7 +163,7 @@ test('form wrapper bridges slotted native buttons, Enter and form data', async (
     reset.type = 'reset';
     reset.textContent = 'Reset';
     let submits = 0;
-    form.addEventListener('aeliqo-form-submit', () => {
+    form.addEventListener('varendo-form-submit', () => {
       submits += 1;
     });
     form.append(input, submit, reset);
@@ -187,7 +187,7 @@ test('form wrapper honors a trusted child-cancelled submit click', async ({ page
   await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const form = document.createElement('aeliqo-form') as HTMLElement & { updateComplete: Promise<unknown> };
+    const form = document.createElement('varendo-form') as HTMLElement & { updateComplete: Promise<unknown> };
     form.id = 'cancelled-click-form';
     const submit = document.createElement('button');
     submit.type = 'submit';
@@ -196,7 +196,7 @@ test('form wrapper honors a trusted child-cancelled submit click', async ({ page
     submit.append(label);
     submit.addEventListener('click', (event) => event.preventDefault());
     let submits = 0;
-    form.addEventListener('aeliqo-form-submit', () => {
+    form.addEventListener('varendo-form-submit', () => {
       submits += 1;
     });
     form.append(submit);
@@ -214,13 +214,13 @@ test('field groups propagate disabled through nested and dynamic children', asyn
   await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const group = document.createElement('aeliqo-field-group') as HTMLElement & {
+    const group = document.createElement('varendo-field-group') as HTMLElement & {
       disabled: boolean;
       updateComplete: Promise<unknown>;
     };
     group.id = 'nested-disabled-group';
     const wrapper = document.createElement('div');
-    const preserved = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+    const preserved = document.createElement('varendo-text-field') as VarendoTextFieldElement;
     preserved.name = 'preserved';
     preserved.disabled = true;
     wrapper.append(preserved);
@@ -229,7 +229,7 @@ test('field groups propagate disabled through nested and dynamic children', asyn
     await Promise.all([group.updateComplete, preserved.updateComplete]);
     group.disabled = true;
     await group.updateComplete;
-    const dynamic = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+    const dynamic = document.createElement('varendo-text-field') as VarendoTextFieldElement;
     dynamic.name = 'dynamic';
     group.append(dynamic);
     await new Promise((resolve) => setTimeout(resolve, 0));
@@ -276,7 +276,7 @@ test('input defaults initialize before mount and survive reset', async ({ page }
       { value: 'a', label: 'Alpha' },
       { value: 'b', label: 'Beta' },
     ] as const;
-    const number = document.createElement('aeliqo-number-field') as HTMLElement & {
+    const number = document.createElement('varendo-number-field') as HTMLElement & {
       locale: string;
       defaultValue: string;
       value?: string;
@@ -286,14 +286,14 @@ test('input defaults initialize before mount and survive reset', async ({ page }
     };
     number.locale = 'de-DE';
     number.defaultValue = '1234.50';
-    const checkbox = document.createElement('aeliqo-checkbox') as HTMLElement & {
+    const checkbox = document.createElement('varendo-checkbox') as HTMLElement & {
       defaultChecked: boolean;
       checked: boolean;
       reset: () => void;
       updateComplete: Promise<unknown>;
     };
     checkbox.defaultChecked = true;
-    const radio = document.createElement('aeliqo-radio-group') as HTMLElement & {
+    const radio = document.createElement('varendo-radio-group') as HTMLElement & {
       options: readonly (typeof options)[number][];
       defaultValue: string;
       value: string;
@@ -302,7 +302,7 @@ test('input defaults initialize before mount and survive reset', async ({ page }
     };
     radio.options = options;
     radio.defaultValue = 'b';
-    const select = document.createElement('aeliqo-select') as HTMLElement & {
+    const select = document.createElement('varendo-select') as HTMLElement & {
       options: readonly (typeof options)[number][];
       defaultValue: string;
       value: string;
@@ -311,7 +311,7 @@ test('input defaults initialize before mount and survive reset', async ({ page }
     };
     select.options = options;
     select.defaultValue = 'b';
-    const combo = document.createElement('aeliqo-combobox') as HTMLElement & {
+    const combo = document.createElement('varendo-combobox') as HTMLElement & {
       options: readonly (typeof options)[number][];
       defaultValue: string;
       value: string;
@@ -320,14 +320,14 @@ test('input defaults initialize before mount and survive reset', async ({ page }
     };
     combo.options = options;
     combo.defaultValue = 'b';
-    const date = document.createElement('aeliqo-date-field') as HTMLElement & {
+    const date = document.createElement('varendo-date-field') as HTMLElement & {
       defaultValue: string;
       value: string;
       reset: () => void;
       updateComplete: Promise<unknown>;
     };
     date.defaultValue = '2026-09-08';
-    const range = document.createElement('aeliqo-date-range') as HTMLElement & {
+    const range = document.createElement('varendo-date-range') as HTMLElement & {
       defaultStart: string;
       defaultEnd: string;
       start: string;
@@ -337,14 +337,14 @@ test('input defaults initialize before mount and survive reset', async ({ page }
     };
     range.defaultStart = '2026-09-01';
     range.defaultEnd = '2026-09-08';
-    const slider = document.createElement('aeliqo-slider') as HTMLElement & {
+    const slider = document.createElement('varendo-slider') as HTMLElement & {
       defaultValue: number;
       value: number;
       reset: () => void;
       updateComplete: Promise<unknown>;
     };
     slider.defaultValue = 40;
-    const switchControl = document.createElement('aeliqo-switch') as HTMLElement & {
+    const switchControl = document.createElement('varendo-switch') as HTMLElement & {
       defaultChecked: boolean;
       checked: boolean;
       reset: () => void;
@@ -431,14 +431,14 @@ test('readonly native controls reconcile user attempts', async ({ page }) => {
   const state = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const checkbox = document.createElement('aeliqo-checkbox') as HTMLElement & {
+    const checkbox = document.createElement('varendo-checkbox') as HTMLElement & {
       checked: boolean;
       readOnly: boolean;
       updateComplete: Promise<unknown>;
     };
     checkbox.checked = true;
     checkbox.readOnly = true;
-    const radio = document.createElement('aeliqo-radio-group') as HTMLElement & {
+    const radio = document.createElement('varendo-radio-group') as HTMLElement & {
       options: readonly { value: string; label: string }[];
       value: string;
       readOnly: boolean;
@@ -450,7 +450,7 @@ test('readonly native controls reconcile user attempts', async ({ page }) => {
     ];
     radio.value = 'a';
     radio.readOnly = true;
-    const select = document.createElement('aeliqo-select') as HTMLElement & {
+    const select = document.createElement('varendo-select') as HTMLElement & {
       options: readonly { value: string; label: string }[];
       value: string;
       readOnly: boolean;
@@ -462,14 +462,14 @@ test('readonly native controls reconcile user attempts', async ({ page }) => {
     ];
     select.value = 'a';
     select.readOnly = true;
-    const slider = document.createElement('aeliqo-slider') as HTMLElement & {
+    const slider = document.createElement('varendo-slider') as HTMLElement & {
       value: number;
       readOnly: boolean;
       updateComplete: Promise<unknown>;
     };
     slider.value = 40;
     slider.readOnly = true;
-    const file = document.createElement('aeliqo-file-input') as HTMLElement & {
+    const file = document.createElement('varendo-file-input') as HTMLElement & {
       readOnly: boolean;
       updateComplete: Promise<unknown>;
     };
@@ -516,7 +516,7 @@ test('form wrapper defers child Enter behavior and respects native ownership', a
   await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const form = document.createElement('aeliqo-form') as HTMLElement & {
+    const form = document.createElement('varendo-form') as HTMLElement & {
       formData: () => FormData | undefined;
       updateComplete: Promise<unknown>;
     };
@@ -543,10 +543,10 @@ test('form wrapper defers child Enter behavior and respects native ownership', a
     const bypassLabel = document.createElement('span');
     bypassLabel.textContent = 'Bypass';
     bypass.append(bypassLabel);
-    const customNotes = document.createElement('aeliqo-text-area') as AeliqoTextAreaElement;
+    const customNotes = document.createElement('varendo-text-area') as VarendoTextAreaElement;
     customNotes.name = 'custom-notes';
     customNotes.value = 'draft';
-    const combo = document.createElement('aeliqo-combobox') as HTMLElement & {
+    const combo = document.createElement('varendo-combobox') as HTMLElement & {
       options: readonly { value: string; label: string }[];
       updateComplete: Promise<unknown>;
     };
@@ -554,7 +554,7 @@ test('form wrapper defers child Enter behavior and respects native ownership', a
       { value: 'a', label: 'Alpha' },
       { value: 'b', label: 'Beta' },
     ];
-    const select = document.createElement('aeliqo-select') as HTMLElement & {
+    const select = document.createElement('varendo-select') as HTMLElement & {
       options: readonly { value: string; label: string }[];
       updateComplete: Promise<unknown>;
     };
@@ -563,7 +563,7 @@ test('form wrapper defers child Enter behavior and respects native ownership', a
       { value: 'b', label: 'Beta' },
     ];
     const submits = { form: 0, nested: 0 };
-    form.addEventListener('aeliqo-form-submit', () => {
+    form.addEventListener('varendo-form-submit', () => {
       submits.form += 1;
     });
     form.append(notes, required, fieldset, normal, bypass, customNotes, combo, select);
@@ -603,10 +603,10 @@ test('form wrapper defers child Enter behavior and respects native ownership', a
     );
   expect(afterBypass).toBe(1);
 
-  await page.locator('#semantics-form aeliqo-text-area').locator('textarea').press('Enter');
-  await page.locator('#semantics-form aeliqo-combobox').locator('input').press('ArrowDown');
-  await page.locator('#semantics-form aeliqo-combobox').locator('input').press('Enter');
-  await page.locator('#semantics-form aeliqo-select').locator('select').press('Enter');
+  await page.locator('#semantics-form varendo-text-area').locator('textarea').press('Enter');
+  await page.locator('#semantics-form varendo-combobox').locator('input').press('ArrowDown');
+  await page.locator('#semantics-form varendo-combobox').locator('input').press('Enter');
+  await page.locator('#semantics-form varendo-select').locator('select').press('Enter');
   await page.waitForTimeout(10);
   const final = await page.locator('#semantics-form').evaluate((element) => {
     const state = (window as Window & { formSemantics?: { submits: { form: number } } }).formSemantics;
@@ -616,8 +616,8 @@ test('form wrapper defers child Enter behavior and respects native ownership', a
         : undefined;
     return {
       submits: state?.submits.form ?? -1,
-      customNotes: (element.querySelector('aeliqo-text-area') as HTMLElement & { value: string }).value,
-      combo: (element.querySelector('aeliqo-combobox') as HTMLElement & { value: string }).value,
+      customNotes: (element.querySelector('varendo-text-area') as HTMLElement & { value: string }).value,
+      combo: (element.querySelector('varendo-combobox') as HTMLElement & { value: string }).value,
       disabled: data?.get('disabled-field') ?? null,
     };
   });
@@ -632,26 +632,26 @@ test('nested and externally owned controls stay with their owning form', async (
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
     const submits = { outer: 0, inner: 0, external: 0 };
-    const outer = document.createElement('aeliqo-form') as HTMLElement & { updateComplete: Promise<unknown> };
+    const outer = document.createElement('varendo-form') as HTMLElement & { updateComplete: Promise<unknown> };
     outer.id = 'nested-outer';
-    const inner = document.createElement('aeliqo-form') as HTMLElement & { updateComplete: Promise<unknown> };
+    const inner = document.createElement('varendo-form') as HTMLElement & { updateComplete: Promise<unknown> };
     inner.id = 'nested-inner';
     const innerInput = document.createElement('input');
     innerInput.name = 'inner';
     innerInput.value = 'inner';
     inner.append(innerInput);
     outer.append(inner);
-    outer.addEventListener('aeliqo-form-submit', (event) => {
+    outer.addEventListener('varendo-form-submit', (event) => {
       if (event.target === outer) submits.outer += 1;
     });
-    inner.addEventListener('aeliqo-form-submit', (event) => {
+    inner.addEventListener('varendo-form-submit', (event) => {
       if (event.target === inner) submits.inner += 1;
     });
     root.append(outer);
 
     const external = document.createElement('form');
     external.id = 'external-owner';
-    const wrapped = document.createElement('aeliqo-form') as HTMLElement & { updateComplete: Promise<unknown> };
+    const wrapped = document.createElement('varendo-form') as HTMLElement & { updateComplete: Promise<unknown> };
     wrapped.id = 'nested-external-wrapper';
     const externalInput = document.createElement('input');
     externalInput.name = 'external';
@@ -743,7 +743,7 @@ test('combobox loader removal settles pending state', async ({ page }) => {
   const state = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const combo = document.createElement('aeliqo-combobox') as HTMLElement & {
+    const combo = document.createElement('varendo-combobox') as HTMLElement & {
       optionsLoader: unknown;
       options: readonly { value: string; label: string }[];
       validationState: string;
@@ -771,7 +771,7 @@ test('combobox keeps query drafts separate and defers IME loading until composit
   const state = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const combo = document.createElement('aeliqo-combobox') as HTMLElement & {
+    const combo = document.createElement('varendo-combobox') as HTMLElement & {
       optionsLoader: (query: string, signal: AbortSignal) => Promise<readonly { value: string; label: string }[]>;
       value: string;
       query: string;
@@ -784,10 +784,10 @@ test('combobox keeps query drafts separate and defers IME loading until composit
       loaded.push(query);
       return [];
     };
-    combo.addEventListener('aeliqo-combobox-query', (event) =>
+    combo.addEventListener('varendo-combobox-query', (event) =>
       queries.push((event as CustomEvent<{ query: string }>).detail.query),
     );
-    combo.addEventListener('aeliqo-input-change', (event) =>
+    combo.addEventListener('varendo-input-change', (event) =>
       values.push((event as CustomEvent<{ value: string }>).detail.value),
     );
     root.append(combo);
@@ -823,10 +823,10 @@ test('text fields are uncontrolled by default and searches only commit user prop
   const state = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const field = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+    const field = document.createElement('varendo-text-field') as VarendoTextFieldElement;
     field.defaultValue = 'Ada';
     root.append(field);
-    const search = document.createElement('aeliqo-search-field') as HTMLElement & {
+    const search = document.createElement('varendo-search-field') as HTMLElement & {
       queryOnInput: boolean;
       debounceMs: number;
       value: string;
@@ -835,7 +835,7 @@ test('text fields are uncontrolled by default and searches only commit user prop
     search.queryOnInput = true;
     search.debounceMs = 0;
     let searches = 0;
-    search.addEventListener('aeliqo-search', () => {
+    search.addEventListener('varendo-search', () => {
       searches += 1;
     });
     root.append(search);
@@ -870,7 +870,7 @@ test('search debounce is cancelled by a host value replacement', async ({ page }
   const state = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const search = document.createElement('aeliqo-search-field') as HTMLElement & {
+    const search = document.createElement('varendo-search-field') as HTMLElement & {
       queryOnInput: boolean;
       debounceMs: number;
       value: string;
@@ -879,7 +879,7 @@ test('search debounce is cancelled by a host value replacement', async ({ page }
     search.queryOnInput = true;
     search.debounceMs = 80;
     const queries: string[] = [];
-    search.addEventListener('aeliqo-search', (event) =>
+    search.addEventListener('varendo-search', (event) =>
       queries.push((event as CustomEvent<{ query: string }>).detail.query),
     );
     root.append(search);
@@ -901,7 +901,7 @@ test('stale text validation cannot mark a newer programmatic value invalid', asy
   const state = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const field = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+    const field = document.createElement('varendo-text-field') as VarendoTextFieldElement;
     const pending: Array<(result: string | boolean) => void> = [];
     field.validator = (value) =>
       new Promise((resolve) => {
@@ -932,7 +932,7 @@ test('completed validation is cleared when the host value changes', async ({ pag
   const state = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const field = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+    const field = document.createElement('varendo-text-field') as VarendoTextFieldElement;
     field.validator = async (value) => (value === 'accepted' ? true : 'Old value invalid');
     root.append(field);
     await field.updateComplete;
@@ -962,7 +962,7 @@ test('host supplied errors survive mount and value changes', async ({ page }) =>
   const state = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('fixture missing');
-    const field = document.createElement('aeliqo-text-field') as HTMLElement & {
+    const field = document.createElement('varendo-text-field') as HTMLElement & {
       value: string;
       error: string;
       updateComplete: Promise<unknown>;

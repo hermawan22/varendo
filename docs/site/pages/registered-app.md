@@ -10,9 +10,9 @@ description: 'Connect application-owned data and authority, then render a filter
 
 <div class="docs-inline-cta"><p><strong>New to Varendo?</strong> Run the small local quickstart first. Come back when you need real app data.</p><a href="/start/">Open the local React quickstart →</a></div>
 
-<aside class="doc-callout" data-tone="note"><strong>Before you start</strong><p>You need Node.js 24, React 19.2, TypeScript, and an app that can provide rows plus the signed-in user's permissions. Keep every Varendo package on exactly version 0.1.0.</p></aside>
+<aside class="doc-callout" data-tone="note"><strong>Before you start</strong><p>You need Node.js 24, React 19.2, TypeScript, and an app that can provide rows plus the signed-in user's permissions. Keep every Varendo package on exactly version 0.2.0.</p></aside>
 
-<aeliqo-release-status></aeliqo-release-status>
+<varendo-release-status></varendo-release-status>
 
 Start from the React TypeScript project created in the [quickstart](/start/).
 You will add `src/app.ts` and `src/PeopleTutorial.tsx`, then replace the entry
@@ -25,11 +25,11 @@ This tutorial uses the app-level API in `@varendo/react/app`. You mount a named 
 
 ```bash
 npm install --save-exact \
-  @varendo/core@0.1.0 \
-  @varendo/runtime@0.1.0 \
-  @varendo/web@0.1.0 \
-  @varendo/react@0.1.0 \
-  @varendo/agent@0.1.0 \
+  @varendo/core@0.2.0 \
+  @varendo/runtime@0.2.0 \
+  @varendo/web@0.2.0 \
+  @varendo/react@0.2.0 \
+  @varendo/agent@0.2.0 \
   react@19.2.8 react-dom@19.2.8 zod@4.5.4
 ```
 
@@ -37,19 +37,19 @@ npm install --save-exact \
 
 Create `src/app.ts`. It defines two resources. `people` has a stable `id`, labeled fields, and two allowed views. `workforce-headcount` stores one month-end snapshot per month; its measure is marked semi-additive so it is never summed across months.
 
-The same file creates two bounded local data services and an `authorize` check that checks the synthetic principal provided by the tutorial authority. `createAeliqoApp` wires resources, data, and authority into one app instance. Swap the local service for your HTTP adapter when your server owns the records — keep credentials and grants out of requests.
+The same file creates two bounded local data services and an `authorize` check that checks the synthetic principal provided by the tutorial authority. `createVarendoApp` wires resources, data, and authority into one app instance. Swap the local service for your HTTP adapter when your server owns the records — keep credentials and grants out of requests.
 
-<aeliqo-source data-label="src/app.ts" data-path="examples/quickstart/src/app.ts"></aeliqo-source>
+<varendo-source data-label="src/app.ts" data-path="examples/quickstart/src/app.ts"></varendo-source>
 
 You should see: `createTutorialApp(records)` returns one app instance with two registered resources.
 
 ## 3. Build the screen
 
-Create `src/PeopleTutorial.tsx` using the full source below. `AeliqoProvider`
-shares the app; `AeliqoRegion` mounts `people-main` and renders the current
+Create `src/PeopleTutorial.tsx` using the full source below. `VarendoProvider`
+shares the app; `VarendoRegion` mounts `people-main` and renders the current
 intent. The React buttons select a request and the form owns its draft.
 
-<aeliqo-source data-label="src/PeopleTutorial.tsx" data-path="examples/quickstart/src/PeopleTutorial.tsx"></aeliqo-source>
+<varendo-source data-label="src/PeopleTutorial.tsx" data-path="examples/quickstart/src/PeopleTutorial.tsx"></varendo-source>
 
 ## 4. Mount and run it
 
@@ -95,9 +95,9 @@ You should see: three buttons drive the region — a table of people, a filtered
 
 ## 6. Expose the region to an agent
 
-Create `src/agent.ts`. `createAppToolEndpoint` pairs one mounted region with a transport and gives the agent three tools: `aeliqo_context`, `aeliqo_render`, `aeliqo_act`. The host picks the region, transport, expiry, and size limits. The agent cannot grant itself permissions or supply markup.
+Create `src/agent.ts`. `createAppToolEndpoint` pairs one mounted region with a transport and gives the agent three tools: `varendo_context`, `varendo_render`, `varendo_act`. The host picks the region, transport, expiry, and size limits. The agent cannot grant itself permissions or supply markup.
 
-<aeliqo-source data-label="src/agent.ts" data-path="examples/quickstart/src/agent.ts"></aeliqo-source>
+<varendo-source data-label="src/agent.ts" data-path="examples/quickstart/src/agent.ts"></varendo-source>
 
 Attach the endpoint to the [local MCP transport](/agents/mcp/) and close it on disconnect or expiry. Keep every button and form working when no agent is connected.
 

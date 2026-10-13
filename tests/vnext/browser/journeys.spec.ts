@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import type { AeliqoRegionElement } from '../../../packages/web/src/region/aeliqo-region.js';
+import type { VarendoRegionElement } from '../../../packages/web/src/region/varendo-region.js';
 import {
   resetJourneyThroughHostControl,
   runFixtureAgentCompareJourney,
@@ -33,15 +33,15 @@ test('public content is useful without JavaScript and its optional detail hydrat
 test('manual comparison and fixture-agent comparison commit the same intent', async ({ page }) => {
   await page.goto('/journeys/');
   const manual = await runManualCompareJourney(page);
-  const region = page.locator('#catalog-view aeliqo-region');
-  const previous = await region.evaluate((element: AeliqoRegionElement) => element.presentation?.plan);
-  const children = await page.locator('#catalog-view aeliqo-detail').elementHandles();
+  const region = page.locator('#catalog-view varendo-region');
+  const previous = await region.evaluate((element: VarendoRegionElement) => element.presentation?.plan);
+  const children = await page.locator('#catalog-view varendo-detail').elementHandles();
   expect(children).toHaveLength(2);
   await resetJourneyThroughHostControl(page);
   const assisted = await runFixtureAgentCompareJourney(page);
   expect(assisted.normalizedIntent).toEqual(manual.normalizedIntent);
   expect(assisted.selectedIds).toEqual(manual.selectedIds);
-  const next = await region.evaluate((element: AeliqoRegionElement) => element.presentation?.plan);
+  const next = await region.evaluate((element: VarendoRegionElement) => element.presentation?.plan);
   expect(next?.nodes.map((node) => node.id)).toEqual(previous?.nodes.map((node) => node.id));
   expect(next?.preconditions.results).toHaveLength(1);
   expect(next?.preconditions.results[0]?.id).not.toBe(previous?.preconditions.results[0]?.id);
@@ -56,8 +56,8 @@ test('enterprise windows stay independent and host approval plus revocation are 
   await page.goto('/journeys/');
   await page.getByRole('button', { name: 'Load left partial page' }).click();
   await expect(page.locator('#enterprise-status')).toContainText('left remote window renderer-ready');
-  await expect(page.locator('#enterprise-left-view aeliqo-table')).toHaveCount(1);
-  await expect(page.locator('#enterprise-right-view aeliqo-table')).toHaveCount(0);
+  await expect(page.locator('#enterprise-left-view varendo-table')).toHaveCount(1);
+  await expect(page.locator('#enterprise-right-view varendo-table')).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Request host approval' }).click();
   await expect(page.getByRole('button', { name: 'Approve reviewed action' })).toBeEnabled();
@@ -66,7 +66,7 @@ test('enterprise windows stay independent and host approval plus revocation are 
 
   await page.getByRole('button', { name: 'Revoke right-surface access' }).click();
   await expect(page.locator('#enterprise-status')).toContainText('denied:journey.access-denied');
-  await expect(page.locator('#enterprise-left-view aeliqo-table')).toHaveCount(1);
+  await expect(page.locator('#enterprise-left-view varendo-table')).toHaveCount(1);
 });
 
 test('non-data job keeps the draft local and exposes only host-owned progress and output refs', async ({ page }) => {

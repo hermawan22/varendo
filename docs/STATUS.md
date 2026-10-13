@@ -1,6 +1,6 @@
 # Varendo status
 
-Last updated: 2026-10-12. This is the maintained status of the independent Varendo
+Last updated: 2026-10-13. This is the maintained status of the independent Varendo
 framework. The original Aeliqo status and release receipts remain unchanged in
 [the upstream archive](history/aeliqo-status-2026-10-09.md), `docs/adr/`,
 `docs/releases/` and the historical public release notes.
@@ -16,12 +16,26 @@ release/decision records are preserved; original Git history is retained in the
 maintainer’s independent Git backup.
 
 All five public packages are published at **0.1.0**: `@varendo/core`, `@varendo/runtime`,
-`@varendo/web`, `@varendo/react`, and `@varendo/agent`. There is no previous
-Varendo release; metadata separately records upstream Aeliqo 0.7.1. Imports,
-repository metadata and current documentation use the new scope. Public API
-identifiers, `aeliqo-*` elements/events/tokens, serialized contracts, persistence
-keys and protocols retain compatible behavior. See the
-[migration guide](site/pages/migration-varendo.md).
+`@varendo/web`, `@varendo/react`, and `@varendo/agent`. Metadata separately records
+upstream Aeliqo 0.7.1. The published 0.1.0 packages kept the former Aeliqo API
+identifiers, elements, events, tokens and protocol names; see the
+[Aeliqo to Varendo guide](site/pages/migration-varendo.md).
+
+**Varendo 0.2.0 is prepared and unpublished.** Source on this line renames every
+remaining former-name identifier to Varendo without compatibility aliases:
+functions, classes, types, React components, `varendo-*` custom elements, events,
+`--varendo-*` CSS custom properties, `data-varendo-*` attributes, MCP/WebMCP tool
+names, storage keys, release-evidence schemas and environment variables.
+Behavior and serialized contract version `1` are unchanged. Release metadata is
+`0.2.0` with status `candidate` and previous version `0.1.0`; the
+[0.1 to 0.2 migration guide](site/pages/migration-varendo-0.2.md) maps old and
+new names. Publication needs the owner's approval, a same-SHA full-matrix
+main push, and the RC and stable procedure in
+[the maintainer guide](releasing-varendo.md). Until then npm `latest` remains
+0.1.0 and the 0.2.0 install commands in current documentation do not resolve.
+The rename changes the visual fixture and performance workload digests, so the
+advisory references below need an owner-dispatched probe and review before
+strict comparisons can pass on 0.2.0 source.
 
 **All five npm packages are published and verified; the Varendo container image
 remains unpublished.** Public documentation is live at

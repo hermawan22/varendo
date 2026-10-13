@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { parseWireValue, type Intent } from '@varendo/core';
 import { defineDataFeature } from '@varendo/core/features';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
-import { createAeliqoRuntime, createLocalDataBinding } from '@varendo/runtime';
+import { createVarendoRuntime, createLocalDataBinding } from '@varendo/runtime';
 import { connectAgent, type AgentClient } from '@varendo/agent/browser';
 import type { AgentJsonValue } from '@varendo/agent/capabilities';
 
@@ -77,7 +77,7 @@ it('keeps a connected Jakarta proposal on the same authorized target and filter 
           : { ok: false, diagnostics: [{ code: 'jakarta.denied', message: 'Read denied.', retryable: false }] },
     },
   });
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId: 'jakarta-runtime',
     resources: [{ resource: people.resource, data: binding.service }],
     authority: {
@@ -126,7 +126,7 @@ it('keeps a connected Jakarta proposal on the same authorized target and filter 
   const calls = [
     {
       id: 'jakarta-render',
-      name: 'aeliqo_surface_render',
+      name: 'varendo_surface_render',
       input: { targetId: 'people-main', intent: agentWireIntent },
     },
   ];
@@ -154,7 +154,7 @@ it('keeps a connected Jakarta proposal on the same authorized target and filter 
   };
   const connection = connectAgent({ scope, client, targets: ['people-main'] });
   try {
-    const context = await connection.invoke('aeliqo_surface_context', {});
+    const context = await connection.invoke('varendo_surface_context', {});
     expect(context).toMatchObject({
       ok: true,
       value: { state: 'data-ready', value: { targets: [{ id: 'people-main', address: surface.address }] } },
@@ -168,7 +168,7 @@ it('keeps a connected Jakarta proposal on the same authorized target and filter 
       status: 'committed',
     });
     const beforeAmbiguous = surface.getSnapshot();
-    const ambiguous = await connection.invoke('aeliqo_surface_render', { intent: agentWireIntent });
+    const ambiguous = await connection.invoke('varendo_surface_render', { intent: agentWireIntent });
     expect(ambiguous).toMatchObject({
       ok: true,
       value: { state: 'invalid', diagnostics: [{ code: 'agent.capability.input' }] },

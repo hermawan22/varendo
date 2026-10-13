@@ -1,13 +1,13 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
-import { AeliqoInputChangeEvent } from './events.js';
-import type { AeliqoOption } from './options.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
+import { VarendoInputChangeEvent } from './events.js';
+import type { VarendoOption } from './options.js';
 import { validOptions } from './options.js';
 
 /** Bounded native select; empty and unknown values stay distinguishable. */
-export class AeliqoSelectElement extends AeliqoFieldElement<string> {
+export class VarendoSelectElement extends VarendoFieldElement<string> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     options: { attribute: false },
     value: { type: String, reflect: true },
     defaultValue: { attribute: 'default-value', type: String },
@@ -15,7 +15,7 @@ export class AeliqoSelectElement extends AeliqoFieldElement<string> {
     unknownLabel: { attribute: 'unknown-label', type: String },
   };
 
-  options: readonly AeliqoOption[] = [];
+  options: readonly VarendoOption[] = [];
   value = '';
   defaultValue = '';
   emptyLabel = 'Select an option';
@@ -98,7 +98,7 @@ export class AeliqoSelectElement extends AeliqoFieldElement<string> {
       return;
     }
     this.value = select.value;
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value: this.value }));
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value: this.value }));
     void this.validateProposed(this.value);
     this.syncNative();
   };
@@ -122,7 +122,7 @@ export class AeliqoSelectElement extends AeliqoFieldElement<string> {
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       .select-wrap {
         min-inline-size: 0;
@@ -133,21 +133,21 @@ export class AeliqoSelectElement extends AeliqoFieldElement<string> {
       select {
         appearance: none;
         overflow: hidden;
-        padding-inline-end: calc(var(--aeliqo-control-inline-padding, 0.75rem) + 1.5rem);
+        padding-inline-end: calc(var(--varendo-control-inline-padding, 0.75rem) + 1.5rem);
         text-overflow: ellipsis;
         white-space: nowrap;
       }
 
       select:has(> option[value='']:checked) {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
       }
 
       .select-chevron {
         block-size: 1rem;
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
         inline-size: 1rem;
         inset-block-start: 50%;
-        inset-inline-end: var(--aeliqo-control-inline-padding, 0.75rem);
+        inset-inline-end: var(--varendo-control-inline-padding, 0.75rem);
         pointer-events: none;
         position: absolute;
         transform: translateY(-50%);
@@ -161,7 +161,7 @@ export class AeliqoSelectElement extends AeliqoFieldElement<string> {
       @media (forced-colors: active) {
         select {
           appearance: auto;
-          padding-inline-end: var(--aeliqo-control-inline-padding, 0.75rem);
+          padding-inline-end: var(--varendo-control-inline-padding, 0.75rem);
         }
 
         .select-chevron {

@@ -2,7 +2,7 @@ import type { CatalogExampleId } from './types.js';
 
 export const DATA_MOUNT_SOURCES = {
   metric: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoMetricElement>("aeliqo-metric", root);
+		const element = createCatalogElement<VarendoMetricElement>("varendo-metric", root);
 		element.label = "Authorized people";
 		element.value = catalogRows.length;
 		element.unit = "records";
@@ -10,7 +10,7 @@ export const DATA_MOUNT_SOURCES = {
 		element.description = "Current filtered result";
 	})`,
   delta: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoDeltaElement>("aeliqo-delta", root);
+		const element = createCatalogElement<VarendoDeltaElement>("varendo-delta", root);
 		element.label = "Change from last week";
 		element.current = .62;
 		element.baseline = .5;
@@ -19,7 +19,7 @@ export const DATA_MOUNT_SOURCES = {
 		element.scope = catalogScope;
 	})`,
   'key-value': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoKeyValueElement>("aeliqo-key-value", root);
+		const element = createCatalogElement<VarendoKeyValueElement>("varendo-key-value", root);
 		const items = [{
 			key: "owner",
 			label: "Owner",
@@ -34,7 +34,7 @@ export const DATA_MOUNT_SOURCES = {
 		element.scope = catalogScope;
 	})`,
   detail: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoDetailElement>("aeliqo-detail", root);
+		const element = createCatalogElement<VarendoDetailElement>("varendo-detail", root);
 		element.title = "Person detail";
 		element.record = catalogRows[0];
 		element.fields = catalogColumns;
@@ -43,7 +43,7 @@ export const DATA_MOUNT_SOURCES = {
 		element.scope = catalogScope;
 	})`,
   'record-list': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoRecordListElement>("aeliqo-record-list", root);
+		const element = createCatalogElement<VarendoRecordListElement>("varendo-record-list", root);
 		element.title = "People";
 		element.rows = catalogRows;
 		element.columns = catalogColumns;
@@ -55,7 +55,7 @@ export const DATA_MOUNT_SOURCES = {
 		element.scope = catalogScope;
 	})`,
   'card-collection': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoCardCollectionElement>("aeliqo-card-collection", root);
+		const element = createCatalogElement<VarendoCardCollectionElement>("varendo-card-collection", root);
 		element.title = "People cards";
 		element.rows = catalogRows;
 		element.columns = catalogColumns;
@@ -68,7 +68,7 @@ export const DATA_MOUNT_SOURCES = {
 		element.scope = catalogScope;
 	})`,
   table: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoTableElement>("aeliqo-table", root);
+		const element = createCatalogElement<VarendoTableElement>("varendo-table", root);
 		element.caption = "People";
 		element.columns = tableColumns;
 		element.rows = tableRows;
@@ -83,7 +83,7 @@ export const DATA_MOUNT_SOURCES = {
 		element.scope = catalogScope;
 	})`,
   'filter-builder': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoFilterBuilderElement>("aeliqo-filter-builder", root);
+		const element = createCatalogElement<VarendoFilterBuilderElement>("varendo-filter-builder", root);
 		element.fields = catalogFields;
 		element.entity = "person";
 		element.scopeLabel = "Authorized people";
@@ -96,7 +96,7 @@ export const DATA_MOUNT_SOURCES = {
 		element.logical = "and";
 	})`,
   'selection-summary': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoSelectionSummaryElement>("aeliqo-selection-summary", root);
+		const element = createCatalogElement<VarendoSelectionSummaryElement>("varendo-selection-summary", root);
 		element.label = "People selected";
 		element.entity = "person";
 		element.selectedKeys = [personKeys[0], personKeys[1]];

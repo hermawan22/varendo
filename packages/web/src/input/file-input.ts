@@ -1,11 +1,11 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
-import { AeliqoFileChangeEvent, type AeliqoFileMetadata } from './events.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
+import { VarendoFileChangeEvent, type VarendoFileMetadata } from './events.js';
 
 /** Native file picker that exposes metadata while leaving bytes with the host. */
-export class AeliqoFileInputElement extends AeliqoFieldElement<readonly AeliqoFileMetadata[]> {
+export class VarendoFileInputElement extends VarendoFieldElement<readonly VarendoFileMetadata[]> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     accept: { type: String },
     multiple: { type: Boolean, reflect: true },
     capture: { type: String },
@@ -19,13 +19,13 @@ export class AeliqoFileInputElement extends AeliqoFieldElement<readonly AeliqoFi
   capture = '';
   maxFiles = 0;
   maxBytes = 0;
-  selected: readonly AeliqoFileMetadata[] = [];
+  selected: readonly VarendoFileMetadata[] = [];
 
   protected override updated(): void {
     this.syncNative();
   }
 
-  protected override isCurrentValidationValue(value: readonly AeliqoFileMetadata[]): boolean {
+  protected override isCurrentValidationValue(value: readonly VarendoFileMetadata[]): boolean {
     return (
       value.length === this.selected.length &&
       value.every((file, index) => {
@@ -91,7 +91,7 @@ export class AeliqoFileInputElement extends AeliqoFieldElement<readonly AeliqoFi
       this.syncNative();
       return;
     }
-    const metadata: AeliqoFileMetadata[] =
+    const metadata: VarendoFileMetadata[] =
       input.files === null
         ? []
         : Array.from(input.files, (file) => ({
@@ -101,7 +101,7 @@ export class AeliqoFileInputElement extends AeliqoFieldElement<readonly AeliqoFi
             lastModified: file.lastModified,
           }));
     this.selected = metadata;
-    this.dispatchEvent(new AeliqoFileChangeEvent({ source: 'user', files: metadata }));
+    this.dispatchEvent(new VarendoFileChangeEvent({ source: 'user', files: metadata }));
     void this.validateProposed(metadata);
     this.syncNative();
   };
@@ -138,7 +138,7 @@ export class AeliqoFileInputElement extends AeliqoFieldElement<readonly AeliqoFi
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       input::file-selector-button {
         max-inline-size: 100%;
@@ -149,7 +149,7 @@ export class AeliqoFileInputElement extends AeliqoFieldElement<readonly AeliqoFi
         padding-inline-start: 1.25rem;
       }
       [part='files'] span {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
       }
     `,
   ];

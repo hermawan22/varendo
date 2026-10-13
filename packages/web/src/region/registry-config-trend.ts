@@ -4,7 +4,7 @@ import type {
   PresentationValues,
   ResolvedPresentationConfig,
 } from '@varendo/core/presentation';
-import { AELIQO_OPERATION_REFS, MAX_ITEMS } from './registry-contracts.js';
+import { VARENDO_OPERATION_REFS, MAX_ITEMS } from './registry-contracts.js';
 import { allowedKeys } from './data-registry-common.js';
 import {
   fail,
@@ -199,7 +199,7 @@ function resolvedTrend(
       values: values as PresentationValues,
       fields,
       ports: [],
-      operations: [AELIQO_OPERATION_REFS.read, AELIQO_OPERATION_REFS.compare, AELIQO_OPERATION_REFS.analyze],
+      operations: [VARENDO_OPERATION_REFS.read, VARENDO_OPERATION_REFS.compare, VARENDO_OPERATION_REFS.analyze],
     },
   };
 }

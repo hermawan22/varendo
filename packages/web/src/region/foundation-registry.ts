@@ -1,11 +1,11 @@
 import { parseWireValue, type Outcome, type Scalar, type VersionRef } from '@varendo/core';
 import type { PresentationManifest, PresentationValues, ResolvedPresentationConfig } from '@varendo/core/presentation';
-import { AELIQO_FOUNDATION_MANIFESTS } from '../foundation/manifest.js';
+import { VARENDO_FOUNDATION_MANIFESTS } from '../foundation/manifest.js';
 import { freezeValue as freeze } from './registry-value.js';
 import { bounded, ref, safeHref, uniqueRefs } from './navigation-feedback-support.js';
 
 /** Immutable application-owned bindings. Change the Experience revision when these change. */
-export interface AeliqoFoundationBindings {
+export interface VarendoFoundationBindings {
   readonly revision: string;
   readonly contents?: readonly { readonly id: string; readonly text: string }[];
   readonly actions?: readonly {
@@ -123,7 +123,7 @@ function collectionError(kind: FoundationBindingKind, items: unknown): string | 
   return undefined;
 }
 
-function copyBindings(input: AeliqoFoundationBindings | undefined): Outcome<AeliqoFoundationBindings> {
+function copyBindings(input: VarendoFoundationBindings | undefined): Outcome<VarendoFoundationBindings> {
   if (input === undefined) return { ok: true, value: { revision: 'unconfigured' } };
   const parsed = parseWireValue(input);
   if (!parsed.ok) return fail('Foundation bindings must be bounded JSON data.');
@@ -137,10 +137,10 @@ function copyBindings(input: AeliqoFoundationBindings | undefined): Outcome<Aeli
     const error = collectionError(kind, items);
     if (error !== undefined) return fail(error);
   }
-  return { ok: true, value: freeze(value) as unknown as AeliqoFoundationBindings };
+  return { ok: true, value: freeze(value) as unknown as VarendoFoundationBindings };
 }
 
-type FoundationManifest = (typeof AELIQO_FOUNDATION_MANIFESTS)[number];
+type FoundationManifest = (typeof VARENDO_FOUNDATION_MANIFESTS)[number];
 
 const CONTAINER_IDS = new Set([
   'foundation.surface',
@@ -150,7 +150,7 @@ const CONTAINER_IDS = new Set([
   'foundation.split-pane',
 ]);
 
-function manifestOperations(manifest: FoundationManifest, bindings: AeliqoFoundationBindings): readonly VersionRef[] {
+function manifestOperations(manifest: FoundationManifest, bindings: VarendoFoundationBindings): readonly VersionRef[] {
   if (manifest.ref.id === 'foundation.link') return uniqueRefs((bindings.routes ?? []).map((entry) => entry.route));
   if (manifest.role === 'action') return uniqueRefs((bindings.actions ?? []).map((entry) => entry.action));
   return [];
@@ -172,7 +172,7 @@ function resolvedConfig(
 
 function applyContentReferences(
   values: Record<string, unknown>,
-  bindings: AeliqoFoundationBindings,
+  bindings: VarendoFoundationBindings,
 ): string | undefined {
   const references = [
     ['contentRef', 'text'],
@@ -188,7 +188,7 @@ function applyContentReferences(
   return undefined;
 }
 
-function applyAvatarBinding(values: Record<string, unknown>, bindings: AeliqoFoundationBindings): string | undefined {
+function applyAvatarBinding(values: Record<string, unknown>, bindings: VarendoFoundationBindings): string | undefined {
   const identity = bindings.identities?.find((entry) => entry.id === values.identityRef);
   if (identity === undefined) return 'The requested identity reference is not registered.';
   values.name = identity.name;
@@ -200,7 +200,7 @@ function applyAvatarBinding(values: Record<string, unknown>, bindings: AeliqoFou
 function actionConfig(
   manifestId: string,
   values: Record<string, unknown>,
-  bindings: AeliqoFoundationBindings,
+  bindings: VarendoFoundationBindings,
 ): Outcome<ResolvedPresentationConfig> | undefined {
   if (manifestId !== 'foundation.button' && manifestId !== 'foundation.icon-button') return undefined;
   const action = bindings.actions?.find((entry) => entry.id === values.actionRef);
@@ -216,7 +216,7 @@ function actionConfig(
 function routeConfig(
   manifestId: string,
   values: Record<string, unknown>,
-  bindings: AeliqoFoundationBindings,
+  bindings: VarendoFoundationBindings,
 ): Outcome<ResolvedPresentationConfig> | undefined {
   if (manifestId !== 'foundation.link') return undefined;
   const route = bindings.routes?.find((entry) => entry.id === values.routeRef);
@@ -230,7 +230,7 @@ function routeConfig(
 function resolveFoundationConfig(
   values: PresentationValues,
   manifest: FoundationManifest,
-  bindings: AeliqoFoundationBindings,
+  bindings: VarendoFoundationBindings,
 ): Outcome<ResolvedPresentationConfig> {
   if (values.bindingRevision !== bindings.revision)
     return fail('The foundation binding revision does not match the pinned configuration.');
@@ -253,7 +253,7 @@ function resolveFoundationConfig(
 
 function createFoundationManifest(
   manifest: FoundationManifest,
-  bindings: AeliqoFoundationBindings,
+  bindings: VarendoFoundationBindings,
 ): PresentationManifest {
   return {
     ref: manifest.ref,
@@ -270,10 +270,10 @@ function createFoundationManifest(
 
 /** Adapts owned primitives to the SAME core presentation validator used by data views. */
 export function createFoundationPresentationManifests(
-  input?: AeliqoFoundationBindings,
+  input?: VarendoFoundationBindings,
 ): Outcome<readonly PresentationManifest[]> {
   const copied = copyBindings(input);
   if (!copied.ok) return copied;
-  const manifests = AELIQO_FOUNDATION_MANIFESTS.map((manifest) => createFoundationManifest(manifest, copied.value));
+  const manifests = VARENDO_FOUNDATION_MANIFESTS.map((manifest) => createFoundationManifest(manifest, copied.value));
   return { ok: true, value: manifests };
 }

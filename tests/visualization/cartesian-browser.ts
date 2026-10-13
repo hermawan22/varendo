@@ -153,7 +153,7 @@ const specs: Record<string, VisualizationSpec> = {
 const tags = ['trend', 'bar', 'area', 'scatter', 'histogram', 'heatmap'] as const;
 const mount = document.querySelector('main') ?? document.body;
 for (const tag of tags) {
-  const element = document.createElement(`aeliqo-${tag}`) as HTMLElement & {
+  const element = document.createElement(`varendo-${tag}`) as HTMLElement & {
     visualization: VisualizationSpec;
     context: unknown;
     datasets: unknown;

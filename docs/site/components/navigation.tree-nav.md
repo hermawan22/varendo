@@ -7,9 +7,9 @@ contract: 'Hierarchical navigation with stable node identities, expansion and ke
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -28,19 +28,19 @@ A bounded tree of navigation nodes with stable IDs and tree keyboard semantics. 
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 Node IDs must be unique, nonempty, and at most 160 characters. Cycles,
 invalid shapes, duplicate IDs, or more than 512 nodes render a status
@@ -54,11 +54,11 @@ changes.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -66,9 +66,9 @@ Allow long node labels to wrap inside the tree. Keep the selected item and expan
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -77,7 +77,7 @@ Allow long node labels to wrap inside the tree. Keep the selected item and expan
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

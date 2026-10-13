@@ -1,10 +1,10 @@
-import { registerAeliqoElements } from '../../packages/web/src/register.js';
+import { registerVarendoElements } from '../../packages/web/src/register.js';
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
-import type { AeliqoRegionElement } from '../../packages/web/src/region/aeliqo-region.js';
-import type { AeliqoSemanticInteractionRequest } from '../../packages/web/src/region/types.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import type { VarendoRegionElement } from '../../packages/web/src/region/varendo-region.js';
+import type { VarendoSemanticInteractionRequest } from '../../packages/web/src/region/types.js';
 import { fixture } from '../foundation/semantic-fixture.js';
-registerAeliqoElements();
+registerVarendoElements();
 const f = fixture();
 const inputs = {
   revision: 'inputs-1',
@@ -52,7 +52,7 @@ const inputs = {
     },
   ],
 };
-const made = createAeliqoPresentationRegistry({ inputs });
+const made = createVarendoPresentationRegistry({ inputs });
 if (!made.ok) throw new Error(JSON.stringify(made.diagnostics));
 const plan = {
   ...f.plan,
@@ -81,8 +81,8 @@ const validated = () => {
   if (!result.ok) throw new Error(JSON.stringify(result.diagnostics));
   return result.value;
 };
-const region = document.querySelector<AeliqoRegionElement>('aeliqo-region')!;
-const requests: AeliqoSemanticInteractionRequest[] = [];
+const region = document.querySelector<VarendoRegionElement>('varendo-region')!;
+const requests: VarendoSemanticInteractionRequest[] = [];
 region.onSemanticInteraction = (r) => requests.push(r);
 region.presentation = validated();
 Object.assign(window, {

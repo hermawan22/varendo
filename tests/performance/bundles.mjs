@@ -20,12 +20,12 @@ const before = digest();
 const sourceCommit = run(['git', 'rev-parse', 'HEAD']).trim();
 await mkdir(join(root, 'artifacts/performance-bundles'), { recursive: true });
 const output = await mkdtemp(join(root, 'artifacts/performance-bundles/run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-performance-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-performance-consumer-'));
 const packages = [];
 for (const name of ['core', 'runtime', 'web', 'react']) {
   const cwd = join(root, 'packages', name);
   run(['pnpm', 'build'], cwd);
-  const tarball = join(output, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(output, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], cwd);
   const manifest = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json']));
   assert.equal(manifest.version, RELEASE_VERSION);
@@ -60,47 +60,47 @@ await writeFile(join(consumer, 'people.css'), sourceBlock('css'));
 const workloads = [
   {
     id: 'button',
-    code: "import {AeliqoButtonElement} from '@varendo/web/button'; customElements.define('perf-button',AeliqoButtonElement);",
+    code: "import {VarendoButtonElement} from '@varendo/web/button'; customElements.define('perf-button',VarendoButtonElement);",
     budget: 15 * 1024,
     incremental: true,
     direct: true,
   },
   {
     id: 'input',
-    code: "import {AeliqoTextFieldElement} from '@varendo/web/inputs'; customElements.define('perf-input',AeliqoTextFieldElement);",
+    code: "import {VarendoTextFieldElement} from '@varendo/web/inputs'; customElements.define('perf-input',VarendoTextFieldElement);",
     budget: 15 * 1024,
     incremental: true,
     direct: true,
   },
   {
     id: 'metric',
-    code: "import {AeliqoMetricElement} from '@varendo/web/metric'; customElements.define('perf-metric',AeliqoMetricElement);",
+    code: "import {VarendoMetricElement} from '@varendo/web/metric'; customElements.define('perf-metric',VarendoMetricElement);",
     budget: 15 * 1024,
     incremental: true,
     direct: true,
   },
   {
     id: 'table',
-    code: "import {AeliqoTableElement} from '@varendo/web/table'; customElements.define('perf-table',AeliqoTableElement);",
+    code: "import {VarendoTableElement} from '@varendo/web/table'; customElements.define('perf-table',VarendoTableElement);",
     budget: 40 * 1024,
     incremental: true,
     direct: true,
   },
   {
     id: 'core-planner-validation',
-    code: "import {parseCatalog,parseTask,parseExperience} from '@varendo/core'; import {validatePresentationPlan,composePresentation} from '@varendo/core/presentation'; import {createQueryPlanner} from '@varendo/core/query'; globalThis.aeliqoPerformance={parseCatalog,parseTask,parseExperience,createQueryPlanner,validatePresentationPlan,composePresentation};",
+    code: "import {parseCatalog,parseTask,parseExperience} from '@varendo/core'; import {validatePresentationPlan,composePresentation} from '@varendo/core/presentation'; import {createQueryPlanner} from '@varendo/core/query'; globalThis.varendoPerformance={parseCatalog,parseTask,parseExperience,createQueryPlanner,validatePresentationPlan,composePresentation};",
     budget: 70 * 1024,
   },
   // Plan validation has its own budget above; this row measures the mounted region and runtime data path.
   {
     id: 'region-table',
-    code: "import {AeliqoRegionElement,createAeliqoPresentationRegistry} from '@varendo/web/region'; import {createLocalDataService} from '@varendo/runtime/data'; import {createResultStore} from '@varendo/runtime/results'; import {parseTask} from '@varendo/core'; import {createStandardFunctionRegistry} from '@varendo/core/expressions'; import {AeliqoTableElement} from '@varendo/web/table'; import {createRegionStore} from '@varendo/runtime/regions'; import {createTaskEvaluator} from '@varendo/runtime/evaluation'; customElements.define('perf-region',AeliqoRegionElement); customElements.define('aeliqo-table',AeliqoTableElement); globalThis.aeliqoPerformance={createRegionStore,createTaskEvaluator,createLocalDataService,createResultStore,createAeliqoPresentationRegistry,parseTask,createStandardFunctionRegistry};",
+    code: "import {VarendoRegionElement,createVarendoPresentationRegistry} from '@varendo/web/region'; import {createLocalDataService} from '@varendo/runtime/data'; import {createResultStore} from '@varendo/runtime/results'; import {parseTask} from '@varendo/core'; import {createStandardFunctionRegistry} from '@varendo/core/expressions'; import {VarendoTableElement} from '@varendo/web/table'; import {createRegionStore} from '@varendo/runtime/regions'; import {createTaskEvaluator} from '@varendo/runtime/evaluation'; customElements.define('perf-region',VarendoRegionElement); customElements.define('varendo-table',VarendoTableElement); globalThis.varendoPerformance={createRegionStore,createTaskEvaluator,createLocalDataService,createResultStore,createVarendoPresentationRegistry,parseTask,createStandardFunctionRegistry};",
     // Raised from 160 KiB in 0.6.0 (owner decision): workspace layouts, chart-first analysis, and
     // fitted chart widths grew the mounted region; it had stayed within 160 KiB since 0.3.
     budget: 168 * 1024,
     absentStyleRules: [
       ":is(button, input, select, [part='number'])",
-      ":where([data-aeliqo-theme]:not([data-aeliqo-theme='inherit']))",
+      ":where([data-varendo-theme]:not([data-varendo-theme='inherit']))",
     ],
   },
   {
@@ -225,7 +225,7 @@ for (const workload of workloads) {
     measurements,
   });
 }
-const deferred = process.env.AELIQO_DEFER_PERFORMANCE === '1';
+const deferred = process.env.VARENDO_DEFER_PERFORMANCE === '1';
 const functionalPassed = rows.every((row) =>
   row.measurements.every(
     (measurement) => measurement.forbidden.length === 0 && measurement.unusedStyleRules.length === 0,

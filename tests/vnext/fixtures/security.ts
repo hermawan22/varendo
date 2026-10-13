@@ -221,7 +221,7 @@ function makeClient(
   requestByTenant: Map<TenantKey, SecuritySerializedRequest[]>,
 ) {
   return createHttpDataService({
-    baseUrl: 'https://security.aeliqo.test',
+    baseUrl: 'https://security.varendo.test',
     headers: { authorization: `Bearer ${principal}` },
     fetch: makeFetch(handler, principal, requests, requestByTenant),
   });
@@ -344,7 +344,7 @@ export async function createTwoTenantFixture(): Promise<TwoTenantSecurityFixture
     const headers = new Headers(input.headers);
     if (input.body !== undefined) headers.set('content-type', 'application/json');
     return handler(
-      new Request(`https://security.aeliqo.test${input.path}`, {
+      new Request(`https://security.varendo.test${input.path}`, {
         method: input.method ?? 'POST',
         headers,
         ...(input.body === undefined ? {} : { body: JSON.stringify(input.body) }),

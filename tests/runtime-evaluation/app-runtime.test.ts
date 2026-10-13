@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { defineResource, type PresentationPlan } from '../../packages/core/src/index.js';
 import { createQueryFunctionRegistry } from '../../packages/core/src/expressions/index.js';
-import { createAeliqoRuntime } from '../../packages/runtime/src/app/index.js';
+import { createVarendoRuntime } from '../../packages/runtime/src/app/index.js';
 import { createLocalDataService } from '../../packages/runtime/src/data/index.js';
 import type { DataService } from '../../packages/runtime/src/data/index.js';
 
@@ -82,7 +82,7 @@ const browse = (id: string, search?: string) =>
     ...(search === undefined ? {} : { search: { text: search, fields: ['team'] } }),
   }) as const;
 
-describe('createAeliqoRuntime', () => {
+describe('createVarendoRuntime', () => {
   it('discovers only same-principal, same-scope resources authorized for the paired Region', () => {
     const app = fixture();
     const secondary = defineResource({
@@ -102,7 +102,7 @@ describe('createAeliqoRuntime', () => {
       schema: z.object({ id: z.string(), note: z.string() }),
       presentation: { allowedViews: ['table'] },
     });
-    const runtime = createAeliqoRuntime({
+    const runtime = createVarendoRuntime({
       resources: [
         { resource: app.resource, data: app.local },
         { resource: secondary, data: app.local },
@@ -135,7 +135,7 @@ describe('createAeliqoRuntime', () => {
 
   it('mounts and renders a manual intent through compiler, evaluator, ResultStore, and Region commit', async () => {
     const app = fixture();
-    const runtime = createAeliqoRuntime({
+    const runtime = createVarendoRuntime({
       resources: [{ resource: app.resource, data: app.local }],
       authority: app.authority,
     });
@@ -175,7 +175,7 @@ describe('createAeliqoRuntime', () => {
       },
       execute: (input, context) => app.local.execute(input, context),
     };
-    const runtime = createAeliqoRuntime({
+    const runtime = createVarendoRuntime({
       resources: [{ resource: app.resource, data: delayed }],
       authority: app.authority,
     });
@@ -224,7 +224,7 @@ describe('createAeliqoRuntime', () => {
       },
       execute: (input, context) => app.local.execute(input, context),
     };
-    const runtime = createAeliqoRuntime({
+    const runtime = createVarendoRuntime({
       resources: [{ resource: app.resource, data: delayed }],
       authority: app.authority,
     });
@@ -250,7 +250,7 @@ describe('createAeliqoRuntime', () => {
 
   it('rejects a presentation pinned to an older revision of the same Task ID', async () => {
     const app = fixture();
-    const runtime = createAeliqoRuntime({
+    const runtime = createVarendoRuntime({
       resources: [{ resource: app.resource, data: app.local }],
       authority: app.authority,
     });
@@ -297,7 +297,7 @@ describe('createAeliqoRuntime', () => {
 
   it('clears unauthorized results and starts a fresh Region when the principal changes', async () => {
     const app = fixture();
-    const runtime = createAeliqoRuntime({
+    const runtime = createVarendoRuntime({
       resources: [{ resource: app.resource, data: app.local }],
       authority: app.authority,
     });
@@ -321,7 +321,7 @@ describe('createAeliqoRuntime', () => {
 
   it('moves from data to a queryless form and back without retaining a stale Result read set', async () => {
     const app = fixture();
-    const runtime = createAeliqoRuntime({
+    const runtime = createVarendoRuntime({
       resources: [{ resource: app.resource, data: app.local }],
       authority: app.authority,
     });
@@ -347,7 +347,7 @@ describe('createAeliqoRuntime', () => {
 
   it('classifies an unknown registered contract as unsupported without replacing the current Result', async () => {
     const app = fixture();
-    const runtime = createAeliqoRuntime({
+    const runtime = createVarendoRuntime({
       resources: [{ resource: app.resource, data: app.local }],
       authority: app.authority,
     });

@@ -1,6 +1,6 @@
 import { createResultStore } from '../results/store.js';
 import type { ResultHandle, ResultStore } from '../results/types.js';
-import type { AeliqoRuntimeOptions } from './types.js';
+import type { VarendoRuntimeOptions } from './types.js';
 
 export interface TrackedResultStore {
   readonly store: ResultStore;
@@ -8,7 +8,7 @@ export interface TrackedResultStore {
   readonly owned: boolean;
 }
 
-export function createTrackedResultStore(options: AeliqoRuntimeOptions): TrackedResultStore {
+export function createTrackedResultStore(options: VarendoRuntimeOptions): TrackedResultStore {
   const owned = options.resultStore === undefined;
   const underlying = options.resultStore ?? createResultStore(options.resultStoreOptions);
   const handles = new Set<ResultHandle>();

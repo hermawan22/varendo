@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: aeliqo-contributor-${{ github.event.pull_request.number }}
+  group: varendo-contributor-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
@@ -31,12 +31,12 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          AELIQO_DCO_INTEGRATION_HEAD: ''
+          VARENDO_DCO_INTEGRATION_HEAD: ''
         run: |
           [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]]
           [[ "$HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]
           git fetch --no-tags origin "$HEAD_SHA"
           git cat-file -e "$BASE_SHA:scripts/check-dco.mjs"
-          checker="$RUNNER_TEMP/aeliqo-check-dco.mjs"
+          checker="$RUNNER_TEMP/varendo-check-dco.mjs"
           git show "$BASE_SHA:scripts/check-dco.mjs" > "$checker"
           node "$checker" "$BASE_SHA" "$HEAD_SHA"

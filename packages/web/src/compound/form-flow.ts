@@ -1,8 +1,8 @@
-export { AeliqoFormFlowElement } from './elements.js';
+export { VarendoFormFlowElement } from './elements.js';
 export { formFlowPresentationRecipe } from './recipes.js';
 export type {
-  AeliqoFormFlowRecipeInput,
-  AeliqoFormFlowStep,
-  AeliqoFormFlowStepDetail,
-  AeliqoFormFlowCommitDetail,
+  VarendoFormFlowRecipeInput,
+  VarendoFormFlowStep,
+  VarendoFormFlowStepDetail,
+  VarendoFormFlowCommitDetail,
 } from './types.js';

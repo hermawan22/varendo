@@ -7,8 +7,8 @@ import type {
   ActionPreview,
   ActionRequest as RuntimeActionRequest,
 } from '@varendo/runtime/actions';
-import type { AeliqoSemanticInteractionRequest } from '../region/types.js';
-import type { AeliqoAppActionEvent } from './types.js';
+import type { VarendoSemanticInteractionRequest } from '../region/types.js';
+import type { VarendoAppActionEvent } from './types.js';
 import { diagnostic, type WebAppContext, type WebRegion } from './context.js';
 import { resetSavedFormControls } from './form-reset.js';
 import { cancelPendingPresentation } from './presentation-operation.js';
@@ -44,7 +44,7 @@ interface ActionSession {
   cancel?: () => boolean;
 }
 
-function notifyAction(context: WebAppContext, event: AeliqoAppActionEvent): void {
+function notifyAction(context: WebAppContext, event: VarendoAppActionEvent): void {
   try {
     const pending = context.options.onActionEvent?.(event);
     if (pending !== undefined) void Promise.resolve(pending).catch(() => {});
@@ -78,7 +78,7 @@ function publishInteraction(region: WebRegion): void {
   if (state.ok) region.element.interaction = state.value;
 }
 
-function saveInteraction(region: WebRegion, request: AeliqoSemanticInteractionRequest): void {
+function saveInteraction(region: WebRegion, request: VarendoSemanticInteractionRequest): void {
   const payload = request.payload;
   if (payload.kind === 'draft') {
     region.draftRevision = (region.draftRevision ?? 0) + 1;
@@ -329,7 +329,7 @@ async function previewAction(
 export function createInteractionHandler(
   context: WebAppContext,
   settled?: ActionSettled,
-): (region: WebRegion, request: AeliqoSemanticInteractionRequest) => Promise<void> {
+): (region: WebRegion, request: VarendoSemanticInteractionRequest) => Promise<void> {
   return async (region, request) => {
     if (region.presentationTransaction !== undefined) return;
     if (request.payload.kind !== 'action-request') {

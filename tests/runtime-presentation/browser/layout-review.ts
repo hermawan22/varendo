@@ -7,7 +7,7 @@ import type { PresentationPlan } from '@varendo/core';
 import { createIntentCompilerRegistry } from '@varendo/core/app';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { createLocalDataService } from '@varendo/runtime/data';
-import { createAeliqoApp } from '../../../packages/web/src/app/app.js';
+import { createVarendoApp } from '../../../packages/web/src/app/app.js';
 import {
   WORKSPACE_RESOURCE,
   WORKSPACE_RECORDS,
@@ -68,7 +68,7 @@ const views = LAYOUT_VIEWS.map((view) => ({
     return content;
   },
 }));
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [{ resource: WORKSPACE_RESOURCE, data }],
   intents: intents.value,
   views,
@@ -124,7 +124,7 @@ async function render(kind: 'workspace' | 'page') {
 const first = await render('workspace');
 if (first.status !== 'renderer-ready') throw Error(JSON.stringify(first));
 await region.updateComplete;
-const table = region.shadowRoot!.querySelector('aeliqo-table');
+const table = region.shadowRoot!.querySelector('varendo-table');
 function initialPartsBeforeCompletion() {
   return [false, true].map((fail) => {
     const host = document.createElement('div');
@@ -225,7 +225,7 @@ Object.assign(window, {
       pins: app.snapshot('main')?.region?.readSet?.results.length,
       outputIds: region.results.map((result) => result.ref.outputId).sort(),
       tableFocused: region.shadowRoot?.activeElement === table,
-      sameTable: table === region.shadowRoot?.querySelector('aeliqo-table'),
+      sameTable: table === region.shadowRoot?.querySelector('varendo-table'),
     }),
   },
 });

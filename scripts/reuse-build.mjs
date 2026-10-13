@@ -47,7 +47,7 @@ async function outputFiles() {
   return files;
 }
 
-const reuseDirectory = process.env.AELIQO_BUILD_REUSE_DIRECTORY;
+const reuseDirectory = process.env.VARENDO_BUILD_REUSE_DIRECTORY;
 if (reuseDirectory === undefined || reuseDirectory === '') process.exit(execute());
 
 await mkdir(reuseDirectory, { recursive: true });

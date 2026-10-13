@@ -1,12 +1,12 @@
-export { createAeliqoApp } from './app.js';
+export { createVarendoApp } from './app.js';
 export type {
-  AeliqoApp,
-  AeliqoAppActionEvent,
-  AeliqoAppDraftExitRequest,
-  AeliqoAppOptions,
-  AeliqoFormState,
-  AeliqoFormStateAdapter,
-  AeliqoFormStateRequest,
+  VarendoApp,
+  VarendoAppActionEvent,
+  VarendoAppDraftExitRequest,
+  VarendoAppOptions,
+  VarendoFormState,
+  VarendoFormStateAdapter,
+  VarendoFormStateRequest,
   RendererFailureReceipt,
   RendererReadyReceipt,
   WebMountInput,

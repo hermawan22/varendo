@@ -4,9 +4,9 @@ import type {
   PresentationResolverCandidate,
   PresentationValues,
 } from '@varendo/core/presentation';
-import { AELIQO_CONFIG_SCHEMAS, AELIQO_OPERATION_REFS, AELIQO_PRESENTATION_REFS } from '../region/registry.js';
-import { AELIQO_DATA_CONFIG_SCHEMAS, AELIQO_DATA_REFS } from '../region/data-registry.js';
-import { AELIQO_VISUALIZATION_CONFIG_SCHEMAS, AELIQO_VISUALIZATION_REFS } from '../region/visualization-registry.js';
+import { VARENDO_CONFIG_SCHEMAS, VARENDO_OPERATION_REFS, VARENDO_PRESENTATION_REFS } from '../region/registry.js';
+import { VARENDO_DATA_CONFIG_SCHEMAS, VARENDO_DATA_REFS } from '../region/data-registry.js';
+import { VARENDO_VISUALIZATION_CONFIG_SCHEMAS, VARENDO_VISUALIZATION_REFS } from '../region/visualization-registry.js';
 import { defineRecipe } from './define.js';
 import { comparisonSplitPlan } from './standard-comparison.js';
 import { barConfig, dataColumns, measureField, requestedFields, temporalField } from './standard-data.js';
@@ -28,40 +28,40 @@ interface ViewChoice {
 
 const aliases: Readonly<Record<string, ViewChoice>> = Object.freeze({
   table: {
-    ref: AELIQO_PRESENTATION_REFS.table,
-    schema: AELIQO_CONFIG_SCHEMAS.table,
+    ref: VARENDO_PRESENTATION_REFS.table,
+    schema: VARENDO_CONFIG_SCHEMAS.table,
     role: 'table',
-    operations: [AELIQO_OPERATION_REFS.read, AELIQO_OPERATION_REFS.compare, AELIQO_OPERATION_REFS.analyze],
+    operations: [VARENDO_OPERATION_REFS.read, VARENDO_OPERATION_REFS.compare, VARENDO_OPERATION_REFS.analyze],
   },
   cards: {
-    ref: AELIQO_DATA_REFS.cardCollection,
-    schema: AELIQO_DATA_CONFIG_SCHEMAS.cardCollection,
+    ref: VARENDO_DATA_REFS.cardCollection,
+    schema: VARENDO_DATA_CONFIG_SCHEMAS.cardCollection,
     role: 'cardCollection',
-    operations: [AELIQO_OPERATION_REFS.read],
+    operations: [VARENDO_OPERATION_REFS.read],
   },
   list: {
-    ref: AELIQO_DATA_REFS.recordList,
-    schema: AELIQO_DATA_CONFIG_SCHEMAS.recordList,
+    ref: VARENDO_DATA_REFS.recordList,
+    schema: VARENDO_DATA_CONFIG_SCHEMAS.recordList,
     role: 'recordList',
-    operations: [AELIQO_OPERATION_REFS.read],
+    operations: [VARENDO_OPERATION_REFS.read],
   },
   detail: {
-    ref: AELIQO_DATA_REFS.detail,
-    schema: AELIQO_DATA_CONFIG_SCHEMAS.detail,
+    ref: VARENDO_DATA_REFS.detail,
+    schema: VARENDO_DATA_CONFIG_SCHEMAS.detail,
     role: 'detail',
-    operations: [AELIQO_OPERATION_REFS.read],
+    operations: [VARENDO_OPERATION_REFS.read],
   },
   trend: {
-    ref: AELIQO_PRESENTATION_REFS.trend,
-    schema: AELIQO_CONFIG_SCHEMAS.trend,
+    ref: VARENDO_PRESENTATION_REFS.trend,
+    schema: VARENDO_CONFIG_SCHEMAS.trend,
     role: 'trend',
-    operations: [AELIQO_OPERATION_REFS.read, AELIQO_OPERATION_REFS.compare, AELIQO_OPERATION_REFS.analyze],
+    operations: [VARENDO_OPERATION_REFS.read, VARENDO_OPERATION_REFS.compare, VARENDO_OPERATION_REFS.analyze],
   },
   bar: {
-    ref: AELIQO_VISUALIZATION_REFS.bar,
-    schema: AELIQO_VISUALIZATION_CONFIG_SCHEMAS.bar,
+    ref: VARENDO_VISUALIZATION_REFS.bar,
+    schema: VARENDO_VISUALIZATION_CONFIG_SCHEMAS.bar,
     role: 'visualization',
-    operations: [AELIQO_OPERATION_REFS.analyze],
+    operations: [VARENDO_OPERATION_REFS.analyze],
   },
 });
 
@@ -263,7 +263,7 @@ function planForView(context: RecipeContext, view: SelectedView): Outcome<Presen
     for (const node of context.incumbent.nodes) {
       const mapping =
         sameRef(node.representation, view.ref) && node.role === view.role
-          ? { id: 'aeliqo.state.identity', revision: '1' }
+          ? { id: 'varendo.state.identity', revision: '1' }
           : standardStateMapping(node.representation, view.ref)?.ref;
       if (mapping === undefined)
         return failure(
@@ -307,7 +307,7 @@ function build(context: RecipeContext): Outcome<PresentationPlan> {
 }
 
 export const standardDataRecipe: RecipeDefinition = defineRecipe({
-  ref: { id: 'aeliqo.recipe.data', revision: '1' },
+  ref: { id: 'varendo.recipe.data', revision: '1' },
   intents: ['browse', 'detail', 'compare', 'analyze'],
   build,
 });
@@ -480,12 +480,12 @@ export function standardRecipeCandidates(context: RecipeContext): Outcome<Standa
 export const STANDARD_RECIPES: readonly RecipeDefinition[] = Object.freeze([standardDataRecipe, standardFormRecipe]);
 
 export const STANDARD_VIEW_REFS = Object.freeze({
-  table: AELIQO_PRESENTATION_REFS.table,
-  cards: AELIQO_DATA_REFS.cardCollection,
-  list: AELIQO_DATA_REFS.recordList,
-  detail: AELIQO_DATA_REFS.detail,
-  trend: AELIQO_PRESENTATION_REFS.trend,
-  bar: AELIQO_VISUALIZATION_REFS.bar,
+  table: VARENDO_PRESENTATION_REFS.table,
+  cards: VARENDO_DATA_REFS.cardCollection,
+  list: VARENDO_DATA_REFS.recordList,
+  detail: VARENDO_DATA_REFS.detail,
+  trend: VARENDO_PRESENTATION_REFS.trend,
+  bar: VARENDO_VISUALIZATION_REFS.bar,
 });
 
 /** Resolve a resource-facing standard alias to the canonical renderer representation ID. */
@@ -509,10 +509,10 @@ export function recipeSupports(recipe: RecipeDefinition, input: StandardRecipeIn
 }
 
 const INTENT_OPERATIONS: Readonly<Partial<Record<RecipeContext['intent']['kind'], VersionRef>>> = {
-  compare: AELIQO_OPERATION_REFS.compare,
-  analyze: AELIQO_OPERATION_REFS.analyze,
+  compare: VARENDO_OPERATION_REFS.compare,
+  analyze: VARENDO_OPERATION_REFS.analyze,
 };
 
 export function standardOperationFor(kind: RecipeContext['intent']['kind']): VersionRef {
-  return INTENT_OPERATIONS[kind] ?? AELIQO_OPERATION_REFS.read;
+  return INTENT_OPERATIONS[kind] ?? VARENDO_OPERATION_REFS.read;
 }

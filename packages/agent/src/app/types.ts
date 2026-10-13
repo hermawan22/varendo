@@ -3,7 +3,7 @@ import type { AgentModelToolEndpoint, AgentToolTransport } from '../protocol/typ
 import type { AgentJsonValue } from '../capabilities/types.js';
 import type { ActionReceipt } from '@varendo/runtime/actions';
 import type {
-  AeliqoRuntime,
+  VarendoRuntime,
   RuntimeRenderInput,
   RuntimeRenderReceipt,
   RuntimeResourceContext,
@@ -45,7 +45,7 @@ export interface AppContextPort {
 }
 
 export interface AppToolEndpointOptions {
-  readonly runtime: AeliqoRuntime;
+  readonly runtime: VarendoRuntime;
   readonly regionId: string;
   readonly goalEpoch: string;
   readonly transport: AgentToolTransport;
@@ -59,7 +59,7 @@ export interface AppToolEndpointOptions {
   readonly maxOutputBytes?: number;
 }
 
-export interface AeliqoAppToolEndpoint extends AgentModelToolEndpoint {
+export interface VarendoAppToolEndpoint extends AgentModelToolEndpoint {
   /** Trusted host UI path. This method is not advertised as an agent tool. */
   confirmAction(previewId: string, options?: { readonly signal?: AbortSignal }): Promise<Outcome<ActionReceipt>>;
 }
@@ -70,12 +70,12 @@ export interface AppToolSessionIdentity {
   readonly scopeDigest: string;
 }
 
-export interface AeliqoAppToolSession {
+export interface VarendoAppToolSession {
   readonly regionId: string;
   readonly goalEpoch: string;
   readonly expiresAt: number;
   /** Each transport request borrows an endpoint and must close it independently. */
-  createEndpoint(identity: AppToolSessionIdentity): Outcome<AeliqoAppToolEndpoint>;
+  createEndpoint(identity: AppToolSessionIdentity): Outcome<VarendoAppToolEndpoint>;
   /** Trusted host confirmation; never exposed as an agent tool. */
   confirmAction(previewId: string, options?: { readonly signal?: AbortSignal }): Promise<Outcome<ActionReceipt>>;
   /** Revoke the pairing, cancel its previews, and abort all borrowed endpoints. */

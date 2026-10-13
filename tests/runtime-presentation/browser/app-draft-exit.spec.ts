@@ -31,7 +31,7 @@ test('successful form action clears saved drafts before the next render', async 
   await page.getByRole('button', { name: 'Browse', exact: true }).click();
   await expect(page.locator('#status')).toHaveText('renderer-ready');
   expect((await snapshot(page)).guardCalls).toBe(0);
-  await expect(page.locator('aeliqo-table')).toContainText('Ada');
+  await expect(page.locator('varendo-table')).toContainText('Ada');
 });
 
 test('an empty create form visibly resets before creating another record', async ({ page }) => {
@@ -92,7 +92,7 @@ for (const choice of ['save', 'discard']) {
     expect((await snapshot(page)).drafts).toHaveLength(1);
     await page.getByRole('button', { name: 'Browse', exact: true }).click();
     await expect(page.locator('#status')).toHaveText('renderer-ready');
-    await expect(page.locator('aeliqo-table')).toContainText('Ada');
+    await expect(page.locator('varendo-table')).toContainText('Ada');
     expect((await snapshot(page)).drafts).toHaveLength(0);
     expect((await snapshot(page)).saves).toBe(choice === 'save' ? 2 : 0);
   });

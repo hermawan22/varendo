@@ -15,7 +15,7 @@ relationship endpoint projections, and approved meanings therefore remain
 explicit host inputs.
 
 Selection is available only when the host supplies a trusted entity resolver.
-The renderer accepts the existing `aeliqo-visualization-select` event only
+The renderer accepts the existing `varendo-visualization-select` event only
 after parsing its bounded wire detail, checking its source, exact result
 reference, loaded identity, and declared selection port. It emits the core
 `InteractionPayload` through `onSemanticInteraction`; row positions, labels,
@@ -36,7 +36,7 @@ visualization elements can still consume supported multi-result PlotSpecs with
 explicit datasets. This restriction prevents primary-result field coverage or
 selection ports from claiming authority over a secondary result.
 
-Use `createAeliqoPresentationRegistry({visualizations: bindings, resolveEntity})`
+Use `createVarendoPresentationRegistry({visualizations: bindings, resolveEntity})`
 and provide each region result's `visualizationContext` for its reviewed catalog,
 histogram or relationship metadata. Region rows remain the one materialization
 source. Read-only nodes disable selection and ignore retained selection state;

@@ -4,7 +4,7 @@ import { createLocalDataService } from '@varendo/runtime/data';
 import { z } from 'zod';
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { createAeliqoApp } from '../../../packages/web/src/app/app.js';
+import { createVarendoApp } from '../../../packages/web/src/app/app.js';
 import { defineView, standardDataRecipe } from '../../../packages/web/src/recipes/index.js';
 
 const people = defineResource({
@@ -74,7 +74,7 @@ const view = defineView({
     )}`;
   },
 });
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [{ resource: people, data }],
   views: [view],
   recipes: [

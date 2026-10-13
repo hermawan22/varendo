@@ -15,7 +15,7 @@ import { createResultStore } from '@varendo/runtime/results';
  * not expose directly.
  */
 
-const timingEnabled = process.env.AELIQO_RUN_PERFORMANCE !== '0';
+const timingEnabled = process.env.VARENDO_RUN_PERFORMANCE !== '0';
 
 const sleep = (milliseconds) => new Promise((resolvePromise) => setTimeout(resolvePromise, milliseconds));
 
@@ -182,7 +182,7 @@ function makeRegionFixture() {
 }
 
 function writeReport(report) {
-  const output = process.env.AELIQO_ADVERSE_RUNTIME_OUTPUT;
+  const output = process.env.VARENDO_ADVERSE_RUNTIME_OUTPUT;
   if (output === undefined || output.length === 0) return Promise.resolve();
   return mkdir(dirname(output), { recursive: true }).then(() =>
     writeFile(output, `${JSON.stringify(report, null, 2)}\n`, 'utf8'),
@@ -460,8 +460,8 @@ async function runProbe() {
   const lateDelivery = await runNonCooperativeLateDeliveryProbe();
   const revision = await runRevisionAndRegionCleanupProbe();
   return {
-    schema: 'aeliqo.performance.adverse-runtime.v1',
-    sourceCommit: process.env.AELIQO_SOURCE_COMMIT ?? 'unknown',
+    schema: 'varendo.performance.adverse-runtime.v1',
+    sourceCommit: process.env.VARENDO_SOURCE_COMMIT ?? 'unknown',
     sourceAdapter: 'in-process async-iterator adapter; no network/server capacity claim',
     packageEntry: '@varendo/runtime/results and @varendo/runtime/regions built package exports',
     environment: { node: process.version, platform: process.platform, arch: process.arch },

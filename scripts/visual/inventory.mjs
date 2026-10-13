@@ -16,7 +16,7 @@ export function plannedTests(root, destination, project) {
     '--reporter=json',
   ];
   if (project) args.push('--project', project);
-  return testInventory(JSON.parse(output(root, 'pnpm', args, { AELIQO_VISUAL_CAPTURE: destination })));
+  return testInventory(JSON.parse(output(root, 'pnpm', args, { VARENDO_VISUAL_CAPTURE: destination })));
 }
 export async function captureEvidence(directory, planned) {
   const tests = testInventory(JSON.parse(await readFile(join(directory, 'results.json'), 'utf8')), true);

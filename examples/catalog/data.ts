@@ -1,16 +1,16 @@
 import {
-  AeliqoCardCollectionElement,
-  AeliqoDeltaElement,
-  AeliqoDetailElement,
-  AeliqoFilterBuilderElement,
-  AeliqoKeyValueElement,
-  AeliqoMetricElement,
-  AeliqoRecordListElement,
-  AeliqoSelectionSummaryElement,
-  AeliqoTableElement,
-  type AeliqoKeyValueItem,
-  type AeliqoTableColumn,
-  type AeliqoTableRow,
+  VarendoCardCollectionElement,
+  VarendoDeltaElement,
+  VarendoDetailElement,
+  VarendoFilterBuilderElement,
+  VarendoKeyValueElement,
+  VarendoMetricElement,
+  VarendoRecordListElement,
+  VarendoSelectionSummaryElement,
+  VarendoTableElement,
+  type VarendoKeyValueItem,
+  type VarendoTableColumn,
+  type VarendoTableRow,
 } from '@varendo/web/data';
 import {
   catalogColumns,
@@ -26,28 +26,28 @@ import { catalogMountSource, catalogSource } from './source.js';
 import type { CatalogExampleDefinition, CatalogExampleId, CatalogExampleMetadata } from './types.js';
 
 const sourceImports = `import {
-  AeliqoCardCollectionElement,
-  AeliqoDeltaElement,
-  AeliqoDetailElement,
-  AeliqoFilterBuilderElement,
-  AeliqoKeyValueElement,
-  AeliqoMetricElement,
-  AeliqoRecordListElement,
-  AeliqoSelectionSummaryElement,
-  AeliqoTableElement,
-  type AeliqoKeyValueItem,
-  type AeliqoTableColumn,
-  type AeliqoTableRow,
+  VarendoCardCollectionElement,
+  VarendoDeltaElement,
+  VarendoDetailElement,
+  VarendoFilterBuilderElement,
+  VarendoKeyValueElement,
+  VarendoMetricElement,
+  VarendoRecordListElement,
+  VarendoSelectionSummaryElement,
+  VarendoTableElement,
+  type VarendoKeyValueItem,
+  type VarendoTableColumn,
+  type VarendoTableRow,
   } from "@varendo/web/data";`;
 const sourceTypeImports = `import type {ResultRef,
   Scalar,
 } from "@varendo/core";
-import type {AeliqoDataColumn, AeliqoDataScope, AeliqoFieldOption} from "@varendo/web/data";`;
+import type {VarendoDataColumn, VarendoDataScope, VarendoFieldOption} from "@varendo/web/data";`;
 
 const sourceSetup = `${sourceTypeImports}
 
 const catalogRef: ResultRef = {
-  id: "aeliqo-catalog-example",
+  id: "varendo-catalog-example",
   revision: "1",
   outputId: "people",
   queryDigest: "catalog-query",
@@ -58,27 +58,27 @@ const catalogRows: readonly Readonly<Record<string, Scalar>>[] = [
   {id: "lin", name: "Lin Chen", team: "Product", date: "2026-09-09", amount: 96},
   {id: "grace", name: "Grace Hopper", team: "Research", date: "2026-09-10", amount: 144},
 ];
-const catalogColumns: readonly AeliqoDataColumn[] = [
+const catalogColumns: readonly VarendoDataColumn[] = [
   {key: "id", label: "ID", type: "text", sortable: true},
   {key: "name", label: "Name", type: "text", sortable: true},
   {key: "team", label: "Team", type: "text"},
   {key: "date", label: "Date", type: "date", sortable: true},
   {key: "amount", label: "Amount", type: "integer", align: "end"},
 ];
-const catalogFields: readonly AeliqoFieldOption[] = [
+const catalogFields: readonly VarendoFieldOption[] = [
   {id: "name", label: "Name", type: "text"},
   {id: "team", label: "Team", type: "text"},
   {id: "amount", label: "Amount", type: "integer"},
 ];
-const catalogScope: AeliqoDataScope = {
+const catalogScope: VarendoDataScope = {
   loaded: catalogRows.length,
   filteredTotal: catalogRows.length,
   populationDigest: catalogRef.scopeDigest,
   kind: "filtered",
   label: "Authorized people",
 };
-const tableColumns: readonly AeliqoTableColumn[] = catalogColumns.map(({key, label, sortable, align}) => ({key, label, ...(sortable === undefined ? {} : {sortable}), ...(align === undefined ? {} : {align})}));
-const tableRows: readonly AeliqoTableRow[] = catalogRows.map((row) => ({id: row.id ?? null, name: row.name ?? null, team: row.team ?? null, date: row.date ?? null, amount: row.amount ?? null}));
+const tableColumns: readonly VarendoTableColumn[] = catalogColumns.map(({key, label, sortable, align}) => ({key, label, ...(sortable === undefined ? {} : {sortable}), ...(align === undefined ? {} : {align})}));
+const tableRows: readonly VarendoTableRow[] = catalogRows.map((row) => ({id: row.id ?? null, name: row.name ?? null, team: row.team ?? null, date: row.date ?? null, amount: row.amount ?? null}));
 const personKeys = ["string:3:ada", "string:5:grace"] as const;`;
 
 type MetadataNotes = Pick<
@@ -132,7 +132,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'selectedKeys is controlled by the host and keys derive from declared identity fields, never visible row indexes.',
     states: ['ready', 'empty', 'loading', 'partial', 'stale', 'error'],
     keyboard: ['Tab', 'Enter', 'Space', 'Arrow keys where list navigation applies'],
-    events: ['aeliqo-record-list-selection'],
+    events: ['varendo-record-list-selection'],
     expectedOutcome: 'Rows remain in the supplied scope and selection requests carry stable identities and lineage.',
   },
   'card-collection': {
@@ -154,7 +154,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The host controls selectedKeys, hasMore, and loadingMore; the component never fetches the next page.',
     states: ['ready', 'empty', 'loading', 'partial', 'stale', 'error'],
     keyboard: ['Tab', 'Enter', 'Space'],
-    events: ['aeliqo-card-selection', 'aeliqo-data-load-more'],
+    events: ['varendo-card-selection', 'varendo-data-load-more'],
     expectedOutcome: 'Cards adapt to available width and emit only identity selection or bounded load-more requests.',
   },
   table: {
@@ -177,7 +177,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Table remains native by default; mode and virtualization are explicit host choices with stable row identity.',
     states: ['ready', 'empty', 'loading', 'partial', 'stale', 'error'],
     keyboard: ['Tab', 'Enter', 'Space', 'Arrow keys in grid mode'],
-    events: ['aeliqo-table-selection', 'aeliqo-table-sort', 'aeliqo-table-page', 'aeliqo-table-window'],
+    events: ['varendo-table-selection', 'varendo-table-sort', 'varendo-table-page', 'varendo-table-window'],
     expectedOutcome:
       'The table preserves caption, scope, sort/page requests, and selection identity without losing keyboard access.',
   },
@@ -199,7 +199,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Draft clauses are local until Apply; autoApply remains an explicit host choice and does not run a query itself.',
     states: ['ready', 'invalid', 'pending', 'error'],
     keyboard: ['Tab', 'Arrow keys', 'Enter', 'Escape', 'IME composition'],
-    events: ['aeliqo-filter-change'],
+    events: ['varendo-filter-change'],
     expectedOutcome: 'The builder validates a typed predicate and emits it only after an explicit apply request.',
   },
   'selection-summary': {
@@ -209,18 +209,18 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Selection keys or predicate scope stay explicit; clear is a host request and does not mutate data by itself.',
     states: ['ready', 'loading', 'partial', 'stale', 'error'],
     keyboard: ['Tab', 'Enter', 'Space'],
-    events: ['aeliqo-selection-clear'],
+    events: ['varendo-selection-clear'],
     expectedOutcome: 'The count and active scope are announced and clearing emits a typed request.',
   },
 };
 
-const tableColumns: readonly AeliqoTableColumn[] = catalogColumns.map(({ key, label, sortable, align }) => ({
+const tableColumns: readonly VarendoTableColumn[] = catalogColumns.map(({ key, label, sortable, align }) => ({
   key,
   label,
   ...(sortable === undefined ? {} : { sortable }),
   ...(align === undefined ? {} : { align }),
 }));
-const tableRows: readonly AeliqoTableRow[] = catalogRows.map((row) => ({
+const tableRows: readonly VarendoTableRow[] = catalogRows.map((row) => ({
   id: row.id ?? null,
   name: row.name ?? null,
   team: row.team ?? null,
@@ -245,7 +245,7 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
       'Enter or Space for selection',
       'focus follows stable identity',
     ],
-    events: ['aeliqo-data-selection', 'aeliqo-filter-change', 'aeliqo-data-load-more', 'aeliqo-table-sort'],
+    events: ['varendo-data-selection', 'varendo-filter-change', 'varendo-data-load-more', 'varendo-table-sort'],
     expectedOutcome:
       'The view renders only the supplied authorized scope and labels any incomplete or unavailable data explicitly.',
     ...componentNotes[id],
@@ -263,7 +263,7 @@ const personKeys = ['string:3:ada', 'string:5:grace'] as const;
 
 export const dataExamples: readonly CatalogExampleDefinition[] = [
   mount('metric', (root) => {
-    const element = createCatalogElement<AeliqoMetricElement>('aeliqo-metric', root, AeliqoMetricElement);
+    const element = createCatalogElement<VarendoMetricElement>('varendo-metric', root, VarendoMetricElement);
     element.label = 'Authorized people';
     element.value = catalogRows.length;
     element.unit = 'records';
@@ -271,7 +271,7 @@ export const dataExamples: readonly CatalogExampleDefinition[] = [
     element.description = 'Current filtered result';
   }),
   mount('delta', (root) => {
-    const element = createCatalogElement<AeliqoDeltaElement>('aeliqo-delta', root, AeliqoDeltaElement);
+    const element = createCatalogElement<VarendoDeltaElement>('varendo-delta', root, VarendoDeltaElement);
     element.label = 'Change from last week';
     element.current = 0.62;
     element.baseline = 0.5;
@@ -280,8 +280,8 @@ export const dataExamples: readonly CatalogExampleDefinition[] = [
     element.scope = catalogScope;
   }),
   mount('key-value', (root) => {
-    const element = createCatalogElement<AeliqoKeyValueElement>('aeliqo-key-value', root, AeliqoKeyValueElement);
-    const items: readonly AeliqoKeyValueItem[] = [
+    const element = createCatalogElement<VarendoKeyValueElement>('varendo-key-value', root, VarendoKeyValueElement);
+    const items: readonly VarendoKeyValueItem[] = [
       { key: 'owner', label: 'Owner', value: 'Ada Lovelace' },
       { key: 'scope', label: 'Scope', value: 'Authorized people', description: 'Current report scope' },
     ];
@@ -289,7 +289,7 @@ export const dataExamples: readonly CatalogExampleDefinition[] = [
     element.scope = catalogScope;
   }),
   mount('detail', (root) => {
-    const element = createCatalogElement<AeliqoDetailElement>('aeliqo-detail', root, AeliqoDetailElement);
+    const element = createCatalogElement<VarendoDetailElement>('varendo-detail', root, VarendoDetailElement);
     element.title = 'Person detail';
     element.record = catalogRows[0];
     element.fields = catalogColumns;
@@ -298,7 +298,11 @@ export const dataExamples: readonly CatalogExampleDefinition[] = [
     element.scope = catalogScope;
   }),
   mount('record-list', (root) => {
-    const element = createCatalogElement<AeliqoRecordListElement>('aeliqo-record-list', root, AeliqoRecordListElement);
+    const element = createCatalogElement<VarendoRecordListElement>(
+      'varendo-record-list',
+      root,
+      VarendoRecordListElement,
+    );
     element.title = 'People';
     element.rows = catalogRows;
     element.columns = catalogColumns;
@@ -310,10 +314,10 @@ export const dataExamples: readonly CatalogExampleDefinition[] = [
     element.scope = catalogScope;
   }),
   mount('card-collection', (root) => {
-    const element = createCatalogElement<AeliqoCardCollectionElement>(
-      'aeliqo-card-collection',
+    const element = createCatalogElement<VarendoCardCollectionElement>(
+      'varendo-card-collection',
       root,
-      AeliqoCardCollectionElement,
+      VarendoCardCollectionElement,
     );
     element.title = 'People cards';
     element.rows = catalogRows;
@@ -327,7 +331,7 @@ export const dataExamples: readonly CatalogExampleDefinition[] = [
     element.scope = catalogScope;
   }),
   mount('table', (root) => {
-    const element = createCatalogElement<AeliqoTableElement>('aeliqo-table', root, AeliqoTableElement);
+    const element = createCatalogElement<VarendoTableElement>('varendo-table', root, VarendoTableElement);
     element.caption = 'People';
     element.columns = tableColumns;
     element.rows = tableRows;
@@ -342,10 +346,10 @@ export const dataExamples: readonly CatalogExampleDefinition[] = [
     element.scope = catalogScope;
   }),
   mount('filter-builder', (root) => {
-    const element = createCatalogElement<AeliqoFilterBuilderElement>(
-      'aeliqo-filter-builder',
+    const element = createCatalogElement<VarendoFilterBuilderElement>(
+      'varendo-filter-builder',
       root,
-      AeliqoFilterBuilderElement,
+      VarendoFilterBuilderElement,
     );
     element.fields = catalogFields;
     element.entity = 'person';
@@ -355,10 +359,10 @@ export const dataExamples: readonly CatalogExampleDefinition[] = [
     element.logical = 'and';
   }),
   mount('selection-summary', (root) => {
-    const element = createCatalogElement<AeliqoSelectionSummaryElement>(
-      'aeliqo-selection-summary',
+    const element = createCatalogElement<VarendoSelectionSummaryElement>(
+      'varendo-selection-summary',
       root,
-      AeliqoSelectionSummaryElement,
+      VarendoSelectionSummaryElement,
     );
     element.label = 'People selected';
     element.entity = 'person';

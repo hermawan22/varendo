@@ -12,20 +12,20 @@ test('Next App Router serves real shadow content and hydrates a controlled form'
     if (message.type() === 'error') errors.push(message.text());
   });
   await page.goto('/');
-  await page.waitForFunction(() => customElements.get('aeliqo-text-field') !== undefined);
+  await page.waitForFunction(() => customElements.get('varendo-text-field') !== undefined);
   const input = page.getByLabel('Next person');
   await expect(input).toHaveValue('Ada');
   await input.fill('Lin');
   await expect(input).toHaveValue('Lin');
-  await expect(page.locator('#aeliqo-server-proof')).not.toHaveAttribute('data-hydration-error', /.+/);
+  await expect(page.locator('#varendo-server-proof')).not.toHaveAttribute('data-hydration-error', /.+/);
   expect(
     await page.locator('form').evaluate((form) => {
       if (!(form instanceof HTMLFormElement)) throw new Error('Expected form');
       return new FormData(form).get('person');
     }),
   ).toBe('Lin');
-  await expect(page.locator('#aeliqo-server-proof aeliqo-text-field').locator('input')).toHaveCount(1);
+  await expect(page.locator('#varendo-server-proof varendo-text-field').locator('input')).toHaveCount(1);
   await expect(page.locator('#adaptive-people-status')).toHaveText('renderer-ready');
-  await expect(page.locator('[data-varendo-react-region="next-people"] aeliqo-table')).toContainText('Ada Chen');
+  await expect(page.locator('[data-varendo-react-region="next-people"] varendo-table')).toContainText('Ada Chen');
   expect(errors).toEqual([]);
 });

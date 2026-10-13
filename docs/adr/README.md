@@ -1,6 +1,6 @@
 # Architecture decisions
 
-These records explain decisions that shape Aeliqo's public contracts and
+These records explain decisions that shape Varendo's (formerly Aeliqo's) public contracts and
 implementation. Keep accepted decisions as history; supersede them with a new
 ADR when the product changes.
 

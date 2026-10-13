@@ -4,7 +4,7 @@ import { testPort } from '../shared/port.mjs';
 
 const configDirectory = import.meta.dirname;
 const repositoryRoot = resolve(configDirectory, '../..');
-const port = await testPort('AELIQO_SITE_DOCUMENT_LAYOUT_PORT');
+const port = await testPort('VARENDO_SITE_DOCUMENT_LAYOUT_PORT');
 const origin = `http://127.0.0.1:${port}`;
 const docsOrigin = `http://docs.localhost:${port}`;
 
@@ -20,7 +20,7 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: `AELIQO_STATIC_ROOT="${resolve(repositoryRoot, 'dist')}" AELIQO_LISTEN_ADDR="127.0.0.1:${port}" go run ./deploy/server.go`,
+    command: `VARENDO_STATIC_ROOT="${resolve(repositoryRoot, 'dist')}" VARENDO_LISTEN_ADDR="127.0.0.1:${port}" go run ./deploy/server.go`,
     cwd: repositoryRoot,
     url: `${origin}/healthz`,
     reuseExistingServer: false,

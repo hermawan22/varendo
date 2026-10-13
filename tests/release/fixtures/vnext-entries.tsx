@@ -1,13 +1,13 @@
 import { defineDataFeature, defineFeature, inferLocalDataShape } from '@varendo/core/features';
 import { createLocalDataBinding, createLocalDataSurface } from '@varendo/runtime/surfaces';
 import type { ScopeController } from '@varendo/runtime/scopes';
-import type { AeliqoRuntime } from '@varendo/runtime/app';
+import type { VarendoRuntime } from '@varendo/runtime/app';
 import type { DataSurfaceBindings } from '@varendo/runtime/surfaces';
 import type { DataFeatureDefinition } from '@varendo/core/features';
-import { AeliqoProvider } from '@varendo/react/app';
+import { VarendoProvider } from '@varendo/react/app';
 import {
   AdaptiveSurface,
-  AeliqoScope,
+  VarendoScope,
   ViewSurface,
   defineReactViews,
   useSurface,
@@ -27,7 +27,7 @@ export function ScopedPeople({
   feature,
   bindings,
 }: {
-  readonly runtime: AeliqoRuntime;
+  readonly runtime: VarendoRuntime;
   readonly scope: ScopeController;
   readonly feature: DataFeatureDefinition;
   readonly bindings: DataSurfaceBindings<{ readonly rows: readonly unknown[] }>;
@@ -37,11 +37,11 @@ export function ScopedPeople({
     return <p>{surface === undefined ? 'Preparing people' : surface.getSnapshot().phase}</p>;
   }
   return (
-    <AeliqoProvider runtime={runtime}>
-      <AeliqoScope scope={scope}>
+    <VarendoProvider runtime={runtime}>
+      <VarendoScope scope={scope}>
         <Child />
-      </AeliqoScope>
-    </AeliqoProvider>
+      </VarendoScope>
+    </VarendoProvider>
   );
 }
 
@@ -52,7 +52,7 @@ export const vNextEntries = [
   createLocalDataBinding,
   createLocalDataSurface,
   AdaptiveSurface,
-  AeliqoScope,
+  VarendoScope,
   ViewSurface,
   defineReactViews,
   useSurfaceState,

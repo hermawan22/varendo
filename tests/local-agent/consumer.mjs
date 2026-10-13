@@ -8,7 +8,7 @@ import { pathToFileURL } from 'node:url';
 import { chromium, firefox, webkit } from '@playwright/test';
 
 const root = resolve(import.meta.dirname, '../..');
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-local-agent-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-local-agent-'));
 const artifacts = join(root, 'artifacts/local-agent');
 await mkdir(artifacts, { recursive: true });
 const packages = ['core', 'runtime', 'web', 'agent'];
@@ -30,7 +30,7 @@ const overrides = [];
 for (const name of packages) {
   const tarball = join(artifacts, `${name}.tgz`);
   run('pnpm', ['pack', '--out', tarball], join(root, 'packages', name));
-  assert.equal(manifest.dependencies[`@varendo/${name}`], '0.1.0');
+  assert.equal(manifest.dependencies[`@varendo/${name}`], '0.2.0');
   overrides.push(`  '@varendo/${name}': 'file:${tarball}'`);
 }
 // Candidate tarballs stand in for the not-yet-published registry version. All other
@@ -65,7 +65,7 @@ const fixture = createServer(async (request, response) => {
     });
     return;
   }
-  const tool = modelRequests === 1 ? 'aeliqo_context' : 'aeliqo_render';
+  const tool = modelRequests === 1 ? 'varendo_context' : 'varendo_render';
   const message =
     modelRequests <= 2
       ? {
@@ -96,20 +96,20 @@ await new Promise((resolve) => portProbe.listen(0, '127.0.0.1', resolve));
 const port = portProbe.address().port;
 await new Promise((resolve) => portProbe.close(resolve));
 const base = `http://127.0.0.1:${port}`;
-const env = { ...process.env, AELIQO_LOCAL_PORT: String(port), AELIQO_MCP_TOKEN: token };
-for (const key of Object.keys(env)) if (key.startsWith('AELIQO_MODEL_')) delete env[key];
+const env = { ...process.env, VARENDO_LOCAL_PORT: String(port), VARENDO_MCP_TOKEN: token };
+for (const key of Object.keys(env)) if (key.startsWith('VARENDO_MODEL_')) delete env[key];
 let server;
 let browser;
 let errors = [];
 async function startServer(model = false) {
   const modelEnv = model
     ? {
-        AELIQO_MODEL_BASE_URL: `http://127.0.0.1:${fixturePort}/v1/`,
-        AELIQO_MODEL: 'deterministic-fixture',
-        AELIQO_MODEL_PROTOCOL: 'openai-compatible-chat',
-        AELIQO_MODEL_AUTH_SCHEME: 'none',
-        AELIQO_MODEL_CAPABILITIES: 'tool-calls,usage,request-cancellation',
-        AELIQO_ALLOW_INSECURE_MODEL_HTTP: '1',
+        VARENDO_MODEL_BASE_URL: `http://127.0.0.1:${fixturePort}/v1/`,
+        VARENDO_MODEL: 'deterministic-fixture',
+        VARENDO_MODEL_PROTOCOL: 'openai-compatible-chat',
+        VARENDO_MODEL_AUTH_SCHEME: 'none',
+        VARENDO_MODEL_CAPABILITIES: 'tool-calls,usage,request-cancellation',
+        VARENDO_ALLOW_INSECURE_MODEL_HTTP: '1',
       }
     : {};
   server = spawn('pnpm', ['run', 'dev'], {
@@ -147,27 +147,27 @@ async function assertTransport(endpoint, page, prefix) {
     const discovered = await endpoint.discover();
     assert(discovered.ok, JSON.stringify(discovered));
     assert.deepEqual(discovered.value.map(({ name }) => name).sort(), [
-      'aeliqo_act',
-      'aeliqo_context',
-      'aeliqo_render',
+      'varendo_act',
+      'varendo_context',
+      'varendo_render',
     ]);
-    const context = await endpoint.invoke('aeliqo_context', {}, { requestId: `${prefix}-context` });
+    const context = await endpoint.invoke('varendo_context', {}, { requestId: `${prefix}-context` });
     assert(context.ok && context.value.state === 'accepted', JSON.stringify(context));
     assert.equal(context.value.value.activeResource, 'people');
     const rendered = await endpoint.invoke(
-      'aeliqo_render',
+      'varendo_render',
       { ...intent, id: `${prefix}-cards` },
       { requestId: `${prefix}-render` },
     );
     assert(rendered.ok && rendered.value.state === 'renderer-ready', JSON.stringify(rendered));
-    await page.locator('aeliqo-card-collection').getByText('Ada Lovelace').waitFor();
+    await page.locator('varendo-card-collection').getByText('Ada Lovelace').waitFor();
     const invalid = await endpoint.invoke(
-      'aeliqo_render',
+      'varendo_render',
       { ...intent, fields: ['invented'] },
       { requestId: `${prefix}-invalid` },
     );
     assert(!invalid.ok || invalid.value.state !== 'renderer-ready');
-    await page.locator('aeliqo-card-collection').getByText('Ada Lovelace').waitFor();
+    await page.locator('varendo-card-collection').getByText('Ada Lovelace').waitFor();
   } finally {
     endpoint.close();
   }
@@ -193,7 +193,7 @@ try {
     server: {
       command: process.execPath,
       args: [join(consumer, 'runner/mcp-stdio.mjs')],
-      env: { ...env, AELIQO_LOCAL_URL: base },
+      env: { ...env, VARENDO_LOCAL_URL: base },
       stderr: 'pipe',
     },
     targetRegionId: 'people-main',
@@ -202,10 +202,10 @@ try {
   await assertTransport(stdio, page, 'stdio');
   for (const headers of [
     { origin: 'https://attacker.example' },
-    { 'sec-fetch-site': 'cross-site', 'x-aeliqo-session-bootstrap': '1' },
+    { 'sec-fetch-site': 'cross-site', 'x-varendo-session-bootstrap': '1' },
     {},
   ]) {
-    const result = await fetch(`${base}/api/aeliqo/session`, { headers: { accept: 'application/json', ...headers } });
+    const result = await fetch(`${base}/api/varendo/session`, { headers: { accept: 'application/json', ...headers } });
     assert.equal(result.status, 403);
   }
   assert.equal(
@@ -241,7 +241,7 @@ try {
   await modelPage.getByText('Connected — MCP is ready.', { exact: false }).waitFor();
   assert.equal(modelRequests, 0, 'configured startup must wait for a user prompt');
   await modelPage.getByRole('button', { name: 'Send to local agent' }).click();
-  await modelPage.locator('aeliqo-card-collection').getByText('Ada Lovelace').waitFor();
+  await modelPage.locator('varendo-card-collection').getByText('Ada Lovelace').waitFor();
   await modelPage.waitForFunction(() => document.querySelector('#receipt')?.textContent !== 'Agent working…');
   assert(modelRequests >= 2 && modelRequests <= 4);
   assert.doesNotMatch(await modelPage.locator('#receipt').textContent(), /failed|denied|Error|budget/u);

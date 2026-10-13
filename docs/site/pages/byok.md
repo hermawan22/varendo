@@ -18,7 +18,7 @@ Open the printed URL and confirm that the People directory renders. The
 **Optional server model** section says no model is configured. Default startup
 makes no paid requests and MCP already works.
 
-Stop the host with Ctrl+C. From the copied `aeliqo-local-agent` directory:
+Stop the host with Ctrl+C. From the copied `varendo-local-agent` directory:
 
 ```bash
 cp .env.example .env.local
@@ -27,12 +27,12 @@ cp .env.example .env.local
 Edit **.env.local** with your own provider configuration:
 
 ```dotenv
-AELIQO_MODEL_BASE_URL=https://your-provider.example/v1/
-AELIQO_MODEL=your-tool-capable-model
-AELIQO_MODEL_PROTOCOL=openai-compatible-chat
-AELIQO_MODEL_AUTH_SCHEME=bearer
-AELIQO_MODEL_API_KEY=your-local-secret
-AELIQO_MODEL_CAPABILITIES=tool-calls,usage,request-cancellation
+VARENDO_MODEL_BASE_URL=https://your-provider.example/v1/
+VARENDO_MODEL=your-tool-capable-model
+VARENDO_MODEL_PROTOCOL=openai-compatible-chat
+VARENDO_MODEL_AUTH_SCHEME=bearer
+VARENDO_MODEL_API_KEY=your-local-secret
+VARENDO_MODEL_CAPABILITIES=tool-calls,usage,request-cancellation
 ```
 
 The endpoint must implement the selected wire protocol; a model name alone
@@ -45,10 +45,10 @@ only by the Node startup command.
 
 | Setting                            | Supported values and constraints                                                                                                                           |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AELIQO_MODEL_PROTOCOL`            | `openai-compatible-chat` for Chat Completions; `openai-compatible-responses` for the Responses adapter                                                     |
-| `AELIQO_MODEL_AUTH_SCHEME`         | `bearer`; `header` with `AELIQO_MODEL_AUTH_HEADER`; or `none` for a local endpoint                                                                         |
-| `AELIQO_MODEL_CAPABILITIES`        | A comma-separated list including `tool-calls`; supported entries also include `usage`, `request-cancellation`, `input-token-estimate`, and `request-retry` |
-| `AELIQO_ALLOW_INSECURE_MODEL_HTTP` | Set to `1` only for an HTTP loopback development endpoint; remote endpoints require HTTPS                                                                  |
+| `VARENDO_MODEL_PROTOCOL`            | `openai-compatible-chat` for Chat Completions; `openai-compatible-responses` for the Responses adapter                                                     |
+| `VARENDO_MODEL_AUTH_SCHEME`         | `bearer`; `header` with `VARENDO_MODEL_AUTH_HEADER`; or `none` for a local endpoint                                                                         |
+| `VARENDO_MODEL_CAPABILITIES`        | A comma-separated list including `tool-calls`; supported entries also include `usage`, `request-cancellation`, `input-token-estimate`, and `request-retry` |
+| `VARENDO_ALLOW_INSECURE_MODEL_HTTP` | Set to `1` only for an HTTP loopback development endpoint; remote endpoints require HTTPS                                                                  |
 
 The Responses profile requires HTTPS bearer authentication and rejects
 `request-retry`. For `header` authentication provide the exact header name
@@ -74,7 +74,7 @@ Sending it may incur charges from your provider and sends registered metadata
 and approved tool results to that provider. Startup still sends nothing.
 
 Enter **Show People as cards.** and choose **Send to local agent**. The model
-must read `aeliqo_context` before rendering; the host enforces that sequence.
+must read `varendo_context` before rendering; the host enforces that sequence.
 The browser validates the proposed intent and commits it through the same app
 API as manual rendering. Cards should appear and the prompt receipt reports
 how the loop stopped. A text draft alone is not evidence of a UI change.

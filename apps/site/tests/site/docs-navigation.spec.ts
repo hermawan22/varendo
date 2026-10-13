@@ -126,7 +126,7 @@ test('documentation information architecture exposes distinct adoption routes', 
     '/start/',
     '/start/registered-app/',
     '/start/existing-app/',
-    '/start/what-is-aeliqo/',
+    '/start/what-is-varendo/',
     '/playground/',
   ]) {
     await expect(page.locator(`.reading a[href="${route}"]`).first()).toBeVisible();
@@ -160,7 +160,7 @@ test('documentation search keeps keyboard, query, no-result, and fallback paths'
   await field.fill('meaning');
   await expect(page).toHaveURL(/\?q=meaning$/);
   await expect(page.locator('#docs-search-dialog').getByRole('link').first()).toBeVisible();
-  await field.fill('no-such-aeliqo-zxqw');
+  await field.fill('no-such-varendo-zxqw');
   await expect(page.locator('#docs-search-dialog')).toContainText('No pages found');
 
   const noScriptContext = await browser.newContext({ javaScriptEnabled: false });
@@ -207,10 +207,10 @@ test('component pages combine authored guidance with generated API facts and the
   expect(purpose).not.toBeNull();
   expect(preview!.y).toBeLessThan(purpose!.y);
   await expect(page.getByText(/Expected result:/)).toBeVisible();
-  await expect(page.locator('.component-adoption')).not.toContainText('{{aeliqo:');
+  await expect(page.locator('.component-adoption')).not.toContainText('{{varendo:');
   await expect(page.locator('[data-example-code=table]')).toContainText('import');
   await page.locator('.component-declaration summary').click();
-  await expect(page.locator('.component-declaration')).toContainText('AeliqoTableElement');
+  await expect(page.locator('.component-declaration')).toContainText('VarendoTableElement');
   await expect(page.locator('.reading')).not.toContainText('not declared');
 
   await page.goto('/components/compound.form-flow/');

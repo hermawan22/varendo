@@ -67,7 +67,7 @@ async function fingerprints(page: Page, selector: string): Promise<readonly Cata
     const normalizeText = (value: string): string => value.replace(/\s+/g, ' ').trim();
     const stableValue = (value: string): string =>
       value
-        .replace(/\b(?:aeliqo|lit)-[a-z0-9_-]+-\d+\b/gi, '<generated-id>')
+        .replace(/\b(?:varendo|lit)-[a-z0-9_-]+-\d+\b/gi, '<generated-id>')
         .replace(/\b[0-9a-f]{8,}\b/gi, '<generated-id>');
     const semantics = (scope: ParentNode): string[] =>
       Array.from(scope.querySelectorAll('*'), (element) => {
@@ -167,8 +167,8 @@ describe('catalog source snippets', () => {
     const evidenceRoot = join(workspace, 'artifacts', 'catalog-source-consumers');
     await mkdir(evidenceRoot, { recursive: true });
     const runDirectory = await mkdtemp(join(evidenceRoot, 'run-'));
-    const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-catalog-source-consumer-'));
-    const manifestRoot = await mkdtemp(join(tmpdir(), 'aeliqo-catalog-source-manifest-'));
+    const consumer = await mkdtemp(join(tmpdir(), 'varendo-catalog-source-consumer-'));
+    const manifestRoot = await mkdtemp(join(tmpdir(), 'varendo-catalog-source-manifest-'));
     let manifestServer: Server | undefined;
     let consumerServer: Server | undefined;
     let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
@@ -266,14 +266,14 @@ for (const example of catalogExamples) {
           Object.fromEntries(nodes.map((node) => [node.getAttribute('data-example')!, node.textContent ?? ''])),
         );
       expect(Object.keys(builtSources).sort()).toEqual([...CATALOG_EXAMPLE_IDS].sort());
-      expect(builtSources.button).toContain('createCatalogElement<AeliqoButtonElement>');
+      expect(builtSources.button).toContain('createCatalogElement<VarendoButtonElement>');
       expect(Object.values(builtSources).every((source) => !/\bany\b/.test(source))).toBe(true);
       expect(manifestFailures).toEqual([]);
 
       const tarballs: string[] = [];
       for (const packageName of ['core', 'web'] as const) {
         const packageDirectory = join(workspace, 'packages', packageName);
-        const tarball = join(runDirectory, `aeliqo-${packageName}-${releaseVersion}.tgz`);
+        const tarball = join(runDirectory, `varendo-${packageName}-${releaseVersion}.tgz`);
         run(['pnpm', 'pack', '--out', tarball], packageDirectory);
         const packedManifest = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], workspace)) as {
           name?: string;
@@ -342,7 +342,7 @@ for (const example of catalogExamples) {
       );
       await writeFile(
         join(consumer, 'index.html'),
-        '<!doctype html><html lang="en"><body><div id="aeliqo-example"></div><script type="module" src="/src/main.ts"></script></body></html>\n',
+        '<!doctype html><html lang="en"><body><div id="varendo-example"></div><script type="module" src="/src/main.ts"></script></body></html>\n',
       );
       await writeFile(
         join(consumer, 'tsconfig.json'),

@@ -5,9 +5,9 @@ import type { PresentationPatternManifest } from '@varendo/core/presentation';
 import { createLocalDataService } from '@varendo/runtime/data';
 import { html } from 'lit';
 import { z } from 'zod';
-import { createAeliqoApp } from '../../../packages/web/src/app/app.js';
+import { createVarendoApp } from '../../../packages/web/src/app/app.js';
 import { defineRecipe, defineView, type RecipeContext } from '../../../packages/web/src/recipes/index.js';
-import type { AeliqoRegionElement } from '../../../packages/web/src/region/aeliqo-region.js';
+import type { VarendoRegionElement } from '../../../packages/web/src/region/varendo-region.js';
 
 const goal = { id: 'people.layout', revision: '1' } as const;
 const read = { id: 'data.read', revision: '1' } as const;
@@ -83,7 +83,7 @@ const data = createLocalDataService({
   functionRegistry: functions.value,
   authorize: () => ({ ok: true, value: { scopeDigest: 'scope', policyRevision: '1' } }),
 });
-let region: AeliqoRegionElement | undefined;
+let region: VarendoRegionElement | undefined;
 function filterText(): string {
   const payload = region?.interaction?.values.find((value) => value.nodeId === 'filter')?.payload;
   if (payload?.kind !== 'filter') return '';
@@ -212,7 +212,7 @@ function layoutPlan(context: Pick<RecipeContext, 'task' | 'current' | 'result' |
       context.incumbent?.nodes.map((node) => ({
         fromNode: node.id,
         toNode: node.id,
-        mapping: { id: 'aeliqo.state.identity', revision: '1' },
+        mapping: { id: 'varendo.state.identity', revision: '1' },
       })) ?? [],
     diagnostics: [],
   };
@@ -237,7 +237,7 @@ const pattern: PresentationPatternManifest = {
     );
   },
 };
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [{ resource: people, data }],
   intents: registry.value,
   views: [filter, header, sidebar],
@@ -290,7 +290,7 @@ async function render(layout: string) {
 const initial = await render('workspace');
 if (initial.status !== 'renderer-ready') throw Error(JSON.stringify(initial.diagnostics));
 await region.updateComplete;
-const initialTable = region.shadowRoot!.querySelector('aeliqo-table');
+const initialTable = region.shadowRoot!.querySelector('varendo-table');
 const initialFilter = region.shadowRoot!.querySelector('input');
 Object.assign(window, {
   continuityFixture: {
@@ -318,7 +318,7 @@ Object.assign(window, {
             : undefined,
         selectedKeys:
           selection?.kind === 'selection' && selection.selection.mode === 'ids' ? selection.selection.keys : [],
-        sameTable: initialTable === region?.shadowRoot?.querySelector('aeliqo-table'),
+        sameTable: initialTable === region?.shadowRoot?.querySelector('varendo-table'),
         sameFilter: initialFilter === region?.shadowRoot?.querySelector('input'),
         filter: filterText(),
       };

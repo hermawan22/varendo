@@ -10,7 +10,7 @@ description: 'Move from Aeliqo 0.4.2 to the breaking 0.5.0 release line.'
 
 ## Release line and compatibility
 
-<aeliqo-release-status></aeliqo-release-status>
+<varendo-release-status></varendo-release-status>
 
 Aeliqo `0.5.0` is a breaking successor with public surface and scoped runtime
 contracts. The historical `0.5.0-rc.1` came from an earlier source revision

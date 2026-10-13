@@ -1,22 +1,22 @@
 import { css, html, LitElement, nothing } from 'lit';
-import { aeliqoThemeStyles } from '../styles/theme.js';
-import { AELIQO_WEB_VERSION } from '../version.js';
+import { varendoThemeStyles } from '../styles/theme.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
 import type { ResultRef } from '@varendo/core';
-import type { AeliqoDataScope, AeliqoDataStatus, AeliqoFilterPredicate, AeliqoSelectionDetail } from './types.js';
-import { AeliqoDataSelectionEvent } from './events.js';
+import type { VarendoDataScope, VarendoDataStatus, VarendoFilterPredicate, VarendoSelectionDetail } from './types.js';
+import { VarendoDataSelectionEvent } from './events.js';
 import { dataStyles, displaysStatusSection, scopeText, statusTemplate } from './shared.js';
 
-export interface AeliqoSelectionScope {
+export interface VarendoSelectionScope {
   readonly kind: 'ids' | 'predicate';
   readonly matched?: number;
-  readonly predicate?: AeliqoFilterPredicate;
+  readonly predicate?: VarendoFilterPredicate;
   readonly label?: string;
 }
 
 /** Makes selection scope explicit. A predicate selection is never described
  * as a list of observed IDs or as an unqualified global selection. */
-export class AeliqoSelectionSummaryElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoSelectionSummaryElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     selectedKeys: { attribute: false },
     selectionScope: { attribute: false },
@@ -30,13 +30,13 @@ export class AeliqoSelectionSummaryElement extends LitElement {
   };
 
   selectedKeys: readonly string[] = [];
-  selectionScope: AeliqoSelectionScope | undefined = undefined;
+  selectionScope: VarendoSelectionScope | undefined = undefined;
   entity = 'record';
   result: ResultRef | undefined = undefined;
-  scope: AeliqoDataScope | undefined = undefined;
+  scope: VarendoDataScope | undefined = undefined;
   label = 'Selection';
   clearable = true;
-  status: AeliqoDataStatus = 'ready';
+  status: VarendoDataStatus = 'ready';
   message = '';
 
   protected override render() {
@@ -65,47 +65,47 @@ export class AeliqoSelectionSummaryElement extends LitElement {
   }
 
   private readonly clearSelection = (): void => {
-    const detail: AeliqoSelectionDetail = {
+    const detail: VarendoSelectionDetail = {
       mode: 'clear',
       entity: this.entity,
       keys: [],
       ...(this.result === undefined ? {} : { result: this.result }),
       ...(this.scope === undefined ? {} : { scope: this.scope }),
     };
-    this.dispatchEvent(new AeliqoDataSelectionEvent('aeliqo-selection-clear', detail));
+    this.dispatchEvent(new VarendoDataSelectionEvent('varendo-selection-clear', detail));
   };
 
   static readonly styles = [
-    aeliqoThemeStyles,
+    varendoThemeStyles,
     dataStyles,
     css`
       [part='summary'] {
         align-items: baseline;
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         min-inline-size: 0;
       }
       [part='label'] {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
       }
       [part='text'] {
         overflow-wrap: anywhere;
       }
       [part='scope'] {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
         inline-size: 100%;
       }
       [part='clear'] {
         background: transparent;
         border: 0;
-        color: var(--aeliqo-color-accent, #4338ca);
+        color: var(--varendo-color-accent, #4338ca);
         cursor: pointer;
         font: inherit;
-        min-block-size: var(--aeliqo-control-compact-target, 2rem);
-        padding-inline: var(--aeliqo-space-4, 0.25rem);
+        min-block-size: var(--varendo-control-compact-target, 2rem);
+        padding-inline: var(--varendo-space-4, 0.25rem);
         text-decoration: underline;
       }
       @media (forced-colors: active) {

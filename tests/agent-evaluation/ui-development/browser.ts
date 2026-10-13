@@ -1,10 +1,10 @@
-import { registerAeliqoElements } from '@varendo/web/register';
-import type { AeliqoRegionElement } from '@varendo/web/region';
+import { registerVarendoElements } from '@varendo/web/register';
+import type { VarendoRegionElement } from '@varendo/web/region';
 import { createUiDevelopmentHost, task, type UiDevelopmentHost } from './host.js';
 
-registerAeliqoElements();
+registerVarendoElements();
 
-const region = document.querySelector<AeliqoRegionElement>('#region');
+const region = document.querySelector<VarendoRegionElement>('#region');
 if (region === null) throw new Error('The development region element is missing.');
 
 const host = createUiDevelopmentHost('manual');
@@ -118,7 +118,7 @@ const settleHeldUiCommit = async (): Promise<{ readonly state: string }> => {
 };
 
 Object.assign(window, {
-  aeliqoUiReady: true,
+  varendoUiReady: true,
   evaluateUiTask,
   proposeUiTask,
   commitUiProposal,

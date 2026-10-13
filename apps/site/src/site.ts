@@ -18,7 +18,7 @@ function isThemeMode(value: string | null): value is ThemeMode {
 
 function storedTheme(): ThemeMode {
   try {
-    const value = localStorage.getItem('aeliqo-theme');
+    const value = localStorage.getItem('varendo-theme');
     return isThemeMode(value) ? value : 'system';
   } catch {
     return 'system';
@@ -35,12 +35,12 @@ function resolvedTheme(): 'light' | 'dark' {
 function themeComponent(root: ParentNode): void {
   const theme = resolvedTheme();
   const candidates = [
-    ...(root instanceof HTMLElement && root.hasAttribute('data-aeliqo-theme') ? [root] : []),
-    ...root.querySelectorAll<HTMLElement>('[data-aeliqo-theme]'),
+    ...(root instanceof HTMLElement && root.hasAttribute('data-varendo-theme') ? [root] : []),
+    ...root.querySelectorAll<HTMLElement>('[data-varendo-theme]'),
   ];
   for (const candidate of candidates) {
-    if (candidate.dataset.aeliqoTheme !== 'inherit' && candidate.dataset.aeliqoTheme !== theme)
-      candidate.dataset.aeliqoTheme = theme;
+    if (candidate.dataset.varendoTheme !== 'inherit' && candidate.dataset.varendoTheme !== theme)
+      candidate.dataset.varendoTheme = theme;
   }
 }
 
@@ -59,7 +59,7 @@ function applyTheme(persist: boolean): void {
   themeComponent(document);
   if (!persist) return;
   try {
-    localStorage.setItem('aeliqo-theme', themeMode);
+    localStorage.setItem('varendo-theme', themeMode);
   } catch {
     // The selected theme still applies when storage is unavailable.
   }
@@ -133,7 +133,7 @@ document.addEventListener('keydown', (event) => {
   viewport.scrollBy({ left: direction * 40, behavior: 'auto' });
 });
 
-const source = `const app = createAeliqoApp({
+const source = `const app = createVarendoApp({
   resources: [{resource: people, data}],
   authority,
 });

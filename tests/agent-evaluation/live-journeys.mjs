@@ -46,7 +46,7 @@ function validateModel(model) {
     !bounded(model.model, 160) ||
     !bounded(model.expectedReportedModel, 256) ||
     !bounded(model.priceSource, 512) ||
-    model.credentialEnvironment !== 'AELIQO_MODEL_API_KEY' ||
+    model.credentialEnvironment !== 'VARENDO_MODEL_API_KEY' ||
     !['bearer', 'header'].includes(model.authScheme) ||
     !Array.isArray(model.capabilities) ||
     !model.capabilities.includes('tool-calls') ||

@@ -23,7 +23,7 @@ Do not combine all three entries in the same page.
 ## React
 
 Use the tutorial's `src/PeopleTutorial.tsx`, which contains fully typed
-`AeliqoProvider` and `AeliqoRegion` usage. Put this in `src/main.tsx`:
+`VarendoProvider` and `VarendoRegion` usage. Put this in `src/main.tsx`:
 
 ```tsx
 import { createRoot } from 'react-dom/client';
@@ -47,8 +47,8 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
 
 Run `npm run dev`. **Engineering** leaves Sam visible; **All employees**
 restores both. The tutorial also includes the trend and review-only form.
-`AeliqoRegion` owns its region's mount/unmount and cancels stale intent work.
-`AeliqoProvider` shares the app; its creator owns app disposal. In a router,
+`VarendoRegion` owns its region's mount/unmount and cancels stale intent work.
+`VarendoProvider` shares the app; its creator owns app disposal. In a router,
 perform that cleanup when the owning route ends. When the intent switches
 resources, the tutorial's `key={intent.resource}` closes the old region first.
 

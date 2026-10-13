@@ -21,12 +21,12 @@ for (const direction of ['ltr', 'rtl']) {
     await page.setViewportSize({ width: 360, height: 800 });
     await page.goto('/tests/visual/index.html?component=split-pane&variant=narrow-dark-rtl');
     await page.waitForFunction(() =>
-      Boolean((window as typeof window & { aeliqoReviewReady?: boolean }).aeliqoReviewReady),
+      Boolean((window as typeof window & { varendoReviewReady?: boolean }).varendoReviewReady),
     );
     await page.evaluate((dir) => {
       document.documentElement.dir = dir;
     }, direction);
-    const host = page.locator('aeliqo-split-pane');
+    const host = page.locator('varendo-split-pane');
     const splitter = host.getByRole('separator');
     for (const width of [240, 320]) {
       await host.evaluate((element, size) => {
@@ -97,9 +97,9 @@ test('vertical split reserves its resize handle between enlarged panes', async (
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto('/tests/visual/index.html?component=split-pane&variant=narrow-dark-rtl');
   await page.waitForFunction(() =>
-    Boolean((window as typeof window & { aeliqoReviewReady?: boolean }).aeliqoReviewReady),
+    Boolean((window as typeof window & { varendoReviewReady?: boolean }).varendoReviewReady),
   );
-  const host = page.locator('aeliqo-split-pane');
+  const host = page.locator('varendo-split-pane');
   await host.evaluate((element) => {
     Object.assign(element, { orientation: 'vertical' });
     Object.assign((element as HTMLElement).style, { width: '240px', height: '320px' });
@@ -131,14 +131,14 @@ test.describe('coarse pointer', () => {
       await page.setViewportSize({ width: 360, height: 800 });
       await page.goto('/tests/visual/index.html?component=split-pane&variant=narrow-dark-rtl');
       await page.waitForFunction(() =>
-        Boolean((window as typeof window & { aeliqoReviewReady?: boolean }).aeliqoReviewReady),
+        Boolean((window as typeof window & { varendoReviewReady?: boolean }).varendoReviewReady),
       );
       expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
-      const host = page.locator('aeliqo-split-pane');
+      const host = page.locator('varendo-split-pane');
       const splitter = host.getByRole('separator');
       await host.evaluate((element, axis) => {
         Object.assign(element, { orientation: axis });
-        element.setAttribute('data-aeliqo-density', 'compact');
+        element.setAttribute('data-varendo-density', 'compact');
         Object.assign((element as HTMLElement).style, { width: '240px', height: '240px' });
         element.addEventListener('pointerdown', (event) =>
           element.setAttribute('data-pointer', (event as PointerEvent).pointerType),

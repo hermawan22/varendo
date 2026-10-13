@@ -14,7 +14,7 @@ for (const family of ['input', 'navigation', 'feedback', 'data-components'])
       }, variant !== 'desktop');
       if (family === 'input' && variant !== 'desktop') {
         const positions = await page
-          .locator('aeliqo-date-range')
+          .locator('varendo-date-range')
           .locator('input')
           .evaluateAll((els) =>
             els.map((el) => ({
@@ -27,7 +27,7 @@ for (const family of ['input', 'navigation', 'feedback', 'data-components'])
         expect(positions[0]!.width).toBeCloseTo(positions[0]!.available, 0);
       }
       if (family === 'data-components' && variant !== 'desktop') {
-        await expect(page.locator('aeliqo-delta').locator('[part="number"]')).toHaveAttribute('dir', 'ltr');
+        await expect(page.locator('varendo-delta').locator('[part="number"]')).toHaveAttribute('dir', 'ltr');
       }
       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
       await page.screenshot({ path: testInfo.outputPath(`${family}-${variant}.png`), fullPage: true, timeout: 10000 });

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { renderAeliqo } from '../../packages/web/dist/server.js';
+import { renderVarendo } from '../../packages/web/dist/server.js';
 import { html } from 'lit';
 const ref = { id: 'r', revision: '1', outputId: 'out', queryDigest: 'q', scopeDigest: 's' };
 const result = {
@@ -34,21 +34,22 @@ const datasets = [
 const matrix = { version: '1', view: 'matrix', result: ref, columns: ['id', 'amount'] };
 const timeline = { version: '1', view: 'timeline', result: ref, start: 'date' };
 const calendar = { version: '1', view: 'calendar-grid', result: ref, date: 'date' };
-const output = await renderAeliqo(
-  html`<aeliqo-matrix .visualization=${matrix} .context=${context} .datasets=${datasets}></aeliqo-matrix
-    ><aeliqo-timeline .visualization=${timeline} .context=${context} .datasets=${datasets}></aeliqo-timeline
-    ><aeliqo-calendar-grid
+const output = await renderVarendo(
+  html`<varendo-matrix .visualization=${matrix} .context=${context} .datasets=${datasets}></varendo-matrix
+    ><varendo-timeline .visualization=${timeline} .context=${context} .datasets=${datasets}></varendo-timeline
+    ><varendo-calendar-grid
       .visualization=${calendar}
       .context=${context}
       .datasets=${datasets}
-    ></aeliqo-calendar-grid>`,
+    ></varendo-calendar-grid>`,
 );
 assert.equal((output.match(/9007199254740993.001/g) || []).length, 3);
 assert(output.includes('<line'));
 assert(output.includes('2026-09-08'));
 assert(output.includes('Coverage unknown (Bounded supplied rows)'));
-const fresh = await renderAeliqo(
-  html`<aeliqo-matrix></aeliqo-matrix><aeliqo-timeline></aeliqo-timeline><aeliqo-calendar-grid></aeliqo-calendar-grid>`,
+const fresh = await renderVarendo(
+  html`<varendo-matrix></varendo-matrix><varendo-timeline></varendo-timeline
+    ><varendo-calendar-grid></varendo-calendar-grid>`,
 );
 assert(!fresh.includes('9007199254740993.001'));
 assert(!fresh.includes('<table'));

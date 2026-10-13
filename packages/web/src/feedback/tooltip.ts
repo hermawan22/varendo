@@ -1,16 +1,16 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
-import { aeliqoFeedbackStyles } from './shared.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
+import { varendoFeedbackStyles } from './shared.js';
 
-export class AeliqoTooltipElement extends AeliqoFoundationElement {
+export class VarendoTooltipElement extends VarendoFoundationElement {
   static readonly properties = {
     label: { type: String },
     content: { type: String },
     open: { type: Boolean, reflect: true },
   };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
-    ...aeliqoFeedbackStyles,
+    ...varendoFoundationThemeStyles,
+    ...varendoFeedbackStyles,
     css`
       :host {
         display: inline-block;
@@ -21,17 +21,17 @@ export class AeliqoTooltipElement extends AeliqoFoundationElement {
         border: 0;
         cursor: help;
         display: inline-flex;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        padding: var(--aeliqo-space-4, 0.25rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        padding: var(--varendo-space-4, 0.25rem);
       }
       [part='tooltip'] {
-        background: var(--aeliqo-color-text, #111827);
-        border-radius: var(--aeliqo-radius-small, 0.375rem);
-        color: var(--aeliqo-color-canvas, #fff);
-        inset-block-start: calc(100% + var(--aeliqo-space-4, 0.25rem));
+        background: var(--varendo-color-text, #111827);
+        border-radius: var(--varendo-radius-small, 0.375rem);
+        color: var(--varendo-color-canvas, #fff);
+        inset-block-start: calc(100% + var(--varendo-space-4, 0.25rem));
         inset-inline-start: 0;
         max-inline-size: min(22rem, calc(100vw - 2rem));
-        padding: var(--aeliqo-space-8, 0.5rem);
+        padding: var(--varendo-space-8, 0.5rem);
         position: absolute;
         width: max-content;
         z-index: 20;
@@ -71,7 +71,7 @@ export class AeliqoTooltipElement extends AeliqoFoundationElement {
   }
 
   protected override render() {
-    const tooltipId = `${this.id || 'aeliqo-tooltip'}-content`;
+    const tooltipId = `${this.id || 'varendo-tooltip'}-content`;
     return html`<button
         part="trigger"
         type="button"

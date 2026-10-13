@@ -26,7 +26,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: aeliqo-quality-${{ github.event.pull_request.number || github.ref }}
+  group: varendo-quality-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -93,7 +93,7 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.before }}
           HEAD_SHA: ${{ github.sha }}
-          AELIQO_DCO_INTEGRATION_HEAD: ${{ github.sha }}
+          VARENDO_DCO_INTEGRATION_HEAD: ${{ github.sha }}
           # Only the reviewed first main push may bootstrap from head bytes. Later
           # changes always execute the checker already accepted at the base SHA.
           BOOTSTRAP_BASE_SHA: '0000000000000000000000000000000000000000'
@@ -101,7 +101,7 @@ jobs:
         run: |
           [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]]
           [[ "$HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]
-          checker="$RUNNER_TEMP/aeliqo-check-dco.mjs"
+          checker="$RUNNER_TEMP/varendo-check-dco.mjs"
           if [ "$BASE_SHA" != "0000000000000000000000000000000000000000" ] && ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
             git fetch --quiet --no-tags --depth=1 origin "$BASE_SHA"
           fi
@@ -123,8 +123,8 @@ jobs:
     env:
       NEXT_TELEMETRY_DISABLED: '1'
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_SITE_BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+      VARENDO_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+      VARENDO_SITE_BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -173,8 +173,8 @@ jobs:
     env:
       NEXT_TELEMETRY_DISABLED: '1'
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_SITE_BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+      VARENDO_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+      VARENDO_SITE_BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -204,7 +204,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-quality-shard-${{ env.SOURCE_SHA }}-${{ matrix.shard }}
+          name: varendo-quality-shard-${{ env.SOURCE_SHA }}-${{ matrix.shard }}
           path: |
             artifacts/product-ci
             artifacts/performance-bundles
@@ -222,8 +222,8 @@ jobs:
     env:
       NEXT_TELEMETRY_DISABLED: '1'
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_SITE_BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+      VARENDO_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+      VARENDO_SITE_BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -287,7 +287,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-release-contract-${{ env.SOURCE_SHA }}
+          name: varendo-release-contract-${{ env.SOURCE_SHA }}
           path: |
             artifacts/release-candidate
             apps/site/artifacts
@@ -302,8 +302,8 @@ jobs:
     env:
       NEXT_TELEMETRY_DISABLED: '1'
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_SITE_BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+      VARENDO_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+      VARENDO_SITE_BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -320,7 +320,7 @@ jobs:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         if: needs.scope.outputs.mode == 'full'
         with:
-          pattern: aeliqo-quality-shard-${{ env.SOURCE_SHA }}-*
+          pattern: varendo-quality-shard-${{ env.SOURCE_SHA }}-*
           path: artifacts
           merge-multiple: true
       - name: Run required functional, security, browser, and package checks
@@ -379,7 +379,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-quality-evidence-${{ env.SOURCE_SHA }}
+          name: varendo-quality-evidence-${{ env.SOURCE_SHA }}
           path: |
             artifacts/product-ci
             artifacts/performance-bundles
@@ -409,8 +409,8 @@ jobs:
         shell: bash
     env:
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_VISUAL_CONTAINER_DIGEST: sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7
-      AELIQO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts
+      VARENDO_VISUAL_CONTAINER_DIGEST: sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7
+      VARENDO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       TZ: UTC
       LANG: C.UTF-8
@@ -441,7 +441,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-visual-${{ env.SOURCE_SHA }}-${{ matrix.browser }}
+          name: varendo-visual-${{ env.SOURCE_SHA }}-${{ matrix.browser }}
           path: artifacts/visual-regression
           if-no-files-found: warn
           retention-days: 7
@@ -450,7 +450,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-visual-shard-report-${{ env.SOURCE_SHA }}-${{ matrix.browser }}
+          name: varendo-visual-shard-report-${{ env.SOURCE_SHA }}-${{ matrix.browser }}
           path: artifacts/visual-shard-report/report.json
           if-no-files-found: error
           retention-days: 7
@@ -485,7 +485,7 @@ jobs:
           pnpm install --frozen-lockfile
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: aeliqo-visual-shard-report-${{ env.SOURCE_SHA }}-*
+          pattern: varendo-visual-shard-report-${{ env.SOURCE_SHA }}-*
           path: artifacts/visual-shard-reports
           merge-multiple: false
       - name: Require all browser evidence and complete inventory
@@ -500,7 +500,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-visual-${{ env.SOURCE_SHA }}
+          name: varendo-visual-${{ env.SOURCE_SHA }}
           path: artifacts/visual-aggregate
           if-no-files-found: error
           retention-days: 7
@@ -522,8 +522,8 @@ jobs:
         shell: bash
     env:
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_VISUAL_CONTAINER_DIGEST: sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7
-      AELIQO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts
+      VARENDO_VISUAL_CONTAINER_DIGEST: sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7
+      VARENDO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       TZ: UTC
       LANG: C.UTF-8
@@ -549,7 +549,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-visual-probe-${{ env.SOURCE_SHA }}-${{ matrix.browser }}
+          name: varendo-visual-probe-${{ env.SOURCE_SHA }}-${{ matrix.browser }}
           path: artifacts/visual-regression
           if-no-files-found: warn
           retention-days: 7
@@ -558,7 +558,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-visual-probe-shard-report-${{ env.SOURCE_SHA }}-${{ matrix.browser }}
+          name: varendo-visual-probe-shard-report-${{ env.SOURCE_SHA }}-${{ matrix.browser }}
           path: artifacts/visual-shard-report/report.json
           if-no-files-found: error
           retention-days: 7
@@ -591,7 +591,7 @@ jobs:
           pnpm install --frozen-lockfile
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: aeliqo-visual-probe-shard-report-${{ env.SOURCE_SHA }}-*
+          pattern: varendo-visual-probe-shard-report-${{ env.SOURCE_SHA }}-*
           path: artifacts/visual-shard-reports
           merge-multiple: false
       - name: Require all browser evidence and complete inventory
@@ -601,7 +601,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-visual-probe-${{ env.SOURCE_SHA }}
+          name: varendo-visual-probe-${{ env.SOURCE_SHA }}
           path: artifacts/visual-aggregate
           if-no-files-found: error
           retention-days: 7
@@ -621,8 +621,8 @@ jobs:
         shell: bash
     env:
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_VISUAL_CONTAINER_DIGEST: sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7
-      AELIQO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts
+      VARENDO_VISUAL_CONTAINER_DIGEST: sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7
+      VARENDO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       TZ: UTC
       LANG: C.UTF-8
@@ -648,7 +648,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-performance-${{ env.SOURCE_SHA }}
+          name: varendo-performance-${{ env.SOURCE_SHA }}
           path: artifacts/performance-paired
           if-no-files-found: warn
           retention-days: 7
@@ -666,8 +666,8 @@ jobs:
         shell: bash
     env:
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      AELIQO_VISUAL_CONTAINER_DIGEST: sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7
-      AELIQO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts
+      VARENDO_VISUAL_CONTAINER_DIGEST: sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7
+      VARENDO_VISUAL_FONT_DIRS: /usr/share/fonts:/usr/local/share/fonts
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       TZ: UTC
       LANG: C.UTF-8
@@ -693,7 +693,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: aeliqo-performance-probe-${{ env.SOURCE_SHA }}
+          name: varendo-performance-probe-${{ env.SOURCE_SHA }}
           path: artifacts/performance-paired
           if-no-files-found: warn
           retention-days: 7

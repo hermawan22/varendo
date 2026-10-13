@@ -2,7 +2,7 @@ import { parseContract } from '@varendo/core';
 import type { OperationGrant } from '@varendo/core/agent';
 import type { AgentToolDefinition, AgentToolInputSchema } from '../protocol/types.js';
 import type { StandardSchemaWithJSON, Tool } from './types.js';
-import { AELIQO_MCP_TOOL_META } from './types.js';
+import { VARENDO_MCP_TOOL_META } from './types.js';
 import { localSchemaReferences, strictId } from '../guards.js';
 import { ADAPTER_VERSION, boundedWire, failure, isRecord, safeJson, validId, validText } from './shared.js';
 import type { Outcome, VersionRef } from '@varendo/core';
@@ -67,7 +67,7 @@ export function standardSchema(schema: AgentToolInputSchema): StandardSchemaWith
   return {
     '~standard': {
       version: 1,
-      vendor: 'aeliqo',
+      vendor: 'varendo',
       validate: (value: unknown) => ({ value }),
       jsonSchema: {
         input: () => jsonSchema,
@@ -79,7 +79,7 @@ export function standardSchema(schema: AgentToolInputSchema): StandardSchemaWith
 
 export function toolMetadata(definition: AgentToolDefinition): Record<string, unknown> {
   return {
-    [AELIQO_MCP_TOOL_META]: {
+    [VARENDO_MCP_TOOL_META]: {
       version: ADAPTER_VERSION,
       capability: { id: definition.capability.id, revision: definition.capability.revision },
       operation: definition.operation,
@@ -92,7 +92,7 @@ export function normalizeTool(tool: Tool): Outcome<AgentToolDefinition> {
   if (!name.ok) return name;
   const schema = inputSchema(tool.inputSchema);
   if (!schema.ok) return schema;
-  const metadata = normalizeMetadata(isRecord(tool._meta) ? tool._meta[AELIQO_MCP_TOOL_META] : undefined);
+  const metadata = normalizeMetadata(isRecord(tool._meta) ? tool._meta[VARENDO_MCP_TOOL_META] : undefined);
   if (!metadata.ok) return metadata;
   const description = toolDescription(tool, name.value);
   if (!description.ok) return description;

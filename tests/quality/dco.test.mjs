@@ -19,7 +19,7 @@ function git(directory, args, environment = {}) {
 }
 
 async function repository(t) {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-dco-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-dco-'));
   t.after(() => rm(directory, { recursive: true, force: true }));
   git(directory, ['init', '--quiet', '--initial-branch=main']);
   git(directory, ['config', 'user.name', 'Contributor']);
@@ -38,7 +38,7 @@ function check(directory, base, head, environment = {}) {
   return spawnSync(process.execPath, [script, base, head], {
     cwd: directory,
     encoding: 'utf8',
-    env: { ...process.env, AELIQO_DCO_INTEGRATION_HEAD: '', ...environment },
+    env: { ...process.env, VARENDO_DCO_INTEGRATION_HEAD: '', ...environment },
   });
 }
 
@@ -93,7 +93,7 @@ test('DCO exempts only the exact main-push integration head and checks its paren
     GIT_COMMITTER_NAME: 'GitHub',
     GIT_COMMITTER_EMAIL: 'noreply@github.com',
   });
-  const result = check(directory, base, head, { AELIQO_DCO_INTEGRATION_HEAD: head });
+  const result = check(directory, base, head, { VARENDO_DCO_INTEGRATION_HEAD: head });
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /2 contribution commits/u);
 });
@@ -107,7 +107,7 @@ test('DCO does not let the integration head hide an unsigned contribution', asyn
     { GIT_COMMITTER_NAME: 'GitHub', GIT_COMMITTER_EMAIL: 'noreply@github.com' },
     false,
   );
-  const result = check(directory, base, head, { AELIQO_DCO_INTEGRATION_HEAD: head });
+  const result = check(directory, base, head, { VARENDO_DCO_INTEGRATION_HEAD: head });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /matching author signoff/u);
 });
@@ -134,10 +134,10 @@ test('DCO rejects spoofed GitHub merge metadata in a pull request', async (t) =>
 test('DCO cannot exempt a non-merge contribution or a different integration SHA', async (t) => {
   const { directory, base } = await repository(t);
   const head = commit(directory, 'Unsigned contribution');
-  const result = check(directory, base, head, { AELIQO_DCO_INTEGRATION_HEAD: head });
+  const result = check(directory, base, head, { VARENDO_DCO_INTEGRATION_HEAD: head });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /matching author signoff/u);
-  const wrong = check(directory, base, head, { AELIQO_DCO_INTEGRATION_HEAD: base });
+  const wrong = check(directory, base, head, { VARENDO_DCO_INTEGRATION_HEAD: base });
   assert.equal(wrong.status, 1);
   assert.match(wrong.stderr, /integration head must match/u);
 });
@@ -167,7 +167,7 @@ function runWorkflow(command, directory, base, head, environment = {}) {
       BASE_SHA: base,
       HEAD_SHA: head,
       RUNNER_TEMP: directory,
-      AELIQO_DCO_INTEGRATION_HEAD: '',
+      VARENDO_DCO_INTEGRATION_HEAD: '',
       ...environment,
     },
   });

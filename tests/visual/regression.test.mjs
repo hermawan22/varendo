@@ -116,7 +116,7 @@ test('CLI fails closed for unapproved source and refuses filtered full runs', as
   const rejected = spawnSync(process.execPath, [script, '--full'], {
     cwd: directory,
     encoding: 'utf8',
-    env: { ...process.env, AELIQO_VISUAL_PROJECT: '', AELIQO_VISUAL_BATCH: '', AELIQO_VISUAL_GREP: '' },
+    env: { ...process.env, VARENDO_VISUAL_PROJECT: '', VARENDO_VISUAL_BATCH: '', VARENDO_VISUAL_GREP: '' },
   });
   assert.equal(rejected.status, 1);
   assert.match(rejected.stdout, /has not been approved/u);
@@ -124,7 +124,7 @@ test('CLI fails closed for unapproved source and refuses filtered full runs', as
   const selected = spawnSync(process.execPath, [script, '--probe', '--full'], {
     cwd: directory,
     encoding: 'utf8',
-    env: { ...process.env, AELIQO_VISUAL_PROJECT: 'chromium' },
+    env: { ...process.env, VARENDO_VISUAL_PROJECT: 'chromium' },
   });
   assert.equal(selected.status, 1);
   assert.match(selected.stdout, /rejects selection filters/u);
@@ -175,13 +175,13 @@ test('container identity does not depend on the mutable hosted image label', asy
     GITHUB_ACTIONS: 'true',
     ImageOS: 'ubuntu24',
     ImageVersion: '20260920.1.0',
-    AELIQO_VISUAL_CONTAINER_DIGEST: `sha256:${'c'.repeat(64)}`,
+    VARENDO_VISUAL_CONTAINER_DIGEST: `sha256:${'c'.repeat(64)}`,
   };
   assert.deepEqual(runnerIdentity(env), runnerIdentity({ ...env, ImageVersion: '20260927.1.0' }));
   assert.equal(runnerIdentity(env).hostImage, null);
   assert.notDeepEqual(
-    runnerIdentity({ ...env, AELIQO_VISUAL_CONTAINER_DIGEST: undefined }),
-    runnerIdentity({ ...env, AELIQO_VISUAL_CONTAINER_DIGEST: undefined, ImageVersion: '20260927.1.0' }),
+    runnerIdentity({ ...env, VARENDO_VISUAL_CONTAINER_DIGEST: undefined }),
+    runnerIdentity({ ...env, VARENDO_VISUAL_CONTAINER_DIGEST: undefined, ImageVersion: '20260927.1.0' }),
   );
 });
 
@@ -204,32 +204,32 @@ test('visual fixtures build and serve the canonical production entry in a port-i
   assert.equal(fixture.publicDir, false);
   assert.equal(fixture.base, '/');
   assert.equal(fixture.build.rollupOptions.input, join(fixture.root, 'tests/visual/index.html'));
-  assert.equal(fixture.build.outDir, join(fixture.root, 'artifacts/visual-fixture', process.env.AELIQO_VISUAL_PORT));
+  assert.equal(fixture.build.outDir, join(fixture.root, 'artifacts/visual-fixture', process.env.VARENDO_VISUAL_PORT));
   assert.equal(fixture.build.emptyOutDir, true);
   assert.equal(fixture.build.sourcemap, false);
 });
 
 test('production visual fixtures reject missing or unsafe ports and isolate different servers', async () => {
-  const previous = process.env.AELIQO_VISUAL_PORT;
+  const previous = process.env.VARENDO_VISUAL_PORT;
   try {
     for (const port of [undefined, '', '0', '-1', '65536', '../outside', '12.5']) {
-      if (port === undefined) delete process.env.AELIQO_VISUAL_PORT;
-      else process.env.AELIQO_VISUAL_PORT = port;
+      if (port === undefined) delete process.env.VARENDO_VISUAL_PORT;
+      else process.env.VARENDO_VISUAL_PORT = port;
       await assert.rejects(
         import(`./vite.config.mjs?invalid=${encodeURIComponent(String(port))}`),
-        /AELIQO_VISUAL_PORT/u,
+        /VARENDO_VISUAL_PORT/u,
       );
     }
     const directories = [];
     for (const port of ['4931', '4932']) {
-      process.env.AELIQO_VISUAL_PORT = port;
+      process.env.VARENDO_VISUAL_PORT = port;
       const { default: fixture } = await import(`./vite.config.mjs?valid=${port}`);
       directories.push(fixture.build.outDir);
       assert.equal(fixture.build.outDir, join(fixture.root, 'artifacts/visual-fixture', port));
     }
     assert.notEqual(directories[0], directories[1]);
   } finally {
-    if (previous === undefined) delete process.env.AELIQO_VISUAL_PORT;
-    else process.env.AELIQO_VISUAL_PORT = previous;
+    if (previous === undefined) delete process.env.VARENDO_VISUAL_PORT;
+    else process.env.VARENDO_VISUAL_PORT = previous;
   }
 });

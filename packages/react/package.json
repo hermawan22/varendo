@@ -1,6 +1,6 @@
 {
   "name": "@varendo/react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hermawan22/varendo.git",
@@ -75,7 +75,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "peerDependencies": {
-    "@varendo/runtime": "0.1.0",
+    "@varendo/runtime": "0.2.0",
     "react": ">=19.2.0 <20.0.0",
     "react-dom": ">=19.2.0 <20.0.0"
   },

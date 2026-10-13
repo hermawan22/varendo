@@ -2,7 +2,7 @@ import { expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { defineResource, type PresentationPlan } from '../../packages/core/src/index.js';
 import { createQueryFunctionRegistry } from '../../packages/core/src/expressions/index.js';
-import { createAeliqoRuntime } from '../../packages/runtime/src/app/index.js';
+import { createVarendoRuntime } from '../../packages/runtime/src/app/index.js';
 import { createLocalDataService } from '../../packages/runtime/src/data/index.js';
 import type { RuntimeRenderPreparation } from '../../packages/runtime/src/app/index.js';
 
@@ -116,7 +116,7 @@ function plan(input: RuntimeRenderPreparation): PresentationPlan {
 }
 async function setup() {
   const app = fixture();
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     resources: [{ resource: app.resource, data: app.local }],
     authority: app.authority,
   });

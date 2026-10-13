@@ -5,7 +5,7 @@
  * site can use this index to link to those sources instead of maintaining a
  * second set of illustrative snippets.
  */
-export interface AeliqoFrameworkRecipe {
+export interface VarendoFrameworkRecipe {
   readonly id: 'vanilla' | 'react' | 'vue' | 'next-ssr' | 'static-island';
   readonly title: string;
   readonly sourcePaths: readonly string[];
@@ -15,7 +15,7 @@ export interface AeliqoFrameworkRecipe {
   readonly studioRequired: false;
 }
 
-export const frameworkRecipes: readonly AeliqoFrameworkRecipe[] = [
+export const frameworkRecipes: readonly VarendoFrameworkRecipe[] = [
   {
     id: 'vanilla',
     title: 'Vanilla web components',

@@ -236,8 +236,8 @@
   max-inline-size: 100%;
   margin-inline: auto;
 }
-#home-demo aeliqo-region,
-#home-trend aeliqo-region {
+#home-demo varendo-region,
+#home-trend varendo-region {
   display: block;
   min-width: 0;
 }

@@ -1,5 +1,5 @@
 /**
- * DECLARATION-ONLY DESIGN CONSUMER, NOT AELIQO IMPLEMENTATION.
+ * DECLARATION-ONLY DESIGN CONSUMER, NOT VARENDO IMPLEMENTATION.
  * This fixture freezes complete consumer shapes; later tasks must execute them
  * through installed package exports and real DOM/runtime assertions.
  */
@@ -7,17 +7,17 @@ import type { ReactElement } from 'react';
 import type { ActionPort } from '../../../packages/runtime/src/actions/index.js';
 import type { DataService } from '../../../packages/runtime/src/data/index.js';
 import {
-  AeliqoProvider,
-  AeliqoScope,
+  VarendoProvider,
+  VarendoScope,
   AdaptiveSurface,
   connectAgent,
-  createAeliqoRuntime,
+  createVarendoRuntime,
   defineDataFeature,
   defineFeature,
   defineReactViews,
   type AgentClient,
-  type AeliqoApp,
-  type AeliqoRuntime,
+  type VarendoApp,
+  type VarendoRuntime,
   type CapabilitySurfaceBindings,
   type DataSurfaceBindings,
   type DataServiceSourceBinding,
@@ -31,7 +31,7 @@ import {
   type ScopeChangeResult,
   type ScopeController,
   type SurfaceController,
-  useAeliqoScope,
+  useVarendoScope,
   useSurface,
   ViewSurface,
 } from '../api-contract.js';
@@ -129,14 +129,14 @@ const scopeBinding: ScopeBinding = {
 };
 
 export interface PeopleComposition {
-  readonly runtime: AeliqoRuntime;
+  readonly runtime: VarendoRuntime;
   readonly scope: ScopeController;
   dispose(): void;
 }
 
 /** Runtime and scope are created, attached, detached, and disposed by the host. */
 export function createPeopleComposition(): PeopleComposition {
-  const runtime = createAeliqoRuntime({ runtimeId: 'people-runtime' });
+  const runtime = createVarendoRuntime({ runtimeId: 'people-runtime' });
   const scope = runtime.createScope({
     binding: scopeBinding,
     initial: { kind: 'workspace', id: 'acme' },
@@ -154,7 +154,7 @@ export function createPeopleComposition(): PeopleComposition {
 }
 
 export function createHeadlessPeopleSurface(
-  runtime: AeliqoRuntime,
+  runtime: VarendoRuntime,
   scope: ScopeController,
 ): SurfaceController<Intent, PersonState> {
   return runtime.createSurface({
@@ -271,7 +271,7 @@ export function renderPeopleSsr(surface: SurfaceController<Intent, PersonState>)
 }
 
 function PeopleAgentConnection({ client }: { readonly client: AgentClient }): null {
-  const scope = useAeliqoScope();
+  const scope = useVarendoScope();
   useEffect(() => {
     const connection = connectAgent({
       scope,
@@ -303,7 +303,7 @@ export function ControlledPeople({
 }
 
 export function PeoplePage({ client }: { readonly client: AgentClient }): ReactElement {
-  const scope = useAeliqoScope();
+  const scope = useVarendoScope();
   const primary = useSurface(peopleFeature, {
     id: 'people-main',
     bindings: scopedBindings,
@@ -333,16 +333,16 @@ export function ScopedPeopleApplication({
   scope,
   client,
 }: {
-  readonly runtime: AeliqoRuntime;
+  readonly runtime: VarendoRuntime;
   readonly scope: ScopeController;
   readonly client: AgentClient;
 }): ReactElement {
   return (
-    <AeliqoProvider runtime={runtime}>
-      <AeliqoScope scope={scope}>
+    <VarendoProvider runtime={runtime}>
+      <VarendoScope scope={scope}>
         <PeoplePage client={client} />
-      </AeliqoScope>
-    </AeliqoProvider>
+      </VarendoScope>
+    </VarendoProvider>
   );
 }
 
@@ -350,15 +350,15 @@ export function ScopedRemotePeopleApplication({
   runtime,
   scope,
 }: {
-  readonly runtime: AeliqoRuntime;
+  readonly runtime: VarendoRuntime;
   readonly scope: ScopeController;
 }): ReactElement {
   return (
-    <AeliqoProvider runtime={runtime}>
-      <AeliqoScope scope={scope}>
+    <VarendoProvider runtime={runtime}>
+      <VarendoScope scope={scope}>
         <RemotePeoplePage />
-      </AeliqoScope>
-    </AeliqoProvider>
+      </VarendoScope>
+    </VarendoProvider>
   );
 }
 
@@ -367,30 +367,30 @@ export function ControlledPeopleApplication({
   scope,
   store,
 }: {
-  readonly runtime: AeliqoRuntime;
+  readonly runtime: VarendoRuntime;
   readonly scope: ScopeController;
   readonly store: ExternalSurfaceStore<Intent, PersonState>;
 }): ReactElement {
   return (
-    <AeliqoProvider runtime={runtime}>
-      <AeliqoScope scope={scope}>
+    <VarendoProvider runtime={runtime}>
+      <VarendoScope scope={scope}>
         <ControlledPeople store={store} />
-      </AeliqoScope>
-    </AeliqoProvider>
+      </VarendoScope>
+    </VarendoProvider>
   );
 }
 
-/** Existing 0.4 consumers keep their real AeliqoApp contract explicitly. */
+/** Existing 0.4 consumers keep their real VarendoApp contract explicitly. */
 export function LegacyCompatibleApplication({
   app,
   children,
 }: {
-  readonly app: AeliqoApp;
+  readonly app: VarendoApp;
   readonly children: ReactElement;
 }): ReactElement {
   return (
-    <AeliqoProvider mode="legacy-app" app={app}>
+    <VarendoProvider mode="legacy-app" app={app}>
       {children}
-    </AeliqoProvider>
+    </VarendoProvider>
   );
 }

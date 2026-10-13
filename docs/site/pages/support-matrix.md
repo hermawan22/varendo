@@ -3,17 +3,19 @@ id: 'support-matrix'
 path: '/ship/support-matrix/'
 section: 'Releases'
 title: 'Support matrix and release acceptance'
-description: 'Varendo 0.1.0 profiles, tested source revisions, and release qualification boundaries.'
+description: 'Varendo 0.2.0 profiles, tested source revisions, and release qualification boundaries.'
 ---
 
-<p class="lead">Varendo 0.1.0 targets the maintained profiles below. Recorded source checks cover framework consumers, browser behavior, and bounded workloads. Release qualification, package publication, and production deployment are verified separately.</p>
-<aeliqo-release-status></aeliqo-release-status>
+<p class="lead">Varendo 0.2.0 targets the maintained profiles below. Recorded source checks cover framework consumers, browser behavior, and bounded workloads. Release qualification, package publication, and production deployment are verified separately.</p>
+<varendo-release-status></varendo-release-status>
 
 The [machine-readable source record](https://github.com/hermawan22/varendo/blob/main/docs/support-matrix.json)
 identifies the revisions and checks that were tested, with profile limits
-preserved independently from publication. All five 0.1.0 npm packages were
-verified from source `53406eeab85103fd0b1159e765ee3996e2b4ab70`; this does not
-qualify a later documentation commit or production container deployment.
+preserved independently from publication. Varendo 0.2.0 is an unpublished
+source candidate that renames the remaining identifiers; it is not yet
+qualified for release. All five 0.1.0 npm packages were verified from source
+`53406eeab85103fd0b1159e765ee3996e2b4ab70`; this does not qualify a later
+source commit or production container deployment.
 
 The [full main-push quality run](https://github.com/hermawan22/varendo/actions/runs/38203288539)
 passed all 93 acceptance commands at the published source. The
@@ -41,7 +43,7 @@ release metadata. The public
 The [current status record](https://github.com/hermawan22/varendo/blob/main/docs/STATUS.md)
 tracks each candidate separately from published source revisions and their
 93-command main-push matrices, package receipts, and production verification.
-Earlier release receipts do not qualify changed 0.1.0 source. The
+Earlier release receipts do not qualify changed 0.2.0 source. The
 [visual reference review](https://github.com/hermawan22/varendo/blob/main/docs/testing/0.6.3-visual-reference.md)
 records the approved comparison evidence and its review scope. Container visual
 and paired-performance CI jobs are advisory; the functional matrix and release
@@ -68,7 +70,7 @@ passed a quality evaluation. Read the [shipping guide](/ship/) for application c
 The former matrix is preserved byte for byte in
 [`docs/releases/0.5.2/support-matrix.json`](https://github.com/hermawan22/varendo/blob/main/docs/releases/0.5.2/support-matrix.json).
 Its original candidate metadata and qualified profiles describe that historical
-record. They are not acceptance for 0.1.0.
+record. They are not acceptance for 0.2.0.
 
 That record includes a bounded DeepSeek `deepseek-flash` run: 12/12 synthetic
 J1–J3 browser/provider/renderer cases on tree-equivalent PR head `21afcca`

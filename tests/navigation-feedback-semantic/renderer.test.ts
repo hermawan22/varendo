@@ -37,20 +37,20 @@ function handler(rendered: ReturnType<typeof renderNavigationFeedbackNode>): (ev
 describe('navigation and feedback region renderer', () => {
   it('delegates every registered representation to its owned custom element', () => {
     const cases: readonly [string, string, PresentationValues][] = [
-      ['navigation.breadcrumb', 'aeliqo-breadcrumb', { items: [], label: 'Breadcrumb' }],
-      ['navigation.menu', 'aeliqo-menu', { items: [], label: 'Menu' }],
-      ['navigation.pagination', 'aeliqo-pagination', { page: 1, label: 'Pagination' }],
-      ['navigation.tabs', 'aeliqo-tabs', { items: [] }],
-      ['navigation.tree-nav', 'aeliqo-tree-nav', { nodes: [], label: 'Tree' }],
-      ['feedback.tooltip', 'aeliqo-tooltip', { label: 'Help', content: 'Info' }],
-      ['feedback.popover', 'aeliqo-popover', { label: 'Open', content: 'Info' }],
-      ['feedback.dialog', 'aeliqo-dialog', { heading: 'Dialog' }],
-      ['feedback.drawer', 'aeliqo-drawer', { heading: 'Drawer' }],
-      ['feedback.toast', 'aeliqo-toast', { message: 'Saved' }],
-      ['feedback.alert', 'aeliqo-alert', { message: 'Attention' }],
-      ['feedback.progress', 'aeliqo-progress', { label: 'Progress' }],
-      ['feedback.skeleton', 'aeliqo-skeleton', { label: 'Loading' }],
-      ['feedback.empty-state', 'aeliqo-empty-state', { kind: 'no-records', heading: 'Empty', message: 'None' }],
+      ['navigation.breadcrumb', 'varendo-breadcrumb', { items: [], label: 'Breadcrumb' }],
+      ['navigation.menu', 'varendo-menu', { items: [], label: 'Menu' }],
+      ['navigation.pagination', 'varendo-pagination', { page: 1, label: 'Pagination' }],
+      ['navigation.tabs', 'varendo-tabs', { items: [] }],
+      ['navigation.tree-nav', 'varendo-tree-nav', { nodes: [], label: 'Tree' }],
+      ['feedback.tooltip', 'varendo-tooltip', { label: 'Help', content: 'Info' }],
+      ['feedback.popover', 'varendo-popover', { label: 'Open', content: 'Info' }],
+      ['feedback.dialog', 'varendo-dialog', { heading: 'Dialog' }],
+      ['feedback.drawer', 'varendo-drawer', { heading: 'Drawer' }],
+      ['feedback.toast', 'varendo-toast', { message: 'Saved' }],
+      ['feedback.alert', 'varendo-alert', { message: 'Attention' }],
+      ['feedback.progress', 'varendo-progress', { label: 'Progress' }],
+      ['feedback.skeleton', 'varendo-skeleton', { label: 'Loading' }],
+      ['feedback.empty-state', 'varendo-empty-state', { kind: 'no-records', heading: 'Empty', message: 'None' }],
     ];
     for (const [id, tag, values] of cases) {
       const rendered = renderNavigationFeedbackNode(
@@ -72,7 +72,7 @@ describe('navigation and feedback region renderer', () => {
       [{ id: 'navigate', direction: 'output', payload: 'navigate' }],
       [{ id: 'route.home', revision: '1' }],
     );
-    const navigationEvent = new CustomEvent('aeliqo-navigation', {
+    const navigationEvent = new CustomEvent('varendo-navigation', {
       detail: { id: 'home', source: 'user' },
       cancelable: true,
     });
@@ -93,7 +93,7 @@ describe('navigation and feedback region renderer', () => {
       [{ id: 'action', direction: 'output', payload: 'action-request' }],
       [{ id: 'action.open', revision: '1' }],
     );
-    const menuEvent = new CustomEvent('aeliqo-menu-action', {
+    const menuEvent = new CustomEvent('varendo-menu-action', {
       detail: { id: 'open', source: 'user' },
       cancelable: true,
     });
@@ -128,7 +128,7 @@ describe('navigation and feedback region renderer', () => {
       [{ id: 'page', direction: 'output', payload: 'page' }],
       [{ id: 'navigation.page', revision: '1' }],
     );
-    const pageEvent = new CustomEvent('aeliqo-page-change', {
+    const pageEvent = new CustomEvent('varendo-page-change', {
       detail: { page: 2, previousPage: 1, direction: 'next', source: 'user' },
       cancelable: true,
     });
@@ -147,7 +147,7 @@ describe('navigation and feedback region renderer', () => {
       [{ id: 'action', direction: 'output', payload: 'action-request' }],
       [{ id: 'action.open', revision: '1' }],
     );
-    const treeEvent = new CustomEvent('aeliqo-tree-nav-select', {
+    const treeEvent = new CustomEvent('varendo-tree-nav-select', {
       detail: { id: 'settings', source: 'user' },
       cancelable: true,
     });
@@ -175,14 +175,14 @@ describe('navigation and feedback region renderer', () => {
         () => undefined,
         (_node, _port, payload) => emitted.push(payload),
       ),
-    )(new CustomEvent('aeliqo-menu-action', { detail: { id: 'disabled', source: 'user' } }));
+    )(new CustomEvent('varendo-menu-action', { detail: { id: 'disabled', source: 'user' } }));
     handler(
       renderNavigationFeedbackNode(
         menu,
         () => undefined,
         (_node, _port, payload) => emitted.push(payload),
       ),
-    )(new CustomEvent('aeliqo-menu-action', { detail: { id: 'disabled', source: 'model' } }));
+    )(new CustomEvent('varendo-menu-action', { detail: { id: 'disabled', source: 'model' } }));
     expect(emitted).toEqual([]);
 
     const undeclared = node(
@@ -196,7 +196,7 @@ describe('navigation and feedback region renderer', () => {
         () => undefined,
         (_node, _port, payload) => emitted.push(payload),
       ),
-    )(new CustomEvent('aeliqo-menu-action', { detail: { id: 'open', source: 'user' } }));
+    )(new CustomEvent('varendo-menu-action', { detail: { id: 'open', source: 'user' } }));
     expect(emitted).toEqual([]);
   });
 });
@@ -224,7 +224,7 @@ it('ignores accessor-backed event payloads without invoking their getters', () =
       (_node, _port, value) => emitted.push(value),
     ),
   );
-  expect(() => receive(new CustomEvent('aeliqo-menu-action', { detail: payload }))).not.toThrow();
+  expect(() => receive(new CustomEvent('varendo-menu-action', { detail: payload }))).not.toThrow();
   expect(reads).toBe(0);
   expect(emitted).toEqual([]);
 });
@@ -255,13 +255,13 @@ it('rejects movement in an unavailable pagination direction even with a register
     ),
   );
   receive(
-    new CustomEvent('aeliqo-page-change', {
+    new CustomEvent('varendo-page-change', {
       detail: { page: 1, previousPage: 2, direction: 'previous', source: 'user' },
     }),
   );
   expect(emitted).toEqual([]);
   receive(
-    new CustomEvent('aeliqo-page-change', { detail: { page: 3, previousPage: 2, direction: 'next', source: 'user' } }),
+    new CustomEvent('varendo-page-change', { detail: { page: 3, previousPage: 2, direction: 'next', source: 'user' } }),
   );
   expect(emitted).toHaveLength(1);
 });

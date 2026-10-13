@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { AELIQO_DARK_TOKENS, AELIQO_LIGHT_TOKENS } from '../../packages/web/src/styles/tokens.js';
+import { VARENDO_DARK_TOKENS, VARENDO_LIGHT_TOKENS } from '../../packages/web/src/styles/tokens.js';
 import { quantitativeColor } from '../../packages/web/src/plot/palette.js';
 
 function luminance(hex: string): number {
@@ -11,17 +11,17 @@ function luminance(hex: string): number {
 }
 
 for (const [theme, tokens] of [
-  ['light', AELIQO_LIGHT_TOKENS],
-  ['dark', AELIQO_DARK_TOKENS],
+  ['light', VARENDO_LIGHT_TOKENS],
+  ['dark', VARENDO_DARK_TOKENS],
 ] as const) {
   it(`all six series and the entire quantitative ramp contrast with ${theme} canvas`, () => {
-    const background = luminance(tokens['--aeliqo-color-canvas']!);
+    const background = luminance(tokens['--varendo-color-canvas']!);
     const colors = Object.entries(tokens)
       .filter(([key]) => /visualization-(series\d|quantitative-)/.test(key))
       .map(([, color]) => color);
     expect(colors).toHaveLength(8);
-    const start = tokens['--aeliqo-visualization-quantitative-start']!;
-    const end = tokens['--aeliqo-visualization-quantitative-end']!;
+    const start = tokens['--varendo-visualization-quantitative-start']!;
+    const end = tokens['--varendo-visualization-quantitative-end']!;
     for (let step = 0; step <= 100; step++) {
       colors.push(
         '#' +
@@ -48,6 +48,6 @@ for (const [theme, tokens] of [
 it('quantitative colors clamp ratios and share theme endpoints', () => {
   expect(quantitativeColor(-1)).toBe(quantitativeColor(0));
   expect(quantitativeColor(2)).toBe(quantitativeColor(1));
-  expect(quantitativeColor(0.5)).toContain('--aeliqo-visualization-quantitative-start');
+  expect(quantitativeColor(0.5)).toContain('--varendo-visualization-quantitative-start');
   expect(quantitativeColor(0.5)).toContain('50%');
 });

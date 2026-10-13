@@ -2,76 +2,76 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import {
-  AELIQO_INPUT_MANIFESTS,
-  AELIQO_INPUT_REFS,
-  getAeliqoInputManifest,
+  VARENDO_INPUT_MANIFESTS,
+  VARENDO_INPUT_REFS,
+  getVarendoInputManifest,
 } from '../../packages/web/src/input/manifest.js';
-import { AeliqoCheckboxElement } from '../../packages/web/src/input/checkbox.js';
-import { AeliqoComboboxElement } from '../../packages/web/src/input/combobox.js';
-import { AeliqoDateFieldElement } from '../../packages/web/src/input/date-field.js';
-import { AeliqoDateRangeElement } from '../../packages/web/src/input/date-range.js';
-import { AeliqoFieldGroupElement } from '../../packages/web/src/input/field-group.js';
-import { AeliqoFileInputElement } from '../../packages/web/src/input/file-input.js';
-import { AeliqoFormElement } from '../../packages/web/src/input/form.js';
-import { AeliqoNumberFieldElement } from '../../packages/web/src/input/number-field.js';
-import { AeliqoRadioGroupElement } from '../../packages/web/src/input/radio-group.js';
-import { AeliqoSearchFieldElement } from '../../packages/web/src/input/search-field.js';
-import { AeliqoSelectElement } from '../../packages/web/src/input/select.js';
-import { AeliqoSliderElement } from '../../packages/web/src/input/slider.js';
-import { AeliqoSwitchElement } from '../../packages/web/src/input/switch.js';
-import { AeliqoTextAreaElement } from '../../packages/web/src/input/text-area.js';
-import { AeliqoTextFieldElement } from '../../packages/web/src/input/text-field.js';
+import { VarendoCheckboxElement } from '../../packages/web/src/input/checkbox.js';
+import { VarendoComboboxElement } from '../../packages/web/src/input/combobox.js';
+import { VarendoDateFieldElement } from '../../packages/web/src/input/date-field.js';
+import { VarendoDateRangeElement } from '../../packages/web/src/input/date-range.js';
+import { VarendoFieldGroupElement } from '../../packages/web/src/input/field-group.js';
+import { VarendoFileInputElement } from '../../packages/web/src/input/file-input.js';
+import { VarendoFormElement } from '../../packages/web/src/input/form.js';
+import { VarendoNumberFieldElement } from '../../packages/web/src/input/number-field.js';
+import { VarendoRadioGroupElement } from '../../packages/web/src/input/radio-group.js';
+import { VarendoSearchFieldElement } from '../../packages/web/src/input/search-field.js';
+import { VarendoSelectElement } from '../../packages/web/src/input/select.js';
+import { VarendoSliderElement } from '../../packages/web/src/input/slider.js';
+import { VarendoSwitchElement } from '../../packages/web/src/input/switch.js';
+import { VarendoTextAreaElement } from '../../packages/web/src/input/text-area.js';
+import { VarendoTextFieldElement } from '../../packages/web/src/input/text-field.js';
 import { dateOnly, formatLocalizedDecimal, parseLocalizedDecimal } from '../../packages/web/src/input/locale.js';
 
 describe('input primitive manifests', () => {
   it('exposes all 15 required entries and browser-free constructors', () => {
-    expect(AELIQO_INPUT_MANIFESTS).toHaveLength(15);
-    expect(new Set(AELIQO_INPUT_MANIFESTS.map((manifest) => manifest.ref.id)).size).toBe(15);
-    expect(AELIQO_INPUT_MANIFESTS.map((manifest) => manifest.tagName)).toEqual([
-      'aeliqo-text-field',
-      'aeliqo-text-area',
-      'aeliqo-number-field',
-      'aeliqo-checkbox',
-      'aeliqo-radio-group',
-      'aeliqo-switch',
-      'aeliqo-select',
-      'aeliqo-combobox',
-      'aeliqo-date-field',
-      'aeliqo-date-range',
-      'aeliqo-slider',
-      'aeliqo-search-field',
-      'aeliqo-file-input',
-      'aeliqo-field-group',
-      'aeliqo-form',
+    expect(VARENDO_INPUT_MANIFESTS).toHaveLength(15);
+    expect(new Set(VARENDO_INPUT_MANIFESTS.map((manifest) => manifest.ref.id)).size).toBe(15);
+    expect(VARENDO_INPUT_MANIFESTS.map((manifest) => manifest.tagName)).toEqual([
+      'varendo-text-field',
+      'varendo-text-area',
+      'varendo-number-field',
+      'varendo-checkbox',
+      'varendo-radio-group',
+      'varendo-switch',
+      'varendo-select',
+      'varendo-combobox',
+      'varendo-date-field',
+      'varendo-date-range',
+      'varendo-slider',
+      'varendo-search-field',
+      'varendo-file-input',
+      'varendo-field-group',
+      'varendo-form',
     ]);
     expect([
-      AeliqoTextFieldElement,
-      AeliqoTextAreaElement,
-      AeliqoNumberFieldElement,
-      AeliqoCheckboxElement,
-      AeliqoRadioGroupElement,
-      AeliqoSwitchElement,
-      AeliqoSelectElement,
-      AeliqoComboboxElement,
-      AeliqoDateFieldElement,
-      AeliqoDateRangeElement,
-      AeliqoSliderElement,
-      AeliqoSearchFieldElement,
-      AeliqoFileInputElement,
-      AeliqoFieldGroupElement,
-      AeliqoFormElement,
+      VarendoTextFieldElement,
+      VarendoTextAreaElement,
+      VarendoNumberFieldElement,
+      VarendoCheckboxElement,
+      VarendoRadioGroupElement,
+      VarendoSwitchElement,
+      VarendoSelectElement,
+      VarendoComboboxElement,
+      VarendoDateFieldElement,
+      VarendoDateRangeElement,
+      VarendoSliderElement,
+      VarendoSearchFieldElement,
+      VarendoFileInputElement,
+      VarendoFieldGroupElement,
+      VarendoFormElement,
     ]).toHaveLength(15);
     expect(globalThis.window).toBeUndefined();
     expect(globalThis.document).toBeUndefined();
   });
 
   it('rejects unknown executable fields and freezes accepted configuration', () => {
-    const text = getAeliqoInputManifest(AELIQO_INPUT_REFS.textField.id)!;
+    const text = getVarendoInputManifest(VARENDO_INPUT_REFS.textField.id)!;
     expect(text.resolveConfig({ label: 'Name', value: 'Ada', onInput: 'alert(1)' })).toMatchObject({ ok: false });
     const accepted = text.resolveConfig({ label: 'Name', value: 'Ada' });
     expect(accepted.ok).toBe(true);
     if (accepted.ok) expect(Object.isFrozen(accepted.value.values)).toBe(true);
-    const dateRange = getAeliqoInputManifest(AELIQO_INPUT_REFS.dateRange.id)!;
+    const dateRange = getVarendoInputManifest(VARENDO_INPUT_REFS.dateRange.id)!;
     expect(
       dateRange.resolveConfig({ start: '2026-01-01', end: '2026-01-03', boundary: 'exclusive', timezone: 'local' }),
     ).toMatchObject({ ok: false });

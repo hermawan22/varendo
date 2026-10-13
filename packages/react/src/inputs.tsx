@@ -1,183 +1,183 @@
 import React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import {
-  AeliqoTextFieldElement,
-  AeliqoTextAreaElement,
-  AeliqoNumberFieldElement,
-  AeliqoCheckboxElement,
-  AeliqoRadioGroupElement,
-  AeliqoSwitchElement,
-  AeliqoSelectElement,
-  AeliqoComboboxElement,
-  AeliqoDateFieldElement,
-  AeliqoDateRangeElement,
-  AeliqoSliderElement,
-  AeliqoSearchFieldElement,
-  AeliqoFileInputElement,
-  AeliqoFieldGroupElement,
-  AeliqoFormElement,
-  type AeliqoComboboxQueryEvent,
-  type AeliqoInputChangeEvent,
-  type AeliqoInputCommitEvent,
-  type AeliqoValidationEvent,
-  type AeliqoSearchEvent,
-  type AeliqoFileChangeEvent,
-  type AeliqoFormSubmitEvent,
-  type AeliqoFormResetEvent,
-  type AeliqoNumberChange,
-  type AeliqoDateRangeValue,
-  type AeliqoSliderValue,
+  VarendoTextFieldElement,
+  VarendoTextAreaElement,
+  VarendoNumberFieldElement,
+  VarendoCheckboxElement,
+  VarendoRadioGroupElement,
+  VarendoSwitchElement,
+  VarendoSelectElement,
+  VarendoComboboxElement,
+  VarendoDateFieldElement,
+  VarendoDateRangeElement,
+  VarendoSliderElement,
+  VarendoSearchFieldElement,
+  VarendoFileInputElement,
+  VarendoFieldGroupElement,
+  VarendoFormElement,
+  type VarendoComboboxQueryEvent,
+  type VarendoInputChangeEvent,
+  type VarendoInputCommitEvent,
+  type VarendoValidationEvent,
+  type VarendoSearchEvent,
+  type VarendoFileChangeEvent,
+  type VarendoFormSubmitEvent,
+  type VarendoFormResetEvent,
+  type VarendoNumberChange,
+  type VarendoDateRangeValue,
+  type VarendoSliderValue,
 } from '@varendo/web/inputs';
 
-export const AeliqoTextField = createComponent({
+export const VarendoTextField = createComponent({
   react: React,
-  tagName: 'aeliqo-text-field',
-  elementClass: AeliqoTextFieldElement,
+  tagName: 'varendo-text-field',
+  elementClass: VarendoTextFieldElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<string>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
-    onValueCommit: 'aeliqo-input-commit' as EventName<AeliqoInputCommitEvent<string>>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<string>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
+    onValueCommit: 'varendo-input-commit' as EventName<VarendoInputCommitEvent<string>>,
   },
-  displayName: 'AeliqoTextField',
+  displayName: 'VarendoTextField',
 });
-export const AeliqoTextArea = createComponent({
+export const VarendoTextArea = createComponent({
   react: React,
-  tagName: 'aeliqo-text-area',
-  elementClass: AeliqoTextAreaElement,
+  tagName: 'varendo-text-area',
+  elementClass: VarendoTextAreaElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<string>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
-    onValueCommit: 'aeliqo-input-commit' as EventName<AeliqoInputCommitEvent<string>>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<string>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
+    onValueCommit: 'varendo-input-commit' as EventName<VarendoInputCommitEvent<string>>,
   },
-  displayName: 'AeliqoTextArea',
+  displayName: 'VarendoTextArea',
 });
-export const AeliqoNumberField = createComponent({
+export const VarendoNumberField = createComponent({
   react: React,
-  tagName: 'aeliqo-number-field',
-  elementClass: AeliqoNumberFieldElement,
+  tagName: 'varendo-number-field',
+  elementClass: VarendoNumberFieldElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<AeliqoNumberChange>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
-    onValueCommit: 'aeliqo-input-commit' as EventName<AeliqoInputCommitEvent<AeliqoNumberChange>>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<VarendoNumberChange>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
+    onValueCommit: 'varendo-input-commit' as EventName<VarendoInputCommitEvent<VarendoNumberChange>>,
   },
-  displayName: 'AeliqoNumberField',
+  displayName: 'VarendoNumberField',
 });
-export const AeliqoCheckbox = createComponent({
+export const VarendoCheckbox = createComponent({
   react: React,
-  tagName: 'aeliqo-checkbox',
-  elementClass: AeliqoCheckboxElement,
+  tagName: 'varendo-checkbox',
+  elementClass: VarendoCheckboxElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<boolean>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<boolean>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
   },
-  displayName: 'AeliqoCheckbox',
+  displayName: 'VarendoCheckbox',
 });
-export const AeliqoRadioGroup = createComponent({
+export const VarendoRadioGroup = createComponent({
   react: React,
-  tagName: 'aeliqo-radio-group',
-  elementClass: AeliqoRadioGroupElement,
+  tagName: 'varendo-radio-group',
+  elementClass: VarendoRadioGroupElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<string>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<string>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
   },
-  displayName: 'AeliqoRadioGroup',
+  displayName: 'VarendoRadioGroup',
 });
-export const AeliqoSwitch = createComponent({
+export const VarendoSwitch = createComponent({
   react: React,
-  tagName: 'aeliqo-switch',
-  elementClass: AeliqoSwitchElement,
+  tagName: 'varendo-switch',
+  elementClass: VarendoSwitchElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<boolean>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<boolean>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
   },
-  displayName: 'AeliqoSwitch',
+  displayName: 'VarendoSwitch',
 });
-export const AeliqoSelect = createComponent({
+export const VarendoSelect = createComponent({
   react: React,
-  tagName: 'aeliqo-select',
-  elementClass: AeliqoSelectElement,
+  tagName: 'varendo-select',
+  elementClass: VarendoSelectElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<string>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<string>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
   },
-  displayName: 'AeliqoSelect',
+  displayName: 'VarendoSelect',
 });
-export const AeliqoCombobox = createComponent({
+export const VarendoCombobox = createComponent({
   react: React,
-  tagName: 'aeliqo-combobox',
-  elementClass: AeliqoComboboxElement,
+  tagName: 'varendo-combobox',
+  elementClass: VarendoComboboxElement,
   events: {
-    onQueryChange: 'aeliqo-combobox-query' as EventName<AeliqoComboboxQueryEvent>,
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<string>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
+    onQueryChange: 'varendo-combobox-query' as EventName<VarendoComboboxQueryEvent>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<string>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
   },
-  displayName: 'AeliqoCombobox',
+  displayName: 'VarendoCombobox',
 });
-export const AeliqoDateField = createComponent({
+export const VarendoDateField = createComponent({
   react: React,
-  tagName: 'aeliqo-date-field',
-  elementClass: AeliqoDateFieldElement,
+  tagName: 'varendo-date-field',
+  elementClass: VarendoDateFieldElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<string>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
-    onValueCommit: 'aeliqo-input-commit' as EventName<AeliqoInputCommitEvent<string>>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<string>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
+    onValueCommit: 'varendo-input-commit' as EventName<VarendoInputCommitEvent<string>>,
   },
-  displayName: 'AeliqoDateField',
+  displayName: 'VarendoDateField',
 });
-export const AeliqoDateRange = createComponent({
+export const VarendoDateRange = createComponent({
   react: React,
-  tagName: 'aeliqo-date-range',
-  elementClass: AeliqoDateRangeElement,
+  tagName: 'varendo-date-range',
+  elementClass: VarendoDateRangeElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<AeliqoDateRangeValue>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
-    onValueCommit: 'aeliqo-input-commit' as EventName<AeliqoInputCommitEvent<AeliqoDateRangeValue>>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<VarendoDateRangeValue>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
+    onValueCommit: 'varendo-input-commit' as EventName<VarendoInputCommitEvent<VarendoDateRangeValue>>,
   },
-  displayName: 'AeliqoDateRange',
+  displayName: 'VarendoDateRange',
 });
-export const AeliqoSlider = createComponent({
+export const VarendoSlider = createComponent({
   react: React,
-  tagName: 'aeliqo-slider',
-  elementClass: AeliqoSliderElement,
+  tagName: 'varendo-slider',
+  elementClass: VarendoSliderElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<AeliqoSliderValue>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
-    onValueCommit: 'aeliqo-input-commit' as EventName<AeliqoInputCommitEvent<AeliqoSliderValue>>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<VarendoSliderValue>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
+    onValueCommit: 'varendo-input-commit' as EventName<VarendoInputCommitEvent<VarendoSliderValue>>,
   },
-  displayName: 'AeliqoSlider',
+  displayName: 'VarendoSlider',
 });
-export const AeliqoSearchField = createComponent({
+export const VarendoSearchField = createComponent({
   react: React,
-  tagName: 'aeliqo-search-field',
-  elementClass: AeliqoSearchFieldElement,
+  tagName: 'varendo-search-field',
+  elementClass: VarendoSearchFieldElement,
   events: {
-    onValueChange: 'aeliqo-input-change' as EventName<AeliqoInputChangeEvent<string>>,
-    onValidation: 'aeliqo-validation' as EventName<AeliqoValidationEvent>,
-    onValueCommit: 'aeliqo-input-commit' as EventName<AeliqoInputCommitEvent<string>>,
-    onSearch: 'aeliqo-search' as EventName<AeliqoSearchEvent>,
+    onValueChange: 'varendo-input-change' as EventName<VarendoInputChangeEvent<string>>,
+    onValidation: 'varendo-validation' as EventName<VarendoValidationEvent>,
+    onValueCommit: 'varendo-input-commit' as EventName<VarendoInputCommitEvent<string>>,
+    onSearch: 'varendo-search' as EventName<VarendoSearchEvent>,
   },
-  displayName: 'AeliqoSearchField',
+  displayName: 'VarendoSearchField',
 });
-export const AeliqoFileInput = createComponent({
+export const VarendoFileInput = createComponent({
   react: React,
-  tagName: 'aeliqo-file-input',
-  elementClass: AeliqoFileInputElement,
-  events: { onFilesChange: 'aeliqo-file-change' as EventName<AeliqoFileChangeEvent> },
-  displayName: 'AeliqoFileInput',
+  tagName: 'varendo-file-input',
+  elementClass: VarendoFileInputElement,
+  events: { onFilesChange: 'varendo-file-change' as EventName<VarendoFileChangeEvent> },
+  displayName: 'VarendoFileInput',
 });
-export const AeliqoFieldGroup = createComponent({
+export const VarendoFieldGroup = createComponent({
   react: React,
-  tagName: 'aeliqo-field-group',
-  elementClass: AeliqoFieldGroupElement,
-  displayName: 'AeliqoFieldGroup',
+  tagName: 'varendo-field-group',
+  elementClass: VarendoFieldGroupElement,
+  displayName: 'VarendoFieldGroup',
 });
-export const AeliqoForm = createComponent({
+export const VarendoForm = createComponent({
   react: React,
-  tagName: 'aeliqo-form',
-  elementClass: AeliqoFormElement,
+  tagName: 'varendo-form',
+  elementClass: VarendoFormElement,
   events: {
-    onSubmit: 'aeliqo-form-submit' as EventName<AeliqoFormSubmitEvent>,
-    onReset: 'aeliqo-form-reset' as EventName<AeliqoFormResetEvent>,
+    onSubmit: 'varendo-form-submit' as EventName<VarendoFormSubmitEvent>,
+    onReset: 'varendo-form-reset' as EventName<VarendoFormResetEvent>,
   },
-  displayName: 'AeliqoForm',
+  displayName: 'VarendoForm',
 });

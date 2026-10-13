@@ -9,7 +9,7 @@ const root = resolve(import.meta.dirname, '../..');
 const helper = resolve(root, 'scripts/reuse-build.mjs');
 
 async function fixture() {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-build-reuse-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-build-reuse-'));
   const command = join(directory, 'build.mjs');
   await writeFile(
     command,
@@ -27,7 +27,7 @@ async function fixture() {
 
 function run(directory, command, environment = {}) {
   const childEnvironment = { ...process.env };
-  delete childEnvironment.AELIQO_BUILD_REUSE_DIRECTORY;
+  delete childEnvironment.VARENDO_BUILD_REUSE_DIRECTORY;
   delete childEnvironment.FAIL_BUILD;
   return spawnSync(process.execPath, [helper, 'fixture', 'dist', '--', process.execPath, command], {
     cwd: directory,
@@ -49,9 +49,9 @@ test('standalone package builds always execute', async () => {
 
 test('one quality invocation reuses a successful build with complete outputs', async () => {
   const { directory, command } = await fixture();
-  const reuse = await mkdtemp(join(tmpdir(), 'aeliqo-build-markers-'));
+  const reuse = await mkdtemp(join(tmpdir(), 'varendo-build-markers-'));
   try {
-    const environment = { AELIQO_BUILD_REUSE_DIRECTORY: reuse };
+    const environment = { VARENDO_BUILD_REUSE_DIRECTORY: reuse };
     assert.equal(run(directory, command, environment).status, 0);
     const second = run(directory, command, environment);
     assert.equal(second.status, 0, second.stderr);
@@ -65,10 +65,10 @@ test('one quality invocation reuses a successful build with complete outputs', a
 
 test('a failed build is not marked reusable', async () => {
   const { directory, command } = await fixture();
-  const reuse = await mkdtemp(join(tmpdir(), 'aeliqo-build-markers-'));
+  const reuse = await mkdtemp(join(tmpdir(), 'varendo-build-markers-'));
   try {
-    assert.equal(run(directory, command, { AELIQO_BUILD_REUSE_DIRECTORY: reuse, FAIL_BUILD: '1' }).status, 7);
-    assert.equal(run(directory, command, { AELIQO_BUILD_REUSE_DIRECTORY: reuse }).status, 0);
+    assert.equal(run(directory, command, { VARENDO_BUILD_REUSE_DIRECTORY: reuse, FAIL_BUILD: '1' }).status, 7);
+    assert.equal(run(directory, command, { VARENDO_BUILD_REUSE_DIRECTORY: reuse }).status, 0);
     assert.equal(await readFile(join(directory, 'count'), 'utf8'), '2');
   } finally {
     await rm(directory, { recursive: true, force: true });
@@ -78,9 +78,9 @@ test('a failed build is not marked reusable', async () => {
 
 test('a missing recorded output invalidates the marker', async () => {
   const { directory, command } = await fixture();
-  const reuse = await mkdtemp(join(tmpdir(), 'aeliqo-build-markers-'));
+  const reuse = await mkdtemp(join(tmpdir(), 'varendo-build-markers-'));
   try {
-    const environment = { AELIQO_BUILD_REUSE_DIRECTORY: reuse };
+    const environment = { VARENDO_BUILD_REUSE_DIRECTORY: reuse };
     assert.equal(run(directory, command, environment).status, 0);
     await unlink(join(directory, 'dist/index.js'));
     assert.equal(run(directory, command, environment).status, 0);
@@ -94,9 +94,9 @@ test('a missing recorded output invalidates the marker', async () => {
 
 test('same-name output corruption invalidates the marker', async () => {
   const { directory, command } = await fixture();
-  const reuse = await mkdtemp(join(tmpdir(), 'aeliqo-build-markers-'));
+  const reuse = await mkdtemp(join(tmpdir(), 'varendo-build-markers-'));
   try {
-    const environment = { AELIQO_BUILD_REUSE_DIRECTORY: reuse };
+    const environment = { VARENDO_BUILD_REUSE_DIRECTORY: reuse };
     assert.equal(run(directory, command, environment).status, 0);
     await writeFile(join(directory, 'dist/index.js'), 'corrupt\n');
     assert.equal(run(directory, command, environment).status, 0);
@@ -110,9 +110,9 @@ test('same-name output corruption invalidates the marker', async () => {
 
 test('a failed rebuild cannot leave an earlier marker reusable', async () => {
   const { directory, command } = await fixture();
-  const reuse = await mkdtemp(join(tmpdir(), 'aeliqo-build-markers-'));
+  const reuse = await mkdtemp(join(tmpdir(), 'varendo-build-markers-'));
   try {
-    const environment = { AELIQO_BUILD_REUSE_DIRECTORY: reuse };
+    const environment = { VARENDO_BUILD_REUSE_DIRECTORY: reuse };
     assert.equal(run(directory, command, environment).status, 0);
     await unlink(join(directory, 'dist/index.js'));
     assert.equal(run(directory, command, { ...environment, FAIL_BUILD: '1' }).status, 7);

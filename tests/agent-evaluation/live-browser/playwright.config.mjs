@@ -5,7 +5,7 @@ import { testPort } from '../../shared/port.mjs';
 
 const directory = dirname(fileURLToPath(import.meta.url));
 const root = resolve(directory, '../../..');
-const port = await testPort('AELIQO_AGENT_LIVE_BROWSER_PORT');
+const port = await testPort('VARENDO_AGENT_LIVE_BROWSER_PORT');
 const origin = `http://127.0.0.1:${port}`;
 
 export default defineConfig({

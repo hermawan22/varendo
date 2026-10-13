@@ -3,21 +3,21 @@ import AxeBuilder from '@axe-core/playwright';
 import { REVIEW_VARIANTS, reviewColorScheme, reviewViewport, type ReviewVariant } from './review-variants.js';
 
 const compoundEventTypes = [
-  'aeliqo-explorer-filter',
-  'aeliqo-explorer-selection',
-  'aeliqo-comparison-set',
-  'aeliqo-breakdown-group',
-  'aeliqo-visualization-select',
-  'aeliqo-search-results-selection',
-  'aeliqo-record-editor-save',
-  'aeliqo-record-editor-cancel',
-  'aeliqo-form-flow-step',
-  'aeliqo-form-flow-commit',
+  'varendo-explorer-filter',
+  'varendo-explorer-selection',
+  'varendo-comparison-set',
+  'varendo-breakdown-group',
+  'varendo-visualization-select',
+  'varendo-search-results-selection',
+  'varendo-record-editor-save',
+  'varendo-record-editor-cancel',
+  'varendo-form-flow-step',
+  'varendo-form-flow-commit',
 ] as const;
 
 type EventDetail = Record<string, unknown>;
 type ReviewEvent = { readonly type: string; readonly detail: EventDetail | null };
-type ReviewWindow = Window & { aeliqoReviewReady?: boolean; compoundInteractionEvents?: readonly ReviewEvent[] };
+type ReviewWindow = Window & { varendoReviewReady?: boolean; compoundInteractionEvents?: readonly ReviewEvent[] };
 
 type ReviewSession = {
   readonly errors: string[];
@@ -28,8 +28,8 @@ type ReviewSession = {
 
 async function settleCompound(page: Page, id: string): Promise<void> {
   await page.evaluate(async (componentId) => {
-    const host = document.querySelector<HTMLElement>(`#fixture aeliqo-${componentId}`);
-    if (host === null) throw new Error(`Missing compound fixture aeliqo-${componentId}`);
+    const host = document.querySelector<HTMLElement>(`#fixture varendo-${componentId}`);
+    if (host === null) throw new Error(`Missing compound fixture varendo-${componentId}`);
     for (let pass = 0; pass < 4; pass += 1) {
       const pending: Promise<unknown>[] = [];
       const roots: (Element | ShadowRoot)[] = [host];
@@ -57,8 +57,8 @@ async function openCompound(page: Page, id: string, variant: ReviewVariant): Pro
   await page.setViewportSize(reviewViewport(variant));
   await page.emulateMedia({ colorScheme: reviewColorScheme(variant), reducedMotion: 'reduce' });
   await page.goto(`/tests/visual/index.html?component=${id}&variant=${variant}`);
-  await page.waitForFunction(() => Boolean((window as ReviewWindow).aeliqoReviewReady));
-  const host = page.locator(`#fixture aeliqo-${id}`).first();
+  await page.waitForFunction(() => Boolean((window as ReviewWindow).varendoReviewReady));
+  const host = page.locator(`#fixture varendo-${id}`).first();
   await expect(host).toBeAttached();
   await page.evaluate((types) => {
     const events: ReviewEvent[] = [];
@@ -140,7 +140,7 @@ for (const variant of REVIEW_VARIANTS) {
   test.describe(variant, () => {
     test('explorer commits an authorized filter and stable identity selection', async ({ page }, info) => {
       const session = await openCompound(page, 'explorer', variant);
-      const filter = session.host.locator('aeliqo-filter-builder');
+      const filter = session.host.locator('varendo-filter-builder');
       if ((await filter.locator('[part=clause]').count()) === 0) {
         await filter.getByRole('button', { name: 'Add condition', exact: true }).click();
       }
@@ -149,7 +149,7 @@ for (const variant of REVIEW_VARIANTS) {
       await condition.locator('[part=value]').fill('Ada');
       await filter.locator('[part=apply]').click();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-explorer-filter'))
+        .poll(() => lastEvent(page, 'varendo-explorer-filter'))
         .toMatchObject({
           predicate: { op: 'compare', entity: 'person', field: 'name', comparison: 'eq', value: 'Ada' },
           applied: true,
@@ -157,12 +157,12 @@ for (const variant of REVIEW_VARIANTS) {
 
       await session.host.getByRole('button', { name: 'Select person lin', exact: true }).click();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-explorer-selection'))
+        .poll(() => lastEvent(page, 'varendo-explorer-selection'))
         .toMatchObject({
           mode: 'ids',
           entity: 'person',
           keys: ['string:3:lin'],
-          result: { id: 'aeliqo-catalog-example', outputId: 'people' },
+          result: { id: 'varendo-catalog-example', outputId: 'people' },
           scope: { populationDigest: 'catalog-scope' },
         });
       await capture(session, page, info, 'explorer-interaction');
@@ -172,12 +172,12 @@ for (const variant of REVIEW_VARIANTS) {
       const session = await openCompound(page, 'comparison', variant);
       await session.host.getByRole('button', { name: 'Ada', exact: true }).click();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-comparison-set'))
+        .poll(() => lastEvent(page, 'varendo-comparison-set'))
         .toMatchObject({
           source: 'user',
           entity: 'person',
           keys: ['grace'],
-          result: { id: 'aeliqo-catalog-example' },
+          result: { id: 'varendo-catalog-example' },
           scope: { label: 'Authorized people' },
         });
 
@@ -188,21 +188,21 @@ for (const variant of REVIEW_VARIANTS) {
 
       await setHostProperty(session.host, 'compatible', true);
       await session.host.getByRole('button', { name: 'Grace', exact: true }).click();
-      await expect.poll(() => lastEvent(page, 'aeliqo-comparison-set')).toMatchObject({ keys: ['ada'] });
+      await expect.poll(() => lastEvent(page, 'varendo-comparison-set')).toMatchObject({ keys: ['ada'] });
       await capture(session, page, info, 'comparison-interaction');
     });
 
     test('breakdown emits the selected group identity without deriving a metric', async ({ page }, info) => {
       const session = await openCompound(page, 'breakdown', variant);
-      const table = session.host.locator('aeliqo-table');
+      const table = session.host.locator('varendo-table');
       await table.locator('input[type="radio"]').first().check();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-breakdown-group'))
+        .poll(() => lastEvent(page, 'varendo-breakdown-group'))
         .toMatchObject({
           source: 'user',
           entity: 'person',
           key: 'research',
-          result: { id: 'aeliqo-catalog-example' },
+          result: { id: 'varendo-catalog-example' },
           scope: { label: 'Authorized people' },
         });
 
@@ -213,23 +213,23 @@ for (const variant of REVIEW_VARIANTS) {
 
     test('investigation forwards evidence selection with result lineage', async ({ page }, info) => {
       const session = await openCompound(page, 'investigation', variant);
-      const trend = session.host.locator('aeliqo-trend');
+      const trend = session.host.locator('varendo-trend');
       await trend.getByText('View data table', { exact: true }).click();
       await expect(trend.locator('[part="data"] button').first()).toBeVisible();
       const select = trend.locator('[part="data"] button').first();
       await select.click();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-visualization-select'))
+        .poll(() => lastEvent(page, 'varendo-visualization-select'))
         .toMatchObject({
           source: 'user',
           identity: JSON.stringify([JSON.stringify(['text', 'ada'])]),
-          result: { id: 'aeliqo-catalog-example', outputId: 'people' },
+          result: { id: 'varendo-catalog-example', outputId: 'people' },
         });
       await expect(select).toHaveAttribute('aria-pressed', 'true');
       await select.focus();
       await select.press('Enter');
       await expect(select).toBeFocused();
-      expect(await eventCount(page, 'aeliqo-visualization-select')).toBe(2);
+      expect(await eventCount(page, 'varendo-visualization-select')).toBe(2);
       await expect(session.host.locator('[part="caution"]')).toContainText('do not establish causal claims');
       await capture(session, page, info, 'investigation-selection');
     });
@@ -246,16 +246,16 @@ for (const variant of REVIEW_VARIANTS) {
         host.resultRevision = host.queryRevision;
         await host.updateComplete;
       });
-      await expect(session.host.locator('aeliqo-card-collection')).toBeAttached();
-      const selected = session.host.locator('aeliqo-card-collection [part="card-button"]').first();
+      await expect(session.host.locator('varendo-card-collection')).toBeAttached();
+      const selected = session.host.locator('varendo-card-collection [part="card-button"]').first();
       await selected.click();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-search-results-selection'))
+        .poll(() => lastEvent(page, 'varendo-search-results-selection'))
         .toMatchObject({
           mode: 'ids',
           entity: 'person',
           keys: ['string:3:ada'],
-          result: { id: 'aeliqo-catalog-example' },
+          result: { id: 'varendo-catalog-example' },
           scope: { label: 'Authorized people' },
         });
       // Capture selection independently of the pointer left by the click.
@@ -269,7 +269,7 @@ for (const variant of REVIEW_VARIANTS) {
     test('record editor keeps an IME draft and emits explicit save and cancel receipts', async ({ page }, info) => {
       const session = await openCompound(page, 'record-editor', variant);
       const editor = session.host;
-      const field = editor.locator('aeliqo-text-field');
+      const field = editor.locator('varendo-text-field');
       const input = field.locator('input[part="input"]');
       const save = editor.getByRole('button', { name: 'Save', exact: true });
       const cancel = editor.getByRole('button', { name: 'Cancel', exact: true });
@@ -325,7 +325,7 @@ for (const variant of REVIEW_VARIANTS) {
 
       await save.click();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-record-editor-save'))
+        .poll(() => lastEvent(page, 'varendo-record-editor-save'))
         .toMatchObject({
           source: 'user',
           entity: 'person',
@@ -335,7 +335,7 @@ for (const variant of REVIEW_VARIANTS) {
         });
       await cancel.click();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-record-editor-cancel'))
+        .poll(() => lastEvent(page, 'varendo-record-editor-cancel'))
         .toMatchObject({
           source: 'user',
           key: 'string:3:ada',
@@ -348,21 +348,21 @@ for (const variant of REVIEW_VARIANTS) {
     test('form flow validates before moving, preserves draft and focus, then commits', async ({ page }, info) => {
       const session = await openCompound(page, 'form-flow', variant);
       const flow = session.host;
-      const input = flow.locator('aeliqo-text-field').locator('input[part="input"]');
+      const input = flow.locator('varendo-text-field').locator('input[part="input"]');
       await flow.evaluate((element) => {
         const host = element as HTMLElement & { activeStep: string; addEventListener: HTMLElement['addEventListener'] };
-        host.addEventListener('aeliqo-form-flow-step', (raw) => {
+        host.addEventListener('varendo-form-flow-step', (raw) => {
           host.activeStep = (raw as CustomEvent<{ to: string }>).detail.to;
         });
       });
 
       await setHostProperty(flow, 'validation', { identity: 'Name is required.' });
       await expect(flow.locator('[part="status"][role="alert"]')).toHaveText('Name is required.');
-      const blockedSteps = await eventCount(page, 'aeliqo-form-flow-step');
+      const blockedSteps = await eventCount(page, 'varendo-form-flow-step');
       const next = flow.getByRole('button', { name: 'Next', exact: true });
       await expect(next).toBeEnabled();
       await next.click();
-      expect(await eventCount(page, 'aeliqo-form-flow-step')).toBe(blockedSteps);
+      expect(await eventCount(page, 'varendo-form-flow-step')).toBe(blockedSteps);
       await setHostProperty(flow, 'validation', {});
       await setHostProperty(flow, 'status', 'loading');
       await expect(flow.locator('[part="status"][role="status"]')).toContainText('Loading authorized data');
@@ -374,7 +374,7 @@ for (const variant of REVIEW_VARIANTS) {
       await expect(flow.locator('[part="step-panel"]')).toHaveAttribute('data-step', 'review');
       await expect(flow.locator('[part="step-panel"]')).toBeFocused();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-form-flow-step'))
+        .poll(() => lastEvent(page, 'varendo-form-flow-step'))
         .toMatchObject({
           source: 'user',
           from: 'identity',
@@ -385,7 +385,7 @@ for (const variant of REVIEW_VARIANTS) {
 
       await flow.getByRole('button', { name: 'Commit', exact: true }).click();
       await expect
-        .poll(() => lastEvent(page, 'aeliqo-form-flow-commit'))
+        .poll(() => lastEvent(page, 'varendo-form-flow-commit'))
         .toMatchObject({
           source: 'user',
           step: 'review',

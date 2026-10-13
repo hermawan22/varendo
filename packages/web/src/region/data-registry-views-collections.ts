@@ -1,11 +1,11 @@
 import type { Outcome } from '@varendo/core';
 import type { InteractionPort } from '@varendo/core/interaction';
-import type { AeliqoDataColumn, AeliqoFilterPredicate } from '../data/index.js';
+import type { VarendoDataColumn, VarendoFilterPredicate } from '../data/index.js';
 import { scopeText } from '../data/shared.js';
 import type {
-  AeliqoDataRegistryOptions,
-  AeliqoDataResolvedConfig,
-  AeliqoValidatedBinding,
+  VarendoDataRegistryOptions,
+  VarendoDataResolvedConfig,
+  VarendoValidatedBinding,
 } from './data-registry-types.js';
 import { columns } from './data-registry-columns.js';
 import { filterPredicate, isEditableFilterPredicate } from './data-registry-filters.js';
@@ -36,7 +36,7 @@ function validatePageOption(input: Readonly<Record<string, unknown>>): Outcome<v
   return { ok: true, value: undefined };
 }
 
-function validateHeadingKey(input: Readonly<Record<string, unknown>>, binding: AeliqoValidatedBinding): Outcome<void> {
+function validateHeadingKey(input: Readonly<Record<string, unknown>>, binding: VarendoValidatedBinding): Outcome<void> {
   if (input.headingKey === undefined) return { ok: true, value: undefined };
   const heading = boundedText(input.headingKey, 'headingKey');
   if (!heading.ok) return heading;
@@ -64,7 +64,7 @@ function validateTableOptions(input: Readonly<Record<string, unknown>>): Outcome
 
 function validateCollectionOptions(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
+  binding: VarendoValidatedBinding,
   kind: CollectionKind,
 ): Outcome<void> {
   if (!allowedKeys(input, collectionKeys(kind))) {
@@ -79,10 +79,10 @@ function validateCollectionOptions(
 
 export function resolveCollection(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
-  options: AeliqoDataRegistryOptions,
+  binding: VarendoValidatedBinding,
+  options: VarendoDataRegistryOptions,
   kind: CollectionKind,
-): Outcome<AeliqoDataResolvedConfig> {
+): Outcome<VarendoDataResolvedConfig> {
   const optionsCheck = validateCollectionOptions(input, binding, kind);
   if (!optionsCheck.ok) return optionsCheck;
   const identity = identityFields(input, binding.result);
@@ -110,7 +110,7 @@ export function resolveCollection(
 
 function filterFields(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
+  binding: VarendoValidatedBinding,
 ): Outcome<readonly string[]> {
   if (input.field !== undefined && input.fields !== undefined) {
     return failure('config', 'FilterBuilder must use either field or fields, not both.');
@@ -124,10 +124,10 @@ function filterFields(
 
 function parseFilterState(
   raw: unknown,
-  binding: AeliqoValidatedBinding,
+  binding: VarendoValidatedBinding,
   fields: readonly string[],
   initial: boolean,
-): Outcome<AeliqoFilterPredicate | undefined> {
+): Outcome<VarendoFilterPredicate | undefined> {
   if (raw === undefined) return { ok: true, value: undefined };
   const predicate = filterPredicate(raw, binding.result, fields);
   if (!predicate.ok) return predicate;
@@ -139,7 +139,7 @@ function parseFilterState(
 
 function authorizedScopeLabel(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
+  binding: VarendoValidatedBinding,
 ): Outcome<string> {
   const label = scopeText(binding.scope) ?? 'Current authorized scope';
   if (input.scopeLabel === undefined) return { ok: true, value: label };
@@ -149,7 +149,10 @@ function authorizedScopeLabel(
   return { ok: true, value: label };
 }
 
-function filterBuilderColumns(fields: readonly string[], binding: AeliqoValidatedBinding): readonly AeliqoDataColumn[] {
+function filterBuilderColumns(
+  fields: readonly string[],
+  binding: VarendoValidatedBinding,
+): readonly VarendoDataColumn[] {
   const descriptors = fieldMap(binding.result);
   return fields.map((id) => {
     const descriptor = descriptors.get(id)!;
@@ -159,8 +162,8 @@ function filterBuilderColumns(fields: readonly string[], binding: AeliqoValidate
 
 export function resolveFilterBuilder(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
-): Outcome<AeliqoDataResolvedConfig> {
+  binding: VarendoValidatedBinding,
+): Outcome<VarendoDataResolvedConfig> {
   if (!allowedKeys(input, ['field', 'fields', 'outputId', 'predicate', 'inherited', 'scopeLabel'])) {
     return failure('config', 'FilterBuilder configuration contains an unknown property.');
   }
@@ -207,8 +210,8 @@ function summarySelectionMode(input: Readonly<Record<string, unknown>>): Outcome
 function summaryPorts(
   mode: SelectionMode,
   identity: readonly string[],
-  binding: AeliqoValidatedBinding,
-  options: AeliqoDataRegistryOptions,
+  binding: VarendoValidatedBinding,
+  options: VarendoDataRegistryOptions,
 ): Outcome<readonly InteractionPort[]> {
   if (mode === 'none') return { ok: true, value: [] };
   return selectionPort(mode, binding.result, identity, options);
@@ -216,9 +219,9 @@ function summaryPorts(
 
 export function resolveSelectionSummary(
   input: Readonly<Record<string, unknown>>,
-  binding: AeliqoValidatedBinding,
-  options: AeliqoDataRegistryOptions,
-): Outcome<AeliqoDataResolvedConfig> {
+  binding: VarendoValidatedBinding,
+  options: VarendoDataRegistryOptions,
+): Outcome<VarendoDataResolvedConfig> {
   if (!allowedKeys(input, ['identity', 'entity', 'clearable', 'selection'])) {
     return failure('config', 'SelectionSummary configuration contains an unknown property.');
   }

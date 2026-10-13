@@ -1,11 +1,11 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoActionElement, type AeliqoActionType } from './action-base.js';
-import { aeliqoFoundationThemeStyles } from './base.js';
+import { VarendoActionElement, type VarendoActionType } from './action-base.js';
+import { varendoFoundationThemeStyles } from './base.js';
 
-export type AeliqoIconButtonSize = 'small' | 'medium' | 'large';
+export type VarendoIconButtonSize = 'small' | 'medium' | 'large';
 
 /** Compact native button whose accessible name is supplied independently of its icon slot. */
-export class AeliqoIconButtonElement extends AeliqoActionElement {
+export class VarendoIconButtonElement extends VarendoActionElement {
   static readonly properties = {
     disabled: { type: Boolean, reflect: true },
     pending: { type: Boolean, reflect: true },
@@ -17,8 +17,8 @@ export class AeliqoIconButtonElement extends AeliqoActionElement {
   };
 
   label = 'Action';
-  size: AeliqoIconButtonSize = 'medium';
-  override type: AeliqoActionType = 'button';
+  size: VarendoIconButtonSize = 'medium';
+  override type: VarendoActionType = 'button';
 
   protected override render() {
     const size = this.size === 'small' || this.size === 'large' ? this.size : 'medium';
@@ -41,7 +41,7 @@ export class AeliqoIconButtonElement extends AeliqoActionElement {
   }
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: inline-block;
@@ -50,23 +50,23 @@ export class AeliqoIconButtonElement extends AeliqoActionElement {
       button {
         align-items: center;
         background: transparent;
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid var(--aeliqo-color-border, #64748b);
+        border: var(--varendo-control-border-width, 0.0625rem) solid var(--varendo-color-border, #64748b);
         border-radius: 50%;
-        color: var(--aeliqo-color-text, #111827);
+        color: var(--varendo-color-text, #111827);
         cursor: pointer;
         display: inline-flex;
         font: inherit;
-        font-size: var(--aeliqo-typography-font-size-sm, 0.875rem);
-        inline-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
+        font-size: var(--varendo-typography-font-size-sm, 0.875rem);
+        inline-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
         justify-content: center;
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
-        padding: var(--aeliqo-space-8, 0.5rem);
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
+        padding: var(--varendo-space-8, 0.5rem);
       }
 
       button.size-small {
-        inline-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-compact-target, 2rem));
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-compact-target, 2rem));
-        padding: var(--aeliqo-space-4, 0.25rem);
+        inline-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-compact-target, 2rem));
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-compact-target, 2rem));
+        padding: var(--varendo-space-4, 0.25rem);
       }
 
       button.size-large {
@@ -75,7 +75,7 @@ export class AeliqoIconButtonElement extends AeliqoActionElement {
       }
 
       button:not(:disabled):hover {
-        background: var(--aeliqo-color-surface, #f8fafc);
+        background: var(--varendo-color-surface, #f8fafc);
       }
 
       button:disabled {
@@ -91,7 +91,7 @@ export class AeliqoIconButtonElement extends AeliqoActionElement {
       }
 
       [part='pending'] {
-        animation: aeliqo-icon-pending 0.9s linear infinite;
+        animation: varendo-icon-pending 0.9s linear infinite;
         block-size: 0.9em;
         border: 0.125rem solid currentColor;
         border-block-end-color: transparent;
@@ -100,7 +100,7 @@ export class AeliqoIconButtonElement extends AeliqoActionElement {
         position: absolute;
       }
 
-      @keyframes aeliqo-icon-pending {
+      @keyframes varendo-icon-pending {
         to {
           transform: rotate(360deg);
         }

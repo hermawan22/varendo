@@ -1,14 +1,14 @@
 import { css, html, LitElement, nothing } from 'lit';
-import { aeliqoThemeStyles } from '../styles/theme.js';
-import { AELIQO_WEB_VERSION } from '../version.js';
+import { varendoThemeStyles } from '../styles/theme.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
 import { safeResolvedHref } from '../foundation/base.js';
-import type { AeliqoDataScope, AeliqoDataStatus, AeliqoDataValue } from './types.js';
+import type { VarendoDataScope, VarendoDataStatus, VarendoDataValue } from './types.js';
 import { dataStyles, dataValueText, scopeText, statusTemplate } from './shared.js';
 
-export interface AeliqoKeyValueItem {
+export interface VarendoKeyValueItem {
   readonly key: string;
   readonly label: string;
-  readonly value?: AeliqoDataValue;
+  readonly value?: VarendoDataValue;
   readonly displayValue?: string;
   /** Application-resolved destination; unsafe protocols are rendered as text. */
   readonly href?: string;
@@ -16,8 +16,8 @@ export interface AeliqoKeyValueItem {
 }
 
 /** Ordered facts rendered with native definition-list semantics. */
-export class AeliqoKeyValueElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoKeyValueElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     items: { attribute: false },
     scope: { attribute: false },
@@ -25,9 +25,9 @@ export class AeliqoKeyValueElement extends LitElement {
     message: { type: String },
   };
 
-  items: readonly AeliqoKeyValueItem[] = [];
-  scope: AeliqoDataScope | undefined = undefined;
-  status: AeliqoDataStatus = 'ready';
+  items: readonly VarendoKeyValueItem[] = [];
+  scope: VarendoDataScope | undefined = undefined;
+  status: VarendoDataStatus = 'ready';
   message = '';
 
   protected override render() {
@@ -39,7 +39,7 @@ export class AeliqoKeyValueElement extends LitElement {
     `;
   }
 
-  private renderItem(item: AeliqoKeyValueItem) {
+  private renderItem(item: VarendoKeyValueItem) {
     const descriptionId = item.description ? `description-${item.key.replace(/[^a-zA-Z0-9_-]/gu, '-')}` : undefined;
     const text = item.displayValue ?? dataValueText(item.value);
     const href = safeResolvedHref(item.href);
@@ -55,12 +55,12 @@ export class AeliqoKeyValueElement extends LitElement {
   }
 
   static readonly styles = [
-    aeliqoThemeStyles,
+    varendoThemeStyles,
     dataStyles,
     css`
       dl {
         display: grid;
-        gap: var(--aeliqo-space-12, 0.75rem);
+        gap: var(--varendo-space-12, 0.75rem);
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
         margin: 0;
       }
@@ -68,22 +68,22 @@ export class AeliqoKeyValueElement extends LitElement {
         min-inline-size: 0;
       }
       dt {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
         overflow-wrap: anywhere;
       }
       dd {
-        margin: var(--aeliqo-space-4, 0.25rem) 0 0;
+        margin: var(--varendo-space-4, 0.25rem) 0 0;
         overflow-wrap: anywhere;
       }
       a {
-        color: var(--aeliqo-color-accent, #4338ca);
+        color: var(--varendo-color-accent, #4338ca);
       }
       [part='description'],
       [part='scope'] {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
-        margin-block-start: var(--aeliqo-space-4, 0.25rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
+        margin-block-start: var(--varendo-space-4, 0.25rem);
         overflow-wrap: anywhere;
       }
       [part='scope'] {

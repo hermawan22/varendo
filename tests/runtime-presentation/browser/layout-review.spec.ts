@@ -27,7 +27,7 @@ test('shared registered workspace and page retain bounded result ownership acros
       expect(snapshot.root).toBe(kind === 'page' ? 'page' : 'workspace');
       expect(snapshot.pins).toBe(3);
       expect(snapshot.outputIds).toEqual(['breakdown', 'summary', 'trend']);
-      await expect(page.locator('aeliqo-table')).toBeVisible();
+      await expect(page.locator('varendo-table')).toBeVisible();
       await expect(page.getByRole('heading', { name: 'Attendance overview' })).toHaveCount(kind === 'page' ? 1 : 0);
     }
   }
@@ -48,7 +48,7 @@ test('shared page wrapper preserves focused breakdown child instance', async ({ 
 test('shared page wrapper preserves keyboard focus on the metric control', async ({ page }) => {
   await page.goto('/tests/runtime-presentation/browser/layout-review.html');
   await expect(page.locator('#status')).toHaveText('renderer-ready');
-  const control = page.locator('aeliqo-metric [part="number"][tabindex="0"]');
+  const control = page.locator('varendo-metric [part="number"][tabindex="0"]');
   await control.focus();
   await expect(control).toBeFocused();
   const receipt = await page.evaluate(() => (window as Host).layoutFixture.render('page'));
@@ -84,7 +84,7 @@ test('retired node directives release and dispose clears all active owners', asy
   await page.evaluate(() => (window as Host).layoutFixture.render('page'));
   await page.evaluate(() => (window as Host).layoutFixture.dispose());
   expect((await page.evaluate(() => (window as Host).layoutFixture.lifecycle())).active).toBe(0);
-  await expect(page.locator('aeliqo-table')).toHaveCount(0);
+  await expect(page.locator('varendo-table')).toHaveCount(0);
 });
 
 test('revocation clears movable parts and active directive ownership', async ({ page }) => {
@@ -93,7 +93,7 @@ test('revocation clears movable parts and active directive ownership', async ({ 
   await page.evaluate(() => (window as Host).layoutFixture.render('page'));
   await page.evaluate(() => (window as Host).layoutFixture.revoke());
   expect((await page.evaluate(() => (window as Host).layoutFixture.lifecycle())).active).toBe(0);
-  await expect(page.locator('aeliqo-table')).toHaveCount(0);
+  await expect(page.locator('varendo-table')).toHaveCount(0);
 });
 
 test('same-layout interaction update keeps directive connections and child instances stable', async ({ page }) => {
@@ -140,7 +140,7 @@ test('stale publication completion cannot retire parts needed by a newer rollbac
   await page.goto('/tests/runtime-presentation/browser/layout-review.html');
   await expect(page.locator('#status')).toHaveText('renderer-ready');
   const restored = await page.evaluate(async () => {
-    const element = document.querySelector('aeliqo-region') as HTMLElement & {
+    const element = document.querySelector('varendo-region') as HTMLElement & {
       presentation: unknown;
       preparePublication(): { apply(): void; rollback(): void; complete(): void };
     };

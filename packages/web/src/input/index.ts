@@ -1,55 +1,55 @@
-export { AeliqoTextFieldElement } from './text-field.js';
-export { AeliqoTextAreaElement } from './text-area.js';
-export { AeliqoNumberFieldElement } from './number-field.js';
-export { AeliqoCheckboxElement } from './checkbox.js';
-export { AeliqoRadioGroupElement } from './radio-group.js';
-export { AeliqoSwitchElement } from './switch.js';
-export { AeliqoSelectElement } from './select.js';
-export { AeliqoComboboxElement } from './combobox.js';
-export { AeliqoDateFieldElement } from './date-field.js';
-export { AeliqoDateRangeElement } from './date-range.js';
-export { AeliqoSliderElement } from './slider.js';
-export { AeliqoSearchFieldElement } from './search-field.js';
-export { AeliqoFileInputElement } from './file-input.js';
-export { AeliqoFieldGroupElement } from './field-group.js';
-export { AeliqoFormElement } from './form.js';
-export { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
+export { VarendoTextFieldElement } from './text-field.js';
+export { VarendoTextAreaElement } from './text-area.js';
+export { VarendoNumberFieldElement } from './number-field.js';
+export { VarendoCheckboxElement } from './checkbox.js';
+export { VarendoRadioGroupElement } from './radio-group.js';
+export { VarendoSwitchElement } from './switch.js';
+export { VarendoSelectElement } from './select.js';
+export { VarendoComboboxElement } from './combobox.js';
+export { VarendoDateFieldElement } from './date-field.js';
+export { VarendoDateRangeElement } from './date-range.js';
+export { VarendoSliderElement } from './slider.js';
+export { VarendoSearchFieldElement } from './search-field.js';
+export { VarendoFileInputElement } from './file-input.js';
+export { VarendoFieldGroupElement } from './field-group.js';
+export { VarendoFormElement } from './form.js';
+export { VarendoFieldElement, varendoInputStyles } from './base.js';
 export {
-  AeliqoInputChangeEvent,
-  AeliqoInputCommitEvent,
-  AeliqoValidationEvent,
-  AeliqoFormSubmitEvent,
-  AeliqoFormResetEvent,
-  AeliqoSearchEvent,
-  AeliqoComboboxQueryEvent,
-  AeliqoFileChangeEvent,
+  VarendoInputChangeEvent,
+  VarendoInputCommitEvent,
+  VarendoValidationEvent,
+  VarendoFormSubmitEvent,
+  VarendoFormResetEvent,
+  VarendoSearchEvent,
+  VarendoComboboxQueryEvent,
+  VarendoFileChangeEvent,
 } from './events.js';
 export type {
-  AeliqoInputChangeDetail,
-  AeliqoInputCommitDetail,
-  AeliqoValidationDetail,
-  AeliqoValidationState,
-  AeliqoFormSubmitDetail,
-  AeliqoFileMetadata,
-  AeliqoFileChangeDetail,
-  AeliqoSearchDetail,
-  AeliqoComboboxQueryDetail,
+  VarendoInputChangeDetail,
+  VarendoInputCommitDetail,
+  VarendoValidationDetail,
+  VarendoValidationState,
+  VarendoFormSubmitDetail,
+  VarendoFileMetadata,
+  VarendoFileChangeDetail,
+  VarendoSearchDetail,
+  VarendoComboboxQueryDetail,
 } from './events.js';
-export type { AeliqoValidator, AeliqoValidationResult } from './base.js';
-export type { AeliqoOption } from './options.js';
-export type { AeliqoOptionsLoader } from './combobox.js';
-export type { AeliqoTextFieldInputType } from './text-control.js';
-export type { AeliqoNumberChange } from './number-field.js';
-export type { AeliqoDateCalendar } from './date-field.js';
-export type { AeliqoDateRangeValue, AeliqoRangeBoundary } from './date-range.js';
-export type { AeliqoSliderValue } from './slider.js';
+export type { VarendoValidator, VarendoValidationResult } from './base.js';
+export type { VarendoOption } from './options.js';
+export type { VarendoOptionsLoader } from './combobox.js';
+export type { VarendoTextFieldInputType } from './text-control.js';
+export type { VarendoNumberChange } from './number-field.js';
+export type { VarendoDateCalendar } from './date-field.js';
+export type { VarendoDateRangeValue, VarendoRangeBoundary } from './date-range.js';
+export type { VarendoSliderValue } from './slider.js';
 export { parseLocalizedDecimal, formatLocalizedDecimal, dateOnly, compareDateOnly } from './locale.js';
-export { AELIQO_INPUT_MANIFESTS, AELIQO_INPUT_REFS, getAeliqoInputManifest } from './manifest.js';
+export { VARENDO_INPUT_MANIFESTS, VARENDO_INPUT_REFS, getVarendoInputManifest } from './manifest.js';
 export type {
-  AeliqoInputConfig,
-  AeliqoInputDiagnostic,
-  AeliqoInputId,
-  AeliqoInputManifest,
-  AeliqoInputOutcome,
-  AeliqoInputRef,
+  VarendoInputConfig,
+  VarendoInputDiagnostic,
+  VarendoInputId,
+  VarendoInputManifest,
+  VarendoInputOutcome,
+  VarendoInputRef,
 } from './manifest.js';

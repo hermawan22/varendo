@@ -27,7 +27,7 @@ var sdkRevision = "unknown"
 var sdkVersion = "unknown"
 
 const (
-	staticRoot            = "/srv/aeliqo"
+	staticRoot            = "/srv/varendo"
 	rollupHashLength      = 8
 	drainDelay            = 5 * time.Second
 	shutdownTimeout       = 20 * time.Second
@@ -43,7 +43,7 @@ const (
 
 func main() {
 	var ready atomic.Bool
-	server := newServerWithReadiness(env("AELIQO_LISTEN_ADDR", ":8080"), env("AELIQO_STATIC_ROOT", staticRoot), revision, &ready)
+	server := newServerWithReadiness(env("VARENDO_LISTEN_ADDR", ":8080"), env("VARENDO_STATIC_ROOT", staticRoot), revision, &ready)
 	listener, err := net.Listen("tcp", server.Addr)
 	if err != nil {
 		log.Fatal(err)
@@ -158,7 +158,7 @@ func newHandlerWithReadiness(root, buildRevision string, ready *atomic.Bool) htt
 			return
 		case "/version":
 			writeJSON(response, request, http.StatusOK, map[string]string{
-				"product":       "aeliqo-site",
+				"product":       "varendo-site",
 				"siteRevision":  buildRevision,
 				"sdkRepository": "https://github.com/hermawan22/varendo",
 				"sdkRevision":   sdkRevision,
@@ -242,7 +242,7 @@ var hostCrawlerFiles = map[string]struct{ main, docs string }{
 }
 
 func isSharedAsset(requestPath string) bool {
-	return requestPath == "/aeliqo.png" || requestPath == "/search-index.json" || requestPath == "/route-map.json" ||
+	return requestPath == "/varendo.png" || requestPath == "/search-index.json" || requestPath == "/route-map.json" ||
 		strings.HasPrefix(requestPath, "/assets/") || path.Ext(requestPath) != ""
 }
 

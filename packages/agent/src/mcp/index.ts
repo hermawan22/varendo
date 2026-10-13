@@ -1,4 +1,4 @@
-export { AELIQO_MCP_PROTOCOL_REVISION, AELIQO_MCP_TOOL_META } from './types.js';
+export { VARENDO_MCP_PROTOCOL_REVISION, VARENDO_MCP_TOOL_META } from './types.js';
 export { createMcpServerFactory, createMcpStdioServer, createMcpHttpHandler } from './server.js';
 export { createMcpClientEndpoint, connectMcpStdioClient, connectMcpHttpClient } from './client.js';
 export type {

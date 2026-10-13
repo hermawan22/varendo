@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { Result } from '@varendo/core';
 import {
-  createAeliqoDataRegistry,
-  validateAeliqoDataBinding,
-  type AeliqoDataBinding,
+  createVarendoDataRegistry,
+  validateVarendoDataBinding,
+  type VarendoDataBinding,
 } from '../../packages/web/src/region/data-registry.js';
 
 const ref = {
@@ -127,7 +127,7 @@ const ratioRows = [
     baselineRate: { decimal: '0.50' },
   },
 ] as const;
-const binding = (override: Partial<AeliqoDataBinding> = {}) => ({
+const binding = (override: Partial<VarendoDataBinding> = {}) => ({
   result: override.result ?? result(),
   rows: override.rows ?? rows,
   ...(override.columns === undefined ? {} : { columns: override.columns }),
@@ -135,7 +135,7 @@ const binding = (override: Partial<AeliqoDataBinding> = {}) => ({
 });
 const ratioBinding = () => binding({ rows: ratioRows });
 
-const registry = createAeliqoDataRegistry({ resolveEntity: () => 'person' });
+const registry = createVarendoDataRegistry({ resolveEntity: () => 'person' });
 const resolve = (
   component: Parameters<typeof registry.resolve>[0]['component'],
   config: Record<string, unknown> = {},
@@ -152,16 +152,16 @@ const resolve = (
 
 describe('authorized data binding', () => {
   it('requires the exact Result loaded count and validates declared scalar types', () => {
-    expect(validateAeliqoDataBinding(binding({ rows: [rows[0]] })).ok).toBe(false);
-    expect(validateAeliqoDataBinding(binding({ rows: [{ ...rows[0], amount: 12.5 } as never] })).ok).toBe(false);
-    expect(validateAeliqoDataBinding(binding({ rows: [{ ...rows[0], extra: 'nope' }, rows[1]] as never })).ok).toBe(
+    expect(validateVarendoDataBinding(binding({ rows: [rows[0]] })).ok).toBe(false);
+    expect(validateVarendoDataBinding(binding({ rows: [{ ...rows[0], amount: 12.5 } as never] })).ok).toBe(false);
+    expect(validateVarendoDataBinding(binding({ rows: [{ ...rows[0], extra: 'nope' }, rows[1]] as never })).ok).toBe(
       false,
     );
   });
 
   it('rejects duplicate identities and preserves the descriptor scope', () => {
-    expect(validateAeliqoDataBinding(binding({ rows: [rows[0], { ...rows[1], id: 'a' }] })).ok).toBe(false);
-    const checked = validateAeliqoDataBinding(binding());
+    expect(validateVarendoDataBinding(binding({ rows: [rows[0], { ...rows[1], id: 'a' }] })).ok).toBe(false);
+    const checked = validateVarendoDataBinding(binding());
     expect(checked.ok).toBe(true);
     if (checked.ok) {
       expect(checked.value.result.ref).toEqual(ref);
@@ -176,19 +176,19 @@ describe('authorized data binding', () => {
 
   it('requires registered labels and types for supplied columns', () => {
     expect(
-      validateAeliqoDataBinding({
+      validateVarendoDataBinding({
         ...binding(),
         columns: [{ key: 'name', label: 'Wrong' }],
       }).ok,
     ).toBe(false);
     expect(
-      validateAeliqoDataBinding({
+      validateVarendoDataBinding({
         ...binding(),
         columns: [{ key: 'name', label: 'Name', type: 'integer' }],
       }).ok,
     ).toBe(false);
     expect(
-      validateAeliqoDataBinding({
+      validateVarendoDataBinding({
         ...binding(),
         columns: [{ key: 'name', label: 'Name', type: 'text' }],
       }).ok,
@@ -196,7 +196,7 @@ describe('authorized data binding', () => {
   });
 
   it('rejects non-record rows and accessors at the authorization boundary', () => {
-    expect(validateAeliqoDataBinding(binding({ rows: [new Map() as never, rows[1]] })).ok).toBe(false);
+    expect(validateVarendoDataBinding(binding({ rows: [new Map() as never, rows[1]] })).ok).toBe(false);
     let invoked = false;
     const getterRow = { ...rows[0] };
     Object.defineProperty(getterRow, 'amount', {
@@ -206,13 +206,13 @@ describe('authorized data binding', () => {
         return { decimal: '12.50' };
       },
     });
-    expect(validateAeliqoDataBinding(binding({ rows: [getterRow as never, rows[1]] })).ok).toBe(false);
+    expect(validateVarendoDataBinding(binding({ rows: [getterRow as never, rows[1]] })).ok).toBe(false);
     expect(invoked).toBe(false);
   });
 
   it('keeps counts, coverage and supplied scope metadata mutually consistent', () => {
     expect(
-      validateAeliqoDataBinding(
+      validateVarendoDataBinding(
         binding({
           result: result({
             counts: {
@@ -228,7 +228,7 @@ describe('authorized data binding', () => {
       ).ok,
     ).toBe(false);
     expect(
-      validateAeliqoDataBinding(
+      validateVarendoDataBinding(
         binding({
           result: result({
             coverage: { kind: 'complete', populationDigest: 'other' },
@@ -237,7 +237,7 @@ describe('authorized data binding', () => {
       ).ok,
     ).toBe(false);
     expect(
-      validateAeliqoDataBinding({
+      validateVarendoDataBinding({
         ...binding(),
         scope: {
           kind: 'population',
@@ -249,13 +249,13 @@ describe('authorized data binding', () => {
       }).ok,
     ).toBe(false);
     expect(
-      validateAeliqoDataBinding({
+      validateVarendoDataBinding({
         ...binding(),
         result: result({ coverage: { kind: 'future' } as never }),
       }).ok,
     ).toBe(false);
     expect(
-      validateAeliqoDataBinding(
+      validateVarendoDataBinding(
         binding({
           result: result({
             counts: {
@@ -271,7 +271,7 @@ describe('authorized data binding', () => {
         }),
       ).ok,
     ).toBe(false);
-    const partial = validateAeliqoDataBinding(
+    const partial = validateVarendoDataBinding(
       binding({
         result: result({
           counts: {
@@ -297,7 +297,7 @@ describe('authorized data binding', () => {
         loaded: 2,
         populationTotal: 3,
       });
-    const sample = validateAeliqoDataBinding(
+    const sample = validateVarendoDataBinding(
       binding({
         result: result({
           counts: {
@@ -512,7 +512,7 @@ describe('data registry semantics', () => {
   });
 
   it('requires a trusted entity before selection can create a selection port', () => {
-    const noEntity = createAeliqoDataRegistry();
+    const noEntity = createVarendoDataRegistry();
     expect(noEntity.resolve({ id: 'table', component: 'table', config: { selection: 'single' } }, binding()).ok).toBe(
       false,
     );

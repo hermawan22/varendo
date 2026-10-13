@@ -13,7 +13,7 @@ const digest = 'sha256:' + 'a'.repeat(64);
 const fluxTag = /^[0-9a-f]{40}-[0-9]+-[0-9]+$/u;
 
 async function runPublisher(t, mode = 'success', environment = {}) {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-image-promotion-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-image-promotion-'));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const git = (args) =>
     execFileSync('git', args, { cwd: directory, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).trim();
@@ -40,7 +40,7 @@ async function runPublisher(t, mode = 'success', environment = {}) {
   await writeFile(
     join(policy, 'export-consumer.json'),
     JSON.stringify({
-      schema: 'aeliqo.export-registry.v1',
+      schema: 'varendo.export-registry.v1',
       status: 'passed',
       version: '0.7.0',
       sourceRevision: source,
@@ -73,8 +73,8 @@ async function runPublisher(t, mode = 'success', environment = {}) {
       GITHUB_RUN_ID: '123',
       GITHUB_RUN_ATTEMPT: '2',
       RUNNER_TEMP: runner,
-      AELIQO_EXPORT_VERIFIED_VERSION: '0.7.0',
-      AELIQO_REGISTRY_SOURCE: source,
+      VARENDO_EXPORT_VERIFIED_VERSION: '0.7.0',
+      VARENDO_REGISTRY_SOURCE: source,
       IMAGE_TEST_LOG: log,
       IMAGE_TEST_REGISTRY: registry,
       IMAGE_TEST_MODE: mode,

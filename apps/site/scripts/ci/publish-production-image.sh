@@ -6,7 +6,7 @@ cd "$(git rev-parse --show-toplevel)"
 
 : "${GH_TOKEN:?}" "${GH_ACTOR:?}" "${GH_TRIGGERING_ACTOR:?}" "${GH_REPO:?}"
 : "${SOURCE_SHA:?}" "${GITHUB_RUN_ID:?}" "${GITHUB_RUN_ATTEMPT:?}" "${RUNNER_TEMP:?}"
-: "${AELIQO_EXPORT_VERIFIED_VERSION:?}"
+: "${VARENDO_EXPORT_VERIFIED_VERSION:?}"
 [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
 [[ "$GITHUB_RUN_ID" =~ ^[1-9][0-9]*$ ]]
 [[ "$GITHUB_RUN_ATTEMPT" =~ ^[1-9][0-9]*$ ]]
@@ -31,16 +31,16 @@ git diff --cached --quiet
 sdk_revision="$SOURCE_SHA"
 # The registry artifacts are bound to the revision that published the packages;
 # a site-only redeploy binds them to the earlier published source instead.
-registry_source="${AELIQO_REGISTRY_SOURCE:-$SOURCE_SHA}"
+registry_source="${VARENDO_REGISTRY_SOURCE:-$SOURCE_SHA}"
 [[ "$registry_source" =~ ^[0-9a-f]{40}$ ]]
 release_version="$(jq -er '.version | select(test("^[0-9]+\\.[0-9]+\\.[0-9]+$"))' release-metadata.json)"
 sdk_version="$(jq -er --arg version "$release_version" '.version | select(. == $version)' packages/core/package.json)"
-test "$AELIQO_EXPORT_VERIFIED_VERSION" = "$release_version"
+test "$VARENDO_EXPORT_VERIFIED_VERSION" = "$release_version"
 jq -e --arg version "$release_version" --arg sha "$registry_source" \
   '.version == $version and .expectedSourceRevision == $sha and .provenanceVerified == true and (.packages | length) == 5' \
   artifacts/site-release-policy/registry-consumer.json >/dev/null
 jq -e --arg version "$release_version" --arg sha "$registry_source" \
-  '.schema == "aeliqo.export-registry.v1" and .status == "passed" and .version == $version and .sourceRevision == $sha and
+  '.schema == "varendo.export-registry.v1" and .status == "passed" and .version == $version and .sourceRevision == $sha and
    (.scenarios | length) == 4 and ([.scenarios[].build] | all(. == "passed")) and
    (.tags | length) == 5 and ([.tags[]] | all(. == $version))' \
   artifacts/site-release-policy/export-consumer.json >/dev/null
@@ -52,8 +52,8 @@ quarantine_reference="$image:quarantine-$tag"
 output="apps/site/artifacts/production-image"
 mkdir -p "$output"
 
-docker_config="$(mktemp -d "$RUNNER_TEMP/aeliqo-registry.XXXXXX")"
-trivy_dir="$(mktemp -d "$RUNNER_TEMP/aeliqo-trivy.XXXXXX")"
+docker_config="$(mktemp -d "$RUNNER_TEMP/varendo-registry.XXXXXX")"
+trivy_dir="$(mktemp -d "$RUNNER_TEMP/varendo-trivy.XXXXXX")"
 export DOCKER_CONFIG="$docker_config"
 
 python3 - <<'PY'
@@ -81,11 +81,11 @@ docker buildx build \
 	--build-arg "SOURCE_REVISION=$SOURCE_SHA" \
 	--build-arg "SDK_SOURCE_REVISION=$sdk_revision" \
 	--build-arg "SDK_VERSION=$sdk_version" \
-	--build-arg "AELIQO_EXPORT_VERIFIED_VERSION=$AELIQO_EXPORT_VERIFIED_VERSION" \
+	--build-arg "VARENDO_EXPORT_VERIFIED_VERSION=$VARENDO_EXPORT_VERIFIED_VERSION" \
 	--label "org.opencontainers.image.revision=$SOURCE_SHA" \
 	--label "org.opencontainers.image.source=https://github.com/$GH_REPO" \
-	--label "com.aeliqo.sdk.revision=$sdk_revision" \
-	--label "com.aeliqo.sdk.version=$sdk_version" \
+	--label "com.varendo.sdk.revision=$sdk_revision" \
+	--label "com.varendo.sdk.version=$sdk_version" \
 	--attest "type=provenance,mode=max,builder-id=$builder_id" \
 	--output "type=image,name=$quarantine_reference,push=true,oci-mediatypes=true,oci-artifact=true" \
 	--metadata-file "$output/build-metadata.json" \
@@ -119,7 +119,7 @@ tar -xzf "$trivy_dir/trivy.tar.gz" -C "$trivy_dir" trivy
 
 export TRIVY_USERNAME="$GH_ACTOR"
 export TRIVY_PASSWORD="$GH_TOKEN"
-export TRIVY_CACHE_DIR="$RUNNER_TEMP/aeliqo-trivy-cache"
+export TRIVY_CACHE_DIR="$RUNNER_TEMP/varendo-trivy-cache"
 mkdir -p "$TRIVY_CACHE_DIR"
 "$trivy_dir/trivy" image \
 	--scanners vuln \

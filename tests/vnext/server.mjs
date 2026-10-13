@@ -24,9 +24,9 @@ const server = await createServer({
           try {
             const module = await vite.ssrLoadModule('/src/ssr.ts');
             const page = await module.renderSsrPeoplePage({
-              principal: requestHeader(request.headers, 'x-aeliqo-principal'),
-              direction: requestHeader(request.headers, 'x-aeliqo-direction'),
-              theme: requestHeader(request.headers, 'x-aeliqo-theme'),
+              principal: requestHeader(request.headers, 'x-varendo-principal'),
+              direction: requestHeader(request.headers, 'x-varendo-direction'),
+              theme: requestHeader(request.headers, 'x-varendo-theme'),
             });
             response.statusCode = 200;
             response.setHeader('content-type', 'text/html; charset=utf-8');

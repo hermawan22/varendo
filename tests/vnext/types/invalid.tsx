@@ -1,5 +1,5 @@
 /**
- * DECLARATION-ONLY NEGATIVE CONSUMER, NOT AELIQO IMPLEMENTATION.
+ * DECLARATION-ONLY NEGATIVE CONSUMER, NOT VARENDO IMPLEMENTATION.
  * Each expected error protects a vNext trust or ownership boundary.
  */
 import {

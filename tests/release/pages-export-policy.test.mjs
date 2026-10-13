@@ -33,7 +33,7 @@ async function runExportGate(metadata, verifierExit = 0) {
       nodePath,
       `#!${process.execPath}\n` +
         `const fs = require('node:fs');\n` +
-        `if (fs.readFileSync(process.env.GITHUB_ENV, 'utf8').includes('AELIQO_EXPORT_VERIFIED_VERSION=')) process.exit(86);\n` +
+        `if (fs.readFileSync(process.env.GITHUB_ENV, 'utf8').includes('VARENDO_EXPORT_VERIFIED_VERSION=')) process.exit(86);\n` +
         `fs.writeFileSync(process.env.INVOCATION_PATH, JSON.stringify(process.argv.slice(2)));\n` +
         `process.exit(Number(process.env.VERIFIER_EXIT));\n`,
     );
@@ -78,7 +78,7 @@ test('stable Pages enables downloads only after verifying the selected checkout'
     '--output',
     'artifacts/pages-release-policy/export-consumer.json',
   ]);
-  assert.equal(result.environment, 'AELIQO_EXPORT_VERIFIED_VERSION=0.1.0\n');
+  assert.equal(result.environment, 'VARENDO_EXPORT_VERIFIED_VERSION=0.1.0\n');
 });
 
 test('a failed registry export verifier cannot enable Pages downloads', async () => {

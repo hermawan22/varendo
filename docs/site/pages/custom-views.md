@@ -65,9 +65,9 @@ You should see: a view definition with one matching identity, a declared manifes
 Pass the view in the `views` option where you create the app, alongside its resources and authority.
 
 ```ts
-import { createAeliqoApp } from '@varendo/web/app';
+import { createVarendoApp } from '@varendo/web/app';
 
-const app = createAeliqoApp({ resources, authority, views: [knowledgeArticleView] });
+const app = createVarendoApp({ resources, authority, views: [knowledgeArticleView] });
 ```
 
 Also list the view ID in the resource's `allowedViews` — a request can only pick views the resource allows. Run the view in the [Knowledge playground](/playground/?scenario=knowledge) or copy the full [Knowledge example](/examples/knowledge/).

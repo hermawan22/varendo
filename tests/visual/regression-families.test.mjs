@@ -23,7 +23,7 @@ function suite(file, id) {
 }
 const plan = () => ({ suites: [suite('first.spec.ts', 'one'), suite('second.spec.ts', 'two')], errors: [] });
 async function fixture(mutate = () => {}) {
-  const destination = join(await mkdtemp(join(tmpdir(), 'aeliqo-families-')), 'candidate');
+  const destination = join(await mkdtemp(join(tmpdir(), 'varendo-families-')), 'candidate');
   const calls = [];
   const run = async (file, directory) => {
     calls.push(file);
@@ -130,12 +130,12 @@ test('rejects output collisions rather than overwriting earlier images', async (
 
 for (const project of ['chromium', 'firefox', 'webkit'])
   test(`real Playwright parser keeps every unfiltered ${project} family separate from its project option`, async () => {
-    const destination = await mkdtemp(join(tmpdir(), 'aeliqo-family-cli-'));
+    const destination = await mkdtemp(join(tmpdir(), 'varendo-family-cli-'));
     const args = captureArguments(project, { batch: null, grep: null });
     function list(extra = []) {
       const result = spawnSync('pnpm', [...args, ...extra, '--list', '--reporter=json'], {
         encoding: 'utf8',
-        env: { ...process.env, AELIQO_VISUAL_CAPTURE: destination },
+        env: { ...process.env, VARENDO_VISUAL_CAPTURE: destination },
         maxBuffer: 16 * 1024 * 1024,
       });
       assert.equal(result.status, 0, result.stderr || result.stdout);

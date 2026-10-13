@@ -1,6 +1,6 @@
 :root {
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: var(--aeliqo-typography-font-family-mono);
+  --font-mono: var(--varendo-typography-font-family-mono);
   font-family: var(--font-sans);
   font-synthesis: none;
   --line-body: 1.5;
@@ -8,15 +8,15 @@
   --line-page-title: 1.08;
   --line-section-title: 1.15;
   --line-hero-title: 1.06;
-  --type-body: var(--aeliqo-typography-font-size-body);
-  --type-lead: clamp(1rem, 1.25vw, var(--aeliqo-typography-font-size-body-large));
+  --type-body: var(--varendo-typography-font-size-body);
+  --type-lead: clamp(1rem, 1.25vw, var(--varendo-typography-font-size-body-large));
   --type-page-title: clamp(2.4rem, 4vw, 3.5rem);
   --type-section-title: clamp(1.6rem, 2.4vw, 2.15rem);
   --type-hero-title: clamp(3rem, 4.7vw, 4rem);
-  --weight-regular: var(--aeliqo-typography-font-weight-regular);
-  --weight-medium: var(--aeliqo-typography-font-weight-medium);
-  --weight-strong: var(--aeliqo-typography-font-weight-semibold);
-  --weight-bold: var(--aeliqo-typography-font-weight-bold);
+  --weight-regular: var(--varendo-typography-font-weight-regular);
+  --weight-medium: var(--varendo-typography-font-weight-medium);
+  --weight-strong: var(--varendo-typography-font-weight-semibold);
+  --weight-bold: var(--varendo-typography-font-weight-bold);
   --tracking-body: 0;
   --tracking-tight: -0.01em;
   --tracking-heading: -0.035em;
@@ -56,8 +56,8 @@
   --accent-hover: color-mix(in srgb, var(--site-accent) 82%, var(--site-ink));
   --accent-soft: color-mix(in srgb, var(--site-accent) 9%, var(--site-panel));
   --on-accent: var(--site-accent-ink);
-  --danger: var(--aeliqo-color-danger);
-  --success: var(--aeliqo-color-success);
+  --danger: var(--varendo-color-danger);
+  --success: var(--varendo-color-success);
   --code-background: #18181b;
   --code-text: #f4f4f5;
   --code-muted: #a1a1aa;
@@ -81,9 +81,9 @@
   --radius-dialog: var(--radius-lg);
   --radius-window: var(--radius-lg);
   --radius-playground: var(--radius-lg);
-  --control-height: var(--aeliqo-control-compact-target);
+  --control-height: var(--varendo-control-compact-target);
   --select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='m1 1 4 4 4-4' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --shadow-sm: var(--aeliqo-elevation-raised);
+  --shadow-sm: var(--varendo-elevation-raised);
   --shadow-lg: 0 28px 90px rgb(21 26 43 / 0.14);
 }
 :root[data-theme='dark'] {
@@ -172,7 +172,7 @@ textarea:disabled {
   select,
   input,
   textarea {
-    min-height: var(--aeliqo-control-min-target);
+    min-height: var(--varendo-control-min-target);
   }
 }
 a:focus-visible,

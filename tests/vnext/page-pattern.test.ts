@@ -127,5 +127,5 @@ it('preserves registered identity and archive transfers across page/workspace ro
   if (!next.ok) return;
   expect(page.pattern.matches(next.value, nextContext)).toBe(true);
   expect(next.value.stateTransfer).toHaveLength(4);
-  expect(next.value.stateTransfer.every((transfer) => transfer.mapping.id === 'aeliqo.state.identity')).toBe(true);
+  expect(next.value.stateTransfer.every((transfer) => transfer.mapping.id === 'varendo.state.identity')).toBe(true);
 });

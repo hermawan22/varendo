@@ -69,7 +69,7 @@ describe('ADC authorization discrimination', () => {
       },
       {
         principal: 'bob',
-        metadata: { 'aeliqo-principal-key': 'alice' },
+        metadata: { 'varendo-principal-key': 'alice' },
       },
     );
 

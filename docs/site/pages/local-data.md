@@ -81,7 +81,7 @@ For a scoped surface, build the binding once. Its `service` is the exact service
 ```ts
 import { z } from 'zod';
 import { defineDataFeature } from '@varendo/core/features';
-import { createAeliqoRuntime } from '@varendo/runtime/app';
+import { createVarendoRuntime } from '@varendo/runtime/app';
 import { createLocalDataBinding } from '@varendo/runtime/surfaces';
 import type { DataRecord, ResultEvent } from '@varendo/runtime/data';
 
@@ -137,7 +137,7 @@ const bindings = createLocalDataBinding({
   normalize: readPeopleRows,
 });
 
-const runtime = createAeliqoRuntime({
+const runtime = createVarendoRuntime({
   resources: [{ resource: peopleFeature.resource, data: bindings.service }],
   authority,
 });

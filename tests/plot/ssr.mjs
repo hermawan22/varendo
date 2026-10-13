@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { renderAeliqo } from '../../packages/web/dist/server.js';
+import { renderVarendo } from '../../packages/web/dist/server.js';
 import { html } from 'lit';
 const ref = { id: 'r', revision: '1', outputId: 'out', queryDigest: 'q', scopeDigest: 's' };
 const result = {
@@ -29,26 +29,26 @@ const unit = {
   encoding: { x: { field: 'x', scale: 'linear' }, y: { field: 'y', scale: 'linear' } },
   missing: 'gap',
 };
-const output = await renderAeliqo(
-  html`<aeliqo-plot
+const output = await renderVarendo(
+  html`<varendo-plot
     .unit=${unit}
     .result=${result}
     .rows=${[{ id: 'a', x: 1, y: { decimal: '9007199254740993.001' } }]}
-  ></aeliqo-plot>`,
+  ></varendo-plot>`,
 );
 assert(output.includes('9007199254740993.001'));
 assert(output.includes('<circle'));
 assert(output.includes('Coverage unknown (Bounded supplied rows)'));
-const next = await renderAeliqo(html`<aeliqo-plot></aeliqo-plot>`);
+const next = await renderVarendo(html`<varendo-plot></varendo-plot>`);
 assert(next.includes('No result is available'));
 assert(!next.includes('9007199254740993.001'));
 console.log('Plot SSR exact values, SVG marks and request isolation passed.');
-const composition = await renderAeliqo(
-  html`<aeliqo-plot
+const composition = await renderVarendo(
+  html`<varendo-plot
     .spec=${{ version: '1', root: { kind: 'facet', field: 'id', scales: 'shared-compatible', child: { kind: 'layer', scales: 'shared-compatible', children: [unit, unit] } } }}
     .results=${[result]}
     .datasets=${[{ result: ref, rows: [{ id: 'a', x: 1, y: { decimal: '9007199254740993.001' } }] }]}
-  ></aeliqo-plot>`,
+  ></varendo-plot>`,
 );
 assert(composition.includes('part="facet"'));
 assert(composition.includes('part="layer"'));

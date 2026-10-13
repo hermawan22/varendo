@@ -20,7 +20,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts', 'framework-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-framework-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-framework-consumer-'));
 
 function run(argv, cwd, encoding = 'utf8') {
   const result = spawnSync(argv[0], argv.slice(1), {
@@ -77,7 +77,7 @@ for (const name of packageNames) {
   assert.equal(manifest.license, 'Apache-2.0');
   assert.notEqual(manifest.private, true);
   run(['pnpm', 'build'], directory);
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   const stage = await stagePackage(directory, manifest, name);
   run(['pnpm', 'pack', '--out', tarball], stage);
   const bytes = await readFile(tarball);
@@ -176,7 +176,7 @@ assert.deepEqual(
 await writeFile(join(runDirectory, 'consumer-package-lock.json'), lockBytes);
 
 const quickstart = await readFile(join(root, 'docs/site/pages/quickstart.md'), 'utf8');
-const quickstartDirectory = await mkdtemp(join(tmpdir(), 'aeliqo-quickstart-consumer-'));
+const quickstartDirectory = await mkdtemp(join(tmpdir(), 'varendo-quickstart-consumer-'));
 const codeFence = String.fromCharCode(96).repeat(3);
 const readme = await readFile(join(root, 'README.md'), 'utf8');
 const readmeInstall = readme.match(
@@ -228,7 +228,7 @@ for (const kind of ['browse', 'analyze']) assert.match(quickstartSource, new Reg
 assert.doesNotMatch(quickstartSource, /factory|model|agent/u);
 
 const quickstartManifest = {
-  name: 'aeliqo-quickstart-consumer',
+  name: 'varendo-quickstart-consumer',
   private: true,
   type: 'module',
   dependencies: {
@@ -295,77 +295,77 @@ for (const [name, version] of Object.entries({
 run([join(quickstartDirectory, 'node_modules/.bin/tsc'), '--project', 'tsconfig.json'], quickstartDirectory);
 
 const wrappers = [
-  'AeliqoButton',
-  'AeliqoIconButton',
-  'AeliqoLink',
-  'AeliqoText',
-  'AeliqoHeading',
-  'AeliqoBadge',
-  'AeliqoAvatar',
-  'AeliqoSeparator',
-  'AeliqoSurface',
-  'AeliqoStack',
-  'AeliqoGrid',
-  'AeliqoSplitPane',
-  'AeliqoScrollArea',
-  'AeliqoTextField',
-  'AeliqoTextArea',
-  'AeliqoNumberField',
-  'AeliqoCheckbox',
-  'AeliqoRadioGroup',
-  'AeliqoSwitch',
-  'AeliqoSelect',
-  'AeliqoCombobox',
-  'AeliqoDateField',
-  'AeliqoDateRange',
-  'AeliqoSlider',
-  'AeliqoSearchField',
-  'AeliqoFileInput',
-  'AeliqoFieldGroup',
-  'AeliqoForm',
-  'AeliqoTabs',
-  'AeliqoBreadcrumb',
-  'AeliqoPagination',
-  'AeliqoMenu',
-  'AeliqoTreeNav',
-  'AeliqoTooltip',
-  'AeliqoPopover',
-  'AeliqoDialog',
-  'AeliqoDrawer',
-  'AeliqoToast',
-  'AeliqoAlert',
-  'AeliqoProgress',
-  'AeliqoSkeleton',
-  'AeliqoEmptyState',
-  'AeliqoMetric',
-  'AeliqoDelta',
-  'AeliqoKeyValue',
-  'AeliqoDetail',
-  'AeliqoRecordList',
-  'AeliqoCardCollection',
-  'AeliqoTable',
-  'AeliqoFilterBuilder',
-  'AeliqoSelectionSummary',
-  'AeliqoTrend',
-  'AeliqoBar',
-  'AeliqoArea',
-  'AeliqoScatter',
-  'AeliqoHistogram',
-  'AeliqoHeatmap',
-  'AeliqoMatrix',
-  'AeliqoRelationship',
-  'AeliqoTree',
-  'AeliqoTreemap',
-  'AeliqoTimeline',
-  'AeliqoCalendarGrid',
-  'AeliqoExplorer',
-  'AeliqoComparison',
-  'AeliqoBreakdown',
-  'AeliqoInvestigation',
-  'AeliqoSearchResults',
-  'AeliqoRecordEditor',
-  'AeliqoFormFlow',
-  'AeliqoQualityPanel',
+  'VarendoButton',
+  'VarendoIconButton',
+  'VarendoLink',
+  'VarendoText',
+  'VarendoHeading',
+  'VarendoBadge',
+  'VarendoAvatar',
+  'VarendoSeparator',
+  'VarendoSurface',
+  'VarendoStack',
+  'VarendoGrid',
+  'VarendoSplitPane',
+  'VarendoScrollArea',
+  'VarendoTextField',
+  'VarendoTextArea',
+  'VarendoNumberField',
+  'VarendoCheckbox',
+  'VarendoRadioGroup',
+  'VarendoSwitch',
+  'VarendoSelect',
+  'VarendoCombobox',
+  'VarendoDateField',
+  'VarendoDateRange',
+  'VarendoSlider',
+  'VarendoSearchField',
+  'VarendoFileInput',
+  'VarendoFieldGroup',
+  'VarendoForm',
+  'VarendoTabs',
+  'VarendoBreadcrumb',
+  'VarendoPagination',
+  'VarendoMenu',
+  'VarendoTreeNav',
+  'VarendoTooltip',
+  'VarendoPopover',
+  'VarendoDialog',
+  'VarendoDrawer',
+  'VarendoToast',
+  'VarendoAlert',
+  'VarendoProgress',
+  'VarendoSkeleton',
+  'VarendoEmptyState',
+  'VarendoMetric',
+  'VarendoDelta',
+  'VarendoKeyValue',
+  'VarendoDetail',
+  'VarendoRecordList',
+  'VarendoCardCollection',
+  'VarendoTable',
+  'VarendoFilterBuilder',
+  'VarendoSelectionSummary',
+  'VarendoTrend',
+  'VarendoBar',
+  'VarendoArea',
+  'VarendoScatter',
+  'VarendoHistogram',
+  'VarendoHeatmap',
+  'VarendoMatrix',
+  'VarendoRelationship',
+  'VarendoTree',
+  'VarendoTreemap',
+  'VarendoTimeline',
+  'VarendoCalendarGrid',
+  'VarendoExplorer',
+  'VarendoComparison',
+  'VarendoBreakdown',
+  'VarendoInvestigation',
+  'VarendoSearchResults',
+  'VarendoRecordEditor',
+  'VarendoFormFlow',
+  'VarendoQualityPanel',
 ];
 assert.equal(wrappers.length, 71);
 
@@ -378,10 +378,10 @@ await writeFile(
   join(consumer, 'framework-types.tsx'),
   `
 ${wrapperImports}
-import type {AeliqoTableColumn, AeliqoTableRow} from "@varendo/web/data";
-import type {AeliqoInputChangeDetail as InputChangeDetail} from "@varendo/web/inputs";
-import {AeliqoTextField} from "@varendo/react/inputs";
-import {AeliqoTable} from "@varendo/react/data";
+import type {VarendoTableColumn, VarendoTableRow} from "@varendo/web/data";
+import type {VarendoInputChangeDetail as InputChangeDetail} from "@varendo/web/inputs";
+import {VarendoTextField} from "@varendo/react/inputs";
+import {VarendoTable} from "@varendo/react/data";
 import {defineReactViews} from "@varendo/react/surface";
 
 const wrapperNames = ${JSON.stringify(wrappers)};
@@ -389,11 +389,11 @@ const groups: readonly Record<string, unknown>[] = [${wrapperGroups}];
 for (const name of wrapperNames) {
   if (!groups.some((group) => typeof group[name] === "function")) throw new Error(name + " is not exported by its family");
 }
-const columns: readonly AeliqoTableColumn[] = [{key: "name", label: "Name"}];
-const rows: readonly AeliqoTableRow[] = [{name: "Ada"}];
+const columns: readonly VarendoTableColumn[] = [{key: "name", label: "Name"}];
+const rows: readonly VarendoTableRow[] = [{name: "Ada"}];
 const detail: InputChangeDetail<string> = {value: "Ada", source: "user"};
-const input = <AeliqoTextField label="Person" value={detail.value} onValueChange={(event) => { const value: string = event.detail.value; void value; }} />;
-const table = <AeliqoTable caption="People" columns={columns} rows={rows} />;
+const input = <VarendoTextField label="Person" value={detail.value} onValueChange={(event) => { const value: string = event.detail.value; void value; }} />;
+const table = <VarendoTable caption="People" columns={columns} rows={rows} />;
 const nativeViews = defineReactViews<{readonly kind: "browse"}, {readonly rows: readonly string[]}>([
   {id: "people.native", revision: "1", render: ({snapshot}) => <p>{snapshot.state.rows.length}</p>},
   {id: "people.lazy", revision: "1", load: async () => ({snapshot}) => <p>{snapshot.state.rows.length}</p>},
@@ -405,14 +405,14 @@ void [input, table, nativeViews];
 await writeFile(
   join(consumer, 'framework-vanilla.ts'),
   `
-import {registerAeliqoElements} from "@varendo/web";
-import {AeliqoInputChangeEvent, type AeliqoTextFieldElement} from "@varendo/web/inputs";
-import type {AeliqoTableElement} from "@varendo/web/data";
-registerAeliqoElements();
-const input = document.createElement("aeliqo-text-field") as AeliqoTextFieldElement;
-const table = document.createElement("aeliqo-table") as AeliqoTableElement;
-input.addEventListener("aeliqo-input-change", (event) => {
-  if (!(event instanceof AeliqoInputChangeEvent)) throw new Error("Unexpected input event");
+import {registerVarendoElements} from "@varendo/web";
+import {VarendoInputChangeEvent, type VarendoTextFieldElement} from "@varendo/web/inputs";
+import type {VarendoTableElement} from "@varendo/web/data";
+registerVarendoElements();
+const input = document.createElement("varendo-text-field") as VarendoTextFieldElement;
+const table = document.createElement("varendo-table") as VarendoTableElement;
+input.addEventListener("varendo-input-change", (event) => {
+  if (!(event instanceof VarendoInputChangeEvent)) throw new Error("Unexpected input event");
   const next: string = event.detail.value;
   input.value = next;
 });
@@ -426,11 +426,11 @@ await writeFile(
   join(consumer, 'framework-vue.ts'),
   `
 import {createApp, h, ref, type VNode} from "vue";
-import {registerAeliqoElements} from "@varendo/web";
-import {AeliqoInputChangeEvent} from "@varendo/web/inputs";
-registerAeliqoElements();
-const Fixture = {setup(): (() => VNode) { const value = ref("Vue"); return () => h("aeliqo-text-field", {
-  label: "Vue person", value: value.value, "onAeliqo-input-change": (event: Event) => { if (event instanceof AeliqoInputChangeEvent) value.value = event.detail.value; },
+import {registerVarendoElements} from "@varendo/web";
+import {VarendoInputChangeEvent} from "@varendo/web/inputs";
+registerVarendoElements();
+const Fixture = {setup(): (() => VNode) { const value = ref("Vue"); return () => h("varendo-text-field", {
+  label: "Vue person", value: value.value, "onVarendo-input-change": (event: Event) => { if (event instanceof VarendoInputChangeEvent) value.value = event.detail.value; },
 }); }};
 createApp(Fixture).mount(document.body);
 `,
@@ -442,7 +442,7 @@ await writeFile(
 import {defineResource} from "@varendo/core";
 import {createQueryFunctionRegistry} from "@varendo/core/expressions";
 import {createLocalDataService} from "@varendo/runtime/data";
-import {createAeliqoApp, type AeliqoApp} from "@varendo/web/app";
+import {createVarendoApp, type VarendoApp} from "@varendo/web/app";
 import {z} from "zod";
 
 const people = defineResource({
@@ -456,7 +456,7 @@ export const browsePeople = Object.freeze({
   version: "1", id: "browse-people", kind: "browse", resource: "people", fields: ["name", "team"],
 });
 
-export function createPeopleApp(): AeliqoApp {
+export function createPeopleApp(): VarendoApp {
   const functions = createQueryFunctionRegistry({version: "2"});
   if (!functions.ok) throw new Error(functions.diagnostics[0].message);
   const data = createLocalDataService({
@@ -468,7 +468,7 @@ export function createPeopleApp(): AeliqoApp {
     sourceLimits: {rows: 100, bytes: 100_000},
     authorize: () => ({ok: true, value: {scopeDigest: "people-scope", policyRevision: "people-policy-1"}}),
   });
-  return createAeliqoApp({
+  return createVarendoApp({
     resources: [{resource: people, data}],
     authority: {read: () => ({ok: true, value: {
       principalKey: "framework-user", scopeDigest: "people-scope", policyRevision: "people-policy-1",
@@ -552,14 +552,14 @@ import assert from "node:assert/strict";
 import "@varendo/react/ssr";
 import {createElement} from "react";
 import {renderToString} from "react-dom/server";
-import {AeliqoTextField} from "@varendo/react/inputs";
-import {AeliqoTable} from "@varendo/react/data";
+import {VarendoTextField} from "@varendo/react/inputs";
+import {VarendoTable} from "@varendo/react/data";
 import {defineReactViews} from "@varendo/react/surface";
 assert.equal(typeof globalThis.window, "undefined");
-const input = renderToString(createElement(AeliqoTextField, {label: "SSR person", value: "Ada"}));
-const table = renderToString(createElement(AeliqoTable, {caption: "SSR people", columns: [{key: "name", label: "Name"}], rows: [{name: "Ada"}]}));
-assert.match(input, /aeliqo-text-field/); assert.match(input, /SSR person/); assert.match(input, /shadowrootmode="open"/);
-assert.match(table, /aeliqo-table/); assert.match(table, /SSR people/); assert.match(table, /Ada/);
+const input = renderToString(createElement(VarendoTextField, {label: "SSR person", value: "Ada"}));
+const table = renderToString(createElement(VarendoTable, {caption: "SSR people", columns: [{key: "name", label: "Name"}], rows: [{name: "Ada"}]}));
+assert.match(input, /varendo-text-field/); assert.match(input, /SSR person/); assert.match(input, /shadowrootmode="open"/);
+assert.match(table, /varendo-table/); assert.match(table, /SSR people/); assert.match(table, /Ada/);
 const nativeViews = defineReactViews([{id: "people.native", revision: "1", render: () => null}]);
 assert.equal(nativeViews.resolve({id: "people.native", revision: "1"})?.ref.id, "people.native");
 const lazyViews = defineReactViews([{id: "people.lazy", revision: "1", load: async () => () => null}]);
@@ -575,41 +575,41 @@ assert.equal(ssrReport.hasDeclarativeShadow, true);
 await writeFile(
   join(consumer, 'index.html'),
   `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Installed framework consumer</title><style>body{font-family:system-ui;margin:1rem}.framework-grid{display:grid;gap:1rem}.adaptive-region{container-type:inline-size;min-height:12rem}.adaptive-narrow{width:360px;max-width:100%}</style></head><body>
-<div class="framework-grid"><main id="vanilla"><h1>Vanilla</h1><p id="vanilla-status" role="status">Ready</p><aeliqo-text-field id="vanilla-input" label="Vanilla person" value="Vanilla"></aeliqo-text-field><aeliqo-table id="vanilla-table"></aeliqo-table><p id="vanilla-app-status" role="status">Mounting</p><div id="vanilla-region" class="adaptive-region"></div></main>
+<div class="framework-grid"><main id="vanilla"><h1>Vanilla</h1><p id="vanilla-status" role="status">Ready</p><varendo-text-field id="vanilla-input" label="Vanilla person" value="Vanilla"></varendo-text-field><varendo-table id="vanilla-table"></varendo-table><p id="vanilla-app-status" role="status">Mounting</p><div id="vanilla-region" class="adaptive-region"></div></main>
 <main id="react-root" class="adaptive-narrow"><h1>React</h1></main><main id="vue-root"><h1>Vue</h1></main></div><script type="module" src="/framework-app.tsx"></script></body></html>`,
 );
 await writeFile(
   join(consumer, 'framework-app.tsx'),
   `
-import {registerAeliqoElements} from "@varendo/web";
-import {AeliqoInputChangeEvent} from "@varendo/web/inputs";
-import type {AeliqoTableElement} from "@varendo/web/data";
+import {registerVarendoElements} from "@varendo/web";
+import {VarendoInputChangeEvent} from "@varendo/web/inputs";
+import type {VarendoTableElement} from "@varendo/web/data";
 import {createRoot} from "react-dom/client";
 import React, {useState} from "react";
-import {AeliqoTextField} from "@varendo/react/inputs";
-import {AeliqoTable} from "@varendo/react/data";
-import {registerAeliqoReactElements} from "@varendo/react";
-import {AeliqoProvider, AeliqoRegion} from "@varendo/react/app";
+import {VarendoTextField} from "@varendo/react/inputs";
+import {VarendoTable} from "@varendo/react/data";
+import {registerVarendoReactElements} from "@varendo/react";
+import {VarendoProvider, VarendoRegion} from "@varendo/react/app";
 import {createApp, h, ref, type VNode} from "vue";
 import {browsePeople, createPeopleApp} from "./adaptive-app.js";
-registerAeliqoElements(); registerAeliqoReactElements();
+registerVarendoElements(); registerVarendoReactElements();
 const vanillaInput = document.querySelector("#vanilla-input");
-const vanillaTable = document.querySelector<AeliqoTableElement>("#vanilla-table");
+const vanillaTable = document.querySelector<VarendoTableElement>("#vanilla-table");
 const vanillaStatus = document.querySelector("#vanilla-status");
 const vanillaRegion = document.querySelector<HTMLElement>("#vanilla-region");
 const vanillaAppStatus = document.querySelector("#vanilla-app-status");
 if (!(vanillaInput instanceof HTMLElement) || !vanillaTable || !vanillaStatus || !vanillaRegion || !vanillaAppStatus) throw new Error("Vanilla shell is incomplete");
 vanillaTable.caption = "Vanilla people"; vanillaTable.columns = [{key: "name", label: "Name"}]; vanillaTable.rows = [{name: "Ada"}];
-vanillaInput.addEventListener("aeliqo-input-change", (event) => { if (event instanceof AeliqoInputChangeEvent) { vanillaInput.value = event.detail.value; vanillaStatus.textContent = event.detail.value; } });
+vanillaInput.addEventListener("varendo-input-change", (event) => { if (event instanceof VarendoInputChangeEvent) { vanillaInput.value = event.detail.value; vanillaStatus.textContent = event.detail.value; } });
 const vanillaApp = createPeopleApp();
 const vanillaMounted = vanillaApp.mount({target: vanillaRegion, regionId: "vanilla-people", resourceId: "people"});
 if (!vanillaMounted.ok) throw new Error(vanillaMounted.diagnostics[0].message);
 vanillaAppStatus.textContent = (await vanillaApp.render({regionId: "vanilla-people", intent: browsePeople})).status;
 
 const reactApp = createPeopleApp();
-function ReactFixture(): React.JSX.Element { const [value, setValue] = useState("React"); return <AeliqoProvider app={reactApp}><p id="react-status" role="status">{value}</p><AeliqoTextField id="react-input" label="React person" value={value} onValueChange={(event) => setValue(event.detail.value)} /><AeliqoTable caption="React people" columns={[{key: "name", label: "Name"}]} rows={[{name: "Ada"}]} /><p id="react-app-status" role="status">Mounting</p><AeliqoRegion className="adaptive-region" regionId="react-people" resourceId="people" intent={browsePeople} onReceipt={(receipt) => { const status = document.querySelector("#react-app-status"); if (status) status.textContent = receipt.status; }} /></AeliqoProvider>; }
+function ReactFixture(): React.JSX.Element { const [value, setValue] = useState("React"); return <VarendoProvider app={reactApp}><p id="react-status" role="status">{value}</p><VarendoTextField id="react-input" label="React person" value={value} onValueChange={(event) => setValue(event.detail.value)} /><VarendoTable caption="React people" columns={[{key: "name", label: "Name"}]} rows={[{name: "Ada"}]} /><p id="react-app-status" role="status">Mounting</p><VarendoRegion className="adaptive-region" regionId="react-people" resourceId="people" intent={browsePeople} onReceipt={(receipt) => { const status = document.querySelector("#react-app-status"); if (status) status.textContent = receipt.status; }} /></VarendoProvider>; }
 createRoot(document.querySelector("#react-root")!).render(<ReactFixture />);
-const VueFixture = {setup(): (() => VNode) { const value = ref("Vue"); return () => h("section", [h("p", {id: "vue-status", role: "status"}, value.value), h("aeliqo-text-field", {id: "vue-input", label: "Vue person", value: value.value, "onAeliqo-input-change": (event: Event) => { if (event instanceof AeliqoInputChangeEvent) value.value = event.detail.value; }}), h("aeliqo-table", {caption: "Vue people", columns: [{key: "name", label: "Name"}], rows: [{name: "Ada"}]}), h("p", {id: "vue-app-status", role: "status"}, "Mounting"), h("div", {id: "vue-region", class: "adaptive-region"})]); }};
+const VueFixture = {setup(): (() => VNode) { const value = ref("Vue"); return () => h("section", [h("p", {id: "vue-status", role: "status"}, value.value), h("varendo-text-field", {id: "vue-input", label: "Vue person", value: value.value, "onVarendo-input-change": (event: Event) => { if (event instanceof VarendoInputChangeEvent) value.value = event.detail.value; }}), h("varendo-table", {caption: "Vue people", columns: [{key: "name", label: "Name"}], rows: [{name: "Ada"}]}), h("p", {id: "vue-app-status", role: "status"}, "Mounting"), h("div", {id: "vue-region", class: "adaptive-region"})]); }};
 createApp(VueFixture).mount(document.querySelector("#vue-root")!);
 const vueRegion = document.querySelector<HTMLElement>("#vue-region");
 const vueAppStatus = document.querySelector("#vue-app-status");
@@ -666,20 +666,20 @@ try {
     ),
   );
   assert.equal(await page.locator('#vanilla-table').locator('table').count(), 1);
-  assert.equal(await page.locator('#react-root aeliqo-table').locator('table').count(), 1);
-  assert.equal(await page.locator('#vue-root > section > aeliqo-table').locator('table').count(), 1);
-  assert.equal(await page.locator('#vanilla-region aeliqo-table').count(), 1);
-  assert.equal(await page.locator('#react-root [data-varendo-react-region] aeliqo-card-collection').count(), 1);
-  assert.equal(await page.locator('#vue-region aeliqo-table').count(), 1);
-  assert.match(await page.locator('#vanilla-region aeliqo-table table').textContent(), /Ada Chen/);
+  assert.equal(await page.locator('#react-root varendo-table').locator('table').count(), 1);
+  assert.equal(await page.locator('#vue-root > section > varendo-table').locator('table').count(), 1);
+  assert.equal(await page.locator('#vanilla-region varendo-table').count(), 1);
+  assert.equal(await page.locator('#react-root [data-varendo-react-region] varendo-card-collection').count(), 1);
+  assert.equal(await page.locator('#vue-region varendo-table').count(), 1);
+  assert.match(await page.locator('#vanilla-region varendo-table table').textContent(), /Ada Chen/);
   assert.match(
     await page
-      .locator('#react-root [data-varendo-react-region] aeliqo-card-collection [part=card]')
+      .locator('#react-root [data-varendo-react-region] varendo-card-collection [part=card]')
       .first()
       .textContent(),
     /Ada Chen/,
   );
-  assert.match(await page.locator('#vue-region aeliqo-table table').textContent(), /Ada Chen/);
+  assert.match(await page.locator('#vue-region varendo-table table').textContent(), /Ada Chen/);
   await page.locator('#vanilla-input').locator('input').fill('Lin');
   await page.locator('#react-input').locator('input').fill('Mina');
   await page.locator('#vue-input').locator('input').fill('Noor');
@@ -698,7 +698,7 @@ try {
   });
   await page.goto(`${origin}/quickstart/index.html`);
   const minimal = page.locator('#root main');
-  const region = minimal.locator('aeliqo-region');
+  const region = minimal.locator('varendo-region');
   const shows = (text) => region.getByText(text, { exact: true }).first().waitFor({ timeout: 15_000 });
   const ask = async (name) => {
     await minimal.getByRole('button', { name, exact: true }).click();
@@ -719,7 +719,7 @@ try {
   await shows('New hires by Team');
   await expect
     .poll(async () => {
-      const chart = await region.locator('aeliqo-bar svg').first().boundingBox();
+      const chart = await region.locator('varendo-bar svg').first().boundingBox();
       const host = await region.boundingBox();
       return chart !== null && host !== null && chart.width >= host.width - 40;
     })

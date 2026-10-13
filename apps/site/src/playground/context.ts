@@ -1,6 +1,6 @@
 import type { AgentJsonValue } from '@varendo/agent/capabilities';
 import { parseWireValue } from '@varendo/core';
-import type { AeliqoApp } from '@varendo/web/app';
+import type { VarendoApp } from '@varendo/web/app';
 import type { AppContextPort } from '@varendo/agent/app';
 import { z } from 'zod';
 import { PLAYGROUND_INTENTS } from './scenario-intents.js';
@@ -13,7 +13,7 @@ const definitions = PLAYGROUND_INTENTS.definitions.map((definition) => {
   return { ref: definition.ref, inputSchema: schema.value as AgentJsonValue };
 });
 
-export function playgroundContext(app: AeliqoApp, regionId: string): AppContextPort {
+export function playgroundContext(app: VarendoApp, regionId: string): AppContextPort {
   return {
     read() {
       const current = app.runtime.contexts(regionId);

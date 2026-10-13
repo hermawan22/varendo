@@ -1,20 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import {
-  AELIQO_PRESENTATION_REFS,
-  AELIQO_OPERATION_REFS,
-  createAeliqoPresentationRegistry,
+  VARENDO_PRESENTATION_REFS,
+  VARENDO_OPERATION_REFS,
+  createVarendoPresentationRegistry,
   createSelectionIdentityMapping,
 } from '../../../packages/web/src/region/index.js';
 import type { PresentationPlan } from '../../../packages/core/src/contracts/index.js';
 import type { PresentationContext } from '../../../packages/core/src/presentation/index.js';
 import { validatePresentationPlan } from '../../../packages/core/src/presentation/index.js';
-import { stableTableRowKey } from '../../../packages/web/src/elements/aeliqo-table.js';
+import { stableTableRowKey } from '../../../packages/web/src/elements/varendo-table.js';
 import {
-  alignAeliqoChartSeries,
-  buildAeliqoChartDomain,
-  buildAeliqoChartGeometry,
-} from '../../../packages/web/src/elements/aeliqo-chart.js';
-import { yAxisTicks } from '../../../packages/web/src/elements/aeliqo-chart-geometry.js';
+  alignVarendoChartSeries,
+  buildVarendoChartDomain,
+  buildVarendoChartGeometry,
+} from '../../../packages/web/src/elements/varendo-chart.js';
+import { yAxisTicks } from '../../../packages/web/src/elements/varendo-chart-geometry.js';
 import {
   environment,
   experience,
@@ -36,7 +36,7 @@ const result = {
 } as const;
 
 function registry() {
-  const created = createAeliqoPresentationRegistry({
+  const created = createVarendoPresentationRegistry({
     resolveEntity: (authorizedResult) => (authorizedResult.ref.outputId === 'rows' ? 'employees' : undefined),
   });
   if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
@@ -47,28 +47,28 @@ describe('registered web region', () => {
   it('exposes bounded stack, table, trend and filter manifests', () => {
     const refs = registry().manifests.map((manifest) => manifest.ref);
     expect(refs.slice(0, 4)).toEqual([
-      AELIQO_PRESENTATION_REFS.stack,
-      AELIQO_PRESENTATION_REFS.table,
-      AELIQO_PRESENTATION_REFS.trend,
-      AELIQO_PRESENTATION_REFS.filter,
+      VARENDO_PRESENTATION_REFS.stack,
+      VARENDO_PRESENTATION_REFS.table,
+      VARENDO_PRESENTATION_REFS.trend,
+      VARENDO_PRESENTATION_REFS.filter,
     ]);
     expect(
-      registry().manifests.find((manifest) => manifest.ref.id === AELIQO_PRESENTATION_REFS.table.id)?.operations,
-    ).toContainEqual(AELIQO_OPERATION_REFS.selection);
+      registry().manifests.find((manifest) => manifest.ref.id === VARENDO_PRESENTATION_REFS.table.id)?.operations,
+    ).toContainEqual(VARENDO_OPERATION_REFS.selection);
   });
 
   it('derives table selection ports from the Result identity and rejects unknown config', () => {
-    const manifest = registry().manifests.find((candidate) => candidate.ref.id === AELIQO_PRESENTATION_REFS.table.id)!;
+    const manifest = registry().manifests.find((candidate) => candidate.ref.id === VARENDO_PRESENTATION_REFS.table.id)!;
     const configured = manifest.resolveConfig({ selection: 'multiple' }, result);
     expect(configured).toMatchObject({
       ok: true,
       value: {
         fields: ['employee.id', 'month', 'amount'],
         operations: [
-          AELIQO_OPERATION_REFS.read,
-          AELIQO_OPERATION_REFS.compare,
-          AELIQO_OPERATION_REFS.analyze,
-          AELIQO_OPERATION_REFS.selection,
+          VARENDO_OPERATION_REFS.read,
+          VARENDO_OPERATION_REFS.compare,
+          VARENDO_OPERATION_REFS.analyze,
+          VARENDO_OPERATION_REFS.selection,
         ],
         ports: [{ id: 'selection', payload: 'selection', entity: 'employees', identity: ['employee.id'] }],
       },
@@ -89,16 +89,16 @@ describe('registered web region', () => {
       ok: true,
       value: { ports: [{ entity: 'employees' }] },
     });
-    const defaultRegistry = createAeliqoPresentationRegistry();
+    const defaultRegistry = createVarendoPresentationRegistry();
     expect(
       defaultRegistry.ok &&
         defaultRegistry.value.manifests
-          .find((candidate) => candidate.ref.id === AELIQO_PRESENTATION_REFS.table.id)
+          .find((candidate) => candidate.ref.id === VARENDO_PRESENTATION_REFS.table.id)
           ?.resolveConfig({ selection: 'multiple' }, result),
     ).toMatchObject({ ok: false, diagnostics: [{ code: 'web.presentation.binding' }] });
     expect(
       manifest.suggestConfig?.(
-        [{ id: 'select', operation: AELIQO_OPERATION_REFS.selection, fields: ['employee.id'], required: true }],
+        [{ id: 'select', operation: VARENDO_OPERATION_REFS.selection, fields: ['employee.id'], required: true }],
         result,
       ),
     ).toMatchObject({ ok: true, value: { selection: 'single' } });
@@ -112,13 +112,13 @@ describe('registered web region', () => {
         {
           id: 'table',
           role: 'table',
-          representation: AELIQO_PRESENTATION_REFS.table,
+          representation: VARENDO_PRESENTATION_REFS.table,
           result: ref,
           config: { schema: { id: 'data.table.config', revision: '1' }, values: { selection: 'multiple' } },
           children: [],
         },
       ],
-      coverage: [{ needId: 'browse', nodeIds: ['table'], operations: [AELIQO_OPERATION_REFS.read] }],
+      coverage: [{ needId: 'browse', nodeIds: ['table'], operations: [VARENDO_OPERATION_REFS.read] }],
       links: [],
     };
     const context: PresentationContext = {
@@ -127,18 +127,18 @@ describe('registered web region', () => {
         needs: [
           {
             id: 'browse',
-            operation: AELIQO_OPERATION_REFS.read,
+            operation: VARENDO_OPERATION_REFS.read,
             fields: ['employee.id'],
             outputId: 'rows',
             required: true,
           },
         ],
       },
-      experience: { ...experience, allowedRepresentations: [AELIQO_PRESENTATION_REFS.table.id] },
+      experience: { ...experience, allowedRepresentations: [VARENDO_PRESENTATION_REFS.table.id] },
       results: [baseResult],
       current: presentationPlan.preconditions,
       environment,
-      rendererCapabilities: [AELIQO_PRESENTATION_REFS.table],
+      rendererCapabilities: [VARENDO_PRESENTATION_REFS.table],
     };
     const checked = validatePresentationPlan(tablePlan, context, registry());
     expect(checked).toMatchObject({
@@ -149,14 +149,14 @@ describe('registered web region', () => {
 
   it('keeps trend series fields and filter semantics typed', () => {
     const manifests = registry().manifests;
-    const trend = manifests.find((candidate) => candidate.ref.id === AELIQO_PRESENTATION_REFS.trend.id)!;
+    const trend = manifests.find((candidate) => candidate.ref.id === VARENDO_PRESENTATION_REFS.trend.id)!;
     expect(
       trend.resolveConfig({ labelField: 'month', series: [{ field: 'amount' }], seriesBy: ['employee.id'] }, result),
     ).toMatchObject({
       ok: true,
       value: {
         fields: ['month', 'employee.id', 'amount'],
-        operations: [AELIQO_OPERATION_REFS.read, AELIQO_OPERATION_REFS.compare, AELIQO_OPERATION_REFS.analyze],
+        operations: [VARENDO_OPERATION_REFS.read, VARENDO_OPERATION_REFS.compare, VARENDO_OPERATION_REFS.analyze],
       },
     });
     expect(
@@ -175,7 +175,7 @@ describe('registered web region', () => {
         [
           {
             id: 'trend',
-            operation: AELIQO_OPERATION_REFS.compare,
+            operation: VARENDO_OPERATION_REFS.compare,
             fields: ['employee.id', 'month', 'amount'],
             outputId: 'rows',
             required: true,
@@ -187,10 +187,10 @@ describe('registered web region', () => {
       ok: true,
       value: { labelField: 'month', series: [{ field: 'amount' }], seriesBy: ['employee.id'] },
     });
-    const filter = manifests.find((candidate) => candidate.ref.id === AELIQO_PRESENTATION_REFS.filter.id)!;
+    const filter = manifests.find((candidate) => candidate.ref.id === VARENDO_PRESENTATION_REFS.filter.id)!;
     expect(filter.resolveConfig({ field: 'employee.id', outputId: 'rows' }, result)).toMatchObject({
       ok: true,
-      value: { fields: ['employee.id'], operations: [AELIQO_OPERATION_REFS.filter], ports: [{ payload: 'filter' }] },
+      value: { fields: ['employee.id'], operations: [VARENDO_OPERATION_REFS.filter], ports: [{ payload: 'filter' }] },
     });
     expect(
       filter.resolveConfig({ field: 'employee.id', outputId: 'rows', label: 'Untrusted claim' }, result),
@@ -208,7 +208,7 @@ describe('registered web region', () => {
         [
           {
             id: 'filter',
-            operation: AELIQO_OPERATION_REFS.filter,
+            operation: VARENDO_OPERATION_REFS.filter,
             fields: ['employee.id'],
             outputId: 'rows',
             required: true,
@@ -220,7 +220,7 @@ describe('registered web region', () => {
   });
 
   it('rejects mixed numeric units on a shared trend axis', () => {
-    const trend = registry().manifests.find((candidate) => candidate.ref.id === AELIQO_PRESENTATION_REFS.trend.id)!;
+    const trend = registry().manifests.find((candidate) => candidate.ref.id === VARENDO_PRESENTATION_REFS.trend.id)!;
     const mixed = {
       ...result,
       fields: [
@@ -275,11 +275,11 @@ describe('registered web region', () => {
       },
       { id: 'second', label: 'Second', points: [{ x: 1, label: 'one', value: 3 }] },
     ];
-    const aligned = alignAeliqoChartSeries(duplicate);
-    expect(buildAeliqoChartDomain(duplicate)).toHaveLength(2);
+    const aligned = alignVarendoChartSeries(duplicate);
+    expect(buildVarendoChartDomain(duplicate)).toHaveLength(2);
     expect(aligned[0]?.points.map((point) => point.value)).toEqual([1, 2]);
     expect(aligned[1]?.points.map((point) => point.value)).toEqual([3, null]);
-    expect(new Set(buildAeliqoChartGeometry(duplicate).circles.map((circle) => circle.x))).toEqual(new Set([340]));
+    expect(new Set(buildVarendoChartGeometry(duplicate).circles.map((circle) => circle.x))).toEqual(new Set([340]));
 
     const temporal = [
       {
@@ -292,9 +292,9 @@ describe('registered web region', () => {
       },
       { id: 'b', label: 'B', points: [{ x: '2026-01-01T00:00:00.000100+00:00', label: 'same', value: 3 }] },
     ];
-    expect(buildAeliqoChartDomain(temporal)).toHaveLength(2);
-    expect(alignAeliqoChartSeries(temporal)[1]?.points.map((point) => point.value)).toEqual([3, null]);
-    expect(buildAeliqoChartGeometry(temporal).circles).toHaveLength(3);
+    expect(buildVarendoChartDomain(temporal)).toHaveLength(2);
+    expect(alignVarendoChartSeries(temporal)[1]?.points.map((point) => point.value)).toEqual([3, null]);
+    expect(buildVarendoChartGeometry(temporal).circles).toHaveLength(3);
 
     const dates = [
       {
@@ -307,14 +307,14 @@ describe('registered web region', () => {
       },
       { id: 'b', label: 'B', points: [{ x: '2026-01-08', label: 'Jan 8', value: 2 }] },
     ];
-    expect(buildAeliqoChartDomain(dates).map((point) => point.x)).toEqual(['2026-01-01', '2026-01-08', '2026-01-15']);
-    expect(alignAeliqoChartSeries(dates).map((series) => series.points.map((point) => point.value))).toEqual([
+    expect(buildVarendoChartDomain(dates).map((point) => point.x)).toEqual(['2026-01-01', '2026-01-08', '2026-01-15']);
+    expect(alignVarendoChartSeries(dates).map((series) => series.points.map((point) => point.value))).toEqual([
       [1, null, 3],
       [null, 2, null],
     ]);
     expect(
       new Set(
-        buildAeliqoChartGeometry([
+        buildVarendoChartGeometry([
           {
             id: 'same-date',
             label: 'Same date',
@@ -327,7 +327,7 @@ describe('registered web region', () => {
       ),
     ).toEqual(new Set([340]));
 
-    const halfSecond = buildAeliqoChartGeometry([
+    const halfSecond = buildVarendoChartGeometry([
       {
         id: 'timed',
         label: 'Timed',
@@ -351,7 +351,7 @@ describe('registered web region', () => {
   });
 
   it('builds separate SVG segments for null gaps and keeps multiple series distinct', () => {
-    const geometry = buildAeliqoChartGeometry([
+    const geometry = buildVarendoChartGeometry([
       {
         id: 'actual',
         label: 'Actual',
@@ -379,7 +379,7 @@ describe('registered web region', () => {
   });
 
   it('aligns sparse and disjoint explicit x values to one shared domain', () => {
-    const geometry = buildAeliqoChartGeometry([
+    const geometry = buildVarendoChartGeometry([
       {
         id: 'actual',
         label: 'Actual',

@@ -2,13 +2,13 @@ import { css, unsafeCSS } from 'lit';
 import type { Diagnostic, Outcome, ResultRef, VisualizationSpec } from '@varendo/core';
 import type { BoundVisualization } from '@varendo/core/visualization';
 import { bindVisualizationSpec } from '@varendo/core/visualization';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../../foundation/base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../../foundation/base.js';
 import { compilePlotComposition } from '../../plot/composition.js';
 import type { CompiledPlot, CompiledPlotNode, PlotDataset } from '../../plot/composition.js';
 import type { PlotGeometry } from '../../plot/geometry.js';
 import { QUANTITATIVE_COLOR_END, QUANTITATIVE_COLOR_START } from '../../plot/palette.js';
 import { materializeVisualizationRows } from '../materialization.js';
-import type { AeliqoVisualizationSelectionDetail, VisualizationDataset, VisualizationInputs } from '../types.js';
+import type { VarendoVisualizationSelectionDetail, VisualizationDataset, VisualizationInputs } from '../types.js';
 import { renderCartesian } from './render.js';
 import type { CartesianState, CartesianView } from './types.js';
 import type { CartesianRenderContext } from './types.js';
@@ -30,7 +30,7 @@ const inputChanged = (changed: Map<string, unknown>): boolean =>
  * Shared family surface for the six Cartesian views. It owns no query/runtime
  * state: the host supplies a bound visualization and exact current rows.
  */
-export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
+export abstract class VarendoCartesianElement extends VarendoFoundationElement {
   // This surface has several independent focus targets. Delegating a pointer
   // press to its first viewport can scroll a data button away before mouseup.
   static override readonly shadowRootOptions: ShadowRootInit = { mode: 'open', delegatesFocus: false };
@@ -49,10 +49,10 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
   };
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
-        color: var(--aeliqo-color-text, #111827);
+        color: var(--varendo-color-text, #111827);
         display: block;
         max-inline-size: 100%;
         min-inline-size: 0;
@@ -61,15 +61,15 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
         margin: 0;
       }
       figcaption {
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
-        margin-block-end: var(--aeliqo-space-8, 0.5rem);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
+        margin-block-end: var(--varendo-space-8, 0.5rem);
       }
       [part='scope'],
       [part='note'],
       [part='error'],
       [part='color-key'] {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
         overflow-wrap: anywhere;
         unicode-bidi: plaintext;
       }
@@ -81,7 +81,7 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
         position: relative;
       }
       [part='viewport'] svg {
-        background: var(--aeliqo-color-canvas, #fff);
+        background: var(--varendo-color-canvas, #fff);
         block-size: auto;
         display: block;
       }
@@ -99,7 +99,7 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
       table {
         border-collapse: collapse;
         inline-size: 100%;
-        margin-block-start: var(--aeliqo-space-12, 0.75rem);
+        margin-block-start: var(--varendo-space-12, 0.75rem);
         min-inline-size: 28rem;
       }
       caption,
@@ -110,32 +110,32 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
       }
       th,
       td {
-        border-block-end: 1px solid var(--aeliqo-color-border, #64748b);
-        padding: var(--aeliqo-space-8, 0.5rem);
+        border-block-end: 1px solid var(--varendo-color-border, #64748b);
+        padding: var(--varendo-space-8, 0.5rem);
         text-align: start;
       }
       th {
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
       }
       button {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid var(--aeliqo-color-border, #64748b);
-        color: var(--aeliqo-color-text, #111827);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: var(--varendo-control-border-width, 0.0625rem) solid var(--varendo-color-border, #64748b);
+        color: var(--varendo-color-text, #111827);
         font: inherit;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        min-inline-size: var(--aeliqo-control-min-target, 2.75rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        min-inline-size: var(--varendo-control-min-target, 2.75rem);
       }
       button:focus-visible {
-        outline: var(--aeliqo-focus-width, 3px) solid var(--aeliqo-color-focus, #4338ca);
-        outline-offset: var(--aeliqo-focus-offset, 2px);
+        outline: var(--varendo-focus-width, 3px) solid var(--varendo-color-focus, #4338ca);
+        outline-offset: var(--varendo-focus-offset, 2px);
       }
       [part='legend'],
       [part='color-key-ticks'] {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-8, 0.5rem) var(--aeliqo-space-16, 1rem);
+        gap: var(--varendo-space-8, 0.5rem) var(--varendo-space-16, 1rem);
         list-style: none;
-        margin: var(--aeliqo-space-8, 0.5rem) 0 0;
+        margin: var(--varendo-space-8, 0.5rem) 0 0;
         padding: 0;
       }
       [part='color-key-ticks'] {
@@ -147,15 +147,15 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
       [part='legend'] li {
         align-items: center;
         display: inline-flex;
-        gap: var(--aeliqo-space-4, 0.25rem);
+        gap: var(--varendo-space-4, 0.25rem);
       }
       [part='legend-marker'] {
         block-size: 0.75rem;
         inline-size: 0.75rem;
       }
       [part='warnings'] {
-        color: var(--aeliqo-color-warning, #92400e);
-        margin: var(--aeliqo-space-8, 0.5rem) 0 0;
+        color: var(--varendo-color-warning, #92400e);
+        margin: var(--varendo-space-8, 0.5rem) 0 0;
         padding-inline-start: 1.25rem;
       }
       [part='color-key-bar'] {
@@ -171,15 +171,15 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
         align-items: center;
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-8, 0.5rem);
-        margin-block-start: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
+        margin-block-start: var(--varendo-space-8, 0.5rem);
       }
       [part='facet'],
       [part='concat-inline'],
       [part='concat-block'] {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-16, 1rem);
+        gap: var(--varendo-space-16, 1rem);
       }
       [part='concat-inline'] {
         overflow-inline: auto;
@@ -194,7 +194,7 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
       }
       [part='viewport'] svg .gridline {
         opacity: 0.45;
-        stroke: var(--aeliqo-chart-rule, var(--aeliqo-color-border, #8d98a5));
+        stroke: var(--varendo-chart-rule, var(--varendo-color-border, #8d98a5));
         stroke-dasharray: 2 4;
         stroke-width: 1;
       }
@@ -224,7 +224,7 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
         }
         caption {
           display: block;
-          margin-block: var(--aeliqo-space-12, 0.75rem);
+          margin-block: var(--varendo-space-12, 0.75rem);
           text-align: start;
         }
         thead {
@@ -238,23 +238,23 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
         }
         tbody {
           display: grid;
-          gap: var(--aeliqo-space-12, 0.75rem);
+          gap: var(--varendo-space-12, 0.75rem);
         }
         tr {
-          border-block-end: 1px solid var(--aeliqo-color-border, #64748b);
+          border-block-end: 1px solid var(--varendo-color-border, #64748b);
           display: block;
-          padding-block: var(--aeliqo-space-4, 0.25rem);
+          padding-block: var(--varendo-space-4, 0.25rem);
         }
         td {
           border: 0;
           display: grid;
-          gap: var(--aeliqo-space-8, 0.5rem);
+          gap: var(--varendo-space-8, 0.5rem);
           grid-template-columns: minmax(4.75rem, 0.7fr) minmax(0, 1.3fr);
-          padding: var(--aeliqo-space-4, 0.25rem);
+          padding: var(--varendo-space-4, 0.25rem);
         }
         td::before {
           content: attr(data-label);
-          font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+          font-weight: var(--varendo-typography-font-weight-semibold, 600);
           overflow-wrap: anywhere;
         }
         td > button {
@@ -321,14 +321,14 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
     const active = this.shadowRoot?.activeElement;
     const elementConstructor = globalThis.HTMLElement;
     if (elementConstructor !== undefined && active instanceof elementConstructor) {
-      const button = active.closest<HTMLButtonElement>('button[data-aeliqo-row-identity]');
+      const button = active.closest<HTMLButtonElement>('button[data-varendo-row-identity]');
       if (
         button !== null &&
-        button.dataset.aeliqoRowIdentity !== undefined &&
-        button.dataset.aeliqoResult !== undefined
+        button.dataset.varendoRowIdentity !== undefined &&
+        button.dataset.varendoResult !== undefined
       ) {
-        this.focusedIdentity = button.dataset.aeliqoRowIdentity;
-        this.focusedResult = button.dataset.aeliqoResult;
+        this.focusedIdentity = button.dataset.varendoRowIdentity;
+        this.focusedResult = button.dataset.varendoResult;
         this.focusedElement = button;
       }
     }
@@ -414,9 +414,9 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
       return;
     }
     const target = [
-      ...(this.shadowRoot?.querySelectorAll<HTMLButtonElement>('button[data-aeliqo-row-identity]') ?? []),
+      ...(this.shadowRoot?.querySelectorAll<HTMLButtonElement>('button[data-varendo-row-identity]') ?? []),
     ].find(
-      (candidate) => candidate.dataset.aeliqoRowIdentity === identity && candidate.dataset.aeliqoResult === result,
+      (candidate) => candidate.dataset.varendoRowIdentity === identity && candidate.dataset.varendoResult === result,
     );
     target?.focus();
   }
@@ -450,7 +450,7 @@ export abstract class AeliqoCartesianElement extends AeliqoFoundationElement {
 
   private select(identity: string, result: ResultRef): void {
     if (!this.selectionEnabled) return;
-    const selection = new CustomEvent<AeliqoVisualizationSelectionDetail>('aeliqo-visualization-select', {
+    const selection = new CustomEvent<VarendoVisualizationSelectionDetail>('varendo-visualization-select', {
       bubbles: true,
       composed: true,
       cancelable: true,

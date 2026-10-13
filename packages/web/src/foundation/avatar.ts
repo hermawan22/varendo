@@ -1,10 +1,10 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles, imageHref, initialsForName } from './base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles, imageHref, initialsForName } from './base.js';
 
-export type AeliqoAvatarSize = 'small' | 'medium' | 'large';
+export type VarendoAvatarSize = 'small' | 'medium' | 'large';
 
 /** Optional image with a privacy-safe text fallback and explicit decorative mode. */
-export class AeliqoAvatarElement extends AeliqoFoundationElement {
+export class VarendoAvatarElement extends VarendoFoundationElement {
   static readonly properties = {
     name: { type: String },
     src: { type: String },
@@ -16,7 +16,7 @@ export class AeliqoAvatarElement extends AeliqoFoundationElement {
   name = '';
   src = '';
   alt = '';
-  size: AeliqoAvatarSize = 'medium';
+  size: VarendoAvatarSize = 'medium';
   decorative = false;
   private imageFailed = false;
 
@@ -47,35 +47,35 @@ export class AeliqoAvatarElement extends AeliqoFoundationElement {
   };
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: inline-block;
       }
       [part='avatar'] {
         align-items: center;
-        background: var(--aeliqo-color-accent, #4338ca);
+        background: var(--varendo-color-accent, #4338ca);
         border-radius: 50%;
-        color: var(--aeliqo-color-on-accent, #fff);
+        color: var(--varendo-color-on-accent, #fff);
         display: inline-flex;
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
         justify-content: center;
         overflow: hidden;
         vertical-align: middle;
       }
       .size-small {
         block-size: 2rem;
-        font-size: var(--aeliqo-typography-font-size-caption, 0.75rem);
+        font-size: var(--varendo-typography-font-size-caption, 0.75rem);
         inline-size: 2rem;
       }
       .size-medium {
         block-size: 2.75rem;
-        font-size: var(--aeliqo-typography-font-size-body, 0.875rem);
+        font-size: var(--varendo-typography-font-size-body, 0.875rem);
         inline-size: 2.75rem;
       }
       .size-large {
         block-size: 3.5rem;
-        font-size: var(--aeliqo-typography-font-size-body-large, 1rem);
+        font-size: var(--varendo-typography-font-size-body-large, 1rem);
         inline-size: 3.5rem;
       }
       [part='image'] {

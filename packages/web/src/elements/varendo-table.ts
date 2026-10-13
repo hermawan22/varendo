@@ -1,12 +1,12 @@
-import { aeliqoTableStyles } from './aeliqo-table-styles.js';
+import { varendoTableStyles } from './varendo-table-styles.js';
 import { html, LitElement, nothing } from 'lit';
-import { AeliqoTableSelectionEvent } from '../events.js';
-import { AeliqoTablePageEvent, AeliqoTableSortEvent, AeliqoTableWindowEvent } from '../data/events.js';
+import { VarendoTableSelectionEvent } from '../events.js';
+import { VarendoTablePageEvent, VarendoTableSortEvent, VarendoTableWindowEvent } from '../data/events.js';
 import { dataValueText } from '../data/shared.js';
 import type { ResultRef } from '@varendo/core';
-import type { AeliqoDataScope, AeliqoDataStatus, AeliqoSortState } from '../data/types.js';
-import type { AeliqoTableColumn, AeliqoTableRow, AeliqoTableSelectionMode } from '../types.js';
-import { AELIQO_WEB_VERSION } from '../version.js';
+import type { VarendoDataScope, VarendoDataStatus, VarendoSortState } from '../data/types.js';
+import type { VarendoTableColumn, VarendoTableRow, VarendoTableSelectionMode } from '../types.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
 import { stableTableRowKey, tableIdentityLabel } from './table-identity.js';
 import { gridCellTarget } from './table-grid-navigation.js';
 import type { GridNavigationContext } from './table-grid-navigation.js';
@@ -21,9 +21,9 @@ import {
 } from './table-rendering.js';
 
 export { stableTableRowKey } from './table-identity.js';
-export { AELIQO_TABLE_MAX_VIRTUAL_ROWS } from './table-window.js';
+export { VARENDO_TABLE_MAX_VIRTUAL_ROWS } from './table-window.js';
 
-export type AeliqoTableMode = 'table' | 'grid';
+export type VarendoTableMode = 'table' | 'grid';
 
 interface GridFocus {
   readonly rowIndex: number;
@@ -32,8 +32,8 @@ interface GridFocus {
 }
 
 /** Native table-first collection; grid mode is an explicit opt-in. */
-export class AeliqoTableElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoTableElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     columns: { attribute: false },
     rows: { attribute: false },
@@ -58,17 +58,17 @@ export class AeliqoTableElement extends LitElement {
     message: { type: String },
   };
 
-  columns: readonly AeliqoTableColumn[] = [];
-  rows: readonly AeliqoTableRow[] = [];
+  columns: readonly VarendoTableColumn[] = [];
+  rows: readonly VarendoTableRow[] = [];
   caption = '';
   emptyLabel = 'No rows to display.';
   entity = 'row';
   identity: readonly string[] = [];
-  selection: AeliqoTableSelectionMode = 'none';
+  selection: VarendoTableSelectionMode = 'none';
   selectedKeys: readonly string[] = [];
   result: ResultRef | undefined = undefined;
-  mode: AeliqoTableMode = 'table';
-  sort: AeliqoSortState | undefined = undefined;
+  mode: VarendoTableMode = 'table';
+  sort: VarendoSortState | undefined = undefined;
   page = 1;
   pageSize = 0;
   totalRows: number | undefined = undefined;
@@ -76,8 +76,8 @@ export class AeliqoTableElement extends LitElement {
   virtualStart = 0;
   virtualCount = 40;
   overscan = 4;
-  scope: AeliqoDataScope | undefined = undefined;
-  status: AeliqoDataStatus = 'ready';
+  scope: VarendoDataScope | undefined = undefined;
+  status: VarendoDataStatus = 'ready';
   message = '';
 
   protected override render() {
@@ -109,9 +109,9 @@ export class AeliqoTableElement extends LitElement {
   }
 
   private renderTable(
-    rows: readonly { readonly row: AeliqoTableRow; readonly index: number }[],
+    rows: readonly { readonly row: VarendoTableRow; readonly index: number }[],
     selectable: boolean,
-    status: AeliqoDataStatus,
+    status: VarendoDataStatus,
   ) {
     return html`<table part="table" data-virtualized=${this.virtualized ? 'true' : 'false'}>
       ${this.renderCaption()} ${this.renderTableHead(selectable)}
@@ -138,15 +138,15 @@ export class AeliqoTableElement extends LitElement {
   }
 
   private renderTableRows(
-    rows: readonly { readonly row: AeliqoTableRow; readonly index: number }[],
+    rows: readonly { readonly row: VarendoTableRow; readonly index: number }[],
     selectable: boolean,
-    status: AeliqoDataStatus,
+    status: VarendoDataStatus,
   ) {
     if (rows.length === 0) return this.renderEmptyRow(selectable, status);
     return rows.map((entry) => this.renderTableRow(entry.row, entry.index, selectable));
   }
 
-  private renderEmptyRow(selectable: boolean, status: AeliqoDataStatus) {
+  private renderEmptyRow(selectable: boolean, status: VarendoDataStatus) {
     const columnCount = Math.max(this.columns.length + (selectable ? 1 : 0), 1);
     const label = status === 'empty' ? this.emptyLabel : '';
     return html`<tr>
@@ -154,7 +154,7 @@ export class AeliqoTableElement extends LitElement {
     </tr>`;
   }
 
-  private renderHeader(column: AeliqoTableColumn) {
+  private renderHeader(column: VarendoTableColumn) {
     const sortable = column.sortable === true;
     const active = this.sort?.field === column.key;
     const indicator = sortIndicator(active, this.sort?.direction);
@@ -170,7 +170,7 @@ export class AeliqoTableElement extends LitElement {
     </th>`;
   }
 
-  private renderTableRow(row: AeliqoTableRow, rowIndex: number, selectable: boolean) {
+  private renderTableRow(row: VarendoTableRow, rowIndex: number, selectable: boolean) {
     const key = stableTableRowKey(row, this.identity);
     const selected = key !== undefined && this.selectedKeys.includes(key);
     return html`<tr
@@ -184,7 +184,7 @@ export class AeliqoTableElement extends LitElement {
   }
 
   private renderGrid(
-    rows: readonly { readonly row: AeliqoTableRow; readonly index: number }[],
+    rows: readonly { readonly row: VarendoTableRow; readonly index: number }[],
     selectable: boolean,
     rowCount: number | undefined,
   ) {
@@ -209,7 +209,7 @@ export class AeliqoTableElement extends LitElement {
     </div>`;
   }
 
-  private renderGridRow(row: AeliqoTableRow, rowIndex: number, selectable: boolean, focus: GridFocus) {
+  private renderGridRow(row: VarendoTableRow, rowIndex: number, selectable: boolean, focus: GridFocus) {
     const key = stableTableRowKey(row, this.identity);
     const selected = key !== undefined && this.selectedKeys.includes(key);
     return html`<div
@@ -231,7 +231,7 @@ export class AeliqoTableElement extends LitElement {
     rowIndex: number,
     focus: GridFocus,
     content: unknown,
-    align?: AeliqoTableColumn['align'],
+    align?: VarendoTableColumn['align'],
   ) {
     return html`<div
       role="gridcell"
@@ -248,7 +248,7 @@ export class AeliqoTableElement extends LitElement {
     </div>`;
   }
 
-  private renderGridHeader(column: AeliqoTableColumn, columnIndex: number) {
+  private renderGridHeader(column: VarendoTableColumn, columnIndex: number) {
     const active = this.sort?.field === column.key;
     const indicator = sortIndicator(active, this.sort?.direction);
     const ariaSort = sortDescription(active, this.sort?.direction, column.sortable === true);
@@ -274,7 +274,7 @@ export class AeliqoTableElement extends LitElement {
       key === undefined ? 'Row cannot be selected' : `${action} ${this.entity} ${this.selectionLabelForKey(key)}`;
     const cell = html`<input
       type=${this.selection === 'single' ? 'radio' : 'checkbox'}
-      name=${this.selection === 'single' ? 'aeliqo-single-selection' : nothing}
+      name=${this.selection === 'single' ? 'varendo-single-selection' : nothing}
       .checked=${selected}
       ?disabled=${key === undefined}
       aria-label=${label}
@@ -296,16 +296,16 @@ export class AeliqoTableElement extends LitElement {
     return createTableWindow(this.rows.length, this.virtualStart, this.virtualCount, this.overscan);
   }
 
-  private visibleRows(): readonly { readonly row: AeliqoTableRow; readonly index: number }[] {
+  private visibleRows(): readonly { readonly row: VarendoTableRow; readonly index: number }[] {
     return visibleTableRows(this.rows, this.virtualized, this.virtualWindow());
   }
 
-  private readonly requestSort = (column: AeliqoTableColumn): void => {
+  private readonly requestSort = (column: VarendoTableColumn): void => {
     if (column.sortable !== true) return;
-    let sort: AeliqoSortState | undefined;
+    let sort: VarendoSortState | undefined;
     if (this.sort?.field !== column.key) sort = { field: column.key, direction: 'asc' };
     else if (this.sort.direction === 'asc') sort = { field: column.key, direction: 'desc' };
-    this.dispatchEvent(new AeliqoTableSortEvent({ sort }));
+    this.dispatchEvent(new VarendoTableSortEvent({ sort }));
   };
 
   private readonly requestPage = (page: number): void => {
@@ -315,7 +315,7 @@ export class AeliqoTableElement extends LitElement {
         : Math.max(1, Math.ceil(this.totalRows / this.pageSize));
     const next = Math.min(pages, Math.max(1, Math.trunc(page)));
     this.dispatchEvent(
-      new AeliqoTablePageEvent({
+      new VarendoTablePageEvent({
         page: next,
         pageSize: this.pageSize,
         ...(this.result === undefined ? {} : { result: this.result }),
@@ -341,7 +341,7 @@ export class AeliqoTableElement extends LitElement {
             keys,
             ...(this.result === undefined ? {} : { result: this.result }),
           };
-    this.dispatchEvent(new AeliqoTableSelectionEvent(detail));
+    this.dispatchEvent(new VarendoTableSelectionEvent(detail));
   };
 
   private gridFocus: GridFocus | undefined;
@@ -364,7 +364,7 @@ export class AeliqoTableElement extends LitElement {
   }
 
   private resolveGridFocus(
-    rows: readonly { readonly row: AeliqoTableRow; readonly index: number }[],
+    rows: readonly { readonly row: VarendoTableRow; readonly index: number }[],
     columnCount: number,
   ): GridFocus {
     const column = Math.min(Math.max(0, this.gridFocus?.column ?? 0), Math.max(0, columnCount - 1));
@@ -376,16 +376,16 @@ export class AeliqoTableElement extends LitElement {
   }
 
   private keyedGridRow(
-    rows: readonly { readonly row: AeliqoTableRow; readonly index: number }[],
-  ): { readonly row: AeliqoTableRow; readonly index: number } | undefined {
+    rows: readonly { readonly row: VarendoTableRow; readonly index: number }[],
+  ): { readonly row: VarendoTableRow; readonly index: number } | undefined {
     const key = this.gridFocus?.rowKey;
     if (key === undefined) return undefined;
     return rows.find((entry) => stableTableRowKey(entry.row, this.identity) === key);
   }
 
   private fallbackGridRow(
-    rows: readonly { readonly row: AeliqoTableRow; readonly index: number }[],
-  ): { readonly row: AeliqoTableRow; readonly index: number } | undefined {
+    rows: readonly { readonly row: VarendoTableRow; readonly index: number }[],
+  ): { readonly row: VarendoTableRow; readonly index: number } | undefined {
     const index = this.gridFocus?.rowIndex ?? rows[0]?.index ?? 0;
     return rows.find((entry) => entry.index >= index) ?? rows.at(-1);
   }
@@ -445,7 +445,7 @@ export class AeliqoTableElement extends LitElement {
     this.gridFocus = focus;
     this.pendingGridFocus = focus;
     this.dispatchEvent(
-      new AeliqoTableWindowEvent({
+      new VarendoTableWindowEvent({
         start: Math.max(0, row),
         count,
         overscan,
@@ -481,5 +481,5 @@ export class AeliqoTableElement extends LitElement {
     event.preventDefault();
   }
 
-  static readonly styles = aeliqoTableStyles;
+  static readonly styles = varendoTableStyles;
 }

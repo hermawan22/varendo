@@ -10,8 +10,8 @@ import type {
 import type { RuntimeCommittedReceipt } from '@varendo/runtime/app';
 import { canonicalViewId, recipeSupports, standardDataRecipe, standardRecipeCandidates } from '../recipes/standard.js';
 import type { RecipeDefinition, RecipePresentationPolicy } from '../recipes/types.js';
-import type { AeliqoRegionResult } from '../region/types.js';
-import type { AeliqoInputBindings } from '../region/input-registry.js';
+import type { VarendoRegionResult } from '../region/types.js';
+import type { VarendoInputBindings } from '../region/input-registry.js';
 import {
   diagnostic,
   environmentFor,
@@ -22,7 +22,7 @@ import {
   type WebAppContext,
   type WebRegion,
 } from './context.js';
-import type { AeliqoViewDefinition } from '../region/types.js';
+import type { VarendoViewDefinition } from '../region/types.js';
 import { projectInteractionState } from '@varendo/runtime/presentation';
 import type { RenderContinuity } from './render-continuity.js';
 import { projectAppInteraction } from './interaction-projection.js';
@@ -92,9 +92,9 @@ function preparedDependencies(
   context: WebAppContext,
   region: WebRegion,
   receipt: RuntimeCommittedReceipt,
-  resultBindings: readonly AeliqoRegionResult[],
+  resultBindings: readonly VarendoRegionResult[],
   descriptors: readonly Result[],
-  inputs: AeliqoInputBindings | undefined,
+  inputs: VarendoInputBindings | undefined,
   replacingTask: boolean,
   continuity: RenderContinuity | undefined,
 ): DependencyResult {
@@ -143,8 +143,8 @@ function sameRecipe(left: RecipeDefinition, right: RecipeDefinition): boolean {
 
 function recipeContext(
   receipt: RuntimeCommittedReceipt,
-  inputs: AeliqoInputBindings | undefined,
-  views: readonly AeliqoViewDefinition[],
+  inputs: VarendoInputBindings | undefined,
+  views: readonly VarendoViewDefinition[],
   prepared: PreparedDependencies,
 ): Parameters<RecipeDefinition['build']>[0] {
   const current = withoutDataRevision(prepared.current);
@@ -209,8 +209,8 @@ function resolverTask(task: Task): Task {
 function resolvedPlan(
   receipt: RuntimeCommittedReceipt,
   descriptors: readonly Result[],
-  inputs: AeliqoInputBindings | undefined,
-  views: readonly AeliqoViewDefinition[],
+  inputs: VarendoInputBindings | undefined,
+  views: readonly VarendoViewDefinition[],
   prepared: PreparedDependencies,
   requestId: string,
   surfaceGeneration: number,
@@ -241,7 +241,7 @@ function resolvedPlan(
     registry: prepared.registry,
     target: {
       address: {
-        runtimeId: 'aeliqo.web.runtime',
+        runtimeId: 'varendo.web.runtime',
         scopeInstanceId: `region.${receipt.regionId}`,
         activationEpoch: 1,
         surfaceId: receipt.regionId,
@@ -264,11 +264,11 @@ export function preparePresentation(
   context: WebAppContext,
   region: WebRegion,
   receipt: RuntimeCommittedReceipt,
-  resultBindings: readonly AeliqoRegionResult[],
+  resultBindings: readonly VarendoRegionResult[],
   descriptors: readonly Result[],
   requestId: string,
   surfaceGeneration: number,
-  inputs?: AeliqoInputBindings,
+  inputs?: VarendoInputBindings,
   replacingTask = false,
   continuity?: RenderContinuity,
 ): Preparation {

@@ -20,7 +20,7 @@ per team. Varendo answers with a table, a filtered table, a line chart, and a ba
 chart, without any table or chart markup from you. You need Node.js 24; no
 account, backend, or model key is needed.
 
-Use [What is Varendo?](/start/what-is-aeliqo/) for the concepts, or choose an
+Use [What is Varendo?](/start/what-is-varendo/) for the concepts, or choose an
 [integration path](/start/frameworks/) for React, Vanilla, Vue, and the explicit
 Next.js server-rendering setup.
 

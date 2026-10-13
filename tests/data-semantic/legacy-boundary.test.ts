@@ -3,8 +3,8 @@ import { html } from 'lit';
 import type { PresentationPlan, Result } from '../../packages/core/src/contracts/index.js';
 import type { PresentationContext } from '../../packages/core/src/presentation/index.js';
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
-import { renderAeliqo } from '../../packages/web/src/server.js';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import { renderVarendo } from '../../packages/web/src/server.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
 import { dataPresentationContext, result as original } from './fixture.js';
 
 describe('legacy region materialization boundary', () => {
@@ -21,7 +21,7 @@ describe('legacy region materialization boundary', () => {
         counts: { loaded: 1, population: { kind: 'exact', value: 1, populationDigest: 'population-1' } },
         coverage: { kind: 'complete', populationDigest: 'population-1' },
       };
-      const registry = createAeliqoPresentationRegistry();
+      const registry = createVarendoPresentationRegistry();
       if (!registry.ok) throw new Error(JSON.stringify(registry.diagnostics));
       const manifest = registry.value.manifests.find((item) => item.ref.id === representation)!;
       const base = dataPresentationContext();
@@ -69,19 +69,22 @@ describe('legacy region materialization boundary', () => {
       const checked = validatePresentationPlan(plan, context, registry.value);
       if (!checked.ok) throw new Error(JSON.stringify(checked.diagnostics));
       const good = { ref: result.ref, rows: [{ date: '2026-01-01', amount: { decimal: '12.50' } }] };
-      const markup = await renderAeliqo(
-        html`<aeliqo-region .presentation=${checked.value} .results=${[good]}></aeliqo-region>`,
+      const markup = await renderVarendo(
+        html`<varendo-region .presentation=${checked.value} .results=${[good]}></varendo-region>`,
       );
       expect(markup).toContain('2026-01-01');
       for (const rows of [[{ date: '2026-01-01', amount: 'malformed-private-value' }], [{ date: '2026-01-01' }]]) {
-        const invalid = await renderAeliqo(
-          html`<aeliqo-region .presentation=${checked.value} .results=${[{ ref: result.ref, rows }]}></aeliqo-region>`,
+        const invalid = await renderVarendo(
+          html`<varendo-region
+            .presentation=${checked.value}
+            .results=${[{ ref: result.ref, rows }]}
+          ></varendo-region>`,
         );
         expect(invalid).toContain('Data unavailable.');
         expect(invalid).not.toContain('malformed-private-value');
       }
-      const ambiguous = await renderAeliqo(
-        html`<aeliqo-region .presentation=${checked.value} .results=${[good, good]}></aeliqo-region>`,
+      const ambiguous = await renderVarendo(
+        html`<varendo-region .presentation=${checked.value} .results=${[good, good]}></varendo-region>`,
       );
       expect(ambiguous).toContain('Data unavailable.');
       for (const coverage of [
@@ -96,8 +99,8 @@ describe('legacy region materialization boundary', () => {
         };
         const scoped = validatePresentationPlan(plan, { ...context, results: [scopedResult] }, registry.value);
         if (!scoped.ok) throw new Error(JSON.stringify(scoped.diagnostics));
-        const rendered = await renderAeliqo(
-          html`<aeliqo-region .presentation=${scoped.value} .results=${[good]}></aeliqo-region>`,
+        const rendered = await renderVarendo(
+          html`<varendo-region .presentation=${scoped.value} .results=${[good]}></varendo-region>`,
         );
         expect(rendered).toContain('2026-01-01');
         expect(rendered).toContain('Showing 1 of 2 records');

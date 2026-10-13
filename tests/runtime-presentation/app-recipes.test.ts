@@ -8,7 +8,7 @@ import {
   type ValidatedPresentation,
 } from '../../packages/core/src/presentation/index.js';
 import type {
-  AeliqoRuntime,
+  VarendoRuntime,
   RuntimeCommittedReceipt,
   RuntimePresentationInput,
 } from '../../packages/runtime/src/app/index.js';
@@ -32,7 +32,7 @@ import {
 } from '../../packages/web/src/app/context.js';
 import { createFormBindings } from '../../packages/web/src/app/form-bindings.js';
 import { present } from '../../packages/web/src/app/presentation.js';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
 import { createRegistrationDocument } from './registration-document.js';
 
 const current = {
@@ -539,7 +539,7 @@ describe('0.3 standard recipes', () => {
         first.value.nodes.map((node) => ({
           fromNode: node.id,
           toNode: node.id,
-          mapping: { id: 'aeliqo.state.identity', revision: '1' },
+          mapping: { id: 'varendo.state.identity', revision: '1' },
         })),
       );
     }
@@ -669,7 +669,7 @@ describe('0.3 standard recipes', () => {
       fields: { id: { label: 'ID' }, name: { label: 'Name' } },
     });
     const policy = presentationPolicy(resource);
-    const registry = createAeliqoPresentationRegistry({
+    const registry = createVarendoPresentationRegistry({
       data: [{ result: context.result, rows: [{ id: 'p-1', name: 'Ada' }] }],
       resolveEntity: () => 'people',
     });
@@ -775,7 +775,7 @@ describe('0.3 standard recipes', () => {
     });
     const rows = [{ id: 'p-1', name: 'Ada' }];
     const bindings = [{ ref: wide.result.ref, rows }];
-    const registry = createAeliqoPresentationRegistry({
+    const registry = createVarendoPresentationRegistry({
       data: [{ result: wide.result, rows }],
       resolveEntity: () => 'people',
     });
@@ -835,7 +835,7 @@ describe('0.3 standard recipes', () => {
         commitCalls++;
         throw new Error('Policy rejection must happen before a presentation commit.');
       },
-    } as unknown as AeliqoRuntime;
+    } as unknown as VarendoRuntime;
     const context = {
       options: {},
       runtime,
@@ -930,7 +930,7 @@ describe('0.3 standard recipes', () => {
         if (result.ok) published.push(request.requestId);
         return result;
       },
-    } as unknown as AeliqoRuntime;
+    } as unknown as VarendoRuntime;
     const context = {
       options: { authority: testAuthority },
       runtime,
@@ -1032,7 +1032,7 @@ describe('0.3 standard recipes', () => {
     const runtime = {
       snapshot: () => ({ region: { readSet: { ...current, dataRevision: 1 } } }),
       commitPresentation: async (request: RuntimePresentationInput) => commitTestProjection(request),
-    } as unknown as AeliqoRuntime;
+    } as unknown as VarendoRuntime;
     const context = {
       options: { authority: testAuthority },
       runtime,
@@ -1217,7 +1217,7 @@ describe('0.3 standard recipes', () => {
     });
     expect(plan.ok).toBe(true);
     if (!plan.ok) return;
-    const registry = createAeliqoPresentationRegistry({ inputs: bindings.value });
+    const registry = createVarendoPresentationRegistry({ inputs: bindings.value });
     expect(registry.ok).toBe(true);
     if (!registry.ok) return;
     const checked = validatePresentationPlan(

@@ -1,7 +1,7 @@
-import type { AeliqoTableRow } from '../types.js';
+import type { VarendoTableRow } from '../types.js';
 
 /** Maximum number of body rows a virtualized table may mount at once. */
-export const AELIQO_TABLE_MAX_VIRTUAL_ROWS = 100;
+export const VARENDO_TABLE_MAX_VIRTUAL_ROWS = 100;
 
 const DEFAULT_VIRTUAL_START = 0;
 const DEFAULT_VIRTUAL_COUNT = 40;
@@ -28,10 +28,10 @@ export function createTableWindow(
 ): TableWindow {
   const maximumStart = Math.max(0, rowCount - 1);
   const start = boundedInteger(requestedStart, DEFAULT_VIRTUAL_START, 0, maximumStart);
-  const count = boundedInteger(requestedCount, DEFAULT_VIRTUAL_COUNT, 1, AELIQO_TABLE_MAX_VIRTUAL_ROWS);
-  const overscanLimit = Math.floor((AELIQO_TABLE_MAX_VIRTUAL_ROWS - count) / 2);
+  const count = boundedInteger(requestedCount, DEFAULT_VIRTUAL_COUNT, 1, VARENDO_TABLE_MAX_VIRTUAL_ROWS);
+  const overscanLimit = Math.floor((VARENDO_TABLE_MAX_VIRTUAL_ROWS - count) / 2);
   const overscan = Math.min(
-    boundedInteger(requestedOverscan, DEFAULT_VIRTUAL_OVERSCAN, 0, AELIQO_TABLE_MAX_VIRTUAL_ROWS),
+    boundedInteger(requestedOverscan, DEFAULT_VIRTUAL_OVERSCAN, 0, VARENDO_TABLE_MAX_VIRTUAL_ROWS),
     overscanLimit,
   );
   return {
@@ -44,10 +44,10 @@ export function createTableWindow(
 }
 
 export function visibleTableRows(
-  rows: readonly AeliqoTableRow[],
+  rows: readonly VarendoTableRow[],
   virtualized: boolean,
   window: TableWindow,
-): readonly { readonly row: AeliqoTableRow; readonly index: number }[] {
+): readonly { readonly row: VarendoTableRow; readonly index: number }[] {
   if (!virtualized) return rows.map((row, index) => ({ row, index }));
   return rows.slice(window.from, window.to).map((row, index) => ({ row, index: window.from + index }));
 }

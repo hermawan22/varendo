@@ -13,7 +13,7 @@ import { run } from './run.mjs';
 
 const argv = process.argv.slice(2);
 const apply = argv.includes('--apply');
-const confirmation = process.env.AELIQO_CONFIRM_LEGACY_DEPRECATION;
+const confirmation = process.env.VARENDO_CONFIRM_LEGACY_DEPRECATION;
 const expectedConfirmation = 'deprecate-devtools-after-v0.4.0';
 const candidatePath = resolve(flagValue(argv, '--candidate') ?? 'artifacts/release-candidate/manifest.json');
 
@@ -93,7 +93,7 @@ if (missingReplacements.length) {
   );
 }
 if (confirmation !== expectedConfirmation) {
-  throw new Error(`Set AELIQO_CONFIRM_LEGACY_DEPRECATION=${expectedConfirmation} after owner approval`);
+  throw new Error(`Set VARENDO_CONFIRM_LEGACY_DEPRECATION=${expectedConfirmation} after owner approval`);
 }
 const authenticatedUser = npm(['whoami']);
 const actions = [];

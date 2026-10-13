@@ -2,25 +2,25 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 test.beforeEach(async ({ page }) => {
   await page.goto('/tests/visualization/temporal.html');
-  await page.locator('aeliqo-matrix table').waitFor();
+  await page.locator('varendo-matrix table').waitFor();
 });
 test('renders exact matrix, overlap lanes and declared-zone calendar with honest scope', async ({ page }) => {
   await expect(
-    page.locator('aeliqo-matrix').getByRole('cell', { name: '100000000000000000000.01', exact: true }),
+    page.locator('varendo-matrix').getByRole('cell', { name: '100000000000000000000.01', exact: true }),
   ).toBeVisible();
   expect(
-    await page.locator('aeliqo-timeline line').evaluateAll((nodes) => nodes.map((n) => n.getAttribute('y1'))),
+    await page.locator('varendo-timeline line').evaluateAll((nodes) => nodes.map((n) => n.getAttribute('y1'))),
   ).toEqual(['24', '52']);
-  await expect(page.locator('aeliqo-calendar-grid strong')).toHaveText('2026-09-07');
-  await expect(page.locator('aeliqo-calendar-grid')).toContainText('2 rows');
-  await expect(page.locator('aeliqo-timeline [part=scope]')).toContainText('Partial result');
-  await expect(page.locator('aeliqo-timeline')).toContainText('Rows beyond this page are unavailable.');
+  await expect(page.locator('varendo-calendar-grid strong')).toHaveText('2026-09-07');
+  await expect(page.locator('varendo-calendar-grid')).toContainText('2 rows');
+  await expect(page.locator('varendo-timeline [part=scope]')).toContainText('Partial result');
+  await expect(page.locator('varendo-timeline')).toContainText('Rows beyond this page are unavailable.');
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
 test('keyboard selection keeps stable identities and focus across row reordering, clears revoked values', async ({
   page,
 }) => {
-  const button = page.locator('aeliqo-matrix').getByRole('button', { name: 'Select a', exact: true });
+  const button = page.locator('varendo-matrix').getByRole('button', { name: 'Select a', exact: true });
   await button.focus();
   await page.keyboard.press('Enter');
   const before = await page.evaluate(() => (window as any).selection);
@@ -52,7 +52,7 @@ test('narrow RTL large text preserves accessible values and bounded visual scrol
     for (const v of (window as any).views) v.style.fontSize = '24px';
   });
   await expect(
-    page.locator('aeliqo-matrix').getByRole('cell', { name: '100000000000000000000.01', exact: true }),
+    page.locator('varendo-matrix').getByRole('cell', { name: '100000000000000000000.01', exact: true }),
   ).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);

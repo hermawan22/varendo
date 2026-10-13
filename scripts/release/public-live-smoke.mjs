@@ -7,8 +7,8 @@ import { verifyManualLayouts, verifyNativePlayground } from './playground-live.m
 import { RELEASE_VERSION } from './metadata.mjs';
 const expectedSha = process.argv[2];
 if (!/^[a-f0-9]{40}$/u.test(expectedSha ?? '')) throw new Error('Expected full release SHA.');
-const apexOrigin = process.env.AELIQO_APEX_ORIGIN ?? 'https://hermawan22.github.io/varendo';
-const docsOrigin = process.env.AELIQO_DOCS_ORIGIN ?? 'https://hermawan22.github.io/varendo';
+const apexOrigin = process.env.VARENDO_APEX_ORIGIN ?? 'https://hermawan22.github.io/varendo';
+const docsOrigin = process.env.VARENDO_DOCS_ORIGIN ?? 'https://hermawan22.github.io/varendo';
 const browser = await chromium.launch({ args: ['--enable-features=WebMCPTesting'] });
 const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 const page = await context.newPage();
@@ -59,12 +59,12 @@ try {
   await page.locator('[data-journey="jakarta"]').click();
   await page.waitForFunction(() => document.querySelector('#pg-receipt-state')?.textContent === 'renderer-ready');
   await expect(page.locator('#pg-committed-filter')).toContainText('Jakarta');
-  await expect(page.locator('aeliqo-table').getByText('Ada Chen')).toHaveCount(1);
-  await expect(page.locator('aeliqo-table').getByText('Sam Rivera')).toHaveCount(0);
+  await expect(page.locator('varendo-table').getByText('Ada Chen')).toHaveCount(1);
+  await expect(page.locator('varendo-table').getByText('Sam Rivera')).toHaveCount(0);
   evidence.peopleJakarta = {
     committedFilter: (await page.locator('#pg-committed-filter').textContent()).trim(),
-    adaRows: await page.locator('aeliqo-table').getByText('Ada Chen').count(),
-    samRows: await page.locator('aeliqo-table').getByText('Sam Rivera').count(),
+    adaRows: await page.locator('varendo-table').getByText('Ada Chen').count(),
+    samRows: await page.locator('varendo-table').getByText('Sam Rivera').count(),
   };
   evidence.manualLayouts = await verifyManualLayouts(page);
   evidence.webmcp = await verifyNativePlayground(page);

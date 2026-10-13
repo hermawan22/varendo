@@ -4,8 +4,8 @@ import { basename, dirname, resolve, sep } from 'node:path';
 import { isReleaseVersion, RELEASE_VERSION } from '../release/metadata.mjs';
 import { hasExactKeys } from './docs-lib.mjs';
 
-export const PUBLIC_DOCS_SCHEMA = 'aeliqo.public-docs.v1';
-export const PUBLIC_DOCS_MANIFEST_SCHEMA = 'aeliqo.public-docs-manifest.v1';
+export const PUBLIC_DOCS_SCHEMA = 'varendo.public-docs.v1';
+export const PUBLIC_DOCS_MANIFEST_SCHEMA = 'varendo.public-docs-manifest.v1';
 
 export function sha256(value) {
   return createHash('sha256').update(value).digest('hex');

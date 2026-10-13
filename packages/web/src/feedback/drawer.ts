@@ -1,13 +1,13 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
 import { nextFrame, emitAction, safeElementId } from '../navigation/shared.js';
 import { OverlayFocus } from './focus-trap.js';
-import { aeliqoFeedbackStyles } from './shared.js';
+import { varendoFeedbackStyles } from './shared.js';
 
-export type AeliqoDrawerMode = 'inline' | 'modal';
-export type AeliqoDrawerSide = 'start' | 'end';
+export type VarendoDrawerMode = 'inline' | 'modal';
+export type VarendoDrawerSide = 'start' | 'end';
 
-export class AeliqoDrawerElement extends AeliqoFoundationElement {
+export class VarendoDrawerElement extends VarendoFoundationElement {
   static readonly properties = {
     open: { type: Boolean, reflect: true },
     heading: { type: String },
@@ -15,23 +15,23 @@ export class AeliqoDrawerElement extends AeliqoFoundationElement {
     side: { type: String },
   };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
-    ...aeliqoFeedbackStyles,
+    ...varendoFoundationThemeStyles,
+    ...varendoFeedbackStyles,
     css`
       :host {
         display: block;
       }
       [part='inline'] {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border-inline-start: 0.0625rem solid var(--aeliqo-color-border, #64748b);
-        border-inline-end: 0.0625rem solid var(--aeliqo-color-border, #64748b);
+        background: var(--varendo-color-surface, #f8fafc);
+        border-inline-start: 0.0625rem solid var(--varendo-color-border, #64748b);
+        border-inline-end: 0.0625rem solid var(--varendo-color-border, #64748b);
         max-block-size: 100%;
         overflow: auto;
       }
       dialog {
-        background: var(--aeliqo-color-surface, #f8fafc);
+        background: var(--varendo-color-surface, #f8fafc);
         border: 0;
-        border-block: 0.0625rem solid var(--aeliqo-color-border, #64748b);
+        border-block: 0.0625rem solid var(--varendo-color-border, #64748b);
         color: inherit;
         inset-block: 0;
         margin: 0;
@@ -52,30 +52,30 @@ export class AeliqoDrawerElement extends AeliqoFoundationElement {
       }
       [part='header'] {
         align-items: center;
-        border-block-end: 0.0625rem solid var(--aeliqo-color-border, #64748b);
+        border-block-end: 0.0625rem solid var(--varendo-color-border, #64748b);
         display: flex;
         justify-content: space-between;
-        padding: var(--aeliqo-space-12, 0.75rem) var(--aeliqo-space-16, 1rem);
+        padding: var(--varendo-space-12, 0.75rem) var(--varendo-space-16, 1rem);
       }
       [part='content'] {
         max-block-size: calc(100vh - 5rem);
         overflow: auto;
-        padding: var(--aeliqo-space-16, 1rem);
+        padding: var(--varendo-space-16, 1rem);
       }
       [part='close'] {
         background: transparent;
         border: 0;
         cursor: pointer;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        min-inline-size: var(--aeliqo-control-min-target, 2.75rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        min-inline-size: var(--varendo-control-min-target, 2.75rem);
       }
     `,
   ];
 
   open = false;
   heading = 'Details';
-  mode: AeliqoDrawerMode = 'inline';
-  side: AeliqoDrawerSide = 'end';
+  mode: VarendoDrawerMode = 'inline';
+  side: VarendoDrawerSide = 'end';
   private readonly overlayFocus = new OverlayFocus(this);
 
   protected override willUpdate(changed: Map<string, unknown>): void {
@@ -130,10 +130,10 @@ export class AeliqoDrawerElement extends AeliqoFoundationElement {
   }
 
   private close(): void {
-    if (emitAction(this, 'aeliqo-drawer-close', {})) this.open = false;
+    if (emitAction(this, 'varendo-drawer-close', {})) this.open = false;
   }
   protected override render() {
-    const headingId = safeElementId(`${this.id || 'aeliqo-drawer'}-heading`, 'aeliqo-drawer-heading');
+    const headingId = safeElementId(`${this.id || 'varendo-drawer'}-heading`, 'varendo-drawer-heading');
     if (this.mode === 'modal')
       return html`<dialog
         part="modal"

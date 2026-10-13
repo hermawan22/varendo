@@ -109,7 +109,7 @@ export function appendDraftValue(output: FormDraftRecord, name: string, raw: unk
  * public boundary values too because ElementInternals does not expose them
  * through the component's formValue receipt. */
 export function dateRangeParts(control: CompoundControl, name: string): readonly [string, string] | undefined {
-  if (control.localName !== 'aeliqo-date-range' || control.checkValidity?.() === false) return undefined;
+  if (control.localName !== 'varendo-date-range' || control.checkValidity?.() === false) return undefined;
   const start = (control as HTMLElement & { readonly start?: unknown }).start;
   const end = (control as HTMLElement & { readonly end?: unknown }).end;
   return typeof start === 'string' && start.length > 0 && typeof end === 'string' && end.length > 0
@@ -120,9 +120,11 @@ export function dateRangeParts(control: CompoundControl, name: string): readonly
 export function compoundControls(host: HTMLElement): readonly CompoundControl[] {
   return Array.from(
     host.querySelectorAll<HTMLElement>(
-      'input, select, textarea, button, aeliqo-text-field, aeliqo-text-area, aeliqo-number-field, aeliqo-date-field, aeliqo-date-range, aeliqo-search-field, aeliqo-checkbox, aeliqo-switch, aeliqo-radio-group, aeliqo-select, aeliqo-combobox, aeliqo-slider, aeliqo-file-input',
+      'input, select, textarea, button, varendo-text-field, varendo-text-area, varendo-number-field, varendo-date-field, varendo-date-range, varendo-search-field, varendo-checkbox, varendo-switch, varendo-radio-group, varendo-select, varendo-combobox, varendo-slider, varendo-file-input',
     ),
-  ).filter((control): control is CompoundControl => control.closest('aeliqo-record-editor, aeliqo-form-flow') === host);
+  ).filter(
+    (control): control is CompoundControl => control.closest('varendo-record-editor, varendo-form-flow') === host,
+  );
 }
 
 function ignoredWireControl(control: CompoundControl, name: string): boolean {

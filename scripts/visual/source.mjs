@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { execute } from './process.mjs';
 
 export async function withBaseline(root, sha, work) {
-  const temporary = await mkdtemp(join(tmpdir(), 'aeliqo-visual-baseline-'));
+  const temporary = await mkdtemp(join(tmpdir(), 'varendo-visual-baseline-'));
   const source = join(temporary, 'source');
   try {
     await mkdir(source);

@@ -93,7 +93,7 @@ function setError(message?: string): void {
 }
 
 function setExportAvailability(publicJourney: boolean): void {
-  const published = typeof __AELIQO_EXPORT_AVAILABLE__ !== 'undefined' && __AELIQO_EXPORT_AVAILABLE__;
+  const published = typeof __VARENDO_EXPORT_AVAILABLE__ !== 'undefined' && __VARENDO_EXPORT_AVAILABLE__;
   exportButton.disabled = !published || publicJourney;
   exportNote.hidden = published && !publicJourney;
   if (exportNote.hidden) {
@@ -333,11 +333,11 @@ required<HTMLButtonElement>('#pg-reset').addEventListener('click', () => {
 exportButton.addEventListener('click', async () => {
   actionsMenu.open = false;
   const [{ projectFiles }, { zipProject }] = await Promise.all([import('./project-template.js'), import('./zip.js')]);
-  const blob = zipProject(projectFiles(scenario.id, __AELIQO_RELEASE_VERSION__));
+  const blob = zipProject(projectFiles(scenario.id, __VARENDO_RELEASE_VERSION__));
   const href = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = href;
-  link.download = `aeliqo-${scenario.id}-example.zip`;
+  link.download = `varendo-${scenario.id}-example.zip`;
   link.click();
   window.setTimeout(() => URL.revokeObjectURL(href), 0);
   status.textContent = `Exported the ${scenario.label} source project with synthetic data and no credentials. Install after its pinned package version is published.`;

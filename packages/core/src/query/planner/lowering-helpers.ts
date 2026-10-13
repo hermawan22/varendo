@@ -202,7 +202,7 @@ function makeTimeBucket(
       ['Supply weekStartsOn from the domain policy.'],
       ['timeBucket'],
     );
-  const bucketId = `__aeliqo_bucket_${bucket.field}_${bucket.grain}`;
+  const bucketId = `__varendo_bucket_${bucket.field}_${bucket.grain}`;
   if (entity.fields.some((field) => field.id === bucketId))
     return failure('query.time-bucket', 'Generated time bucket identifier collides with a source field.', [
       'timeBucket',

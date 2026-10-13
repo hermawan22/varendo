@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import type { Result, ResultRef, VisualizationSpec } from '../../packages/core/src/index.js';
 import {
-  AELIQO_VISUALIZATION_REFS,
-  createAeliqoVisualizationPresentationManifests,
-  createAeliqoVisualizationPresentationRegistry,
-  type AeliqoVisualizationBinding,
+  VARENDO_VISUALIZATION_REFS,
+  createVarendoVisualizationPresentationManifests,
+  createVarendoVisualizationPresentationRegistry,
+  type VarendoVisualizationBinding,
 } from '../../packages/web/src/region/visualization-registry.js';
 
 const ref = { id: 'semantic', revision: '1', outputId: 'rows', queryDigest: 'query', scopeDigest: 'scope' } as const;
@@ -31,7 +31,7 @@ const rows = [
   { id: 'a', amount: 1 },
   { id: 'b', amount: 2 },
 ];
-const binding: AeliqoVisualizationBinding = {
+const binding: VarendoVisualizationBinding = {
   result,
   context: { results: [result] },
   datasets: [{ result: ref, rows }],
@@ -43,11 +43,11 @@ const refKey = (value: ResultRef): string =>
 
 describe('semantic visualization registry', () => {
   it('installs all twelve typed manifests and binds exact materialization', () => {
-    const manifests = createAeliqoVisualizationPresentationManifests([binding]);
+    const manifests = createVarendoVisualizationPresentationManifests([binding]);
     expect(manifests.ok).toBe(true);
     if (!manifests.ok) return;
     expect(manifests.value).toHaveLength(12);
-    expect(manifests.value.map((manifest) => manifest.ref)).toEqual(Object.values(AELIQO_VISUALIZATION_REFS));
+    expect(manifests.value.map((manifest) => manifest.ref)).toEqual(Object.values(VARENDO_VISUALIZATION_REFS));
     const matrixManifest = manifests.value.find((manifest) => manifest.ref.id === 'visualization.matrix')!;
     const resolved = matrixManifest.resolveConfig({ visualization: matrix }, result);
     expect(resolved.ok).toBe(true);
@@ -88,7 +88,7 @@ describe('semantic visualization registry', () => {
   });
 
   it('derives a trusted selection port and rejects aliases or stale descriptors', () => {
-    const registry = createAeliqoVisualizationPresentationRegistry([binding], { resolveEntity: () => 'rows' });
+    const registry = createVarendoVisualizationPresentationRegistry([binding], { resolveEntity: () => 'rows' });
     expect(registry.ok).toBe(true);
     if (!registry.ok) return;
     const matrixManifest = registry.value.manifests.find((manifest) => manifest.ref.id === 'visualization.matrix')!;
@@ -103,7 +103,7 @@ describe('semantic visualization registry', () => {
         { id: 'interaction.selection', revision: '1' },
       ]);
     }
-    expect(createAeliqoVisualizationPresentationRegistry({ alias: binding } as never).ok).toBe(false);
+    expect(createVarendoVisualizationPresentationRegistry({ alias: binding } as never).ok).toBe(false);
     expect(registry.value.bindingFor({ ...ref, queryDigest: 'revoked' }).ok).toBe(false);
     const current = registry.value.bindingFor(ref);
     expect(current.ok).toBe(true);
@@ -111,9 +111,9 @@ describe('semantic visualization registry', () => {
   });
 
   it('fails closed when the primary descriptor is absent or rows are not exact', () => {
-    const absent: AeliqoVisualizationBinding = { result, context: { results: [] }, datasets: [{ result: ref, rows }] };
-    expect(createAeliqoVisualizationPresentationManifests([absent]).ok).toBe(false);
-    const duplicate: AeliqoVisualizationBinding = {
+    const absent: VarendoVisualizationBinding = { result, context: { results: [] }, datasets: [{ result: ref, rows }] };
+    expect(createVarendoVisualizationPresentationManifests([absent]).ok).toBe(false);
+    const duplicate: VarendoVisualizationBinding = {
       result,
       context: { results: [result] },
       datasets: [
@@ -121,35 +121,35 @@ describe('semantic visualization registry', () => {
         { result: ref, rows },
       ],
     };
-    expect(createAeliqoVisualizationPresentationManifests([duplicate]).ok).toBe(false);
+    expect(createVarendoVisualizationPresentationManifests([duplicate]).ok).toBe(false);
     const malformed = {
       ...binding,
       datasets: [{ result: { ...ref, outputId: 'other' }, rows }],
-    } as AeliqoVisualizationBinding;
-    expect(createAeliqoVisualizationPresentationManifests([malformed]).ok).toBe(false);
+    } as VarendoVisualizationBinding;
+    expect(createVarendoVisualizationPresentationManifests([malformed]).ok).toBe(false);
   });
 
   it('accepts the runtime source-lineage pin while rejecting unknown ResultRef keys', () => {
     const lineageRef = { ...ref, sourceLineage: 'source-lineage-1' };
     const lineageResult: Result = { ...result, ref: lineageRef };
-    const lineageBinding: AeliqoVisualizationBinding = {
+    const lineageBinding: VarendoVisualizationBinding = {
       result: lineageResult,
       context: { results: [lineageResult] },
       datasets: [{ result: lineageRef, rows }],
     };
-    expect(createAeliqoVisualizationPresentationManifests([lineageBinding]).ok).toBe(true);
+    expect(createVarendoVisualizationPresentationManifests([lineageBinding]).ok).toBe(true);
     expect(
-      createAeliqoVisualizationPresentationManifests([
+      createVarendoVisualizationPresentationManifests([
         {
           ...lineageBinding,
           datasets: [{ result: { ...lineageRef, untrusted: 'extra' } as never, rows }],
-        } as AeliqoVisualizationBinding,
+        } as VarendoVisualizationBinding,
       ]).ok,
     ).toBe(false);
   });
 
   it('rejects malformed materialization budgets', () => {
     for (const maxDatasets of [NaN, Infinity, -1, 0, 1.5, 65])
-      expect(createAeliqoVisualizationPresentationManifests([binding], { maxDatasets }).ok).toBe(false);
+      expect(createVarendoVisualizationPresentationManifests([binding], { maxDatasets }).ok).toBe(false);
   });
 });

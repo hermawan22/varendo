@@ -357,8 +357,8 @@ function renderSelectCell(
   return html`<td data-label="Select">
     <button
       type="button"
-      data-aeliqo-row-identity=${row.identity}
-      data-aeliqo-result=${resultKey(geometry.result.ref)}
+      data-varendo-row-identity=${row.identity}
+      data-varendo-result=${resultKey(geometry.result.ref)}
       aria-pressed=${context.isSelected(row.identity, geometry.result.ref) ? 'true' : 'false'}
       aria-label=${'Select ' + identityLabel(row, geometry.result)}
       @click=${() => context.select(row.identity, geometry.result.ref)}

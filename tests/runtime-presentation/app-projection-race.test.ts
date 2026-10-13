@@ -8,7 +8,7 @@ import {
 } from '../../packages/core/src/index.js';
 import type { PresentationEnvironment, ValidatedPresentation } from '../../packages/core/src/presentation/index.js';
 import type {
-  AeliqoRuntime,
+  VarendoRuntime,
   RuntimeCommittedReceipt,
   RuntimePresentationInput,
 } from '../../packages/runtime/src/app/index.js';
@@ -229,7 +229,7 @@ function projectionFixture() {
       runtimeReadSet = next.readSet;
       return { ok: true, value: next };
     },
-  } as unknown as AeliqoRuntime;
+  } as unknown as VarendoRuntime;
   const context = {
     options: {
       authority: {

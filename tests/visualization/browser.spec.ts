@@ -3,14 +3,14 @@ import AxeBuilder from '@axe-core/playwright';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/tests/visualization/index.html');
-  await page.locator('aeliqo-tree table').waitFor();
+  await page.locator('varendo-tree table').waitFor();
 });
 
 test('tree keeps bounded SVG and exact table selection', async ({ page }) => {
-  await expect(page.locator('aeliqo-tree svg')).toHaveCount(1);
-  await expect(page.locator('aeliqo-tree').getByRole('cell', { name: 'Child A', exact: true })).toBeVisible();
-  expect((await new AxeBuilder({ page }).include('aeliqo-tree').analyze()).violations).toEqual([]);
-  await page.locator('aeliqo-tree table button').nth(1).focus();
+  await expect(page.locator('varendo-tree svg')).toHaveCount(1);
+  await expect(page.locator('varendo-tree').getByRole('cell', { name: 'Child A', exact: true })).toBeVisible();
+  expect((await new AxeBuilder({ page }).include('varendo-tree').analyze()).violations).toEqual([]);
+  await page.locator('varendo-tree table button').nth(1).focus();
   await page.keyboard.press('Enter');
   const selection = await page.evaluate(
     () =>
@@ -20,7 +20,7 @@ test('tree keeps bounded SVG and exact table selection', async ({ page }) => {
   expect(selection?.source).toBe('user');
   expect(selection?.result.scopeDigest).toBe('scope');
   expect(selection?.identity).toContain('child-a');
-  await expect(page.locator('aeliqo-tree [part=node][aria-label="Child A"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('varendo-tree [part=node][aria-label="Child A"]')).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('geometry budget preserves exact data alternative', async ({ page }) => {
@@ -29,17 +29,17 @@ test('geometry budget preserves exact data alternative', async ({ page }) => {
     tree.maxMarks = 1;
     await tree.updateComplete;
   });
-  await expect(page.locator('aeliqo-tree svg')).toHaveCount(0);
-  await expect(page.locator('aeliqo-tree').getByRole('status')).toContainText('mark budget');
-  await expect(page.locator('aeliqo-tree tbody tr')).toHaveCount(3);
-  await page.locator('aeliqo-tree table button').first().focus();
+  await expect(page.locator('varendo-tree svg')).toHaveCount(0);
+  await expect(page.locator('varendo-tree').getByRole('status')).toContainText('mark budget');
+  await expect(page.locator('varendo-tree tbody tr')).toHaveCount(3);
+  await page.locator('varendo-tree table button').first().focus();
   await page.keyboard.press('Enter');
   const selection = await page.evaluate(() => (window as typeof window & { selection?: { source: string } }).selection);
   expect(selection?.source).toBe('user');
 });
 
 test('hierarchy marks are real SVG geometry rather than HTML lookalikes', async ({ page }) => {
-  const marks = await page.locator('aeliqo-tree rect').evaluateAll((nodes) =>
+  const marks = await page.locator('varendo-tree rect').evaluateAll((nodes) =>
     nodes.map((node) => ({
       namespace: node.namespaceURI,
       svg: node instanceof SVGGraphicsElement,
@@ -56,7 +56,7 @@ test('hierarchy marks are real SVG geometry rather than HTML lookalikes', async 
 
 for (const view of ['tree', 'treemap', 'relationship'])
   test(`${view} real marks, keyboard selection, revocation and narrow RTL`, async ({ page }) => {
-    const host = page.locator(`aeliqo-${view}`);
+    const host = page.locator(`varendo-${view}`);
     const selector = view === 'relationship' ? 'line[part=edge]' : 'rect[part=node]';
     await expect(host.locator('svg')).toHaveCount(1);
     expect(
@@ -78,7 +78,7 @@ for (const view of ['tree', 'treemap', 'relationship'])
       document.documentElement.style.fontSize = '24px';
     });
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
-    expect((await new AxeBuilder({ page }).include(`aeliqo-${view}`).analyze()).violations).toEqual([]);
+    expect((await new AxeBuilder({ page }).include(`varendo-${view}`).analyze()).violations).toEqual([]);
     await page.evaluate(async (view) => {
       const element = Reflect.get(window, view);
       element.context = { results: [] };
@@ -96,7 +96,7 @@ test('dense trees retain paged exact rows and focus on data refresh', async ({ p
     tree.datasets = [{ result: ref, rows }];
     await tree.updateComplete;
   });
-  const tree = page.locator('aeliqo-tree');
+  const tree = page.locator('varendo-tree');
   await expect(tree.locator('svg')).toHaveCount(0);
   await expect(tree.locator('tbody tr')).toHaveCount(25);
   await tree.getByRole('button', { name: 'Next', exact: true }).click();

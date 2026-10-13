@@ -36,9 +36,9 @@ test('native browser tools render component, workspace and page, then unregister
   await expect(page.locator('#pg-connect-status')).toContainText('API available');
   await page.getByRole('button', { name: 'Enable WebMCP' }).click();
   await expect(page.locator('#pg-connect-status')).toContainText('registered 3 tools');
-  const context = await nativeCall(page, 'aeliqo_context', {});
+  const context = await nativeCall(page, 'varendo_context', {});
   expect(context).toMatchObject({ ok: true, value: { state: 'accepted' } });
-  const component = await nativeCall(page, 'aeliqo_render', {
+  const component = await nativeCall(page, 'varendo_render', {
     version: '1',
     id: 'native-people',
     kind: 'browse',
@@ -49,7 +49,7 @@ test('native browser tools render component, workspace and page, then unregister
   await expect(page.locator('#pg-region')).toContainText('Sam Rivera');
   await expect(page.locator('#pg-region')).not.toContainText('Ada Chen');
   for (const kind of ['overview', 'page', 'overview', 'page']) {
-    const result = await nativeCall(page, 'aeliqo_render', {
+    const result = await nativeCall(page, 'varendo_render', {
       version: '1',
       id: `native-${kind}`,
       kind: 'custom',
@@ -58,15 +58,15 @@ test('native browser tools render component, workspace and page, then unregister
       input: { team: 'Engineering' },
     });
     expect(result, JSON.stringify(result)).toMatchObject({ ok: true, value: { state: 'renderer-ready' } });
-    await expect(page.locator('#pg-region [data-aeliqo-node-id="summary"]')).toContainText('2');
-    await expect(page.locator('#pg-region [data-aeliqo-node-id="breakdown"]')).toContainText('Ada');
+    await expect(page.locator('#pg-region [data-varendo-node-id="summary"]')).toContainText('2');
+    await expect(page.locator('#pg-region [data-varendo-node-id="breakdown"]')).toContainText('Ada');
   }
   await expect(page.getByRole('navigation', { name: 'Registered page navigation' })).toBeVisible();
   await page.locator('#pg-menu > summary').click();
   await page.getByRole('button', { name: 'Reset playground' }).click();
   const remaining = await page.evaluate(async () => {
     const host = (document as Document & { modelContext: { getTools(): Promise<{ name: string }[]> } }).modelContext;
-    return (await host.getTools()).map((tool) => tool.name).filter((name) => name.startsWith('aeliqo_'));
+    return (await host.getTools()).map((tool) => tool.name).filter((name) => name.startsWith('varendo_'));
   });
   expect(remaining).toEqual([]);
   await info.attach('native-evidence.json', {

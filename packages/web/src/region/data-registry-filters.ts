@@ -1,5 +1,5 @@
 import { validateScalar, type Outcome, type Result, type SemanticType } from '@varendo/core';
-import type { AeliqoFilterPredicate } from '../data/index.js';
+import type { VarendoFilterPredicate } from '../data/index.js';
 import {
   allowedKeys,
   boundedText,
@@ -37,7 +37,7 @@ function comparePredicate(
   candidate: Record<string, unknown>,
   result: Result,
   allowedFields: readonly string[],
-): Outcome<AeliqoFilterPredicate> {
+): Outcome<VarendoFilterPredicate> {
   if (!allowedKeys(candidate, ['op', 'field', 'comparison', 'value'])) {
     return failure('config', 'A compare predicate contains an unknown property.');
   }
@@ -63,7 +63,7 @@ function nullPredicate(
   candidate: Record<string, unknown>,
   result: Result,
   allowedFields: readonly string[],
-): Outcome<AeliqoFilterPredicate> {
+): Outcome<VarendoFilterPredicate> {
   if (!allowedKeys(candidate, ['op', 'field', 'negate'])) {
     return failure('config', 'An is-null predicate contains an unknown property.');
   }
@@ -79,7 +79,7 @@ function inPredicate(
   candidate: Record<string, unknown>,
   result: Result,
   allowedFields: readonly string[],
-): Outcome<AeliqoFilterPredicate> {
+): Outcome<VarendoFilterPredicate> {
   if (!allowedKeys(candidate, ['op', 'field', 'values'])) {
     return failure('config', 'An in predicate contains an unknown property.');
   }
@@ -102,11 +102,11 @@ function parseFilterChildren(
   result: Result,
   allowedFields: readonly string[],
   depth: number,
-): Outcome<readonly AeliqoFilterPredicate[]> {
+): Outcome<readonly VarendoFilterPredicate[]> {
   if (!Array.isArray(raw) || raw.length === 0 || raw.length > MAX_DATA_ITEMS) {
     return failure('config', 'A compound predicate requires a bounded nonempty predicate list.');
   }
-  const predicates: AeliqoFilterPredicate[] = [];
+  const predicates: VarendoFilterPredicate[] = [];
   for (const item of raw) {
     const predicate = filterPredicate(item, result, allowedFields, depth + 1);
     if (!predicate.ok) return predicate;
@@ -121,7 +121,7 @@ function compoundPredicate(
   result: Result,
   allowedFields: readonly string[],
   depth: number,
-): Outcome<AeliqoFilterPredicate> {
+): Outcome<VarendoFilterPredicate> {
   if (!allowedKeys(candidate, ['op', 'predicates'])) {
     return failure('config', 'A compound predicate contains an unknown property.');
   }
@@ -135,7 +135,7 @@ function notPredicate(
   result: Result,
   allowedFields: readonly string[],
   depth: number,
-): Outcome<AeliqoFilterPredicate> {
+): Outcome<VarendoFilterPredicate> {
   if (!allowedKeys(candidate, ['op', 'predicate'])) {
     return failure('config', 'A not predicate contains an unknown property.');
   }
@@ -149,7 +149,7 @@ function dispatchPredicate(
   result: Result,
   allowedFields: readonly string[],
   depth: number,
-): Outcome<AeliqoFilterPredicate> {
+): Outcome<VarendoFilterPredicate> {
   switch (candidate.op) {
     case 'compare':
       return comparePredicate(candidate, result, allowedFields);
@@ -173,7 +173,7 @@ export function filterPredicate(
   result: Result,
   allowedFields: readonly string[],
   depth = 0,
-): Outcome<AeliqoFilterPredicate> {
+): Outcome<VarendoFilterPredicate> {
   if (depth > MAX_FILTER_PARSE_DEPTH) return failure('config', 'Filter predicates are too deeply nested.');
   const candidate = object(value);
   if (candidate === undefined || typeof candidate.op !== 'string') {
@@ -187,7 +187,7 @@ export function filterPredicate(
 }
 
 function editableGroup(
-  predicate: Extract<AeliqoFilterPredicate, { readonly op: 'and' | 'or' }>,
+  predicate: Extract<VarendoFilterPredicate, { readonly op: 'and' | 'or' }>,
   depth: number,
   traversal: FilterTraversal,
   parentLogical: 'and' | 'or' | undefined,
@@ -201,7 +201,7 @@ function editableGroup(
 }
 
 function editableNegation(
-  predicate: Extract<AeliqoFilterPredicate, { readonly op: 'not' }>,
+  predicate: Extract<VarendoFilterPredicate, { readonly op: 'not' }>,
   depth: number,
   traversal: FilterTraversal,
 ): boolean {
@@ -211,7 +211,7 @@ function editableNegation(
 
 /** The initial filter must be expressible by the bounded clause editor. */
 export function isEditableFilterPredicate(
-  predicate: AeliqoFilterPredicate,
+  predicate: VarendoFilterPredicate,
   depth = 0,
   traversal: FilterTraversal = { nodes: 0 },
   parentLogical?: 'and' | 'or',

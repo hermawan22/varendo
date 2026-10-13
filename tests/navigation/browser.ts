@@ -1,15 +1,15 @@
-import { AeliqoBreadcrumbElement } from '../../packages/web/src/navigation/breadcrumb.js';
-import { AeliqoMenuElement } from '../../packages/web/src/navigation/menu.js';
-import { AeliqoPaginationElement } from '../../packages/web/src/navigation/pagination.js';
-import { AeliqoTabsElement } from '../../packages/web/src/navigation/tabs.js';
-import { AeliqoTreeNavElement } from '../../packages/web/src/navigation/tree-nav.js';
+import { VarendoBreadcrumbElement } from '../../packages/web/src/navigation/breadcrumb.js';
+import { VarendoMenuElement } from '../../packages/web/src/navigation/menu.js';
+import { VarendoPaginationElement } from '../../packages/web/src/navigation/pagination.js';
+import { VarendoTabsElement } from '../../packages/web/src/navigation/tabs.js';
+import { VarendoTreeNavElement } from '../../packages/web/src/navigation/tree-nav.js';
 
 const registrations: readonly [string, CustomElementConstructor][] = [
-  ['aeliqo-breadcrumb', AeliqoBreadcrumbElement],
-  ['aeliqo-menu', AeliqoMenuElement],
-  ['aeliqo-pagination', AeliqoPaginationElement],
-  ['aeliqo-tabs', AeliqoTabsElement],
-  ['aeliqo-tree-nav', AeliqoTreeNavElement],
+  ['varendo-breadcrumb', VarendoBreadcrumbElement],
+  ['varendo-menu', VarendoMenuElement],
+  ['varendo-pagination', VarendoPaginationElement],
+  ['varendo-tabs', VarendoTabsElement],
+  ['varendo-tree-nav', VarendoTreeNavElement],
 ];
 for (const [name, constructor] of registrations) customElements.define(name, constructor);
 
@@ -17,41 +17,41 @@ const fixture = document.querySelector<HTMLElement>('#fixture');
 if (fixture === null) throw new Error('Navigation fixture root is missing.');
 fixture.innerHTML = `
   <button id="before">Before</button>
-  <aeliqo-tabs id="tabs"></aeliqo-tabs>
-  <aeliqo-breadcrumb id="breadcrumb"></aeliqo-breadcrumb>
-  <aeliqo-pagination id="pagination"></aeliqo-pagination>
-  <aeliqo-menu id="menu"></aeliqo-menu>
-  <aeliqo-tree-nav id="tree"></aeliqo-tree-nav>
+  <varendo-tabs id="tabs"></varendo-tabs>
+  <varendo-breadcrumb id="breadcrumb"></varendo-breadcrumb>
+  <varendo-pagination id="pagination"></varendo-pagination>
+  <varendo-menu id="menu"></varendo-menu>
+  <varendo-tree-nav id="tree"></varendo-tree-nav>
   <button id="after">After</button>`;
 
-const tabs = document.querySelector<AeliqoTabsElement>('#tabs')!;
+const tabs = document.querySelector<VarendoTabsElement>('#tabs')!;
 tabs.items = [
   { id: 'overview', label: 'Overview', content: 'Overview content' },
   { id: 'details', label: 'Details', content: 'Details content' },
   { id: 'disabled', label: 'Disabled', content: 'Unavailable', disabled: true },
 ];
 
-const breadcrumb = document.querySelector<AeliqoBreadcrumbElement>('#breadcrumb')!;
+const breadcrumb = document.querySelector<VarendoBreadcrumbElement>('#breadcrumb')!;
 breadcrumb.items = [
   { id: 'home', label: 'Home', href: '/home' },
   { id: 'unsafe', label: 'Unsafe', href: 'javascript:alert(1)' },
   { id: 'current', label: 'Current', current: true },
 ];
 
-const pagination = document.querySelector<AeliqoPaginationElement>('#pagination')!;
+const pagination = document.querySelector<VarendoPaginationElement>('#pagination')!;
 pagination.page = 2;
 pagination.pageCount = 3;
 pagination.hasPrevious = true;
 pagination.hasNext = true;
 
-const menu = document.querySelector<AeliqoMenuElement>('#menu')!;
+const menu = document.querySelector<VarendoMenuElement>('#menu')!;
 menu.items = [
   { id: 'open', label: 'Open' },
   { id: 'disabled', label: 'Disabled', disabled: true },
   { id: 'archive', label: 'Archive' },
 ];
 
-const tree = document.querySelector<AeliqoTreeNavElement>('#tree')!;
+const tree = document.querySelector<VarendoTreeNavElement>('#tree')!;
 tree.nodes = [
   {
     id: 'reports',
@@ -66,16 +66,16 @@ tree.nodes = [
 
 const events: CustomEvent[] = [];
 for (const type of [
-  'aeliqo-tabs-change',
-  'aeliqo-navigation',
-  'aeliqo-page-change',
-  'aeliqo-menu-action',
-  'aeliqo-tree-nav-select',
-  'aeliqo-tree-nav-expand',
+  'varendo-tabs-change',
+  'varendo-navigation',
+  'varendo-page-change',
+  'varendo-menu-action',
+  'varendo-tree-nav-select',
+  'varendo-tree-nav-expand',
 ]) {
   fixture.addEventListener(type, (event) => {
     events.push(event as CustomEvent);
-    if (type === 'aeliqo-navigation') event.preventDefault();
+    if (type === 'varendo-navigation') event.preventDefault();
   });
 }
-Object.assign(window, { aeliqoNavigationReady: true, aeliqoNavigationEvents: events });
+Object.assign(window, { varendoNavigationReady: true, varendoNavigationEvents: events });

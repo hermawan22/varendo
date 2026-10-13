@@ -1,7 +1,7 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
 import {
-  aeliqoNavigationStyles,
+  varendoNavigationStyles,
   activeElement,
   focusFirst,
   restoreFocus,
@@ -10,7 +10,7 @@ import {
   safeElementId,
 } from './shared.js';
 
-export interface AeliqoMenuItem {
+export interface VarendoMenuItem {
   readonly id: string;
   readonly label: string;
   readonly disabled?: boolean;
@@ -31,15 +31,15 @@ function nextIndexFor(key: string, current: number, count: number): number | und
   }
 }
 
-export class AeliqoMenuElement extends AeliqoFoundationElement {
+export class VarendoMenuElement extends VarendoFoundationElement {
   static readonly properties = {
     items: { attribute: false },
     label: { type: String },
     open: { type: Boolean, reflect: true },
   };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
-    aeliqoNavigationStyles,
+    ...varendoFoundationThemeStyles,
+    varendoNavigationStyles,
     css`
       :host {
         display: inline-block;
@@ -47,25 +47,25 @@ export class AeliqoMenuElement extends AeliqoFoundationElement {
       }
       [part='trigger'] {
         align-items: center;
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: 0.0625rem solid var(--aeliqo-color-border, #64748b);
-        border-radius: var(--aeliqo-radius-small, 0.375rem);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: 0.0625rem solid var(--varendo-color-border, #64748b);
+        border-radius: var(--varendo-radius-small, 0.375rem);
         cursor: pointer;
         display: inline-flex;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        padding-inline: var(--aeliqo-space-12, 0.75rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        padding-inline: var(--varendo-space-12, 0.75rem);
       }
       [part='menu'] {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: 0.0625rem solid var(--aeliqo-color-border, #64748b);
-        border-radius: var(--aeliqo-radius-small, 0.375rem);
-        box-shadow: var(--aeliqo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: 0.0625rem solid var(--varendo-color-border, #64748b);
+        border-radius: var(--varendo-radius-small, 0.375rem);
+        box-shadow: var(--varendo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
         inset-inline-start: 0;
         max-inline-size: 100%;
         min-inline-size: min(12rem, 100%);
-        padding: var(--aeliqo-space-4, 0.25rem);
+        padding: var(--varendo-space-4, 0.25rem);
         position: absolute;
-        inset-block-start: calc(100% + var(--aeliqo-space-4, 0.25rem));
+        inset-block-start: calc(100% + var(--varendo-space-4, 0.25rem));
         z-index: 10;
       }
       [role='menuitem'] {
@@ -74,14 +74,14 @@ export class AeliqoMenuElement extends AeliqoFoundationElement {
         cursor: pointer;
         display: block;
         font: inherit;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        padding: var(--aeliqo-space-8, 0.5rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        padding: var(--varendo-space-8, 0.5rem);
         text-align: start;
         width: 100%;
       }
       [role='menuitem']:hover,
       [role='menuitem']:focus-visible {
-        background: color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 12%, transparent);
+        background: color-mix(in srgb, var(--varendo-color-accent, #4338ca) 12%, transparent);
       }
       [role='menuitem']:disabled {
         cursor: not-allowed;
@@ -93,7 +93,7 @@ export class AeliqoMenuElement extends AeliqoFoundationElement {
     `,
   ];
 
-  items: readonly AeliqoMenuItem[] = [];
+  items: readonly VarendoMenuItem[] = [];
   label = 'Menu';
   open = false;
   private returnFocus: HTMLElement | undefined = undefined;
@@ -126,9 +126,9 @@ export class AeliqoMenuElement extends AeliqoFoundationElement {
   private close(): void {
     this.open = false;
   }
-  private activate(item: AeliqoMenuItem): void {
+  private activate(item: VarendoMenuItem): void {
     if (item.disabled) return;
-    if (!emitAction(this, 'aeliqo-menu-action', { id: item.id })) return;
+    if (!emitAction(this, 'varendo-menu-action', { id: item.id })) return;
     this.close();
   }
   private keydown(event: KeyboardEvent, index: number): void {
@@ -153,7 +153,7 @@ export class AeliqoMenuElement extends AeliqoFoundationElement {
   }
 
   protected override render() {
-    const menuId = safeElementId(`${this.id || 'aeliqo-menu'}-items`, 'aeliqo-menu-items');
+    const menuId = safeElementId(`${this.id || 'varendo-menu'}-items`, 'varendo-menu-items');
     return html`<button
         part="trigger"
         type="button"

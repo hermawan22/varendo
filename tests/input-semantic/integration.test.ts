@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
 import { fixture } from '../foundation/semantic-fixture.js';
 
 describe('inputs in the canonical presentation graph', () => {
@@ -23,7 +23,7 @@ describe('inputs in the canonical presentation graph', () => {
         },
       ],
     };
-    const registry = createAeliqoPresentationRegistry({ inputs });
+    const registry = createVarendoPresentationRegistry({ inputs });
     expect(registry.ok).toBe(true);
     if (!registry.ok) return;
     const plan = {

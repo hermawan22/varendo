@@ -3,12 +3,12 @@ import { nothing } from 'lit';
 import type { PresentationPlan, Result, ResultRef } from '../../packages/core/src/contracts/index.js';
 import type { PresentationContext, PresentationValues } from '../../packages/core/src/presentation/index.js';
 import { validatePresentationPlan, createPresentationRegistry } from '../../packages/core/src/presentation/index.js';
-import { AELIQO_DATA_REFS, type AeliqoDataBinding } from '../../packages/web/src/region/data-registry.js';
+import { VARENDO_DATA_REFS, type VarendoDataBinding } from '../../packages/web/src/region/data-registry.js';
 import {
-  AELIQO_DATA_PRESENTATION_OPERATIONS,
-  createAeliqoDataPresentationManifests,
-  createAeliqoDataPresentationRegistry,
-  renderAeliqoDataPresentationNode,
+  VARENDO_DATA_PRESENTATION_OPERATIONS,
+  createVarendoDataPresentationManifests,
+  createVarendoDataPresentationRegistry,
+  renderVarendoDataPresentationNode,
 } from '../../packages/web/src/region/data-presentation.js';
 
 const ref = {
@@ -92,7 +92,7 @@ const rows = [
   },
 ] as const;
 
-const binding: AeliqoDataBinding = { result, rows };
+const binding: VarendoDataBinding = { result, rows };
 const entityOptions = { resolveEntity: () => 'person' } as const;
 
 function refKey(value: ResultRef): string {
@@ -116,7 +116,7 @@ function contextFor(
   representation: { id: string; revision: string },
   role: string,
   schema: { id: string; revision: string },
-  operation = AELIQO_DATA_PRESENTATION_OPERATIONS.read,
+  operation = VARENDO_DATA_PRESENTATION_OPERATIONS.read,
 ): PresentationContext {
   return {
     task: {
@@ -186,7 +186,7 @@ function planFor(
   role: string,
   schema: { id: string; revision: string },
   values: PresentationValues,
-  operation = AELIQO_DATA_PRESENTATION_OPERATIONS.read,
+  operation = VARENDO_DATA_PRESENTATION_OPERATIONS.read,
 ): PresentationPlan {
   return {
     id: 'plan',
@@ -221,39 +221,39 @@ function planFor(
 
 describe('data presentation bridge', () => {
   it('registers eight non-table manifests and accepts only exact authorized binding keys', () => {
-    const created = createAeliqoDataPresentationManifests([binding], entityOptions);
+    const created = createVarendoDataPresentationManifests([binding], entityOptions);
     expect(created).toMatchObject({ ok: true });
     if (!created.ok) return;
     expect(created.value).toHaveLength(8);
     expect(created.value.map((manifest) => manifest.ref)).toEqual([
-      AELIQO_DATA_REFS.metric,
-      AELIQO_DATA_REFS.delta,
-      AELIQO_DATA_REFS.keyValue,
-      AELIQO_DATA_REFS.detail,
-      AELIQO_DATA_REFS.recordList,
-      AELIQO_DATA_REFS.cardCollection,
-      AELIQO_DATA_REFS.filterBuilder,
-      AELIQO_DATA_REFS.selectionSummary,
+      VARENDO_DATA_REFS.metric,
+      VARENDO_DATA_REFS.delta,
+      VARENDO_DATA_REFS.keyValue,
+      VARENDO_DATA_REFS.detail,
+      VARENDO_DATA_REFS.recordList,
+      VARENDO_DATA_REFS.cardCollection,
+      VARENDO_DATA_REFS.filterBuilder,
+      VARENDO_DATA_REFS.selectionSummary,
     ]);
 
-    const invalidKey = createAeliqoDataPresentationManifests(new Map([['people', binding]]), entityOptions);
+    const invalidKey = createVarendoDataPresentationManifests(new Map([['people', binding]]), entityOptions);
     expect(invalidKey).toMatchObject({
       ok: false,
       diagnostics: [{ code: 'web.data.presentation.binding' }],
     });
-    const duplicate = createAeliqoDataPresentationManifests([binding, binding], entityOptions);
+    const duplicate = createVarendoDataPresentationManifests([binding, binding], entityOptions);
     expect(duplicate).toMatchObject({
       ok: false,
       diagnostics: [{ code: 'web.data.presentation.binding' }],
     });
-    expect(createAeliqoDataPresentationManifests([undefined as never], entityOptions)).toMatchObject({
+    expect(createVarendoDataPresentationManifests([undefined as never], entityOptions)).toMatchObject({
       ok: false,
       diagnostics: [{ code: 'web.data.presentation.binding' }],
     });
   });
 
   it('resolves every manifest through the existing semantic data helper', () => {
-    const created = createAeliqoDataPresentationManifests([binding], entityOptions);
+    const created = createVarendoDataPresentationManifests([binding], entityOptions);
     if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
     const configs: Record<string, PresentationValues> = {
       'data.metric': { field: 'amount', identityValues: { id: 'a' } },
@@ -291,8 +291,8 @@ describe('data presentation bridge', () => {
       if (!registry.ok) throw new Error(JSON.stringify(registry.diagnostics));
       const operation =
         manifest.ref.id === 'control.filter-builder'
-          ? AELIQO_DATA_PRESENTATION_OPERATIONS.filter
-          : AELIQO_DATA_PRESENTATION_OPERATIONS.read;
+          ? VARENDO_DATA_PRESENTATION_OPERATIONS.filter
+          : VARENDO_DATA_PRESENTATION_OPERATIONS.read;
       const context = contextFor(manifest.ref, manifest.roles[0]!, manifest.configSchema, operation);
       const actualContext = {
         ...context,
@@ -313,9 +313,9 @@ describe('data presentation bridge', () => {
   });
 
   it('passes a bound metric through validatePresentationPlan without copying rows into the plan', () => {
-    const created = createAeliqoDataPresentationRegistry([binding], entityOptions);
+    const created = createVarendoDataPresentationRegistry([binding], entityOptions);
     if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
-    const manifest = created.value.manifests.find((candidate) => candidate.ref.id === AELIQO_DATA_REFS.metric.id)!;
+    const manifest = created.value.manifests.find((candidate) => candidate.ref.id === VARENDO_DATA_REFS.metric.id)!;
     const plan = planFor(manifest.ref, 'metric', manifest.configSchema, {
       field: 'amount',
       identityValues: { id: 'a' },
@@ -336,9 +336,9 @@ describe('data presentation bridge', () => {
   });
 
   it('renders only an exact current ResultRef and rejects stale or malformed materializations', () => {
-    const created = createAeliqoDataPresentationRegistry([binding], entityOptions);
+    const created = createVarendoDataPresentationRegistry([binding], entityOptions);
     if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
-    const manifest = created.value.manifests.find((candidate) => candidate.ref.id === AELIQO_DATA_REFS.metric.id)!;
+    const manifest = created.value.manifests.find((candidate) => candidate.ref.id === VARENDO_DATA_REFS.metric.id)!;
     const checked = validatePresentationPlan(
       planFor(manifest.ref, 'metric', manifest.configSchema, { field: 'amount', identityValues: { id: 'a' } }),
       contextFor(manifest.ref, 'metric', manifest.configSchema),
@@ -346,7 +346,7 @@ describe('data presentation bridge', () => {
     );
     if (!checked.ok) throw new Error(JSON.stringify(checked.diagnostics));
     const node = checked.value.nodes[0]!;
-    expect(source(created.value.render(node, binding))).toContain('<aeliqo-metric');
+    expect(source(created.value.render(node, binding))).toContain('<varendo-metric');
 
     const changedRef = {
       ...ref,
@@ -359,7 +359,7 @@ describe('data presentation bridge', () => {
     expect(stale).toBe(nothing);
     expect(created.value.render(node, { result, rows: [] })).toBe(nothing);
     expect(
-      renderAeliqoDataPresentationNode(node, {
+      renderVarendoDataPresentationNode(node, {
         result: { ...result, ref: changedRef },
         rows,
       }),
@@ -372,9 +372,9 @@ describe('data presentation bridge', () => {
   });
 
   it('does not let current column materialization reduce validated detail coverage', () => {
-    const created = createAeliqoDataPresentationRegistry([binding], entityOptions);
+    const created = createVarendoDataPresentationRegistry([binding], entityOptions);
     if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
-    const manifest = created.value.manifests.find((m) => m.ref.id === AELIQO_DATA_REFS.detail.id)!;
+    const manifest = created.value.manifests.find((m) => m.ref.id === VARENDO_DATA_REFS.detail.id)!;
     const checked = validatePresentationPlan(
       planFor(manifest.ref, 'detail', manifest.configSchema, {}),
       contextFor(manifest.ref, 'detail', manifest.configSchema),
@@ -382,8 +382,8 @@ describe('data presentation bridge', () => {
     );
     if (!checked.ok) throw new Error(JSON.stringify(checked.diagnostics));
     const node = checked.value.nodes[0]!;
-    expect(renderAeliqoDataPresentationNode(node, binding)).not.toBe(nothing);
-    expect(renderAeliqoDataPresentationNode(node, { ...binding, columns: [{ key: 'name', label: 'Name' }] })).toBe(
+    expect(renderVarendoDataPresentationNode(node, binding)).not.toBe(nothing);
+    expect(renderVarendoDataPresentationNode(node, { ...binding, columns: [{ key: 'name', label: 'Name' }] })).toBe(
       nothing,
     );
   });
@@ -394,9 +394,9 @@ describe('data presentation bridge', () => {
       counts: { loaded: 2, population: { kind: 'exact', value: 2, populationDigest: 'population' } },
     };
     const materialized = { result: materializedResult, rows: [rows[0], { ...rows[0], id: 'b', name: 'Bea' }] };
-    const created = createAeliqoDataPresentationRegistry([materialized], entityOptions);
+    const created = createVarendoDataPresentationRegistry([materialized], entityOptions);
     if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
-    const manifest = created.value.manifests.find((m) => m.ref.id === AELIQO_DATA_REFS.metric.id)!;
+    const manifest = created.value.manifests.find((m) => m.ref.id === VARENDO_DATA_REFS.metric.id)!;
     const checked = validatePresentationPlan(
       planFor(manifest.ref, 'metric', manifest.configSchema, { field: 'amount', identityValues: { id: 'a' } }),
       { ...contextFor(manifest.ref, 'metric', manifest.configSchema), results: [materializedResult] },
@@ -409,12 +409,14 @@ describe('data presentation bridge', () => {
   });
 
   it('keeps operation declarations bounded to the helper-derived capabilities', () => {
-    const created = createAeliqoDataPresentationRegistry([binding], entityOptions);
+    const created = createVarendoDataPresentationRegistry([binding], entityOptions);
     if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
-    const filter = created.value.manifests.find((candidate) => candidate.ref.id === AELIQO_DATA_REFS.filterBuilder.id)!;
-    expect(filter.operations).toEqual([AELIQO_DATA_PRESENTATION_OPERATIONS.filter]);
+    const filter = created.value.manifests.find(
+      (candidate) => candidate.ref.id === VARENDO_DATA_REFS.filterBuilder.id,
+    )!;
+    expect(filter.operations).toEqual([VARENDO_DATA_PRESENTATION_OPERATIONS.filter]);
     const summary = created.value.manifests.find(
-      (candidate) => candidate.ref.id === AELIQO_DATA_REFS.selectionSummary.id,
+      (candidate) => candidate.ref.id === VARENDO_DATA_REFS.selectionSummary.id,
     )!;
     const resolved = summary.resolveConfig({ selection: 'none' }, result);
     expect(resolved).toMatchObject({ ok: true, value: { fields: [], ports: [] } });
@@ -423,7 +425,7 @@ describe('data presentation bridge', () => {
 
   it('does not rely on caller supplied map ordering for ResultRef identity', () => {
     const key = refKey(ref);
-    const created = createAeliqoDataPresentationRegistry({ [key]: binding }, entityOptions);
+    const created = createVarendoDataPresentationRegistry({ [key]: binding }, entityOptions);
     expect(created.ok).toBe(true);
   });
 
@@ -435,7 +437,7 @@ describe('data presentation bridge', () => {
       result: { ...result, ref: sourceB },
       rows: [{ ...rows[0], id: 'b', name: 'Bea' }],
     };
-    const created = createAeliqoDataPresentationRegistry([sourceABinding, sourceBBinding], entityOptions);
+    const created = createVarendoDataPresentationRegistry([sourceABinding, sourceBBinding], entityOptions);
     if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
 
     expect(created.value.bindingFor(sourceA)).toMatchObject({
@@ -452,9 +454,9 @@ describe('data presentation bridge', () => {
     const sourceA = { ...ref, sourceLineage: 'source-a' } as const satisfies ResultRef;
     const sourceB = { ...ref, sourceLineage: 'source-b' } as const satisfies ResultRef;
     const sourceABinding = { result: { ...result, ref: sourceA }, rows };
-    const created = createAeliqoDataPresentationRegistry([sourceABinding], entityOptions);
+    const created = createVarendoDataPresentationRegistry([sourceABinding], entityOptions);
     if (!created.ok) throw new Error(JSON.stringify(created.diagnostics));
-    const manifest = created.value.manifests.find((candidate) => candidate.ref.id === AELIQO_DATA_REFS.metric.id)!;
+    const manifest = created.value.manifests.find((candidate) => candidate.ref.id === VARENDO_DATA_REFS.metric.id)!;
     const context = contextFor(manifest.ref, 'metric', manifest.configSchema);
     const plan = planFor(manifest.ref, 'metric', manifest.configSchema, {
       field: 'amount',

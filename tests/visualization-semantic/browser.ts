@@ -1,8 +1,8 @@
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
-import { AeliqoRegionElement, createAeliqoPresentationRegistry } from '../../packages/web/src/region/index.js';
-import { registerAeliqoElements } from '../../packages/web/src/register.js';
-import type { AeliqoPresentationRegistryOptions } from '../../packages/web/src/region/registry.js';
-import type { AeliqoRegionResult, AeliqoSemanticInteractionRequest } from '../../packages/web/src/region/types.js';
+import { VarendoRegionElement, createVarendoPresentationRegistry } from '../../packages/web/src/region/index.js';
+import { registerVarendoElements } from '../../packages/web/src/register.js';
+import type { VarendoPresentationRegistryOptions } from '../../packages/web/src/region/registry.js';
+import type { VarendoRegionResult, VarendoSemanticInteractionRequest } from '../../packages/web/src/region/types.js';
 import type { PresentationPlan } from '../../packages/core/src/contracts/index.js';
 import type { PresentationContext } from '../../packages/core/src/presentation/index.js';
 import {
@@ -13,11 +13,11 @@ import {
   visualizationRegistryOptions,
 } from './fixtures.mjs';
 
-registerAeliqoElements();
+registerVarendoElements();
 
-function install(element: AeliqoRegionElement, readOnly: boolean, events: AeliqoSemanticInteractionRequest[]): void {
-  const registry = createAeliqoPresentationRegistry(
-    visualizationRegistryOptions(readOnly) as AeliqoPresentationRegistryOptions,
+function install(element: VarendoRegionElement, readOnly: boolean, events: VarendoSemanticInteractionRequest[]): void {
+  const registry = createVarendoPresentationRegistry(
+    visualizationRegistryOptions(readOnly) as VarendoPresentationRegistryOptions,
   );
   if (!registry.ok) throw new Error(JSON.stringify(registry.diagnostics));
   const checked = validatePresentationPlan(
@@ -27,21 +27,21 @@ function install(element: AeliqoRegionElement, readOnly: boolean, events: Aeliqo
   );
   if (!checked.ok) throw new Error(JSON.stringify(checked.diagnostics));
   element.presentation = checked.value;
-  element.results = regionResults() as AeliqoRegionResult[];
+  element.results = regionResults() as VarendoRegionResult[];
   element.onSemanticInteraction = (request) => events.push(request);
 }
 
-const editable = document.querySelector<AeliqoRegionElement>('#editable');
-const readOnly = document.querySelector<AeliqoRegionElement>('#readonly');
+const editable = document.querySelector<VarendoRegionElement>('#editable');
+const readOnly = document.querySelector<VarendoRegionElement>('#readonly');
 if (editable === null || readOnly === null) throw new Error('Semantic visualization regions are missing.');
-const semanticEvents: AeliqoSemanticInteractionRequest[] = [];
-const readOnlyEvents: AeliqoSemanticInteractionRequest[] = [];
+const semanticEvents: VarendoSemanticInteractionRequest[] = [];
+const readOnlyEvents: VarendoSemanticInteractionRequest[] = [];
 install(editable, false, semanticEvents);
 install(readOnly, true, readOnlyEvents);
 
 Object.assign(window, {
-  aeliqoVisualizationSemanticReady: true,
-  aeliqoVisualizationSemanticEvents: semanticEvents,
-  aeliqoVisualizationSemanticReadOnlyEvents: readOnlyEvents,
-  aeliqoVisualizationSemanticTemporalRef: temporalRef,
+  varendoVisualizationSemanticReady: true,
+  varendoVisualizationSemanticEvents: semanticEvents,
+  varendoVisualizationSemanticReadOnlyEvents: readOnlyEvents,
+  varendoVisualizationSemanticTemporalRef: temporalRef,
 });

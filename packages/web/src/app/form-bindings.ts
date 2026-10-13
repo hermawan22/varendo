@@ -10,9 +10,9 @@ import {
   type Task,
   type VersionRef,
 } from '@varendo/core';
-import { AELIQO_INPUT_REFS, type AeliqoInputRef } from '../input/manifest.js';
-import type { AeliqoInputBinding, AeliqoInputBindings } from '../region/input-registry.js';
-import type { AeliqoFormState } from './types.js';
+import { VARENDO_INPUT_REFS, type VarendoInputRef } from '../input/manifest.js';
+import type { VarendoInputBinding, VarendoInputBindings } from '../region/input-registry.js';
+import type { VarendoFormState } from './types.js';
 
 function failure<T>(code: string, message: string): Outcome<T> {
   const item: Diagnostic = { code, message, retryable: false };
@@ -34,22 +34,22 @@ function isJsonObject(value: unknown): value is Readonly<Record<string, Readonly
 
 type FieldTypeValue = ResourceDefinition['entity']['fields'][number]['type']['value'];
 
-const FIELD_REFS: Readonly<Partial<Record<FieldTypeValue, AeliqoInputRef>>> = {
-  boolean: AELIQO_INPUT_REFS.checkbox,
-  integer: AELIQO_INPUT_REFS.numberField,
-  float: AELIQO_INPUT_REFS.numberField,
-  decimal: AELIQO_INPUT_REFS.numberField,
-  date: AELIQO_INPUT_REFS.dateField,
+const FIELD_REFS: Readonly<Partial<Record<FieldTypeValue, VarendoInputRef>>> = {
+  boolean: VARENDO_INPUT_REFS.checkbox,
+  integer: VARENDO_INPUT_REFS.numberField,
+  float: VARENDO_INPUT_REFS.numberField,
+  decimal: VARENDO_INPUT_REFS.numberField,
+  date: VARENDO_INPUT_REFS.dateField,
 };
 
-function fieldRef(value: FieldTypeValue): AeliqoInputRef {
-  return FIELD_REFS[value] ?? AELIQO_INPUT_REFS.textField;
+function fieldRef(value: FieldTypeValue): VarendoInputRef {
+  return FIELD_REFS[value] ?? VARENDO_INPUT_REFS.textField;
 }
 
-function defaultConfig(ref: AeliqoInputRef, value: Scalar | undefined): Record<string, unknown> {
+function defaultConfig(ref: VarendoInputRef, value: Scalar | undefined): Record<string, unknown> {
   if (value === undefined || value === null) return {};
-  if (ref.id === AELIQO_INPUT_REFS.checkbox.id) return typeof value === 'boolean' ? { defaultChecked: value } : {};
-  if (ref.id === AELIQO_INPUT_REFS.numberField.id) {
+  if (ref.id === VARENDO_INPUT_REFS.checkbox.id) return typeof value === 'boolean' ? { defaultChecked: value } : {};
+  if (ref.id === VARENDO_INPUT_REFS.numberField.id) {
     const text = numberDefaultValue(value);
     return text === undefined ? {} : { defaultValue: text };
   }
@@ -64,7 +64,7 @@ function numberDefaultValue(value: Scalar): string | undefined {
 
 function checkedValues(
   resource: ResourceDefinition,
-  state: AeliqoFormState,
+  state: VarendoFormState,
 ): Outcome<Readonly<Record<string, Scalar>>> {
   const parsed = parseWireValue(state.values);
   if (!parsed.ok || !isJsonObject(parsed.value))
@@ -87,8 +87,8 @@ export function createFormBindings(
   resource: ResourceDefinition,
   intent: Intent,
   task: Task,
-  state: AeliqoFormState,
-): Outcome<AeliqoInputBindings> {
+  state: VarendoFormState,
+): Outcome<VarendoInputBindings> {
   if ((intent.kind !== 'create' && intent.kind !== 'edit') || task.kind !== 'form')
     return failure('web.form-state.intent', 'Form bindings require a compiled create or edit Task.');
   if (!validEntityRevision(state.entityRevision))
@@ -137,9 +137,9 @@ function fieldBinding(
   resource: ResourceDefinition,
   field: ResourceDefinition['entity']['fields'][number],
   key: string,
-  state: AeliqoFormState,
+  state: VarendoFormState,
   values: Readonly<Record<string, Scalar>>,
-): AeliqoInputBinding {
+): VarendoInputBinding {
   const metadata = resource.fieldMetadata[field.id];
   const ref = fieldRef(field.type.value);
   const unit = numberUnit(ref, field.type.unit?.symbol);
@@ -164,8 +164,8 @@ function fieldBinding(
   };
 }
 
-function numberUnit(ref: AeliqoInputRef, symbol: string | undefined): Record<string, string> {
-  if (ref.id !== AELIQO_INPUT_REFS.numberField.id || symbol === undefined) return {};
+function numberUnit(ref: VarendoInputRef, symbol: string | undefined): Record<string, string> {
+  if (ref.id !== VARENDO_INPUT_REFS.numberField.id || symbol === undefined) return {};
   return { unit: symbol };
 }
 
@@ -174,13 +174,13 @@ function formBinding(
   intent: Intent,
   action: VersionRef,
   values: Readonly<Record<string, Scalar>>,
-): AeliqoInputBinding {
+): VarendoInputBinding {
   const creating = intent.kind === 'create';
   const label = creating ? `Create a record in ${resource.label}` : `Edit a record in ${resource.label}`;
   const submitLabel = creating ? 'Create record' : 'Save changes';
   return {
     id: 'form',
-    ref: AELIQO_INPUT_REFS.form,
+    ref: VARENDO_INPUT_REFS.form,
     config: { label, submitLabel },
     action: { action, input: values },
   };

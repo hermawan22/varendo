@@ -50,7 +50,7 @@ const next = validatePresentationPlan(
     ...presentationPlan,
     nodes: presentationPlan.nodes.map((node) => ({ ...node, config: { ...node.config, values: { port: 'chosen' } } })),
     stateTransfer: [
-      { fromNode: 'table-1', toNode: 'table-1', mapping: { id: 'aeliqo.state.identity', revision: '1' } },
+      { fromNode: 'table-1', toNode: 'table-1', mapping: { id: 'varendo.state.identity', revision: '1' } },
     ],
   },
   { ...context, incumbent: presentationPlan },

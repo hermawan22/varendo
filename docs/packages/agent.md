@@ -78,7 +78,7 @@ single-use receipt checks. `createAppToolEndpoint` continues to own and cancel
 its previews when used directly.
 
 A trusted `context.read()` adapter may add `customIntents` and `patterns` to
-each routable resource in `aeliqo_context`. A custom intent entry contains its
+each routable resource in `varendo_context`. A custom intent entry contains its
 registered version reference and JSON input schema. A pattern entry contains
 its registered version reference, matching intent reference, and output roles.
 Expose only entries that the paired render port can compile and resolve; this
@@ -97,12 +97,12 @@ apply those rules automatically.
 
 The tools are shaped so a model can succeed on its first call:
 
-- `aeliqo_context` returns each resource's fields, meanings (measures), views,
+- `varendo_context` returns each resource's fields, meanings (measures), views,
   a `viewGuide` that explains what each view is for, the supported
   `timeGrains`, and `examples`: ready-to-send intents derived from the resource
   metadata, such as a list, a filter, a monthly trend, and a per-category
   breakdown.
-- `aeliqo_render` documents every intent property. The model may omit
+- `varendo_render` documents every intent property. The model may omit
   `version`, `id`, and a measure `revision` that has only one value; the
   endpoint fills them before the strict intent parser runs. A trend's calendar
   and timezone default to the time field's declared policy.
@@ -115,12 +115,12 @@ The tools are shaped so a model can succeed on its first call:
   confirms only that the plan committed; do not say it is visible without a
   `renderer-ready` result.
 
-`AELIQO_AGENT_INSTRUCTIONS` is a recommended system prompt for model hosts.
+`VARENDO_AGENT_INSTRUCTIONS` is a recommended system prompt for model hosts.
 Append product guidance when needed; the tool boundary enforces the rules
 either way.
 
 ```ts
-import { AELIQO_AGENT_INSTRUCTIONS } from '@varendo/agent';
+import { VARENDO_AGENT_INSTRUCTIONS } from '@varendo/agent';
 ```
 
 ## Optional integrations

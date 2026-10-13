@@ -14,7 +14,7 @@
     "expectedReportedModel": "deepseek-flash",
     "authScheme": "bearer",
     "capabilities": ["tool-calls", "usage", "input-token-estimate", "request-cancellation"],
-    "credentialEnvironment": "AELIQO_MODEL_API_KEY",
+    "credentialEnvironment": "VARENDO_MODEL_API_KEY",
     "inputUSDPerMillion": 0.3,
     "outputUSDPerMillion": 1.2,
     "priceSource": "https://api-docs.deepseek.com/quick_start/pricing"

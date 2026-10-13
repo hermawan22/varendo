@@ -1,7 +1,7 @@
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { defineResource, type Intent, type ResourceDefinition } from '@varendo/core';
 import { createLocalDataService, type DataRecord, type LocalDataService } from '@varendo/runtime/data';
-import { createAeliqoApp, type AeliqoApp, type AeliqoAppOptions, type WebRenderReceipt } from '@varendo/web/app';
+import { createVarendoApp, type VarendoApp, type VarendoAppOptions, type WebRenderReceipt } from '@varendo/web/app';
 import { z } from 'zod';
 import { HEADCOUNT_RECORDS, HEADCOUNT_RESOURCE } from './playground/workforce-scenario.js';
 
@@ -26,7 +26,7 @@ const functions = createQueryFunctionRegistry({ version: '2' });
 if (!functions.ok) throw new Error(functions.diagnostics[0].message);
 const functionRegistry = functions.value;
 
-const readHomeAuthority: AeliqoAppOptions['authority']['read'] = () => ({
+const readHomeAuthority: VarendoAppOptions['authority']['read'] = () => ({
   ok: true,
   value: {
     principalKey: 'home-public',
@@ -58,8 +58,8 @@ function homeDataService(
   });
 }
 
-function createHomeApp(resources: AeliqoAppOptions['resources']): AeliqoApp {
-  return createAeliqoApp({ resources, authority: { read: readHomeAuthority } });
+function createHomeApp(resources: VarendoAppOptions['resources']): VarendoApp {
+  return createVarendoApp({ resources, authority: { read: readHomeAuthority } });
 }
 
 function siteTheme(): 'light' | 'dark' {
@@ -68,10 +68,10 @@ function siteTheme(): 'light' | 'dark' {
   return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function mountRegion(app: AeliqoApp, target: HTMLElement, regionId: string, resourceId: string): void {
+function mountRegion(app: VarendoApp, target: HTMLElement, regionId: string, resourceId: string): void {
   const mounted = app.mount({ target, regionId, resourceId });
   if (!mounted.ok) throw new Error(mounted.diagnostics[0].message);
-  mounted.value.setAttribute('data-aeliqo-theme', siteTheme());
+  mounted.value.setAttribute('data-varendo-theme', siteTheme());
 }
 
 export type HomeDemoView = 'table' | 'cards' | 'chart';

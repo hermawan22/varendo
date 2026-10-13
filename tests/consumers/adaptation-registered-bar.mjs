@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { createAeliqoPresentationRegistry } from '@varendo/web/region';
+import { createVarendoPresentationRegistry } from '@varendo/web/region';
 
 const ref = {
   id: 'orders-result',
@@ -49,7 +49,7 @@ const visualization = {
     },
   },
 };
-const registry = createAeliqoPresentationRegistry({
+const registry = createVarendoPresentationRegistry({
   resolveEntity: () => 'orders',
   visualizations: [
     {

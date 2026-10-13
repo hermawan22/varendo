@@ -1,6 +1,6 @@
 import { validateScalar, type Outcome, type Scalar, type SemanticType } from '@varendo/core';
-import { AELIQO_INPUT_REFS, type AeliqoInputId } from '../input/manifest.js';
-import type { AeliqoInputBinding, AeliqoInputDraftBinding } from './input-registry-types.js';
+import { VARENDO_INPUT_REFS, type VarendoInputId } from '../input/manifest.js';
+import type { VarendoInputBinding, VarendoInputDraftBinding } from './input-registry-types.js';
 import { NUMERIC_TYPE_VALUES } from './data-registry-common.js';
 import {
   boundedId,
@@ -30,10 +30,10 @@ interface ConfigFields {
 }
 
 interface InputTargets {
-  readonly draft?: AeliqoInputDraftBinding;
+  readonly draft?: VarendoInputDraftBinding;
   readonly range?: {
-    readonly start: AeliqoInputDraftBinding;
-    readonly end: AeliqoInputDraftBinding;
+    readonly start: VarendoInputDraftBinding;
+    readonly end: VarendoInputDraftBinding;
   };
 }
 
@@ -63,7 +63,7 @@ const TEXT_VALUE_INPUTS = new Set([
   'input.combobox',
 ]);
 
-const CONFIG_KEYS: Record<AeliqoInputId, readonly string[]> = {
+const CONFIG_KEYS: Record<VarendoInputId, readonly string[]> = {
   'input.text-field': ['value', 'defaultValue', 'placeholder', 'autocomplete', 'inputType'],
   'input.text-area': ['value', 'defaultValue', 'rows'],
   'input.number-field': ['value', 'defaultValue', 'min', 'max', 'step', 'unit'],
@@ -221,7 +221,7 @@ function validForm(fields: ConfigFields): boolean {
   return fields.text('label', 512) && fields.bool('noValidate') && fields.text('submitLabel', 256);
 }
 
-const CONFIG_VALIDATORS: Record<AeliqoInputId, ConfigValidator> = {
+const CONFIG_VALIDATORS: Record<VarendoInputId, ConfigValidator> = {
   'input.text-field': (config) => validTextField(configFields(config)),
   'input.text-area': (config) => validTextArea(config, configFields(config)),
   'input.number-field': (config) => validNumberField(config, configFields(config)),
@@ -239,7 +239,7 @@ const CONFIG_VALIDATORS: Record<AeliqoInputId, ConfigValidator> = {
   'input.form': (config) => validForm(configFields(config)),
 };
 
-const CONFIG_ERRORS: Record<AeliqoInputId, string> = {
+const CONFIG_ERRORS: Record<VarendoInputId, string> = {
   'input.text-field': 'Text field configuration is invalid.',
   'input.text-area': 'Text area configuration is invalid.',
   'input.number-field': 'Number field configuration is invalid.',
@@ -257,7 +257,7 @@ const CONFIG_ERRORS: Record<AeliqoInputId, string> = {
   'input.form': 'Form configuration is invalid.',
 };
 
-function validateConfiguration(ref: AeliqoInputId, config: Record<string, unknown>): Outcome<void> {
+function validateConfiguration(ref: VarendoInputId, config: Record<string, unknown>): Outcome<void> {
   const structural = ref === 'input.field-group' || ref === 'input.form';
   const requireLabel = ref !== 'input.field-group';
   if (!commonConfig(config, CONFIG_KEYS[ref], requireLabel, !structural))
@@ -271,17 +271,17 @@ function validateConfiguration(ref: AeliqoInputId, config: Record<string, unknow
   return { ok: true, value: undefined };
 }
 
-function invalidNumericTarget(ref: AeliqoInputId, type: SemanticType['value']): boolean {
+function invalidNumericTarget(ref: VarendoInputId, type: SemanticType['value']): boolean {
   return NUMERIC_INPUTS.has(ref) && !NUMERIC_TYPE_VALUES.has(type);
 }
 
-function invalidTextTarget(ref: AeliqoInputId, type: SemanticType['value']): boolean {
+function invalidTextTarget(ref: VarendoInputId, type: SemanticType['value']): boolean {
   if (ref === 'input.date-field' || ref === 'input.date-range') return false;
   if (NUMERIC_INPUTS.has(ref) || BOOLEAN_INPUTS.has(ref)) return false;
   return type !== 'text' && !(ref === 'input.text-field' && type === 'instant');
 }
 
-function semanticTypeForTarget(ref: AeliqoInputId, draft: AeliqoInputDraftBinding): Outcome<void> {
+function semanticTypeForTarget(ref: VarendoInputId, draft: VarendoInputDraftBinding): Outcome<void> {
   const type = draft.type.value;
   if (invalidNumericTarget(ref, type)) return fail('binding', `${ref} requires a numeric semantic type.`);
   if (invalidTextTarget(ref, type)) return fail('binding', `${ref} requires a text semantic type.`);
@@ -291,12 +291,12 @@ function semanticTypeForTarget(ref: AeliqoInputId, draft: AeliqoInputDraftBindin
   return { ok: true, value: undefined };
 }
 
-function draftBinding(binding: AeliqoInputBinding): Outcome<AeliqoInputDraftBinding | undefined> {
+function draftBinding(binding: VarendoInputBinding): Outcome<VarendoInputDraftBinding | undefined> {
   if (binding.draft === undefined) return { ok: true, value: undefined };
   return fieldBinding(binding.draft, 'draft');
 }
 
-function rangeBinding(binding: AeliqoInputBinding): Outcome<InputTargets['range']> {
+function rangeBinding(binding: VarendoInputBinding): Outcome<InputTargets['range']> {
   if (binding.range === undefined) return { ok: true, value: undefined };
   const start = fieldBinding(binding.range.start, 'range.start');
   if (!start.ok) return start;
@@ -306,8 +306,8 @@ function rangeBinding(binding: AeliqoInputBinding): Outcome<InputTargets['range'
 }
 
 function validateTargetPresence(
-  ref: AeliqoInputId,
-  draft: AeliqoInputDraftBinding | undefined,
+  ref: VarendoInputId,
+  draft: VarendoInputDraftBinding | undefined,
   range: InputTargets['range'],
 ): Outcome<void> {
   if (DRAFT_INPUTS.has(ref) && draft === undefined)
@@ -319,7 +319,7 @@ function validateTargetPresence(
   return { ok: true, value: undefined };
 }
 
-function validateRangeType(ref: AeliqoInputId, range: InputTargets['range']): Outcome<void> {
+function validateRangeType(ref: VarendoInputId, range: InputTargets['range']): Outcome<void> {
   if (ref !== 'input.date-range') return { ok: true, value: undefined };
   if (!validDateRangeTargets(range)) return fail('binding', 'Date range mappings must use the date semantic type.');
   if (!sameRangeTarget(range))
@@ -327,12 +327,12 @@ function validateRangeType(ref: AeliqoInputId, range: InputTargets['range']): Ou
   return { ok: true, value: undefined };
 }
 
-function validateDraftType(ref: AeliqoInputId, draft: AeliqoInputDraftBinding | undefined): Outcome<void> {
+function validateDraftType(ref: VarendoInputId, draft: VarendoInputDraftBinding | undefined): Outcome<void> {
   if (draft === undefined) return { ok: true, value: undefined };
   return semanticTypeForTarget(ref, draft);
 }
 
-function validatedTargets(binding: AeliqoInputBinding, ref: AeliqoInputId): Outcome<InputTargets> {
+function validatedTargets(binding: VarendoInputBinding, ref: VarendoInputId): Outcome<InputTargets> {
   const draft = draftBinding(binding);
   if (!draft.ok) return draft;
   const range = rangeBinding(binding);
@@ -366,10 +366,10 @@ function sameRangeTarget(range: NonNullable<InputTargets['range']> | undefined):
 }
 
 function draftValueCheck(
-  ref: AeliqoInputId,
+  ref: VarendoInputId,
   key: string,
   config: Record<string, unknown>,
-  draft: AeliqoInputDraftBinding,
+  draft: VarendoInputDraftBinding,
 ): Outcome<Scalar | undefined> {
   if (ref === 'input.number-field') return numberValue(draft.type, config[key]);
   if (TEXT_VALUE_INPUTS.has(ref)) return typeValue(draft.type, config[key]);
@@ -377,9 +377,9 @@ function draftValueCheck(
 }
 
 function validateDraftValues(
-  ref: AeliqoInputId,
+  ref: VarendoInputId,
   config: Record<string, unknown>,
-  draft: AeliqoInputDraftBinding | undefined,
+  draft: VarendoInputDraftBinding | undefined,
 ): Outcome<void> {
   if (draft === undefined) return { ok: true, value: undefined };
   for (const key of ['value', 'defaultValue']) {
@@ -389,7 +389,7 @@ function validateDraftValues(
   return { ok: true, value: undefined };
 }
 
-function validateDateRangeValues(ref: AeliqoInputId, config: Record<string, unknown>): Outcome<void> {
+function validateDateRangeValues(ref: VarendoInputId, config: Record<string, unknown>): Outcome<void> {
   if (
     ref === 'input.date-range' &&
     ((config.start !== undefined && !dateValue(config.start)) || (config.end !== undefined && !dateValue(config.end)))
@@ -416,7 +416,7 @@ function sliderValue(value: unknown, type: SemanticType): Outcome<void> {
 
 const BOUNDED_VALUE_KEYS = ['value', 'defaultValue', 'min', 'max', 'step'] as const;
 
-function validateSliderDraft(config: Record<string, unknown>, draft: AeliqoInputDraftBinding): Outcome<void> {
+function validateSliderDraft(config: Record<string, unknown>, draft: VarendoInputDraftBinding): Outcome<void> {
   if (!unitMatches(draft.type, config.unit))
     return fail('binding', 'Slider unit must match the registered semantic unit exactly.');
   for (const key of BOUNDED_VALUE_KEYS) {
@@ -427,7 +427,7 @@ function validateSliderDraft(config: Record<string, unknown>, draft: AeliqoInput
   return { ok: true, value: undefined };
 }
 
-function validateNumberDraft(config: Record<string, unknown>, draft: AeliqoInputDraftBinding): Outcome<void> {
+function validateNumberDraft(config: Record<string, unknown>, draft: VarendoInputDraftBinding): Outcome<void> {
   if (!unitMatches(draft.type, config.unit))
     return fail('binding', 'Number field unit must match the registered semantic unit exactly.');
   for (const key of BOUNDED_VALUE_KEYS) {
@@ -439,9 +439,9 @@ function validateNumberDraft(config: Record<string, unknown>, draft: AeliqoInput
 }
 
 function validateTypedDraft(
-  ref: AeliqoInputId,
+  ref: VarendoInputId,
   config: Record<string, unknown>,
-  draft: AeliqoInputDraftBinding | undefined,
+  draft: VarendoInputDraftBinding | undefined,
 ): Outcome<void> {
   if (draft === undefined) return { ok: true, value: undefined };
   if (ref === 'input.slider') return validateSliderDraft(config, draft);
@@ -450,9 +450,9 @@ function validateTypedDraft(
 }
 
 function validateDraftSemantics(
-  ref: AeliqoInputId,
+  ref: VarendoInputId,
   config: Record<string, unknown>,
-  draft: AeliqoInputDraftBinding | undefined,
+  draft: VarendoInputDraftBinding | undefined,
 ): Outcome<void> {
   const values = validateDraftValues(ref, config, draft);
   if (!values.ok) return values;
@@ -461,7 +461,7 @@ function validateDraftSemantics(
   return validateTypedDraft(ref, config, draft);
 }
 
-function validateActionBinding(binding: AeliqoInputBinding, ref: AeliqoInputId): Outcome<void> {
+function validateActionBinding(binding: VarendoInputBinding, ref: VarendoInputId): Outcome<void> {
   if (binding.action !== undefined && (!versionRef(binding.action.action) || !jsonRecord(binding.action.input)))
     return fail('binding', 'A registered action must contain a versioned action and bounded JSON parameters.');
   if (ref === 'input.form' && binding.action === undefined)
@@ -471,7 +471,7 @@ function validateActionBinding(binding: AeliqoInputBinding, ref: AeliqoInputId):
   return { ok: true, value: undefined };
 }
 
-function validateFileBinding(binding: AeliqoInputBinding, ref: AeliqoInputId): Outcome<void> {
+function validateFileBinding(binding: VarendoInputBinding, ref: VarendoInputId): Outcome<void> {
   if (binding.file !== undefined && !versionRef(binding.file.schema))
     return fail('binding', 'A file input requires a registered metadata schema.');
   if (ref === 'input.file-input' && binding.file === undefined)
@@ -481,17 +481,17 @@ function validateFileBinding(binding: AeliqoInputBinding, ref: AeliqoInputId): O
   return { ok: true, value: undefined };
 }
 
-function validateEffects(binding: AeliqoInputBinding, ref: AeliqoInputId): Outcome<void> {
+function validateEffects(binding: VarendoInputBinding, ref: VarendoInputId): Outcome<void> {
   const action = validateActionBinding(binding, ref);
   if (!action.ok) return action;
   return validateFileBinding(binding, ref);
 }
 
 function snapshotBinding(
-  binding: AeliqoInputBinding,
+  binding: VarendoInputBinding,
   config: Record<string, unknown>,
   targets: InputTargets,
-): Outcome<AeliqoInputBinding> {
+): Outcome<VarendoInputBinding> {
   const copied = copyJson({
     id: binding.id,
     ref: binding.ref,
@@ -502,19 +502,19 @@ function snapshotBinding(
     ...(binding.file === undefined ? {} : { file: binding.file }),
   });
   if (copied === undefined) return fail('binding', 'An input binding must be bounded JSON data.');
-  return { ok: true, value: clone(copied as AeliqoInputBinding) };
+  return { ok: true, value: clone(copied as VarendoInputBinding) };
 }
 
-export function validateInputBinding(binding: AeliqoInputBinding): Outcome<AeliqoInputBinding> {
+export function validateInputBinding(binding: VarendoInputBinding): Outcome<VarendoInputBinding> {
   const config = record(binding.config);
   if (
     !boundedId(binding.id) ||
     config === undefined ||
     !versionRef(binding.ref) ||
-    !Object.values(AELIQO_INPUT_REFS).some((ref) => ref.id === binding.ref.id && ref.revision === binding.ref.revision)
+    !Object.values(VARENDO_INPUT_REFS).some((ref) => ref.id === binding.ref.id && ref.revision === binding.ref.revision)
   )
     return fail('binding', 'An input binding has an invalid identifier or primitive reference.');
-  const ref = binding.ref.id as AeliqoInputId;
+  const ref = binding.ref.id as VarendoInputId;
   const targets = validatedTargets(binding, ref);
   if (!targets.ok) return targets;
   const configResult = validateConfiguration(ref, config);

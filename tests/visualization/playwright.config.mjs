@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
 import { testPort } from '../shared/port.mjs';
-const port = await testPort('AELIQO_HIERARCHY_TEST_PORT');
+const port = await testPort('VARENDO_HIERARCHY_TEST_PORT');
 export default defineConfig({
   outputDir: '../../artifacts/visualization-browser',
   testDir: '.',

@@ -185,8 +185,8 @@ async function writeNetworkBlocker(consumer) {
     join(consumer, 'network-blocker.cjs'),
     [
       "const {syncBuiltinESMExports} = require('node:module');",
-      'const state = {attempts: []}; globalThis.__aeliqoOfflineNetwork = state;',
-      "const blocked = label => () => { state.attempts.push(label); const error = new Error('network access is forbidden in the offline release consumer'); error.code = 'AELIQO_OFFLINE_NETWORK_BLOCKED'; throw error; };",
+      'const state = {attempts: []}; globalThis.__varendoOfflineNetwork = state;',
+      "const blocked = label => () => { state.attempts.push(label); const error = new Error('network access is forbidden in the offline release consumer'); error.code = 'VARENDO_OFFLINE_NETWORK_BLOCKED'; throw error; };",
       "globalThis.fetch = blocked('fetch');",
       "for (const name of ['node:http', 'node:https']) { const value = require(name); value.request = blocked(`${name.slice(5)}.request`); value.get = blocked(`${name.slice(5)}.get`); }",
       "const net = require('node:net'); net.connect = blocked('net.connect'); net.createConnection = blocked('net.createConnection'); net.Socket.prototype.connect = blocked('net.Socket.connect');",
@@ -222,12 +222,12 @@ async function writeRuntimeConsumer(consumer, installedExportSpecifiers) {
       "const boundedRejection = parseContract('catalog', '{}');",
       'const audit = modules[1].createLocalAuditExporter({maxEvents: 2, maxBytes: 1024, now: () => 1});',
       "const auditRecord = audit.record({kind: 'source', transport: 'local', status: 'error', code: 'source.invalid'}); const auditExport = audit.exportSnapshot(); audit.dispose();",
-      'const stateBeforeProbes = globalThis.__aeliqoOfflineNetwork;',
+      'const stateBeforeProbes = globalThis.__varendoOfflineNetwork;',
       "if (installedExports.length !== installedExportSpecifiers.length || installedExports.some(module => module === null || typeof module !== 'object') || boundedRejection.ok || modules.length !== 5 || !auditRecord.ok || !auditExport.ok || auditExport.value.records.length !== 1 || !stateBeforeProbes || stateBeforeProbes.attempts.length !== 0) throw new Error('installed package runtime smoke failed');",
       "const [http, https, net, dns] = await Promise.all([import('node:http'), import('node:https'), import('node:net'), import('node:dns')]);",
       "const probes = [['fetch', () => fetch('https://example.invalid')], ['http.request', () => http.request('http://example.invalid')], ['http.get', () => http.get('http://example.invalid')], ['https.request', () => https.request('https://example.invalid')], ['https.get', () => https.get('https://example.invalid')], ['net.connect', () => net.connect(9, 'example.invalid')], ['net.createConnection', () => net.createConnection(9, 'example.invalid')], ['net.Socket.connect', () => new net.Socket().connect(9, 'example.invalid')], ['dns.lookup', () => dns.lookup('example.invalid', () => {})], ['dns.resolve', () => dns.resolve('example.invalid', () => {})]];",
-      "for (const [label, probe] of probes) { try { probe(); throw new Error(`network probe unexpectedly succeeded: ${label}`); } catch (error) { if (error?.code !== 'AELIQO_OFFLINE_NETWORK_BLOCKED') throw error; } }",
-      "const state = globalThis.__aeliqoOfflineNetwork; if (!state || JSON.stringify(state.attempts) !== JSON.stringify(probes.map(([label]) => label))) throw new Error('network blocker did not observe every exact probe');",
+      "for (const [label, probe] of probes) { try { probe(); throw new Error(`network probe unexpectedly succeeded: ${label}`); } catch (error) { if (error?.code !== 'VARENDO_OFFLINE_NETWORK_BLOCKED') throw error; } }",
+      "const state = globalThis.__varendoOfflineNetwork; if (!state || JSON.stringify(state.attempts) !== JSON.stringify(probes.map(([label]) => label))) throw new Error('network blocker did not observe every exact probe');",
       'process.stdout.write(JSON.stringify({networkDenied: true, deniedMethods: state.attempts, packageModulesLoaded: 5, publicExportsLoaded: installedExports.length, coreParserExecuted: true, auditNetworkAttempts: 0, auditExecuted: true}));',
     ].join('\n') + '\n',
   );
@@ -294,7 +294,7 @@ async function externalConsumerInDirectory(consumer, packages, workspaceLockText
 }
 
 export async function externalConsumer(packages, workspaceLockText, version) {
-  const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-release-consumer-'));
+  const consumer = await mkdtemp(join(tmpdir(), 'varendo-release-consumer-'));
   return removeDirectoryOnFailure(consumer, () =>
     externalConsumerInDirectory(consumer, packages, workspaceLockText, version),
   );

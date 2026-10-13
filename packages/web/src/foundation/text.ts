@@ -1,7 +1,7 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from './base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from './base.js';
 
-export type AeliqoTextAs = 'span' | 'p' | 'div' | 'small' | 'strong' | 'em' | 'label';
+export type VarendoTextAs = 'span' | 'p' | 'div' | 'small' | 'strong' | 'em' | 'label';
 
 const textRenderers = {
   span: (content: unknown, className: string) => html`<span part="text" class=${className}>${content}</span>`,
@@ -11,10 +11,10 @@ const textRenderers = {
   strong: (content: unknown, className: string) => html`<strong part="text" class=${className}>${content}</strong>`,
   em: (content: unknown, className: string) => html`<em part="text" class=${className}>${content}</em>`,
   label: (content: unknown, className: string) => html`<label part="text" class=${className}>${content}</label>`,
-} satisfies Record<AeliqoTextAs, (content: unknown, className: string) => ReturnType<typeof html>>;
+} satisfies Record<VarendoTextAs, (content: unknown, className: string) => ReturnType<typeof html>>;
 
 /** Plain text primitive. Text is interpolated as text, never as HTML. */
-export class AeliqoTextElement extends AeliqoFoundationElement {
+export class VarendoTextElement extends VarendoFoundationElement {
   static readonly properties = {
     text: { type: String },
     as: { type: String },
@@ -22,7 +22,7 @@ export class AeliqoTextElement extends AeliqoFoundationElement {
   };
 
   text = '';
-  as: AeliqoTextAs = 'span';
+  as: VarendoTextAs = 'span';
   muted = false;
 
   protected override render() {
@@ -32,7 +32,7 @@ export class AeliqoTextElement extends AeliqoFoundationElement {
   }
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: inline;
@@ -43,7 +43,7 @@ export class AeliqoTextElement extends AeliqoFoundationElement {
         white-space: normal;
       }
       .muted {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
       }
     `,
   ];

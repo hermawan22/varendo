@@ -1,8 +1,8 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles, safeResolvedHref } from '../foundation/base.js';
-import { aeliqoNavigationStyles, emitAction } from './shared.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles, safeResolvedHref } from '../foundation/base.js';
+import { varendoNavigationStyles, emitAction } from './shared.js';
 
-export interface AeliqoBreadcrumbItem {
+export interface VarendoBreadcrumbItem {
   readonly id: string;
   readonly label: string;
   /** A host-resolved route. Arbitrary model destinations are not accepted. */
@@ -10,11 +10,11 @@ export interface AeliqoBreadcrumbItem {
   readonly current?: boolean;
 }
 
-export class AeliqoBreadcrumbElement extends AeliqoFoundationElement {
+export class VarendoBreadcrumbElement extends VarendoFoundationElement {
   static readonly properties = { items: { attribute: false }, label: { type: String } };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
-    aeliqoNavigationStyles,
+    ...varendoFoundationThemeStyles,
+    varendoNavigationStyles,
     css`
       nav {
         max-inline-size: 100%;
@@ -24,7 +24,7 @@ export class AeliqoBreadcrumbElement extends AeliqoFoundationElement {
         align-items: center;
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         list-style: none;
         margin: 0;
         padding: 0;
@@ -32,29 +32,29 @@ export class AeliqoBreadcrumbElement extends AeliqoFoundationElement {
       li {
         align-items: center;
         display: inline-flex;
-        gap: var(--aeliqo-space-8, 0.5rem);
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
+        gap: var(--varendo-space-8, 0.5rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
       }
       li:not(:last-child)::after {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
         content: '/';
       }
       a {
-        color: var(--aeliqo-color-accent, #4338ca);
+        color: var(--varendo-color-accent, #4338ca);
         overflow-wrap: anywhere;
       }
       [aria-current='page'] {
-        color: var(--aeliqo-color-text, #111827);
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        color: var(--varendo-color-text, #111827);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
       }
     `,
   ];
 
-  items: readonly AeliqoBreadcrumbItem[] = [];
+  items: readonly VarendoBreadcrumbItem[] = [];
   label = 'Breadcrumb';
 
-  private navigate(item: AeliqoBreadcrumbItem, event: Event): void {
-    if (!emitAction(this, 'aeliqo-navigation', { id: item.id, href: item.href })) event.preventDefault();
+  private navigate(item: VarendoBreadcrumbItem, event: Event): void {
+    if (!emitAction(this, 'varendo-navigation', { id: item.id, href: item.href })) event.preventDefault();
   }
 
   protected override render() {

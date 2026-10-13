@@ -1,9 +1,9 @@
 import type { Intent, Outcome, Task } from '@varendo/core';
 import type { RuntimeCommittedReceipt } from '@varendo/runtime/app';
-import type { AeliqoInputBindings } from '../region/input-registry.js';
+import type { VarendoInputBindings } from '../region/input-registry.js';
 import { createFormBindings } from './form-bindings.js';
 import { diagnostic, type WebAppContext, type WebRegion } from './context.js';
-import type { AeliqoFormState } from './types.js';
+import type { VarendoFormState } from './types.js';
 
 function formStateFailure(code: string, message: string): Outcome<never> {
   return { ok: false, diagnostics: [diagnostic(code, message)] };
@@ -16,7 +16,7 @@ async function readFormState(
   task: Extract<Task, { readonly kind: 'form' }>,
   resource: NonNullable<ReturnType<WebAppContext['resources']['get']>>,
   signal?: AbortSignal,
-): Promise<Outcome<AeliqoFormState>> {
+): Promise<Outcome<VarendoFormState>> {
   const adapter = context.options.formState;
   if (adapter === undefined) {
     if (intent.kind === 'edit')
@@ -45,7 +45,7 @@ export async function resolveFormBindings(
   region: WebRegion,
   receipt: RuntimeCommittedReceipt,
   signal?: AbortSignal,
-): Promise<Outcome<AeliqoInputBindings | undefined>> {
+): Promise<Outcome<VarendoInputBindings | undefined>> {
   if (receipt.task.kind !== 'form') return { ok: true, value: undefined };
   if (receipt.intent.kind !== 'create' && receipt.intent.kind !== 'edit')
     return formStateFailure('web.form-state.intent', 'A form Task requires a create or edit intent.');

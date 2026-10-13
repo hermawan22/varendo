@@ -6,7 +6,7 @@ title: 'Migrate from 0.6 to 0.7'
 description: 'Pin the OAuth issuer, migrate stored credentials, and retain application action previews across authenticated MCP requests.'
 ---
 
-<aeliqo-release-status></aeliqo-release-status>
+<varendo-release-status></varendo-release-status>
 
 ## Update the packages together
 

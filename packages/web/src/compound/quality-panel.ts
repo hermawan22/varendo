@@ -1,3 +1,3 @@
-export { AeliqoQualityPanelElement } from './elements.js';
+export { VarendoQualityPanelElement } from './elements.js';
 export { qualityPanelPresentationRecipe } from './recipes.js';
-export type { AeliqoQualityState, AeliqoQualityPanelRecipeInput } from './types.js';
+export type { VarendoQualityState, VarendoQualityPanelRecipeInput } from './types.js';

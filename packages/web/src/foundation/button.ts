@@ -1,14 +1,14 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoActionElement, type AeliqoActionType } from './action-base.js';
-import { aeliqoFoundationThemeStyles } from './base.js';
+import { VarendoActionElement, type VarendoActionType } from './action-base.js';
+import { varendoFoundationThemeStyles } from './base.js';
 
-export type AeliqoButtonVariant = 'solid' | 'outline' | 'ghost' | 'danger';
-export type AeliqoButtonSize = 'small' | 'medium' | 'large';
+export type VarendoButtonVariant = 'solid' | 'outline' | 'ghost' | 'danger';
+export type VarendoButtonSize = 'small' | 'medium' | 'large';
 
-const BUTTON_VARIANTS: ReadonlySet<AeliqoButtonVariant> = new Set(['solid', 'outline', 'ghost', 'danger']);
+const BUTTON_VARIANTS: ReadonlySet<VarendoButtonVariant> = new Set(['solid', 'outline', 'ghost', 'danger']);
 
 /** Native button behavior with an explicit, cancellable application action proposal. */
-export class AeliqoButtonElement extends AeliqoActionElement {
+export class VarendoButtonElement extends VarendoActionElement {
   static readonly properties = {
     disabled: { type: Boolean, reflect: true },
     pending: { type: Boolean, reflect: true },
@@ -21,10 +21,10 @@ export class AeliqoButtonElement extends AeliqoActionElement {
   };
 
   label = '';
-  variant: AeliqoButtonVariant = 'solid';
-  size: AeliqoButtonSize = 'medium';
+  variant: VarendoButtonVariant = 'solid';
+  size: VarendoButtonSize = 'medium';
 
-  override type: AeliqoActionType = 'button';
+  override type: VarendoActionType = 'button';
 
   protected override render() {
     const variant = BUTTON_VARIANTS.has(this.variant) ? this.variant : 'solid';
@@ -47,7 +47,7 @@ export class AeliqoButtonElement extends AeliqoActionElement {
   }
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: inline-block;
@@ -56,56 +56,56 @@ export class AeliqoButtonElement extends AeliqoActionElement {
 
       button {
         align-items: center;
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid transparent;
-        border-radius: var(--aeliqo-radius-medium, 0.625rem);
+        border: var(--varendo-control-border-width, 0.0625rem) solid transparent;
+        border-radius: var(--varendo-radius-medium, 0.625rem);
         cursor: pointer;
         display: inline-flex;
         font: inherit;
-        font-size: var(--aeliqo-typography-font-size-sm, 0.875rem);
-        gap: var(--aeliqo-space-8, 0.5rem);
+        font-size: var(--varendo-typography-font-size-sm, 0.875rem);
+        gap: var(--varendo-space-8, 0.5rem);
         justify-content: center;
         max-inline-size: 100%;
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
-        padding-inline: var(--aeliqo-control-inline-padding, 0.75rem);
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
+        padding-inline: var(--varendo-control-inline-padding, 0.75rem);
         white-space: normal;
       }
 
       button.variant-solid {
-        background: var(--aeliqo-color-accent, #4338ca);
-        color: var(--aeliqo-color-on-accent, #fff);
-        box-shadow: var(--aeliqo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
+        background: var(--varendo-color-accent, #4338ca);
+        color: var(--varendo-color-on-accent, #fff);
+        box-shadow: var(--varendo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
       }
 
       button.variant-outline {
         background: transparent;
-        border-color: var(--aeliqo-color-accent, #4338ca);
-        color: var(--aeliqo-color-accent, #4338ca);
+        border-color: var(--varendo-color-accent, #4338ca);
+        color: var(--varendo-color-accent, #4338ca);
       }
 
       button.variant-ghost {
         background: transparent;
-        color: var(--aeliqo-color-accent, #4338ca);
+        color: var(--varendo-color-accent, #4338ca);
       }
 
       button.variant-danger {
-        background: var(--aeliqo-color-danger, #b91c1c);
-        color: var(--aeliqo-color-on-accent, #fff);
+        background: var(--varendo-color-danger, #b91c1c);
+        color: var(--varendo-color-on-accent, #fff);
       }
 
       button.variant-solid:not(:disabled):hover {
-        background: color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 90%, var(--aeliqo-color-on-accent, #fff));
+        background: color-mix(in srgb, var(--varendo-color-accent, #4338ca) 90%, var(--varendo-color-on-accent, #fff));
       }
 
       button.variant-outline:not(:disabled):hover,
       button.variant-ghost:not(:disabled):hover {
         background: var(
-          --_aeliqo-accent-subtle,
-          color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 8%, transparent)
+          --_varendo-accent-subtle,
+          color-mix(in srgb, var(--varendo-color-accent, #4338ca) 8%, transparent)
         );
       }
 
       button.variant-danger:not(:disabled):hover {
-        background: color-mix(in srgb, var(--aeliqo-color-danger, #b91c1c) 90%, var(--aeliqo-color-on-accent, #fff));
+        background: color-mix(in srgb, var(--varendo-color-danger, #b91c1c) 90%, var(--varendo-color-on-accent, #fff));
       }
 
       button:not(:disabled):active {
@@ -113,25 +113,25 @@ export class AeliqoButtonElement extends AeliqoActionElement {
       }
 
       button:disabled {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border-color: var(--_aeliqo-border-subtle, var(--aeliqo-color-border, #64748b));
+        background: var(--varendo-color-surface, #f8fafc);
+        border-color: var(--_varendo-border-subtle, var(--varendo-color-border, #64748b));
         box-shadow: none;
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
         cursor: not-allowed;
       }
 
       button.size-small {
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-compact-target, 2rem));
-        padding-inline: var(--aeliqo-space-8, 0.5rem);
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-compact-target, 2rem));
+        padding-inline: var(--varendo-space-8, 0.5rem);
       }
 
       button.size-large {
         min-block-size: 3.25rem;
-        padding-inline: var(--aeliqo-space-16, 1rem);
+        padding-inline: var(--varendo-space-16, 1rem);
       }
 
       [part='pending'] {
-        animation: aeliqo-button-pending 0.9s linear infinite;
+        animation: varendo-button-pending 0.9s linear infinite;
         block-size: 0.9em;
         border: 0.125rem solid currentColor;
         border-block-end-color: transparent;
@@ -139,7 +139,7 @@ export class AeliqoButtonElement extends AeliqoActionElement {
         inline-size: 0.9em;
       }
 
-      @keyframes aeliqo-button-pending {
+      @keyframes varendo-button-pending {
         to {
           transform: rotate(360deg);
         }

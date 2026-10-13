@@ -1,5 +1,5 @@
 import type { InteractionPayload } from '@varendo/core';
-import { AeliqoFieldElement } from '../input/base.js';
+import { VarendoFieldElement } from '../input/base.js';
 import type { WebRegion } from './context.js';
 
 type Draft = Extract<InteractionPayload, { readonly kind: 'draft' }>;
@@ -29,7 +29,7 @@ function bindings(values: Binding): readonly Binding[] {
 /** Reset registered controls to trusted defaults without reading their live values. */
 export function resetSavedFormControls(region: WebRegion, captured: ReadonlyMap<string, Draft>): ReadonlySet<string> {
   const retained = new Set<string>();
-  const controls = [...(region.element.shadowRoot?.querySelectorAll('[data-aeliqo-node-id]') ?? [])];
+  const controls = [...(region.element.shadowRoot?.querySelectorAll('[data-varendo-node-id]') ?? [])];
   for (const node of region.element.presentation?.nodes ?? []) {
     if (!node.config.ports.some((port) => port.payload === 'draft')) continue;
     const targets = bindings(node.config.values);
@@ -49,9 +49,9 @@ export function resetSavedFormControls(region: WebRegion, captured: ReadonlyMap<
       continue;
     }
     const control = controls.find(
-      (candidate) => candidate instanceof AeliqoFieldElement && candidate.dataset.aeliqoNodeId === node.node.id,
+      (candidate) => candidate instanceof VarendoFieldElement && candidate.dataset.varendoNodeId === node.node.id,
     );
-    if (control instanceof AeliqoFieldElement) control.reset();
+    if (control instanceof VarendoFieldElement) control.reset();
   }
   return retained;
 }

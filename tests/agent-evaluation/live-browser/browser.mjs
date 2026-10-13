@@ -1,8 +1,8 @@
-import { registerAeliqoElements } from '@varendo/web/register';
+import { registerVarendoElements } from '@varendo/web/register';
 import { openJ1, openJ2 } from './j1-j2.mjs';
 import { openJ3 } from './j3.mjs';
 
-registerAeliqoElements();
+registerVarendoElements();
 const target = document.querySelector('#journey-region');
 let current;
 
@@ -53,7 +53,7 @@ window.liveHost = Object.freeze({
     };
     const chartRows = [];
     const collectCharts = (node) => {
-      if (node instanceof Element && node.localName === 'aeliqo-chart') {
+      if (node instanceof Element && node.localName === 'varendo-chart') {
         chartRows.push(
           [...(node.shadowRoot?.querySelectorAll('tbody tr') ?? [])].map((row) =>
             [...row.children].map((cell) => cell.textContent?.trim() ?? ''),
@@ -68,8 +68,8 @@ window.liveHost = Object.freeze({
       text: text.join(' '),
       needs: target.dataset.needs ?? null,
       presentation: target.dataset.presentation ?? null,
-      tableCount: count('aeliqo-table'),
-      chartCount: count('aeliqo-chart'),
+      tableCount: count('varendo-table'),
+      chartCount: count('varendo-chart'),
       chartRows,
     };
   },

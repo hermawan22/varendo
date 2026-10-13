@@ -1,10 +1,10 @@
 import type { Outcome } from '@varendo/core';
-import type { AeliqoRuntimeOptions, AppAuthorityContext, RuntimeEffect } from './types.js';
+import type { VarendoRuntimeOptions, AppAuthorityContext, RuntimeEffect } from './types.js';
 import type { MountedRegion } from './runtime-state.js';
 import { failure, validId } from './runtime-state.js';
 
 export function readAuthority(
-  options: AeliqoRuntimeOptions,
+  options: VarendoRuntimeOptions,
   disposed: boolean,
   slot: MountedRegion,
   resourceId: string,
@@ -18,12 +18,12 @@ export function readAuthority(
 }
 
 function invokeAuthority(
-  options: AeliqoRuntimeOptions,
+  options: VarendoRuntimeOptions,
   slot: MountedRegion,
   resourceId: string,
   effect: RuntimeEffect,
   signal?: AbortSignal,
-): ReturnType<AeliqoRuntimeOptions['authority']['read']> {
+): ReturnType<VarendoRuntimeOptions['authority']['read']> {
   try {
     return options.authority.read({
       resourceId,
