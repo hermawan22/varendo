@@ -95,7 +95,7 @@ describe('scoped surface endpoint authority', () => {
     // Discovery stays bounded to the two registered tools.
     await expect(broad.discover()).resolves.toMatchObject({
       ok: true,
-      value: [{ name: 'aeliqo_surface_context' }, { name: 'aeliqo_surface_render' }],
+      value: [{ name: 'varendo_surface_context' }, { name: 'varendo_surface_render' }],
     });
   });
 
@@ -104,7 +104,7 @@ describe('scoped surface endpoint authority', () => {
     const readOnly = endpoint({ grants: ['catalog.read'] });
     await expect(readOnly.discover()).resolves.toMatchObject({
       ok: true,
-      value: [{ name: 'aeliqo_surface_context' }],
+      value: [{ name: 'varendo_surface_context' }],
     });
     // Exactly one tool survives; the render tool is filtered by the ceiling.
     const discovered = await readOnly.discover();

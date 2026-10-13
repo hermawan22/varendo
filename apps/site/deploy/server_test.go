@@ -32,8 +32,8 @@ func fixtureSite(t *testing.T) string {
 		"sitemap-docs.xml":                      "docs sitemap",
 		"llms-main.txt":                         "main llms",
 		"llms-docs.txt":                         "docs llms",
-		"assets/site-abcdefgh.js":               "console.log('aeliqo')",
-		"aeliqo.png":                            "not-a-real-png",
+		"assets/site-abcdefgh.js":               "console.log('varendo')",
+		"varendo.png":                            "not-a-real-png",
 	} {
 		path := filepath.Join(root, name)
 		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
@@ -69,7 +69,7 @@ func TestOperationalEndpointsEmbedRevisionAndNeverCache(t *testing.T) {
 		}
 	}
 	version := request(t, handler, http.MethodGet, "/version")
-	for _, want := range []string{`"product":"aeliqo-site"`, `"sdkRepository":"https://github.com/hermawan22/varendo"`, `"sdkRevision":"unknown"`, `"sdkVersion":"unknown"`} {
+	for _, want := range []string{`"product":"varendo-site"`, `"sdkRepository":"https://github.com/hermawan22/varendo"`, `"sdkRevision":"unknown"`, `"sdkVersion":"unknown"`} {
 		if !strings.Contains(version.Body.String(), want) {
 			t.Fatalf("version body %q does not contain %q", version.Body.String(), want)
 		}
@@ -377,7 +377,7 @@ func TestHeadAndMethodPolicy(t *testing.T) {
 
 func TestStaticResponseReadsFile(t *testing.T) {
 	handler := newHandler(fixtureSite(t), "test")
-	response := request(t, handler, http.MethodGet, "/aeliqo.png")
+	response := request(t, handler, http.MethodGet, "/varendo.png")
 	body, err := io.ReadAll(response.Result().Body)
 	if err != nil {
 		t.Fatal(err)
@@ -437,7 +437,7 @@ func TestDocumentationHostUsesDocsRootAndSharedStaticRoutes(t *testing.T) {
 		{"http://docs.localhost/", "<h1>Docs</h1>"},
 		{"https://docs.localhost/playground/", "<h1>Playground</h1>"},
 		{"https://docs.localhost/components/data.table/", "<h1>Table</h1>"},
-		{"https://docs.localhost/assets/site-abcdefgh.js", "console.log('aeliqo')"},
+		{"https://docs.localhost/assets/site-abcdefgh.js", "console.log('varendo')"},
 		{"https://varendo.localhost/", "<h1>Varendo</h1>"},
 		{"https://www.varendo.localhost/", "<h1>Varendo</h1>"},
 		{"https://varendo.localhost/robots.txt", "main robots"},

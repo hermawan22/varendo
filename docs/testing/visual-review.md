@@ -67,11 +67,11 @@ selected coverage and distinguish an unapproved probe from an approved pass.
    existing GitHub Ubuntu runner with its recorded `ImageOS` and exact
    `ImageVersion` (for example `ubuntu24` and a date/version string). Install
    the repository's pinned Node and pnpm inside that image. Keep the installed
-   fonts fixed. For containers, set `AELIQO_VISUAL_CONTAINER_DIGEST=sha256:<digest>`
+   fonts fixed. For containers, set `VARENDO_VISUAL_CONTAINER_DIGEST=sha256:<digest>`
    from the CI image reference. On GitHub hosted runners the harness records
    `hostImage` automatically and leaves `container: null`; it never invents a
    container identity. A floating label such as `ubuntu-latest` cannot be an
-   approved image version. Use `AELIQO_VISUAL_FONT_DIRS=/usr/share/fonts` only when
+   approved image version. Use `VARENDO_VISUAL_FONT_DIRS=/usr/share/fonts` only when
    that is the complete font inventory available to the browsers.
 2. Run `node scripts/visual/run.mjs --probe --full` in that image. A full probe
    performs a frozen install and builds the candidate before capture. Selected
@@ -176,12 +176,12 @@ artifact and the subsequent approved gate's artifact as separate evidence.
 After building the packages, a local diagnostic example is:
 
 ```sh
-AELIQO_VISUAL_PROJECT=chromium AELIQO_VISUAL_BATCH=catalog \
-AELIQO_VISUAL_GREP='button desktop-light$' node scripts/visual/run.mjs --probe
+VARENDO_VISUAL_PROJECT=chromium VARENDO_VISUAL_BATCH=catalog \
+VARENDO_VISUAL_GREP='button desktop-light$' node scripts/visual/run.mjs --probe
 ```
 
 For approved comparisons, omit `--probe`. Existing project and suite batch
-selectors apply to both sources. `AELIQO_VISUAL_GREP` selects affected test titles
+selectors apply to both sources. `VARENDO_VISUAL_GREP` selects affected test titles
 and can select component families or states; include relevant state suites as
 well as the catalog. With no selectors, all seven suites and all three browsers
 run. `--full` rejects selectors, so release CI cannot accidentally inherit a

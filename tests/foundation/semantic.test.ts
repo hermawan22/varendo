@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
 import { bindings, fixture, validatedFixture } from './semantic-fixture.js';
 
 describe('foundation through the production presentation validator', () => {
@@ -49,12 +49,12 @@ describe('foundation through the production presentation validator', () => {
       'Save preferences',
     );
     expect(
-      createAeliqoPresentationRegistry({
+      createVarendoPresentationRegistry({
         foundation: { ...bindings, routes: [{ ...bindings.routes![0]!, href: 'javascript:alert(1)' }] },
       }).ok,
     ).toBe(false);
     expect(
-      createAeliqoPresentationRegistry({
+      createVarendoPresentationRegistry({
         foundation: { ...bindings, contents: [bindings.contents![0]!, bindings.contents![0]!] },
       }).ok,
     ).toBe(false);

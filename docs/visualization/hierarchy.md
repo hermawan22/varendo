@@ -1,7 +1,7 @@
 # Tree, Treemap and Relationship
 
 Import the shared elements from `@varendo/web/visualization/hierarchy`, or the thin
-React bindings from `@varendo/react/visualization`. `registerAeliqoElements()`
+React bindings from `@varendo/react/visualization`. `registerVarendoElements()`
 registers all twelve visualization families. Direct components accept a typed
 `visualization`, an authorized binding `context`, and bounded `datasets` keyed by
 exact ResultRef. They perform no query, model call or source discovery.
@@ -16,7 +16,7 @@ unsafe or unreadably small geometry falls back to the exact table.
 Relationship requires the host's explicit registered relationship mapping.
 Source and target namespaces stay separate, and materialized edges must respect
 the declared cardinality. Its selection identifies the edge row, not an endpoint.
-All graphics emit cancelable `aeliqo-visualization-select` events with a canonical
+All graphics emit cancelable `varendo-visualization-select` events with a canonical
 row identity and exact ResultRef. The host retains execution authority.
 
 Each view includes coverage, precision, warnings and an exact-value table.

@@ -1,9 +1,9 @@
-export { createAeliqoRuntime } from './runtime.js';
+export { createVarendoRuntime } from './runtime.js';
 export type { CreateScopeInput, ScopeActivationContext, ScopeBinding, ScopeController } from '../scopes/types.js';
 export type {
-  AeliqoAuthority,
-  AeliqoRuntime,
-  AeliqoRuntimeOptions,
+  VarendoAuthority,
+  VarendoRuntime,
+  VarendoRuntimeOptions,
   AppAuthorityContext,
   AppAuthorityRequest,
   RuntimeCommittedReceipt,

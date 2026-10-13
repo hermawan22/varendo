@@ -3,11 +3,17 @@ id: 'release-notes'
 path: '/ship/release-notes/'
 section: 'Releases'
 title: 'Release notes'
-description: 'The Varendo 0.1.0 stable release and preserved source-bound records for earlier Aeliqo framework releases.'
+description: 'The Varendo 0.2.0 rename candidate, the 0.1.0 stable release, and preserved records for earlier releases under the former Aeliqo name.'
 ---
 
 <p class="lead">Read the changes and acceptance evidence for each version. Publication is verified separately from source changes.</p>
-<aeliqo-release-status></aeliqo-release-status>
+<varendo-release-status></varendo-release-status>
+
+## Varendo 0.2.0
+
+Unpublished source candidate. This breaking release renames every remaining identifier inherited from the framework's former name, Aeliqo, to Varendo. Functions, classes, types, React components, custom element tags, CSS custom properties, data attributes, DOM events, MCP and WebMCP tool names, storage keys and diagnostic identifiers change case-preserving from `aeliqo` to `varendo`, for example `createVarendoApp`, `<varendo-table>`, `--varendo-color-accent` and `data-varendo-node-id`. No compatibility aliases remain. Behavior and serialized contract version `1` are unchanged. Follow the [0.1 to 0.2 migration guide](/ship/migration-varendo-0.2/).
+
+Publication requires the owner's approval and a successful full-matrix push to `main` at the exact release source. Until then, the published packages remain 0.1.0.
 
 ## Varendo 0.1.0
 

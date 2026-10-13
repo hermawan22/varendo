@@ -1,21 +1,21 @@
 import { validateScalar } from '@varendo/core';
-import type { AeliqoFieldOption, AeliqoFilterPredicate, AeliqoFilterValue } from './types.js';
+import type { VarendoFieldOption, VarendoFilterPredicate, VarendoFilterValue } from './types.js';
 import { dataValueText } from './shared.js';
-import type { AeliqoFilterClause, AeliqoFilterOperator } from './filter-builder-types.js';
-import type { PredicateProjection, PredicateTraversal, AeliqoFilterLogical } from './filter-builder-internal-types.js';
+import type { VarendoFilterClause, VarendoFilterOperator } from './filter-builder-types.js';
+import type { PredicateProjection, PredicateTraversal, VarendoFilterLogical } from './filter-builder-internal-types.js';
 import { MAX_PREDICATE_DEPTH, MAX_PREDICATE_NODES } from './filter-builder-limits.js';
 
-export function combineAeliqoPredicates(
-  predicate: AeliqoFilterPredicate | undefined,
-  inherited: AeliqoFilterPredicate | undefined,
-): AeliqoFilterPredicate | undefined {
+export function combineVarendoPredicates(
+  predicate: VarendoFilterPredicate | undefined,
+  inherited: VarendoFilterPredicate | undefined,
+): VarendoFilterPredicate | undefined {
   if (predicate === undefined) return inherited;
   if (inherited === undefined) return predicate;
   return { op: 'and', predicates: [inherited, predicate] };
 }
 
-export function validateAeliqoPredicate(
-  predicate: AeliqoFilterPredicate | undefined,
+export function validateVarendoPredicate(
+  predicate: VarendoFilterPredicate | undefined,
 ): { readonly ok: true } | { readonly ok: false; readonly message: string } {
   if (predicate === undefined) return { ok: false, message: 'Choose a field and value before applying the filter.' };
   if (predicate.op === 'and' || predicate.op === 'or') {
@@ -23,19 +23,19 @@ export function validateAeliqoPredicate(
       ? { ok: false, message: 'Add at least one filter condition.' }
       : { ok: true };
   }
-  if (predicate.op === 'not') return validateAeliqoPredicate(predicate.predicate);
+  if (predicate.op === 'not') return validateVarendoPredicate(predicate.predicate);
   if (predicate.op === 'in' && predicate.values.length === 0)
     return { ok: false, message: 'Provide at least one value.' };
   return { ok: true };
 }
 
-function fieldSemanticType(field: AeliqoFieldOption | undefined) {
+function fieldSemanticType(field: VarendoFieldOption | undefined) {
   if (field?.semanticType !== undefined) return field.semanticType;
   if (field?.type === undefined) return undefined;
   return { value: field.type, nullable: field.nullable ?? true } as const;
 }
 
-function parseValue(raw: string, field: AeliqoFieldOption | undefined): AeliqoFilterValue | undefined {
+function parseValue(raw: string, field: VarendoFieldOption | undefined): VarendoFilterValue | undefined {
   const semanticType = fieldSemanticType(field);
   if (semanticType === undefined) return undefined;
   const value = semanticType.value === 'text' ? raw : raw.trim();
@@ -79,7 +79,7 @@ function floatFromText(value: string): number | undefined {
 
 type MembershipJsonValue = string | boolean | number | null;
 
-function membershipJsonValue(value: AeliqoFilterValue): MembershipJsonValue | undefined {
+function membershipJsonValue(value: VarendoFilterValue): MembershipJsonValue | undefined {
   if (value === null || typeof value === 'string' || typeof value === 'boolean') return value;
   if (typeof value === 'number') return finiteMembershipNumber(value);
   return decimalMembershipText(value);
@@ -89,33 +89,33 @@ function finiteMembershipNumber(value: number): number | undefined {
   return Number.isFinite(value) ? value : undefined;
 }
 
-function decimalMembershipText(value: AeliqoFilterValue): string | undefined {
+function decimalMembershipText(value: VarendoFilterValue): string | undefined {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return undefined;
   const checked = validateScalar(value, { value: 'decimal', nullable: false });
   if (!checked.ok) return undefined;
   return decimalScalarText(checked.value);
 }
 
-function decimalScalarText(value: AeliqoFilterValue): string | undefined {
+function decimalScalarText(value: VarendoFilterValue): string | undefined {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) return undefined;
   return typeof value.decimal === 'string' ? value.decimal : undefined;
 }
 
-function membershipJsonText(values: readonly AeliqoFilterValue[]): string | undefined {
+function membershipJsonText(values: readonly VarendoFilterValue[]): string | undefined {
   const serialized = values.map((value) => membershipJsonValue(value));
   if (serialized.some((value) => value === undefined)) return undefined;
   return JSON.stringify(serialized);
 }
 
-function predicateEntityMatches(predicate: AeliqoFilterPredicate, entity: string): boolean {
-  const candidate = (predicate as AeliqoFilterPredicate & { readonly entity?: unknown }).entity;
+function predicateEntityMatches(predicate: VarendoFilterPredicate, entity: string): boolean {
+  const candidate = (predicate as VarendoFilterPredicate & { readonly entity?: unknown }).entity;
   return candidate === undefined || candidate === entity;
 }
 
 function clauseFromPredicate(
-  predicate: AeliqoFilterPredicate | undefined,
+  predicate: VarendoFilterPredicate | undefined,
   entity: string,
-): AeliqoFilterClause | undefined {
+): VarendoFilterClause | undefined {
   if (predicate === undefined || !predicateEntityMatches(predicate, entity)) return undefined;
   switch (predicate.op) {
     case 'compare':
@@ -132,28 +132,28 @@ function clauseFromPredicate(
 }
 
 function compareClause(
-  predicate: Extract<AeliqoFilterPredicate, { readonly op: 'compare' }>,
-): AeliqoFilterClause | undefined {
+  predicate: Extract<VarendoFilterPredicate, { readonly op: 'compare' }>,
+): VarendoFilterClause | undefined {
   if (predicate.value === null || predicate.value === undefined) return undefined;
   return { field: predicate.field, operator: predicate.comparison, value: dataValueText(predicate.value, '') };
 }
 
-function nullClause(predicate: Extract<AeliqoFilterPredicate, { readonly op: 'is-null' }>): AeliqoFilterClause {
+function nullClause(predicate: Extract<VarendoFilterPredicate, { readonly op: 'is-null' }>): VarendoFilterClause {
   return { field: predicate.field, operator: predicate.negate ? 'not-null' : 'is-null' };
 }
 
 function membershipClause(
-  predicate: Extract<AeliqoFilterPredicate, { readonly op: 'in' }>,
-): AeliqoFilterClause | undefined {
+  predicate: Extract<VarendoFilterPredicate, { readonly op: 'in' }>,
+): VarendoFilterClause | undefined {
   const value = Array.isArray(predicate.values) ? membershipJsonText(predicate.values) : undefined;
   if (value === undefined) return undefined;
   return { field: predicate.field, operator: 'in', value };
 }
 
 function negatedNullClause(
-  predicate: Extract<AeliqoFilterPredicate, { readonly op: 'not' }>,
+  predicate: Extract<VarendoFilterPredicate, { readonly op: 'not' }>,
   entity: string,
-): AeliqoFilterClause | undefined {
+): VarendoFilterClause | undefined {
   if (predicate.predicate.op !== 'is-null') return undefined;
   if (!predicateEntityMatches(predicate.predicate, entity)) return undefined;
   return {
@@ -163,14 +163,14 @@ function negatedNullClause(
 }
 
 function unsupportedProjection(
-  predicate: AeliqoFilterPredicate,
-  logical: AeliqoFilterLogical = 'and',
+  predicate: VarendoFilterPredicate,
+  logical: VarendoFilterLogical = 'and',
 ): PredicateProjection {
   return { clauses: [], logical, unsupported: predicate };
 }
 
 export function projectPredicate(
-  predicate: AeliqoFilterPredicate | undefined,
+  predicate: VarendoFilterPredicate | undefined,
   depth = 0,
   traversal: PredicateTraversal = { nodes: 0 },
   entity = '',
@@ -189,7 +189,7 @@ export function projectPredicate(
 }
 
 function logicalProjection(
-  predicate: AeliqoFilterPredicate,
+  predicate: VarendoFilterPredicate,
   depth: number,
   traversal: PredicateTraversal,
   entity: string,
@@ -201,12 +201,12 @@ function logicalProjection(
 }
 
 function projectLogicalChildren(
-  predicate: Extract<AeliqoFilterPredicate, { readonly op: 'and' | 'or' }>,
+  predicate: Extract<VarendoFilterPredicate, { readonly op: 'and' | 'or' }>,
   depth: number,
   traversal: PredicateTraversal,
   entity: string,
 ): PredicateProjection {
-  const clauses: AeliqoFilterClause[] = [];
+  const clauses: VarendoFilterClause[] = [];
   for (const child of predicate.predicates) {
     const projection = projectChild(child, predicate.op, depth, traversal, entity);
     if (projection === undefined) return unsupportedProjection(predicate, predicate.op);
@@ -217,8 +217,8 @@ function projectLogicalChildren(
 }
 
 function projectChild(
-  child: AeliqoFilterPredicate,
-  logical: AeliqoFilterLogical,
+  child: VarendoFilterPredicate,
+  logical: VarendoFilterLogical,
   depth: number,
   traversal: PredicateTraversal,
   entity: string,
@@ -231,7 +231,7 @@ function projectChild(
 }
 
 export function predicateText(
-  predicate: AeliqoFilterPredicate,
+  predicate: VarendoFilterPredicate,
   depth = 0,
   traversal: PredicateTraversal = { nodes: 0 },
   parentLogical = false,
@@ -246,7 +246,7 @@ export function predicateText(
 }
 
 function predicateTextBody(
-  predicate: AeliqoFilterPredicate,
+  predicate: VarendoFilterPredicate,
   depth: number,
   traversal: PredicateTraversal,
   parentLogical: boolean,
@@ -268,19 +268,19 @@ function predicateTextBody(
   }
 }
 
-function comparePredicateText(predicate: Extract<AeliqoFilterPredicate, { readonly op: 'compare' }>): string {
+function comparePredicateText(predicate: Extract<VarendoFilterPredicate, { readonly op: 'compare' }>): string {
   if (predicate.value === null || predicate.value === undefined) return 'Unsupported filter condition';
   return `${predicate.field} ${predicate.comparison} ${dataValueText(predicate.value, '')}`;
 }
 
-function membershipPredicateText(predicate: Extract<AeliqoFilterPredicate, { readonly op: 'in' }>): string {
+function membershipPredicateText(predicate: Extract<VarendoFilterPredicate, { readonly op: 'in' }>): string {
   const value = Array.isArray(predicate.values) ? membershipJsonText(predicate.values) : undefined;
   if (value === undefined) return 'Unsupported filter condition';
   return `${predicate.field} is one of ${value}`;
 }
 
 function logicalPredicateText(
-  predicate: Extract<AeliqoFilterPredicate, { readonly op: 'and' | 'or' }>,
+  predicate: Extract<VarendoFilterPredicate, { readonly op: 'and' | 'or' }>,
   depth: number,
   traversal: PredicateTraversal,
   parentLogical: boolean,
@@ -294,7 +294,7 @@ function logicalPredicateText(
 }
 
 function logicalChildrenText(
-  predicates: readonly AeliqoFilterPredicate[],
+  predicates: readonly VarendoFilterPredicate[],
   depth: number,
   traversal: PredicateTraversal,
 ): readonly string[] | undefined {
@@ -307,7 +307,7 @@ function logicalChildrenText(
 }
 
 export function predicateSourceSignature(
-  predicate: AeliqoFilterPredicate,
+  predicate: VarendoFilterPredicate,
   projection: PredicateProjection,
   entity: string,
 ): string {
@@ -316,11 +316,11 @@ export function predicateSourceSignature(
   return JSON.stringify({ entity, logical, clauses: projection.clauses });
 }
 
-export function clausesSourceSignature(clauses: readonly AeliqoFilterClause[], logical: AeliqoFilterLogical): string {
+export function clausesSourceSignature(clauses: readonly VarendoFilterClause[], logical: VarendoFilterLogical): string {
   return JSON.stringify({ logical: clauses.length > 1 ? logical : 'and', clauses });
 }
 
-function parseMembershipValue(raw: unknown, field: AeliqoFieldOption | undefined): AeliqoFilterValue | undefined {
+function parseMembershipValue(raw: unknown, field: VarendoFieldOption | undefined): VarendoFilterValue | undefined {
   const semanticType = fieldSemanticType(field);
   if (semanticType === undefined) return undefined;
   if (typeof raw === 'string') return parseValue(raw, field);
@@ -333,7 +333,7 @@ function parseMembershipValue(raw: unknown, field: AeliqoFieldOption | undefined
   return checked.ok ? checked.value : undefined;
 }
 
-function parseMembershipValues(raw: string, field: AeliqoFieldOption | undefined): AeliqoFilterValue[] | undefined {
+function parseMembershipValues(raw: string, field: VarendoFieldOption | undefined): VarendoFilterValue[] | undefined {
   const source = raw.trim();
   if (source.length === 0) return undefined;
   let rawValues: readonly unknown[];
@@ -349,16 +349,16 @@ function parseMembershipValues(raw: string, field: AeliqoFieldOption | undefined
     rawValues = source.split(',');
   }
   const values = rawValues.map((value) => parseMembershipValue(value, field));
-  return values.some((value) => value === undefined) ? undefined : (values as AeliqoFilterValue[]);
+  return values.some((value) => value === undefined) ? undefined : (values as VarendoFilterValue[]);
 }
 
 /** Convert one author-controlled draft clause into the canonical predicate
  * vocabulary. Invalid values return undefined rather than being coerced. */
-export function buildAeliqoPredicate(
-  clause: AeliqoFilterClause,
-  field: AeliqoFieldOption | undefined,
+export function buildVarendoPredicate(
+  clause: VarendoFilterClause,
+  field: VarendoFieldOption | undefined,
   entity = '',
-): AeliqoFilterPredicate | undefined {
+): VarendoFilterPredicate | undefined {
   if (clause.field.length === 0 || field === undefined || field.id !== clause.field) return undefined;
   const base = entity.length === 0 ? {} : { entity };
   if (isNullOperator(clause.operator)) return nullPredicate(clause, base);
@@ -366,31 +366,31 @@ export function buildAeliqoPredicate(
   return comparisonPredicate(clause, field, base);
 }
 
-function isNullOperator(operator: AeliqoFilterOperator): operator is 'is-null' | 'not-null' {
+function isNullOperator(operator: VarendoFilterOperator): operator is 'is-null' | 'not-null' {
   return operator === 'is-null' || operator === 'not-null';
 }
 
-function nullPredicate(clause: AeliqoFilterClause, entity: { readonly entity?: string }): AeliqoFilterPredicate {
+function nullPredicate(clause: VarendoFilterClause, entity: { readonly entity?: string }): VarendoFilterPredicate {
   return { op: 'is-null', field: clause.field, ...entity, negate: clause.operator === 'not-null' };
 }
 
 function membershipPredicate(
-  clause: AeliqoFilterClause,
-  field: AeliqoFieldOption,
+  clause: VarendoFilterClause,
+  field: VarendoFieldOption,
   entity: { readonly entity?: string },
-): AeliqoFilterPredicate | undefined {
+): VarendoFilterPredicate | undefined {
   const values = parseMembershipValues(clause.value ?? '', field);
   if (values === undefined) return undefined;
   return { op: 'in', field: clause.field, ...entity, values };
 }
 
 function comparisonPredicate(
-  clause: AeliqoFilterClause,
-  field: AeliqoFieldOption,
+  clause: VarendoFilterClause,
+  field: VarendoFieldOption,
   entity: { readonly entity?: string },
-): AeliqoFilterPredicate | undefined {
+): VarendoFilterPredicate | undefined {
   const value = parseValue(clause.value ?? '', field);
   if (value === undefined) return undefined;
-  const comparison = clause.operator as Extract<AeliqoFilterPredicate, { readonly op: 'compare' }>['comparison'];
+  const comparison = clause.operator as Extract<VarendoFilterPredicate, { readonly op: 'compare' }>['comparison'];
   return { op: 'compare', field: clause.field, ...entity, comparison, value };
 }

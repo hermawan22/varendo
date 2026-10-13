@@ -3,9 +3,9 @@ import { expect, test } from '@playwright/test';
 test('keyed region children retain focus and controlled draft state across reorder', async ({ page }) => {
   await page.goto('/tests/vertical-slice/web/browser.html');
   await expect
-    .poll(() => page.evaluate(() => (window as typeof window & { aeliqoReady?: boolean }).aeliqoReady))
+    .poll(() => page.evaluate(() => (window as typeof window & { varendoReady?: boolean }).varendoReady))
     .toBe(true);
-  const filter = page.locator('aeliqo-text-field[data-aeliqo-node-id="filter-a"]');
+  const filter = page.locator('varendo-text-field[data-varendo-node-id="filter-a"]');
   await filter.evaluate(async (element) => {
     const input = element as HTMLElement & { value: string; updateComplete: Promise<unknown> };
     input.value = 'draft';
@@ -15,14 +15,14 @@ test('keyed region children retain focus and controlled draft state across reord
   await page.evaluate(async () => {
     const app = window as typeof window & { reorderFilters: () => void };
     app.reorderFilters();
-    await (document.querySelector('aeliqo-region') as HTMLElement & { updateComplete: Promise<unknown> })
+    await (document.querySelector('varendo-region') as HTMLElement & { updateComplete: Promise<unknown> })
       .updateComplete;
   });
   await expect(filter.locator('input')).toHaveValue('draft');
   const focus = await page.evaluate(() => {
-    const region = document.querySelector('aeliqo-region') as HTMLElement;
+    const region = document.querySelector('varendo-region') as HTMLElement;
     const child = region.shadowRoot?.querySelector(
-      'aeliqo-text-field[data-aeliqo-node-id="filter-a"]',
+      'varendo-text-field[data-varendo-node-id="filter-a"]',
     ) as HTMLElement | null;
     return (
       document.activeElement === region &&
@@ -40,22 +40,24 @@ test('region emits trusted table selection, clears explicitly, and keeps long fo
   await page.evaluate(async () => {
     const app = window as typeof window & { mountSelection: () => void };
     app.mountSelection();
-    await (document.querySelector('aeliqo-region') as HTMLElement & { updateComplete: Promise<unknown> })
+    await (document.querySelector('varendo-region') as HTMLElement & { updateComplete: Promise<unknown> })
       .updateComplete;
   });
-  const checkbox = page.locator('aeliqo-table[data-aeliqo-node-id="table"] input[type="checkbox"]').first();
+  const checkbox = page.locator('varendo-table[data-varendo-node-id="table"] input[type="checkbox"]').first();
   await checkbox.check();
-  const selected = await page.evaluate(() => (window as typeof window & { aeliqoEvents: any[] }).aeliqoEvents.at(-1));
+  const selected = await page.evaluate(() => (window as typeof window & { varendoEvents: any[] }).varendoEvents.at(-1));
   expect(selected.payload.selection).toMatchObject({
     mode: 'ids',
     entity: 'employees',
     keys: ['string:2:e1'],
     result: { outputId: 'rows' },
   });
-  const eventCount = await page.evaluate(() => (window as typeof window & { aeliqoEvents: any[] }).aeliqoEvents.length);
-  await page.locator('aeliqo-table[data-aeliqo-node-id="table"]').evaluate((element) => {
+  const eventCount = await page.evaluate(
+    () => (window as typeof window & { varendoEvents: any[] }).varendoEvents.length,
+  );
+  await page.locator('varendo-table[data-varendo-node-id="table"]').evaluate((element) => {
     element.dispatchEvent(
-      new CustomEvent('aeliqo-table-selection', {
+      new CustomEvent('varendo-table-selection', {
         bubbles: true,
         composed: true,
         detail: {
@@ -68,18 +70,18 @@ test('region emits trusted table selection, clears explicitly, and keeps long fo
     );
   });
   await expect
-    .poll(() => page.evaluate(() => (window as typeof window & { aeliqoEvents: any[] }).aeliqoEvents.length))
+    .poll(() => page.evaluate(() => (window as typeof window & { varendoEvents: any[] }).varendoEvents.length))
     .toBe(eventCount);
   await checkbox.uncheck();
-  const cleared = await page.evaluate(() => (window as typeof window & { aeliqoEvents: any[] }).aeliqoEvents.at(-1));
+  const cleared = await page.evaluate(() => (window as typeof window & { varendoEvents: any[] }).varendoEvents.at(-1));
   expect(cleared.payload.selection).toEqual({ mode: 'clear' });
 
   const beforeMalformed = await page.evaluate(
-    () => (window as typeof window & { aeliqoEvents: any[] }).aeliqoEvents.length,
+    () => (window as typeof window & { varendoEvents: any[] }).varendoEvents.length,
   );
   await page.evaluate(async () => {
-    const region = document.querySelector('aeliqo-region') as HTMLElement & { updateComplete: Promise<unknown> };
-    const table = region.shadowRoot?.querySelector('aeliqo-table[data-aeliqo-node-id="table"]');
+    const region = document.querySelector('varendo-region') as HTMLElement & { updateComplete: Promise<unknown> };
+    const table = region.shadowRoot?.querySelector('varendo-table[data-varendo-node-id="table"]');
     if (table === null || table === undefined) throw new Error('table did not mount');
     for (const detail of [
       null,
@@ -87,62 +89,62 @@ test('region emits trusted table selection, clears explicitly, and keeps long fo
       { mode: 'ids', entity: 42, keys: ['e1'] },
       { mode: 'ids', entity: 'employees', keys: ['e1'], result: {} },
     ]) {
-      table.dispatchEvent(new CustomEvent('aeliqo-table-selection', { bubbles: true, composed: true, detail }));
+      table.dispatchEvent(new CustomEvent('varendo-table-selection', { bubbles: true, composed: true, detail }));
     }
   });
   await expect
-    .poll(() => page.evaluate(() => (window as typeof window & { aeliqoEvents: any[] }).aeliqoEvents.length))
+    .poll(() => page.evaluate(() => (window as typeof window & { varendoEvents: any[] }).varendoEvents.length))
     .toBe(beforeMalformed);
 
   await page.evaluate(async () => {
-    const region = document.querySelector('aeliqo-region') as HTMLElement;
-    const table = region.shadowRoot?.querySelector('aeliqo-table[data-aeliqo-node-id="table"]') as
+    const region = document.querySelector('varendo-region') as HTMLElement;
+    const table = region.shadowRoot?.querySelector('varendo-table[data-varendo-node-id="table"]') as
       (HTMLElement & { selection: string; updateComplete: Promise<unknown> }) | null;
     if (table === null || table === undefined) throw new Error('table did not mount');
     table.selection = 'single';
     await table.updateComplete;
   });
   const radioNames = await page
-    .locator('aeliqo-table[data-aeliqo-node-id="table"] input[type="radio"]')
+    .locator('varendo-table[data-varendo-node-id="table"] input[type="radio"]')
     .evaluateAll((inputs) => inputs.map((input) => input.getAttribute('name')));
   expect(radioNames.length).toBe(2);
   expect(new Set(radioNames).size).toBe(1);
   await page.evaluate(async () => {
-    const region = document.querySelector('aeliqo-region') as HTMLElement;
-    const table = region.shadowRoot?.querySelector('aeliqo-table[data-aeliqo-node-id="table"]') as
+    const region = document.querySelector('varendo-region') as HTMLElement;
+    const table = region.shadowRoot?.querySelector('varendo-table[data-varendo-node-id="table"]') as
       (HTMLElement & { selectedKeys: readonly string[]; updateComplete: Promise<unknown> }) | null;
     if (table === null || table === undefined) throw new Error('table did not mount');
     table.selectedKeys = ['string:2:e2'];
     await table.updateComplete;
   });
-  await expect(page.locator('aeliqo-table[data-aeliqo-node-id="table"] input[type="radio"]').nth(1)).toHaveAttribute(
+  await expect(page.locator('varendo-table[data-varendo-node-id="table"] input[type="radio"]').nth(1)).toHaveAttribute(
     'aria-label',
     'Select employees e2',
   );
 
   await page.evaluate(async () => {
     const app = window as typeof window & { mountFilters: () => void };
-    const region = document.querySelector('aeliqo-region') as HTMLElement & { updateComplete: Promise<unknown> };
+    const region = document.querySelector('varendo-region') as HTMLElement & { updateComplete: Promise<unknown> };
     app.mountFilters();
     await region.updateComplete;
-    const filter = region.shadowRoot?.querySelector('aeliqo-text-field[data-aeliqo-node-id="filter-a"]');
+    const filter = region.shadowRoot?.querySelector('varendo-text-field[data-varendo-node-id="filter-a"]');
     if (filter === null || filter === undefined) throw new Error('filter did not mount');
     for (const detail of [undefined, { value: 'forged', source: 'program' }, { value: 42, source: 'user' }]) {
-      filter.dispatchEvent(new CustomEvent('aeliqo-input-change', { bubbles: true, composed: true, detail }));
+      filter.dispatchEvent(new CustomEvent('varendo-input-change', { bubbles: true, composed: true, detail }));
     }
     await region.updateComplete;
   });
   await expect
-    .poll(() => page.evaluate(() => (window as typeof window & { aeliqoEvents: any[] }).aeliqoEvents.length))
+    .poll(() => page.evaluate(() => (window as typeof window & { varendoEvents: any[] }).varendoEvents.length))
     .toBe(beforeMalformed);
 
   await page.evaluate(async () => {
     const app = window as typeof window & { mountTrend: () => void };
     app.mountTrend();
-    await (document.querySelector('aeliqo-region') as HTMLElement & { updateComplete: Promise<unknown> })
+    await (document.querySelector('varendo-region') as HTMLElement & { updateComplete: Promise<unknown> })
       .updateComplete;
   });
-  const chart = page.locator('aeliqo-chart[data-aeliqo-node-id="trend"]');
+  const chart = page.locator('varendo-chart[data-varendo-node-id="trend"]');
   await expect(chart.locator('svg [part="line"]')).toHaveCount(8);
   const svgGeometry = await chart.evaluate((element) =>
     [...(element.shadowRoot?.querySelectorAll('polyline') ?? [])].map((line) => {
@@ -181,10 +183,10 @@ test('region emits trusted table selection, clears explicitly, and keeps long fo
   await page.evaluate(async () => {
     const app = window as typeof window & { mountSubMillisecondTrend: () => void };
     app.mountSubMillisecondTrend();
-    await (document.querySelector('aeliqo-region') as HTMLElement & { updateComplete: Promise<unknown> })
+    await (document.querySelector('varendo-region') as HTMLElement & { updateComplete: Promise<unknown> })
       .updateComplete;
   });
-  const subChart = page.locator('aeliqo-chart[data-aeliqo-node-id="trend"]');
+  const subChart = page.locator('varendo-chart[data-varendo-node-id="trend"]');
   await subChart.locator('details summary').click();
   await expect(subChart.locator('tbody tr')).toHaveCount(2);
   await expect(subChart.locator('svg [part="point"]')).toHaveCount(2);

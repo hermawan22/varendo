@@ -337,7 +337,7 @@ function contextManifest(
   targets: ReadonlyMap<string, AgentSurfaceTarget>,
 ): AgentCapabilityManifest<ContextInput, AgentJsonValue> {
   return {
-    ref: { id: 'aeliqo.browser.context', revision: '1' },
+    ref: { id: 'varendo.browser.context', revision: '1' },
     operation: 'catalog.read',
     label: 'Inspect explicitly allowed Varendo surfaces',
     description: 'Returns bounded target metadata for the current scope. It never returns rows or credentials.',
@@ -358,7 +358,7 @@ function renderManifest(
   targets: ReadonlyMap<string, AgentSurfaceTarget>,
 ): AgentCapabilityManifest<RenderInput, AgentJsonValue> {
   return {
-    ref: { id: 'aeliqo.browser.render', revision: '1' },
+    ref: { id: 'varendo.browser.render', revision: '1' },
     operation: 'experience.commit',
     label: 'Render a validated intent on an allowed surface',
     description: 'Routes a typed intent through the selected surface and reports its actual commit stage.',
@@ -380,15 +380,15 @@ function renderManifest(
 function endpointTools(): readonly AgentToolDefinition[] {
   return Object.freeze([
     {
-      name: 'aeliqo_surface_context',
-      capability: { id: 'aeliqo.browser.context', revision: '1' },
+      name: 'varendo_surface_context',
+      capability: { id: 'varendo.browser.context', revision: '1' },
       operation: 'catalog.read' as const,
       description: 'Inspect explicitly allowed Varendo surfaces.',
       inputSchema: { type: 'object', properties: {}, additionalProperties: false },
     },
     {
-      name: 'aeliqo_surface_render',
-      capability: { id: 'aeliqo.browser.render', revision: '1' },
+      name: 'varendo_surface_render',
+      capability: { id: 'varendo.browser.render', revision: '1' },
       operation: 'experience.commit' as const,
       description: 'Render a registered intent on one explicitly allowed surface.',
       inputSchema: {

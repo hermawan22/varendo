@@ -73,7 +73,7 @@ and the host must list the renderer's implemented mapping refs in
 The pure compiler validates declarations; transactional state application and
 rollback belong to the runtime. Active focus/draft/IME blocking and explicit-only
 transition policy still apply. Same-representation identity transfer uses the
-existing `aeliqo.state.identity@1` mapping.
+existing `varendo.state.identity@1` mapping.
 
 Operation restrictions apply to every enabled resolved operation, even if a
 coverage annotation omits it. Queryless tasks with zero required needs can use a

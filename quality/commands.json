@@ -403,17 +403,17 @@
     },
     {
       "kind": "browser",
-      "argv": ["env", "AELIQO_VISUAL_PROJECT=chromium", "pnpm", "test:visual"],
+      "argv": ["env", "VARENDO_VISUAL_PROJECT=chromium", "pnpm", "test:visual"],
       "timeoutSeconds": 3600
     },
     {
       "kind": "browser",
-      "argv": ["env", "AELIQO_VISUAL_PROJECT=firefox", "pnpm", "test:visual"],
+      "argv": ["env", "VARENDO_VISUAL_PROJECT=firefox", "pnpm", "test:visual"],
       "timeoutSeconds": 3600
     },
     {
       "kind": "browser",
-      "argv": ["env", "AELIQO_VISUAL_PROJECT=webkit", "pnpm", "test:visual"],
+      "argv": ["env", "VARENDO_VISUAL_PROJECT=webkit", "pnpm", "test:visual"],
       "timeoutSeconds": 3600
     },
     {

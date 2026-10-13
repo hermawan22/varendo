@@ -15,7 +15,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/platform-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-installed-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-installed-consumer-'));
 function run(argv, cwd, encoding = 'utf8') {
   const result = spawnSync(argv[0], argv.slice(1), { cwd, encoding, timeout: 180_000 });
   if (result.error || result.status !== 0) {
@@ -65,7 +65,7 @@ for (const name of ['core', 'runtime', 'web', 'react']) {
   }
   await clearCompiledOutput(dist);
   run(['pnpm', 'build'], directory);
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));
@@ -138,18 +138,18 @@ await writeFile(join(runDirectory, 'consumer-package-lock.json'), lockBytes);
 await writeFile(
   join(consumer, 'consumer.tsx'),
   `
-import {AeliqoTextFieldElement, type AeliqoInputChangeDetail} from '@varendo/web/inputs';
-import {AeliqoTableElement} from '@varendo/web/table';
-import {AeliqoChartElement} from '@varendo/web/chart';
-import {AeliqoTextField} from '@varendo/react/inputs';
-import {registerAeliqoReactElements} from '@varendo/react';
-import {aeliqoThemeStyles, createAeliqoLocaleContext} from '@varendo/web/styles';
-const locale = createAeliqoLocaleContext('ar-EG', {direction: 'rtl'});
-const styleText: string = aeliqoThemeStyles.cssText;
+import {VarendoTextFieldElement, type VarendoInputChangeDetail} from '@varendo/web/inputs';
+import {VarendoTableElement} from '@varendo/web/table';
+import {VarendoChartElement} from '@varendo/web/chart';
+import {VarendoTextField} from '@varendo/react/inputs';
+import {registerVarendoReactElements} from '@varendo/react';
+import {varendoThemeStyles, createVarendoLocaleContext} from '@varendo/web/styles';
+const locale = createVarendoLocaleContext('ar-EG', {direction: 'rtl'});
+const styleText: string = varendoThemeStyles.cssText;
 void [locale, styleText];
-const value: AeliqoInputChangeDetail<string> = {value: 'Ada', source: 'user'};
-const input = <AeliqoTextField label="Person" value="Ada" onValueChange={event => {const text:string=event.detail.value;void text;}} />;
-void [AeliqoTextFieldElement,AeliqoTableElement,AeliqoChartElement,registerAeliqoReactElements,value,input];
+const value: VarendoInputChangeDetail<string> = {value: 'Ada', source: 'user'};
+const input = <VarendoTextField label="Person" value="Ada" onValueChange={event => {const text:string=event.detail.value;void text;}} />;
+void [VarendoTextFieldElement,VarendoTableElement,VarendoChartElement,registerVarendoReactElements,value,input];
 `,
 );
 await writeFile(
@@ -177,17 +177,17 @@ await writeFile(
 import assert from 'node:assert/strict';
 import {createElement} from 'react';
 import {renderToString} from 'react-dom/server';
-import {AeliqoTextField} from '@varendo/react/inputs';
-import {AeliqoTextFieldElement} from '@varendo/web/inputs';
+import {VarendoTextField} from '@varendo/react/inputs';
+import {VarendoTextFieldElement} from '@varendo/web/inputs';
 assert.equal(typeof window, 'undefined');
 const styles = await import('@varendo/web/styles');
-assert.equal(styles.createAeliqoLocaleContext('ar-EG', {direction:'rtl'}).direction, 'rtl');
-assert.match(styles.aeliqoThemeStyles.cssText, /:host/);
-assert.equal(typeof AeliqoTextFieldElement, 'function');
-const reactMarkup=renderToString(createElement(AeliqoTextField,{label:'Person',value:'Ada'}));
-assert.match(reactMarkup, /aeliqo-text-field/);assert.match(reactMarkup,/label="Person"/);
-const {renderAeliqo}=await import('@varendo/web/server');const {html}=await import('lit');
-const markup=await renderAeliqo(html\`<aeliqo-text-field label="Installed person" value="Ada"></aeliqo-text-field>\`);
+assert.equal(styles.createVarendoLocaleContext('ar-EG', {direction:'rtl'}).direction, 'rtl');
+assert.match(styles.varendoThemeStyles.cssText, /:host/);
+assert.equal(typeof VarendoTextFieldElement, 'function');
+const reactMarkup=renderToString(createElement(VarendoTextField,{label:'Person',value:'Ada'}));
+assert.match(reactMarkup, /varendo-text-field/);assert.match(reactMarkup,/label="Person"/);
+const {renderVarendo}=await import('@varendo/web/server');const {html}=await import('lit');
+const markup=await renderVarendo(html\`<varendo-text-field label="Installed person" value="Ada"></varendo-text-field>\`);
 assert.match(markup,/shadowrootmode="open"/);assert.match(markup,/Installed person/);assert.match(markup,/<input/);
 console.log('Installed web/React types, Node import and Lit SSR content pass.');
 `,
@@ -200,11 +200,11 @@ await writeFile(
 await writeFile(
   join(consumer, 'browser.js'),
   `
-import {AeliqoTextFieldElement} from '@varendo/web/inputs';
-customElements.define('installed-aeliqo-text-field',AeliqoTextFieldElement);
-const form=document.createElement('form');const input=document.createElement('installed-aeliqo-text-field');
+import {VarendoTextFieldElement} from '@varendo/web/inputs';
+customElements.define('installed-varendo-text-field',VarendoTextFieldElement);
+const form=document.createElement('form');const input=document.createElement('installed-varendo-text-field');
 input.label='Installed person';input.value='Ada';input.name='person';
-input.addEventListener('aeliqo-input-change',event=>{input.value=event.detail.value;});
+input.addEventListener('varendo-input-change',event=>{input.value=event.detail.value;});
 form.append(input);document.body.append(form);
 `,
 );
@@ -219,10 +219,10 @@ export default {build:{minify:true},plugins:[{name:'record-modules',generateBund
 );
 run([join(consumer, 'node_modules/.bin/vite'), 'build'], consumer);
 const modules = JSON.parse(await readFile(join(consumer, 'dist/modules.json'), 'utf8'));
-// AeliqoTextField delegates to the shared TextField; these are its exact required bases/events and release compatibility marker.
+// VarendoTextField delegates to the shared TextField; these are its exact required bases/events and release compatibility marker.
 // Runtime, planner, agent, chart, and other component modules remain excluded.
 const allowed =
-  /(?:\/browser\.js$|\/index\.html$|vite\/modulepreload-polyfill|\/node_modules\/(?:lit(?:-html|-element)?\/|@lit\/reactive-element\/|@varendo\/web\/dist\/(?:version|elements\/aeliqo-text-field|events|input\/(?:events|base|text-control|text-field)|foundation\/base|styles\/(?:theme|tokens))\.js$))/;
+  /(?:\/browser\.js$|\/index\.html$|vite\/modulepreload-polyfill|\/node_modules\/(?:lit(?:-html|-element)?\/|@lit\/reactive-element\/|@varendo\/web\/dist\/(?:version|elements\/varendo-text-field|events|input\/(?:events|base|text-control|text-field)|foundation\/base|styles\/(?:theme|tokens))\.js$))/;
 assert.deepEqual(
   modules.filter((id) => !allowed.test(id)),
   [],
@@ -277,8 +277,8 @@ try {
   await input.fill('Lin');
   assert.equal(await input.inputValue(), 'Lin');
   await page
-    .locator('installed-aeliqo-text-field')
-    .evaluate((element) => element.setAttribute('data-aeliqo-theme', 'dark'));
+    .locator('installed-varendo-text-field')
+    .evaluate((element) => element.setAttribute('data-varendo-theme', 'dark'));
   assert.equal(await input.evaluate((element) => getComputedStyle(element).backgroundColor), 'rgb(15, 17, 23)');
   assert.equal(await input.inputValue(), 'Lin');
   assert.equal(await page.locator('form').evaluate((form) => new FormData(form).get('person')), 'Lin');

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { InteractionState, Result } from '../../packages/core/src/index.js';
-import { createAeliqoDataRegistry } from '../../packages/web/src/region/data-registry.js';
-import { renderAeliqoDataNode, type AeliqoDataHostRequest } from '../../packages/web/src/region/data-renderer.js';
+import { createVarendoDataRegistry } from '../../packages/web/src/region/data-registry.js';
+import { renderVarendoDataNode, type VarendoDataHostRequest } from '../../packages/web/src/region/data-renderer.js';
 
 const ref = {
   id: 'result',
@@ -36,7 +36,7 @@ const baseResult: Result = {
   lineage: [],
 };
 const rows = [{ id: 'a', name: 'Ada', amount: { decimal: '12.50' } }];
-const registry = createAeliqoDataRegistry({ resolveEntity: () => 'person' });
+const registry = createVarendoDataRegistry({ resolveEntity: () => 'person' });
 
 function node(
   component: Parameters<typeof registry.resolve>[0]['component'],
@@ -77,9 +77,9 @@ function filterState(predicates: unknown[], nodeId: string): InteractionState {
 
 describe('data renderer interaction boundary', () => {
   it('fails closed for accessor-backed or extra event details', () => {
-    const requests: AeliqoDataHostRequest[] = [];
+    const requests: VarendoDataHostRequest[] = [];
     const table = node('table', { page: true });
-    const template = renderAeliqoDataNode(table, { onRequest: (request) => requests.push(request) });
+    const template = renderVarendoDataNode(table, { onRequest: (request) => requests.push(request) });
 
     const throwing = Object.create(null) as Record<string, unknown>;
     Object.defineProperty(throwing, 'page', {
@@ -87,39 +87,39 @@ describe('data renderer interaction boundary', () => {
         throw new Error('hostile getter');
       },
     });
-    expect(() => emit(template, new CustomEvent('aeliqo-table-page', { detail: throwing }))).not.toThrow();
-    emit(template, new CustomEvent('aeliqo-table-page', { detail: { page: 1, pageSize: 10, evil: true } }));
+    expect(() => emit(template, new CustomEvent('varendo-table-page', { detail: throwing }))).not.toThrow();
+    emit(template, new CustomEvent('varendo-table-page', { detail: { page: 1, pageSize: 10, evil: true } }));
     expect(requests).toEqual([]);
   });
 
   it('requires the checked component capability for page, sort and virtual windows', () => {
-    const requests: AeliqoDataHostRequest[] = [];
-    const page = renderAeliqoDataNode(node('table', { page: true }), {
+    const requests: VarendoDataHostRequest[] = [];
+    const page = renderVarendoDataNode(node('table', { page: true }), {
       onRequest: (request) => requests.push(request),
     });
-    emit(page, new CustomEvent('aeliqo-table-page', { detail: { page: 2, pageSize: 10, result: ref } }));
-    const noPage = renderAeliqoDataNode(node('table'), { onRequest: (request) => requests.push(request) });
-    emit(noPage, new CustomEvent('aeliqo-table-page', { detail: { page: 2, pageSize: 10, result: ref } }));
+    emit(page, new CustomEvent('varendo-table-page', { detail: { page: 2, pageSize: 10, result: ref } }));
+    const noPage = renderVarendoDataNode(node('table'), { onRequest: (request) => requests.push(request) });
+    emit(noPage, new CustomEvent('varendo-table-page', { detail: { page: 2, pageSize: 10, result: ref } }));
 
-    const sortable = renderAeliqoDataNode(
+    const sortable = renderVarendoDataNode(
       node('table', { columns: [{ key: 'id', sortable: true }, { key: 'name' }] }),
       { onRequest: (request) => requests.push(request) },
     );
-    emit(sortable, new CustomEvent('aeliqo-table-sort', { detail: { sort: { field: 'id', direction: 'asc' } } }));
-    emit(sortable, new CustomEvent('aeliqo-table-sort', { detail: {} }));
+    emit(sortable, new CustomEvent('varendo-table-sort', { detail: { sort: { field: 'id', direction: 'asc' } } }));
+    emit(sortable, new CustomEvent('varendo-table-sort', { detail: {} }));
 
-    const windowed = renderAeliqoDataNode(node('table', { mode: 'grid', virtualized: true }), {
+    const windowed = renderVarendoDataNode(node('table', { mode: 'grid', virtualized: true }), {
       onRequest: (request) => requests.push(request),
     });
     emit(
       windowed,
-      new CustomEvent('aeliqo-table-window', {
+      new CustomEvent('varendo-table-window', {
         detail: { start: 0, count: 5, overscan: 1, row: 0, column: 0, reason: 'keyboard', result: ref, evil: true },
       }),
     );
     emit(
       windowed,
-      new CustomEvent('aeliqo-table-window', {
+      new CustomEvent('varendo-table-window', {
         detail: { start: 0, count: 5, overscan: 1, row: 0, column: 0, reason: 'keyboard', result: ref },
       }),
     );
@@ -142,13 +142,13 @@ describe('data renderer interaction boundary', () => {
       counts: { loaded: 1, population: { kind: 'exact', value: 2, populationDigest: 'population' } },
       coverage: { kind: 'partial', populationDigest: 'population', reason: 'Delivery page' },
     };
-    const requests: AeliqoDataHostRequest[] = [];
-    const template = renderAeliqoDataNode(node('cardCollection', {}, result), {
+    const requests: VarendoDataHostRequest[] = [];
+    const template = renderVarendoDataNode(node('cardCollection', {}, result), {
       onRequest: (request) => requests.push(request),
     });
-    emit(template, new Event('aeliqo-data-load-more'));
-    emit(template, new CustomEvent('aeliqo-data-load-more', { detail: { requested: true, evil: true } }));
-    emit(template, new CustomEvent('aeliqo-data-load-more', { detail: { requested: true } }));
+    emit(template, new Event('varendo-data-load-more'));
+    emit(template, new CustomEvent('varendo-data-load-more', { detail: { requested: true, evil: true } }));
+    emit(template, new CustomEvent('varendo-data-load-more', { detail: { requested: true } }));
     expect(requests).toEqual([{ kind: 'load-more', nodeId: 'boundary-cardCollection', portId: 'load-more' }]);
   });
 
@@ -156,23 +156,23 @@ describe('data renderer interaction boundary', () => {
     const table = node('table', { selection: 'multiple' });
     const retained = 'string:1:unloaded';
     const current = selectionState({ mode: 'ids', entity: 'person', keys: [retained], result: ref }, table.id);
-    const rendered = renderAeliqoDataNode(table, { interaction: current });
+    const rendered = renderVarendoDataNode(table, { interaction: current });
     expect(values(rendered)).toContainEqual([retained]);
 
-    const requests: AeliqoDataHostRequest[] = [];
-    const interactive = renderAeliqoDataNode(table, {
+    const requests: VarendoDataHostRequest[] = [];
+    const interactive = renderVarendoDataNode(table, {
       interaction: current,
       onRequest: (request) => requests.push(request),
     });
     emit(
       interactive,
-      new CustomEvent('aeliqo-table-selection', {
+      new CustomEvent('varendo-table-selection', {
         detail: { mode: 'ids', entity: 'person', keys: [retained, 'string:1:a'], result: ref },
       }),
     );
     emit(
       interactive,
-      new CustomEvent('aeliqo-table-selection', {
+      new CustomEvent('varendo-table-selection', {
         detail: { mode: 'ids', entity: 'person', keys: ['string:1:untrusted'], result: ref },
       }),
     );
@@ -190,7 +190,7 @@ describe('data renderer interaction boundary', () => {
       { mode: 'predicate', entity: 'person', predicate, queryDigest: 'query', populationDigest: 'population' },
       summaryNode.id,
     );
-    expect(values(renderAeliqoDataNode(summaryNode, { interaction: valid }))).toContainEqual({
+    expect(values(renderVarendoDataNode(summaryNode, { interaction: valid }))).toContainEqual({
       kind: 'predicate',
       label: 'All matching records in the active server filter',
     });
@@ -199,13 +199,13 @@ describe('data renderer interaction boundary', () => {
       summaryNode.id,
     );
     expect(
-      values(renderAeliqoDataNode(summaryNode, { interaction: stale })).some(
+      values(renderVarendoDataNode(summaryNode, { interaction: stale })).some(
         (value) => value?.constructor === Object && (value as { kind?: string }).kind === 'predicate',
       ),
     ).toBe(false);
 
     const filterNode = node('filterBuilder', { field: 'name', outputId: 'people' });
-    const filterTemplate = renderAeliqoDataNode(filterNode, {
+    const filterTemplate = renderVarendoDataNode(filterNode, {
       interaction: filterState([{ op: 'compare', field: 'unknown', comparison: 'eq', value: 'Ada' }], filterNode.id),
     });
     expect(values(filterTemplate)).not.toContainEqual(expect.objectContaining({ field: 'unknown' }));
@@ -221,17 +221,17 @@ describe('data renderer interaction boundary', () => {
       inherited,
     });
 
-    expect(values(renderAeliqoDataNode(filterNode))).toContainEqual(initial);
-    expect(values(renderAeliqoDataNode(filterNode))).toContainEqual(inherited);
+    expect(values(renderVarendoDataNode(filterNode))).toContainEqual(initial);
+    expect(values(renderVarendoDataNode(filterNode))).toContainEqual(inherited);
 
-    const cleared = renderAeliqoDataNode(filterNode, {
+    const cleared = renderVarendoDataNode(filterNode, {
       interaction: filterState([], filterNode.id),
     });
     expect(values(cleared)).not.toContainEqual(initial);
     expect(values(cleared)).toContainEqual(inherited);
 
     const active = { op: 'compare', field: 'name', comparison: 'eq', value: 'Grace' } as const;
-    const current = renderAeliqoDataNode(filterNode, {
+    const current = renderVarendoDataNode(filterNode, {
       interaction: filterState([active], filterNode.id),
     });
     expect(values(current)).toContainEqual(active);
@@ -248,7 +248,7 @@ describe('data renderer interaction boundary', () => {
         },
       },
     };
-    const malformedValues = values(renderAeliqoDataNode(malformed));
+    const malformedValues = values(renderVarendoDataNode(malformed));
     expect(malformedValues).not.toContainEqual(expect.objectContaining({ field: 'not-authorized' }));
   });
 
@@ -256,13 +256,13 @@ describe('data renderer interaction boundary', () => {
     const inherited = { op: 'is-null', field: 'name', negate: true } as const;
     const predicate = { op: 'compare', field: 'name', comparison: 'eq', value: 'Ada' } as const;
     const filterNode = node('filterBuilder', { field: 'name', outputId: 'people', inherited });
-    const requests: AeliqoDataHostRequest[] = [];
-    const template = renderAeliqoDataNode(filterNode, {
+    const requests: VarendoDataHostRequest[] = [];
+    const template = renderVarendoDataNode(filterNode, {
       onRequest: (request) => requests.push(request),
     });
     emit(
       template,
-      new CustomEvent('aeliqo-filter-change', {
+      new CustomEvent('varendo-filter-change', {
         detail: { applied: true, predicate, inherited },
       }),
     );

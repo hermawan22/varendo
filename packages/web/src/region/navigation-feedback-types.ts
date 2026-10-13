@@ -1,5 +1,5 @@
 import type { Scalar, VersionRef } from '@varendo/core';
-import type { AeliqoEmptyStateKind } from '../feedback/empty-state.js';
+import type { VarendoEmptyStateKind } from '../feedback/empty-state.js';
 
 /**
  * Host-owned references used by the navigation and feedback region adapters.
@@ -9,25 +9,25 @@ import type { AeliqoEmptyStateKind } from '../feedback/empty-state.js';
  * resolved from this immutable host table. This keeps model-authored wire data
  * from becoming a destination, business action or trusted copy source.
  */
-export interface AeliqoNavigationFeedbackBindings {
+export interface VarendoNavigationFeedbackBindings {
   readonly revision: string;
-  readonly contents?: readonly AeliqoNavigationFeedbackContent[];
-  readonly routes?: readonly AeliqoNavigationFeedbackRoute[];
-  readonly actions?: readonly AeliqoNavigationFeedbackAction[];
-  readonly breadcrumbs?: readonly AeliqoBreadcrumbBinding[];
-  readonly menus?: readonly AeliqoMenuBinding[];
-  readonly pagination?: readonly AeliqoPaginationBinding[];
-  readonly tabs?: readonly AeliqoTabsBinding[];
-  readonly trees?: readonly AeliqoTreeBinding[];
-  readonly feedback?: readonly AeliqoFeedbackBinding[];
+  readonly contents?: readonly VarendoNavigationFeedbackContent[];
+  readonly routes?: readonly VarendoNavigationFeedbackRoute[];
+  readonly actions?: readonly VarendoNavigationFeedbackAction[];
+  readonly breadcrumbs?: readonly VarendoBreadcrumbBinding[];
+  readonly menus?: readonly VarendoMenuBinding[];
+  readonly pagination?: readonly VarendoPaginationBinding[];
+  readonly tabs?: readonly VarendoTabsBinding[];
+  readonly trees?: readonly VarendoTreeBinding[];
+  readonly feedback?: readonly VarendoFeedbackBinding[];
 }
 
-export interface AeliqoNavigationFeedbackContent {
+export interface VarendoNavigationFeedbackContent {
   readonly id: string;
   readonly text: string;
 }
 
-export interface AeliqoNavigationFeedbackRoute {
+export interface VarendoNavigationFeedbackRoute {
   readonly id: string;
   readonly route: VersionRef;
   readonly params: Readonly<Record<string, Scalar>>;
@@ -35,32 +35,32 @@ export interface AeliqoNavigationFeedbackRoute {
   readonly href: string;
 }
 
-export interface AeliqoNavigationFeedbackAction {
+export interface VarendoNavigationFeedbackAction {
   readonly id: string;
   readonly action: VersionRef;
   readonly input: Readonly<Record<string, Scalar>>;
 }
 
-export interface AeliqoBreadcrumbBinding {
+export interface VarendoBreadcrumbBinding {
   readonly id: string;
   readonly labelRef: string;
-  readonly items: readonly AeliqoBreadcrumbBindingItem[];
+  readonly items: readonly VarendoBreadcrumbBindingItem[];
 }
 
-export interface AeliqoBreadcrumbBindingItem {
+export interface VarendoBreadcrumbBindingItem {
   readonly id: string;
   readonly labelRef: string;
   readonly routeRef?: string;
   readonly current?: boolean;
 }
 
-export interface AeliqoMenuBinding {
+export interface VarendoMenuBinding {
   readonly id: string;
   readonly labelRef: string;
-  readonly items: readonly AeliqoMenuBindingItem[];
+  readonly items: readonly VarendoMenuBindingItem[];
 }
 
-export interface AeliqoMenuBindingItem {
+export interface VarendoMenuBindingItem {
   readonly id: string;
   readonly labelRef: string;
   readonly actionRef?: string;
@@ -68,7 +68,7 @@ export interface AeliqoMenuBindingItem {
   readonly disabled?: boolean;
 }
 
-export interface AeliqoPaginationBinding {
+export interface VarendoPaginationBinding {
   readonly id: string;
   readonly labelRef: string;
   readonly outputId: string;
@@ -78,43 +78,43 @@ export interface AeliqoPaginationBinding {
   readonly hasPrevious: boolean;
   readonly hasNext: boolean;
   readonly pending?: boolean;
-  readonly cursors: readonly AeliqoPaginationCursor[];
+  readonly cursors: readonly VarendoPaginationCursor[];
 }
 
-export interface AeliqoPaginationCursor {
+export interface VarendoPaginationCursor {
   readonly page: number;
   readonly cursor: string;
 }
 
-export interface AeliqoTabsBinding {
+export interface VarendoTabsBinding {
   readonly id: string;
-  readonly items: readonly AeliqoTabsBindingItem[];
+  readonly items: readonly VarendoTabsBindingItem[];
 }
 
-export interface AeliqoTabsBindingItem {
+export interface VarendoTabsBindingItem {
   readonly id: string;
   readonly labelRef: string;
   readonly contentRef?: string;
   readonly disabled?: boolean;
 }
 
-export interface AeliqoTreeBinding {
+export interface VarendoTreeBinding {
   readonly id: string;
   readonly labelRef: string;
-  readonly nodes: readonly AeliqoTreeBindingNode[];
+  readonly nodes: readonly VarendoTreeBindingNode[];
 }
 
-export interface AeliqoTreeBindingNode {
+export interface VarendoTreeBindingNode {
   readonly id: string;
   readonly labelRef: string;
-  readonly children?: readonly AeliqoTreeBindingNode[];
+  readonly children?: readonly VarendoTreeBindingNode[];
   readonly disabled?: boolean;
   readonly actionRef?: string;
   readonly routeRef?: string;
 }
 
 /** Shared host text and action references for feedback primitives. */
-export interface AeliqoFeedbackBinding {
+export interface VarendoFeedbackBinding {
   readonly id: string;
   readonly labelRef?: string;
   readonly contentRef?: string;
@@ -122,7 +122,7 @@ export interface AeliqoFeedbackBinding {
   readonly messageRef?: string;
   readonly actionLabelRef?: string;
   readonly actionRef?: string;
-  readonly kind?: AeliqoEmptyStateKind;
+  readonly kind?: VarendoEmptyStateKind;
   readonly progressValue?: number;
   readonly progressMax?: number;
 }

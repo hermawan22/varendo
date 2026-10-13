@@ -2,9 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { html } from 'lit';
 import { type SemanticType } from '../../packages/core/src/index.js';
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
-import { AELIQO_INPUT_REFS } from '../../packages/web/src/input/manifest.js';
-import type { AeliqoInputBinding } from '../../packages/web/src/region/input-registry.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import { VARENDO_INPUT_REFS } from '../../packages/web/src/input/manifest.js';
+import type { VarendoInputBinding } from '../../packages/web/src/region/input-registry.js';
 import { fixture } from '../foundation/semantic-fixture.js';
 
 function allInputs() {
@@ -16,7 +16,7 @@ function allInputs() {
     entityRevision: '1',
     type,
   });
-  const inputs: AeliqoInputBinding[] = Object.values(AELIQO_INPUT_REFS).map((ref) => {
+  const inputs: VarendoInputBinding[] = Object.values(VARENDO_INPUT_REFS).map((ref) => {
     const id = ref.id;
     const config: Record<string, unknown> = { label: id };
     if (id === 'input.form')
@@ -46,7 +46,7 @@ function allInputs() {
       config.options = [{ value: 'a', label: 'Option A' }];
     return { id, ref, config, draft: draft(id, type) };
   });
-  const made = createAeliqoPresentationRegistry({ inputs: { revision: 'all-1', inputs } });
+  const made = createVarendoPresentationRegistry({ inputs: { revision: 'all-1', inputs } });
   if (!made.ok) throw new Error(JSON.stringify(made.diagnostics));
   const plan = {
     ...f.plan,
@@ -86,13 +86,13 @@ describe('complete input semantic surface', () => {
     expect(allInputs().nodes).toHaveLength(15);
   });
   it('renders actual declarative shadow content with request isolation', async () => {
-    const { renderAeliqo } = await import('../../packages/web/dist/server.js');
-    const output = await renderAeliqo(html`<aeliqo-region .presentation=${allInputs()}></aeliqo-region>`);
+    const { renderVarendo } = await import('../../packages/web/dist/server.js');
+    const output = await renderVarendo(html`<varendo-region .presentation=${allInputs()}></varendo-region>`);
     expect(output).toContain('shadowrootmode="open"');
-    for (const ref of Object.values(AELIQO_INPUT_REFS)) expect(output).toContain(`<aeliqo-${ref.id.slice(6)}`);
+    for (const ref of Object.values(VARENDO_INPUT_REFS)) expect(output).toContain(`<varendo-${ref.id.slice(6)}`);
     expect(output).toContain('Option A');
     expect(output).toContain('<legend');
-    const empty = await renderAeliqo(html`<aeliqo-region></aeliqo-region>`);
+    const empty = await renderVarendo(html`<varendo-region></varendo-region>`);
     expect(empty).not.toContain('Option A');
   });
 });

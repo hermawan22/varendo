@@ -1,21 +1,21 @@
 import type { VersionRef } from '@varendo/core';
 import type { PresentationStateMappingManifest } from '@varendo/core/presentation';
-import { AELIQO_PRESENTATION_REFS } from '../region/registry.js';
-import { AELIQO_DATA_REFS } from '../region/data-registry.js';
+import { VARENDO_PRESENTATION_REFS } from '../region/registry.js';
+import { VARENDO_DATA_REFS } from '../region/data-registry.js';
 
 export const STANDARD_STATE_MAPPINGS: readonly PresentationStateMappingManifest[] = Object.freeze([
   {
-    ref: { id: 'aeliqo.web.table-to-cards', revision: '1' },
-    from: AELIQO_PRESENTATION_REFS.table,
-    to: AELIQO_DATA_REFS.cardCollection,
+    ref: { id: 'varendo.web.table-to-cards', revision: '1' },
+    from: VARENDO_PRESENTATION_REFS.table,
+    to: VARENDO_DATA_REFS.cardCollection,
     fromRole: 'table',
     toRole: 'cardCollection',
     kind: 'transfer',
   },
   {
-    ref: { id: 'aeliqo.web.cards-to-table', revision: '1' },
-    from: AELIQO_DATA_REFS.cardCollection,
-    to: AELIQO_PRESENTATION_REFS.table,
+    ref: { id: 'varendo.web.cards-to-table', revision: '1' },
+    from: VARENDO_DATA_REFS.cardCollection,
+    to: VARENDO_PRESENTATION_REFS.table,
     fromRole: 'cardCollection',
     toRole: 'table',
     kind: 'transfer',

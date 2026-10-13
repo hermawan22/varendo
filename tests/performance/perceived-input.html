@@ -18,9 +18,9 @@
     <main aria-labelledby="title">
       <h1 id="title">Varendo perceived input fixture</h1>
       <p class="fixture-note">A direct input filters a local 100-row table. The fixture has no runtime, planner, model, or network dependency.</p>
-      <aeliqo-text-field id="query" label="Filter local rows" description="Type a character to update the visible row summary." value=""></aeliqo-text-field>
+      <varendo-text-field id="query" label="Filter local rows" description="Type a character to update the visible row summary." value=""></varendo-text-field>
       <output id="visible-result" aria-live="polite" aria-atomic="true">100 matching rows</output>
-      <aeliqo-table id="records" caption="Local records"></aeliqo-table>
+      <varendo-table id="records" caption="Local records"></varendo-table>
     </main>
     <script type="module" src="./perceived-input.ts"></script>
   </body>

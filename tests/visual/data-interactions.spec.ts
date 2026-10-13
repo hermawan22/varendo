@@ -4,7 +4,7 @@ import { REVIEW_VARIANTS, reviewColorScheme, reviewViewport, type ReviewVariant 
 
 type ReviewEvent = { readonly type: string; readonly detail: Record<string, unknown> };
 type ReviewWindow = Window & {
-  aeliqoReviewReady?: boolean;
+  varendoReviewReady?: boolean;
   dataInteractionEvents?: readonly ReviewEvent[];
 };
 
@@ -24,21 +24,21 @@ async function openCatalog(page: Page, id: string, variant: ReviewVariant): Prom
   await page.setViewportSize(reviewViewport(variant));
   await page.emulateMedia({ colorScheme: reviewColorScheme(variant), reducedMotion: 'reduce' });
   await page.goto(`/tests/visual/index.html?component=${id}&variant=${variant}`);
-  await page.waitForFunction(() => Boolean((window as ReviewWindow).aeliqoReviewReady));
-  const host = page.locator(`#fixture aeliqo-${id}`).first();
+  await page.waitForFunction(() => Boolean((window as ReviewWindow).varendoReviewReady));
+  const host = page.locator(`#fixture varendo-${id}`).first();
   await expect(host).toBeAttached();
   await page.evaluate(() => {
     const events: ReviewEvent[] = [];
     for (const type of [
-      'aeliqo-record-list-selection',
-      'aeliqo-card-selection',
-      'aeliqo-data-load-more',
-      'aeliqo-table-selection',
-      'aeliqo-table-sort',
-      'aeliqo-table-page',
-      'aeliqo-table-window',
-      'aeliqo-filter-change',
-      'aeliqo-selection-clear',
+      'varendo-record-list-selection',
+      'varendo-card-selection',
+      'varendo-data-load-more',
+      'varendo-table-selection',
+      'varendo-table-sort',
+      'varendo-table-page',
+      'varendo-table-window',
+      'varendo-filter-change',
+      'varendo-selection-clear',
     ]) {
       document.addEventListener(type, (event) => {
         events.push({ type, detail: (event as CustomEvent).detail as Record<string, unknown> });
@@ -135,14 +135,14 @@ for (const variant of REVIEW_VARIANTS) {
       const lin = list.locator('[part="record-button"]').nth(1);
       await lin.focus();
       await lin.press('Enter');
-      expect(lastEvent(await events(page), 'aeliqo-record-list-selection')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-record-list-selection')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-record-list-selection',
+          type: 'varendo-record-list-selection',
           detail: expect.objectContaining({
             mode: 'ids',
             entity: 'person',
             keys: ['string:3:lin'],
-            result: expect.objectContaining({ id: 'aeliqo-catalog-example', outputId: 'people' }),
+            result: expect.objectContaining({ id: 'varendo-catalog-example', outputId: 'people' }),
           }),
         }),
       );
@@ -161,9 +161,9 @@ for (const variant of REVIEW_VARIANTS) {
       const lin = cards.locator('[part="card-button"]').nth(1);
       await lin.focus();
       await lin.press('Space');
-      expect(lastEvent(await events(page), 'aeliqo-card-selection')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-card-selection')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-card-selection',
+          type: 'varendo-card-selection',
           detail: expect.objectContaining({ mode: 'ids', entity: 'person', keys: ['string:3:lin'] }),
         }),
       );
@@ -176,15 +176,17 @@ for (const variant of REVIEW_VARIANTS) {
       const loadMore = cards.locator('[part="load-more"]');
       await setHostProperty(cards, 'loadingMore', true);
       await expect(loadMore).toBeDisabled();
-      const blockedCount = (await events(page)).filter((event) => event.type === 'aeliqo-data-load-more').length;
+      const blockedCount = (await events(page)).filter((event) => event.type === 'varendo-data-load-more').length;
       await loadMore.dispatchEvent('click');
-      expect((await events(page)).filter((event) => event.type === 'aeliqo-data-load-more')).toHaveLength(blockedCount);
+      expect((await events(page)).filter((event) => event.type === 'varendo-data-load-more')).toHaveLength(
+        blockedCount,
+      );
       await setHostProperty(cards, 'loadingMore', false);
       await loadMore.focus();
       await loadMore.press('Enter');
-      expect(lastEvent(await events(page), 'aeliqo-data-load-more')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-data-load-more')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-data-load-more',
+          type: 'varendo-data-load-more',
           detail: { requested: true },
         }),
       );
@@ -200,17 +202,17 @@ for (const variant of REVIEW_VARIANTS) {
       const nameSort = table.locator('[part="sort"][aria-label="Sort by Name"]');
       await nameSort.focus();
       await nameSort.press('Enter');
-      expect(lastEvent(await events(page), 'aeliqo-table-sort')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-table-sort')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-table-sort',
+          type: 'varendo-table-sort',
           detail: { sort: { field: 'name', direction: 'asc' } },
         }),
       );
       await setHostProperty(table, 'sort', { field: 'name', direction: 'asc' });
       await nameSort.press('Enter');
-      expect(lastEvent(await events(page), 'aeliqo-table-sort')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-table-sort')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-table-sort',
+          type: 'varendo-table-sort',
           detail: { sort: { field: 'name', direction: 'desc' } },
         }),
       );
@@ -218,14 +220,14 @@ for (const variant of REVIEW_VARIANTS) {
       const linSelection = table.locator('input[type="checkbox"]').nth(1);
       await linSelection.focus();
       await linSelection.press('Space');
-      expect(lastEvent(await events(page), 'aeliqo-table-selection')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-table-selection')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-table-selection',
+          type: 'varendo-table-selection',
           detail: {
             mode: 'ids',
             entity: 'person',
             keys: ['string:3:ada', 'string:3:lin'],
-            result: expect.objectContaining({ id: 'aeliqo-catalog-example' }),
+            result: expect.objectContaining({ id: 'varendo-catalog-example' }),
           },
         }),
       );
@@ -242,10 +244,10 @@ for (const variant of REVIEW_VARIANTS) {
       const next = table.locator('button[part="next"]');
       await next.focus();
       await next.press('Enter');
-      expect(lastEvent(await events(page), 'aeliqo-table-page')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-table-page')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-table-page',
-          detail: { page: 2, pageSize: 2, result: expect.objectContaining({ id: 'aeliqo-catalog-example' }) },
+          type: 'varendo-table-page',
+          detail: { page: 2, pageSize: 2, result: expect.objectContaining({ id: 'varendo-catalog-example' }) },
         }),
       );
       await setHostProperty(table, 'page', 2);
@@ -273,9 +275,9 @@ for (const variant of REVIEW_VARIANTS) {
       const lastVisibleCell = table.locator('[part="cell"][data-row-index="1"][data-col-index="1"]');
       await lastVisibleCell.focus();
       await lastVisibleCell.press('ArrowDown');
-      expect(lastEvent(await events(page), 'aeliqo-table-window')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-table-window')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-table-window',
+          type: 'varendo-table-window',
           detail: {
             start: 2,
             count: 2,
@@ -283,7 +285,7 @@ for (const variant of REVIEW_VARIANTS) {
             row: 2,
             column: 1,
             reason: 'keyboard',
-            result: expect.objectContaining({ id: 'aeliqo-catalog-example' }),
+            result: expect.objectContaining({ id: 'varendo-catalog-example' }),
           },
         }),
       );
@@ -303,14 +305,14 @@ for (const variant of REVIEW_VARIANTS) {
       await value.fill('Product');
       await value.dispatchEvent('compositionend');
       await expect(value).toHaveValue('Product');
-      expect((await events(page)).filter((event) => event.type === 'aeliqo-filter-change')).toHaveLength(0);
+      expect((await events(page)).filter((event) => event.type === 'varendo-filter-change')).toHaveLength(0);
 
       const apply = filter.locator('button[part="apply"]');
       await apply.focus();
       await apply.press('Enter');
-      expect(lastEvent(await events(page), 'aeliqo-filter-change')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-filter-change')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-filter-change',
+          type: 'varendo-filter-change',
           detail: {
             predicate: { op: 'compare', field: 'team', entity: 'person', comparison: 'eq', value: 'Product' },
             scopeLabel: 'Authorized people',
@@ -324,19 +326,19 @@ for (const variant of REVIEW_VARIANTS) {
       await expect(filter.locator('[part="validation"]')).toHaveText(
         'Choose a field and value before applying the filter.',
       );
-      expect((await events(page)).filter((event) => event.type === 'aeliqo-filter-change')).toHaveLength(1);
+      expect((await events(page)).filter((event) => event.type === 'varendo-filter-change')).toHaveLength(1);
 
       await setHostProperty(filter, 'clauses', [{ field: 'team', operator: 'eq', value: 'Research' }]);
       await apply.press('Enter');
-      expect((await events(page)).filter((event) => event.type === 'aeliqo-filter-change')).toHaveLength(2);
+      expect((await events(page)).filter((event) => event.type === 'varendo-filter-change')).toHaveLength(2);
 
       // FilterBuilder has no pending status in its actual data API; loading is the supported in-flight state.
       await setHostProperty(filter, 'status', 'loading');
       await expect(filter.locator('fieldset')).toHaveAttribute('disabled', '');
       await expect(apply).toBeDisabled();
-      const beforeBlockedApply = (await events(page)).filter((event) => event.type === 'aeliqo-filter-change').length;
+      const beforeBlockedApply = (await events(page)).filter((event) => event.type === 'varendo-filter-change').length;
       await apply.dispatchEvent('click');
-      expect((await events(page)).filter((event) => event.type === 'aeliqo-filter-change')).toHaveLength(
+      expect((await events(page)).filter((event) => event.type === 'varendo-filter-change')).toHaveLength(
         beforeBlockedApply,
       );
       await setHostProperty(filter, 'status', 'ready');
@@ -349,14 +351,14 @@ for (const variant of REVIEW_VARIANTS) {
       const clear = summary.locator('[part="clear"]');
       await clear.focus();
       await clear.press('Enter');
-      expect(lastEvent(await events(page), 'aeliqo-selection-clear')).toEqual(
+      expect(lastEvent(await events(page), 'varendo-selection-clear')).toEqual(
         expect.objectContaining({
-          type: 'aeliqo-selection-clear',
+          type: 'varendo-selection-clear',
           detail: {
             mode: 'clear',
             entity: 'person',
             keys: [],
-            result: expect.objectContaining({ id: 'aeliqo-catalog-example' }),
+            result: expect.objectContaining({ id: 'varendo-catalog-example' }),
             scope: expect.objectContaining({ populationDigest: 'catalog-scope' }),
           },
         }),

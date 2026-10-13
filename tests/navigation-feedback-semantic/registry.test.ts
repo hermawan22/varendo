@@ -2,14 +2,14 @@ import { describe, expect, it } from 'vitest';
 import type { PresentationNode, PresentationValues } from '../../packages/core/src/presentation/index.js';
 import { createPresentationRegistry } from '../../packages/core/src/presentation/index.js';
 import {
-  AELIQO_NAVIGATION_FEEDBACK_OPERATION_REFS,
-  AELIQO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS,
-  AELIQO_NAVIGATION_FEEDBACK_REFS,
+  VARENDO_NAVIGATION_FEEDBACK_OPERATION_REFS,
+  VARENDO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS,
+  VARENDO_NAVIGATION_FEEDBACK_REFS,
   createNavigationFeedbackPresentationManifests,
-  type AeliqoNavigationFeedbackBindings,
+  type VarendoNavigationFeedbackBindings,
 } from '../../packages/web/src/region/navigation-feedback-registry.js';
 
-const bindings: AeliqoNavigationFeedbackBindings = {
+const bindings: VarendoNavigationFeedbackBindings = {
   revision: 'experience-nav-1',
   contents: [
     { id: 'copy.breadcrumb', text: 'Reports' },
@@ -139,10 +139,10 @@ describe('navigation and feedback semantic adapters', () => {
     const value = manifests();
     expect(value).toHaveLength(14);
     expect(new Set(value.map((manifest) => manifest.ref.id)).size).toBe(14);
-    expect(value.find((manifest) => manifest.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.tabs.id)?.visibility).toBe(
+    expect(value.find((manifest) => manifest.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.tabs.id)?.visibility).toBe(
       'exclusive',
     );
-    expect(value.find((manifest) => manifest.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.dialog.id)?.children).toEqual({
+    expect(value.find((manifest) => manifest.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.dialog.id)?.children).toEqual({
       min: 0,
       max: 16,
     });
@@ -151,7 +151,7 @@ describe('navigation and feedback semantic adapters', () => {
 
   it('pins host bindings, rejects stale revisions and keeps raw copy/routes out of wire config', () => {
     const manifest = manifests().find(
-      (candidate) => candidate.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.breadcrumb.id,
+      (candidate) => candidate.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.breadcrumb.id,
     )!;
     expect(
       manifest.resolveConfig({ bindingRevision: bindings.revision, bindingRef: 'crumb.reports' }, undefined),
@@ -168,7 +168,7 @@ describe('navigation and feedback semantic adapters', () => {
   });
 
   it('resolves approved breadcrumb routes and menu actions to canonical operations', () => {
-    const breadcrumb = resolve(AELIQO_NAVIGATION_FEEDBACK_REFS.breadcrumb.id, {
+    const breadcrumb = resolve(VARENDO_NAVIGATION_FEEDBACK_REFS.breadcrumb.id, {
       bindingRevision: bindings.revision,
       bindingRef: 'crumb.reports',
     });
@@ -180,7 +180,7 @@ describe('navigation and feedback semantic adapters', () => {
     });
     expect(breadcrumb.ports).toEqual([{ id: 'navigate', direction: 'output', payload: 'navigate' }]);
     expect(breadcrumb.operations).toEqual([{ id: 'route.home', revision: '1' }]);
-    const menu = resolve(AELIQO_NAVIGATION_FEEDBACK_REFS.menu.id, {
+    const menu = resolve(VARENDO_NAVIGATION_FEEDBACK_REFS.menu.id, {
       bindingRevision: bindings.revision,
       bindingRef: 'menu.actions',
     });
@@ -192,7 +192,7 @@ describe('navigation and feedback semantic adapters', () => {
   });
 
   it('keeps page events scoped to the host output and cursor digest', () => {
-    const page = resolve(AELIQO_NAVIGATION_FEEDBACK_REFS.pagination.id, {
+    const page = resolve(VARENDO_NAVIGATION_FEEDBACK_REFS.pagination.id, {
       bindingRevision: bindings.revision,
       bindingRef: 'page.results',
     });
@@ -202,12 +202,12 @@ describe('navigation and feedback semantic adapters', () => {
       page: 1,
       cursors: [{ page: 2, cursor: 'cursor-2' }],
     });
-    expect(page.operations).toEqual([AELIQO_NAVIGATION_FEEDBACK_OPERATION_REFS.page]);
+    expect(page.operations).toEqual([VARENDO_NAVIGATION_FEEDBACK_OPERATION_REFS.page]);
     expect(page.ports).toEqual([{ id: 'page', direction: 'output', payload: 'page' }]);
   });
 
   it('allows only bounded local tabs/overlay options while content stays host-owned', () => {
-    const tabs = resolve(AELIQO_NAVIGATION_FEEDBACK_REFS.tabs.id, {
+    const tabs = resolve(VARENDO_NAVIGATION_FEEDBACK_REFS.tabs.id, {
       bindingRevision: bindings.revision,
       bindingRef: 'tabs.main',
       value: 'details',
@@ -223,7 +223,7 @@ describe('navigation and feedback semantic adapters', () => {
     });
     expect(tabs.ports).toEqual([]);
     expect(
-      resolve(AELIQO_NAVIGATION_FEEDBACK_REFS.dialog.id, {
+      resolve(VARENDO_NAVIGATION_FEEDBACK_REFS.dialog.id, {
         bindingRevision: bindings.revision,
         bindingRef: 'dialog.confirm',
         open: true,
@@ -231,7 +231,7 @@ describe('navigation and feedback semantic adapters', () => {
       }).values,
     ).toMatchObject({ heading: 'Confirm', open: true, modal: true });
     expect(
-      resolve(AELIQO_NAVIGATION_FEEDBACK_REFS.skeleton.id, {
+      resolve(VARENDO_NAVIGATION_FEEDBACK_REFS.skeleton.id, {
         bindingRevision: bindings.revision,
         bindingRef: 'skeleton.load',
         lines: 4,
@@ -241,12 +241,12 @@ describe('navigation and feedback semantic adapters', () => {
   });
 
   it('rejects tab panels that cannot be represented and disabled controlled selection', () => {
-    const tabManifest = manifests().find((manifest) => manifest.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.tabs.id)!;
+    const tabManifest = manifests().find((manifest) => manifest.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.tabs.id)!;
     const tabsNode = {
       id: 'tabs',
       role: 'navigation',
-      representation: AELIQO_NAVIGATION_FEEDBACK_REFS.tabs,
-      config: { schema: AELIQO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS.tabs, values: {} },
+      representation: VARENDO_NAVIGATION_FEEDBACK_REFS.tabs,
+      config: { schema: VARENDO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS.tabs, values: {} },
       children: ['one', 'two', 'three'],
     } as PresentationNode;
     expect(
@@ -267,7 +267,7 @@ describe('navigation and feedback semantic adapters', () => {
     expect(disabled.ok).toBe(true);
     if (disabled.ok) {
       const manifest = disabled.value.find(
-        (candidate) => candidate.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.tabs.id,
+        (candidate) => candidate.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.tabs.id,
       )!;
       expect(
         manifest.resolveConfig(
@@ -285,13 +285,13 @@ describe('navigation and feedback semantic adapters', () => {
   });
 
   it('rejects closed dialog and drawer child claims', () => {
-    const dialog = manifests().find((manifest) => manifest.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.dialog.id)!;
-    const drawer = manifests().find((manifest) => manifest.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.drawer.id)!;
+    const dialog = manifests().find((manifest) => manifest.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.dialog.id)!;
+    const drawer = manifests().find((manifest) => manifest.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.drawer.id)!;
     const child = {
       id: 'dialog',
       role: 'feedback',
-      representation: AELIQO_NAVIGATION_FEEDBACK_REFS.dialog,
-      config: { schema: AELIQO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS.dialog, values: {} },
+      representation: VARENDO_NAVIGATION_FEEDBACK_REFS.dialog,
+      config: { schema: VARENDO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS.dialog, values: {} },
       children: ['child'],
     } as PresentationNode;
     expect(
@@ -303,16 +303,16 @@ describe('navigation and feedback semantic adapters', () => {
         undefined,
         {
           ...child,
-          representation: AELIQO_NAVIGATION_FEEDBACK_REFS.drawer,
-          config: { schema: AELIQO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS.drawer, values: {} },
+          representation: VARENDO_NAVIGATION_FEEDBACK_REFS.drawer,
+          config: { schema: VARENDO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS.drawer, values: {} },
         },
       ),
     ).toMatchObject({ ok: true });
     expect(
       drawer.resolveConfig({ bindingRevision: bindings.revision, bindingRef: 'drawer.details' }, undefined, {
         ...child,
-        representation: AELIQO_NAVIGATION_FEEDBACK_REFS.drawer,
-        config: { schema: AELIQO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS.drawer, values: {} },
+        representation: VARENDO_NAVIGATION_FEEDBACK_REFS.drawer,
+        config: { schema: VARENDO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS.drawer, values: {} },
       }),
     ).toMatchObject({ ok: false, diagnostics: [{ code: 'web.presentation.navigation-feedback.children' }] });
   });
@@ -334,7 +334,7 @@ describe('navigation and feedback semantic adapters', () => {
     expect(current.ok).toBe(true);
     if (current.ok) {
       const breadcrumb = current.value.find(
-        (manifest) => manifest.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.breadcrumb.id,
+        (manifest) => manifest.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.breadcrumb.id,
       )!;
       expect(
         breadcrumb.resolveConfig({ bindingRevision: bindings.revision, bindingRef: 'crumb.reports' }, undefined),
@@ -385,24 +385,24 @@ describe('navigation and feedback semantic adapters', () => {
     if (disabled.ok) {
       const get = (id: string) => disabled.value.find((manifest) => manifest.ref.id === id)!;
       expect(
-        get(AELIQO_NAVIGATION_FEEDBACK_REFS.menu.id).resolveConfig(
+        get(VARENDO_NAVIGATION_FEEDBACK_REFS.menu.id).resolveConfig(
           { bindingRevision: bindings.revision, bindingRef: 'menu.actions' },
           undefined,
         ),
       ).toMatchObject({ ok: true, value: { operations: [], ports: [] } });
       expect(
-        get(AELIQO_NAVIGATION_FEEDBACK_REFS.treeNav.id).resolveConfig(
+        get(VARENDO_NAVIGATION_FEEDBACK_REFS.treeNav.id).resolveConfig(
           { bindingRevision: bindings.revision, bindingRef: 'tree.main' },
           undefined,
         ),
       ).toMatchObject({ ok: true, value: { operations: [], ports: [] } });
       expect(
-        get(AELIQO_NAVIGATION_FEEDBACK_REFS.pagination.id).resolveConfig(
+        get(VARENDO_NAVIGATION_FEEDBACK_REFS.pagination.id).resolveConfig(
           { bindingRevision: bindings.revision, bindingRef: 'page.results' },
           undefined,
         ),
       ).toMatchObject({ ok: true, value: { operations: [], ports: [] } });
-      const hiddenAlert = get(AELIQO_NAVIGATION_FEEDBACK_REFS.alert.id).resolveConfig(
+      const hiddenAlert = get(VARENDO_NAVIGATION_FEEDBACK_REFS.alert.id).resolveConfig(
         { bindingRevision: bindings.revision, bindingRef: 'alert.review', open: false },
         undefined,
       );
@@ -412,7 +412,7 @@ describe('navigation and feedback semantic adapters', () => {
   });
 
   it('uses registered routes/actions for tree nodes and truthful feedback states', () => {
-    const tree = resolve(AELIQO_NAVIGATION_FEEDBACK_REFS.treeNav.id, {
+    const tree = resolve(VARENDO_NAVIGATION_FEEDBACK_REFS.treeNav.id, {
       bindingRevision: bindings.revision,
       bindingRef: 'tree.main',
     });
@@ -424,7 +424,7 @@ describe('navigation and feedback semantic adapters', () => {
     });
     expect(tree.ports).toContainEqual({ id: 'navigate', direction: 'output', payload: 'navigate' });
     expect(tree.ports).toContainEqual({ id: 'action', direction: 'output', payload: 'action-request' });
-    const empty = resolve(AELIQO_NAVIGATION_FEEDBACK_REFS.emptyState.id, {
+    const empty = resolve(VARENDO_NAVIGATION_FEEDBACK_REFS.emptyState.id, {
       bindingRevision: bindings.revision,
       bindingRef: 'empty.results',
     });
@@ -463,7 +463,7 @@ describe('navigation and feedback semantic adapters', () => {
 
   it('freezes the copied host bindings and resolved values', () => {
     const value = manifests();
-    const breadcrumb = value.find((manifest) => manifest.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.breadcrumb.id)!;
+    const breadcrumb = value.find((manifest) => manifest.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.breadcrumb.id)!;
     const resolvedValue = breadcrumb.resolveConfig(
       { bindingRevision: bindings.revision, bindingRef: 'crumb.reports' },
       undefined,

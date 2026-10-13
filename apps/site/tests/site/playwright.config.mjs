@@ -1,6 +1,6 @@
 import { defineConfig } from '@playwright/test';
 import { testPort } from '../shared/port.mjs';
-const port = await testPort('AELIQO_SITE_TEST_PORT');
+const port = await testPort('VARENDO_SITE_TEST_PORT');
 export default defineConfig({
   testDir: '.',
   testMatch: 'browser.spec.ts',

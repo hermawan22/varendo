@@ -1,8 +1,8 @@
 import type { Intent } from '@varendo/core';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { createLocalDataBinding } from '@varendo/runtime';
-import { registerAeliqoElements } from '@varendo/web';
-import { createAeliqoApp } from '@varendo/web/app';
+import { registerVarendoElements } from '@varendo/web';
+import { createVarendoApp } from '@varendo/web/app';
 import { REGION, GOAL, METRIC, feature, goalRegistry, overviewPattern } from '../workspace/goal.js';
 
 const functions = createQueryFunctionRegistry({ version: '2' });
@@ -55,7 +55,7 @@ binding.service.execute = (request, context) =>
         };
       })()
     : execute(request, context);
-const app = createAeliqoApp({
+const app = createVarendoApp({
   patterns: [overviewPattern()],
   runtimeId: 'attendance-runtime',
   resources: [{ resource: feature.resource, data: binding.service }],
@@ -74,7 +74,7 @@ const app = createAeliqoApp({
     }),
   },
 });
-registerAeliqoElements();
+registerVarendoElements();
 const workspace = document.querySelector<HTMLElement>('#workspace')!;
 const status = document.querySelector<HTMLElement>('[data-testid="goal-status"]')!;
 const mounted = app.mount({ target: workspace, regionId: REGION, resourceId: feature.id });

@@ -2,7 +2,7 @@ import type { Outcome } from '@varendo/core';
 import type { ValidatedPresentation } from '@varendo/core/presentation';
 import type { RegionSnapshot } from '@varendo/runtime/regions';
 import type { RuntimePreparedRender } from '@varendo/runtime/app';
-import type { AeliqoRegionResult } from '../region/types.js';
+import type { VarendoRegionResult } from '../region/types.js';
 import { diagnostic, type WebAppContext, type WebRegion } from './context.js';
 import type { PreparedPresentation } from './presentation-plan.js';
 import { registerPresentationElements } from './presentation-elements.js';
@@ -36,7 +36,7 @@ export async function prepareRegisteredRenderer(
   context: WebAppContext,
   region: WebRegion,
   prepared: PreparedPresentation,
-  results: readonly AeliqoRegionResult[],
+  results: readonly VarendoRegionResult[],
   active: () => boolean,
 ): Promise<Outcome<ReturnType<typeof prepareRenderer>>> {
   const previousPresentation = region.element.presentation;
@@ -67,7 +67,7 @@ export function prepareRenderer(
   context: WebAppContext,
   region: WebRegion,
   prepared: PreparedPresentation,
-  results: readonly AeliqoRegionResult[],
+  results: readonly VarendoRegionResult[],
   active: () => boolean,
 ) {
   const element = region.element;

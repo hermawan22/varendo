@@ -1,6 +1,6 @@
-import { registerAeliqoElements } from '@varendo/web';
-import type { AeliqoRegionElement } from '@varendo/web/region';
-import { aeliqoStandaloneThemeStyles } from '@varendo/web/styles';
+import { registerVarendoElements } from '@varendo/web';
+import type { VarendoRegionElement } from '@varendo/web/region';
+import { varendoStandaloneThemeStyles } from '@varendo/web/styles';
 import { createHrViewSession, type HrViewSession } from './view-session.js';
 
 declare global {
@@ -9,14 +9,14 @@ declare global {
   }
 }
 const style = document.createElement('style');
-style.textContent = aeliqoStandaloneThemeStyles.cssText;
+style.textContent = varendoStandaloneThemeStyles.cssText;
 document.head.append(style);
-registerAeliqoElements();
-const view = document.querySelector<AeliqoRegionElement>('#hr-region')!;
+registerVarendoElements();
+const view = document.querySelector<VarendoRegionElement>('#hr-region')!;
 const status = document.querySelector<HTMLElement>('#status')!;
 const reorder = document.querySelector<HTMLButtonElement>('#reorder')!;
 document.querySelector<HTMLSelectElement>('#theme')!.addEventListener('change', (event) => {
-  document.querySelector('main')!.dataset.aeliqoTheme = (event.currentTarget as HTMLSelectElement).value;
+  document.querySelector('main')!.dataset.varendoTheme = (event.currentTarget as HTMLSelectElement).value;
 });
 
 try {

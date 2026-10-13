@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client';
 import { z } from 'zod';
 import { defineFeature, type FeatureIntentValue } from '@varendo/core/features';
 import type { CapabilitySurfaceBindings, SurfaceController } from '@varendo/runtime/surfaces';
-import { AeliqoProvider } from '../../../packages/react/src/app/index.js';
+import { VarendoProvider } from '../../../packages/react/src/app/index.js';
 import {
-  AeliqoScope,
-  useAeliqoScopeState,
+  VarendoScope,
+  useVarendoScopeState,
   useSurface,
   useSurfaceState,
 } from '../../../packages/react/src/surface/index.js';
@@ -65,9 +65,9 @@ function SurfacePhase({
 }
 
 function ScopedOrders({ surfaceId }: { readonly surfaceId: string }): React.JSX.Element {
-  const workspace = useAeliqoScopeState((snapshot) => snapshot.selector?.id ?? '');
-  const epoch = useAeliqoScopeState((snapshot) => snapshot.activationEpoch);
-  const pending = useAeliqoScopeState((snapshot) => snapshot.pending?.selector.id ?? '');
+  const workspace = useVarendoScopeState((snapshot) => snapshot.selector?.id ?? '');
+  const epoch = useVarendoScopeState((snapshot) => snapshot.activationEpoch);
+  const pending = useVarendoScopeState((snapshot) => snapshot.pending?.selector.id ?? '');
   const bindings = useMemo<CapabilitySurfaceBindings<OrdersIntent, OrdersState>>(
     () => ({
       initialIntent: open,
@@ -180,11 +180,11 @@ function App(): React.JSX.Element {
       </p>
       <p data-testid="scope-status">{scopeSnapshot.status}</p>
       {mounted && (
-        <AeliqoProvider runtime={fixture.runtime}>
-          <AeliqoScope scope={fixture.scope}>
+        <VarendoProvider runtime={fixture.runtime}>
+          <VarendoScope scope={fixture.scope}>
             <ScopedOrders surfaceId={surfaceId} />
-          </AeliqoScope>
-        </AeliqoProvider>
+          </VarendoScope>
+        </VarendoProvider>
       )}
     </>
   );

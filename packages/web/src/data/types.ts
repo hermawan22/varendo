@@ -3,11 +3,11 @@ export type { ResultRef } from '@varendo/core';
 
 /** Values accepted by the shared data views. Decimal values remain strings so
  * a browser render never rounds an authoritative value through IEEE-754. */
-export type AeliqoDataValue = Scalar;
+export type VarendoDataValue = Scalar;
 
-export type AeliqoDataStatus = 'ready' | 'loading' | 'empty' | 'partial' | 'stale' | 'error' | 'unavailable';
+export type VarendoDataStatus = 'ready' | 'loading' | 'empty' | 'partial' | 'stale' | 'error' | 'unavailable';
 
-export interface AeliqoDataScope {
+export interface VarendoDataScope {
   /** Number of rows currently materialised in the view. */
   readonly loaded?: number;
   /** Authoritative total for the active filtered population, when known. */
@@ -21,21 +21,21 @@ export interface AeliqoDataScope {
   readonly label?: string;
 }
 
-export interface AeliqoDataState<T> {
-  readonly status: AeliqoDataStatus;
+export interface VarendoDataState<T> {
+  readonly status: VarendoDataStatus;
   readonly value?: T;
   readonly message?: string;
-  readonly scope?: AeliqoDataScope;
+  readonly scope?: VarendoDataScope;
   readonly result?: ResultRef;
 }
 
-export interface AeliqoIdentityRef {
+export interface VarendoIdentityRef {
   readonly entity?: string;
   readonly key: string;
   readonly fields?: readonly string[];
 }
 
-export interface AeliqoFieldOption {
+export interface VarendoFieldOption {
   readonly id: string;
   readonly label: string;
   readonly type?: 'text' | 'boolean' | 'integer' | 'float' | 'decimal' | 'date' | 'instant';
@@ -44,35 +44,35 @@ export interface AeliqoFieldOption {
   readonly semanticType?: SemanticType;
 }
 
-export interface AeliqoDataColumn {
+export interface VarendoDataColumn {
   readonly key: string;
   readonly label: string;
-  readonly type?: AeliqoFieldOption['type'];
+  readonly type?: VarendoFieldOption['type'];
   readonly sortable?: boolean;
   readonly align?: 'start' | 'center' | 'end';
 }
 
-export type AeliqoDataRecord = Readonly<Record<string, AeliqoDataValue | undefined>>;
+export type VarendoDataRecord = Readonly<Record<string, VarendoDataValue | undefined>>;
 
-export type AeliqoSelectionMode = 'none' | 'single' | 'multiple';
+export type VarendoSelectionMode = 'none' | 'single' | 'multiple';
 
-export interface AeliqoSelectionDetail {
+export interface VarendoSelectionDetail {
   readonly mode: 'clear' | 'ids';
   readonly entity?: string;
   readonly keys: readonly string[];
   readonly result?: ResultRef;
-  readonly scope?: AeliqoDataScope;
+  readonly scope?: VarendoDataScope;
 }
 
-export type AeliqoFilterValue = AeliqoDataValue;
+export type VarendoFilterValue = VarendoDataValue;
 
-export type AeliqoFilterPredicate =
+export type VarendoFilterPredicate =
   | {
       readonly op: 'compare';
       readonly field: string;
       readonly entity?: string;
       readonly comparison: 'eq' | 'ne' | 'lt' | 'lte' | 'gt' | 'gte';
-      readonly value: AeliqoFilterValue;
+      readonly value: VarendoFilterValue;
     }
   | {
       readonly op: 'is-null';
@@ -84,37 +84,37 @@ export type AeliqoFilterPredicate =
       readonly op: 'in';
       readonly field: string;
       readonly entity?: string;
-      readonly values: readonly AeliqoFilterValue[];
+      readonly values: readonly VarendoFilterValue[];
     }
-  | { readonly op: 'and' | 'or'; readonly predicates: readonly AeliqoFilterPredicate[] }
-  | { readonly op: 'not'; readonly predicate: AeliqoFilterPredicate };
+  | { readonly op: 'and' | 'or'; readonly predicates: readonly VarendoFilterPredicate[] }
+  | { readonly op: 'not'; readonly predicate: VarendoFilterPredicate };
 
-export interface AeliqoFilterChangeDetail {
-  readonly predicate?: AeliqoFilterPredicate;
-  readonly inherited?: AeliqoFilterPredicate;
+export interface VarendoFilterChangeDetail {
+  readonly predicate?: VarendoFilterPredicate;
+  readonly inherited?: VarendoFilterPredicate;
   readonly scopeLabel?: string;
   readonly applied: true;
 }
 
-export interface AeliqoSortState {
+export interface VarendoSortState {
   readonly field: string;
   readonly direction: 'asc' | 'desc';
 }
 
-export interface AeliqoPageRequest {
+export interface VarendoPageRequest {
   readonly page: number;
   readonly pageSize: number;
   readonly result?: ResultRef;
 }
 
-export interface AeliqoTableSortDetail {
-  readonly sort?: AeliqoSortState | undefined;
+export interface VarendoTableSortDetail {
+  readonly sort?: VarendoSortState | undefined;
 }
 
-export interface AeliqoTablePageDetail extends AeliqoPageRequest {}
+export interface VarendoTablePageDetail extends VarendoPageRequest {}
 
 /** A host-controlled request to make a virtualized row window available. */
-export interface AeliqoTableWindowDetail {
+export interface VarendoTableWindowDetail {
   readonly start: number;
   readonly count: number;
   readonly overscan: number;
@@ -124,7 +124,7 @@ export interface AeliqoTableWindowDetail {
   readonly result?: ResultRef;
 }
 
-export interface AeliqoDeltaResult {
+export interface VarendoDeltaResult {
   readonly status: 'ready' | 'unavailable';
   readonly value?: number | string;
   readonly display?: string;

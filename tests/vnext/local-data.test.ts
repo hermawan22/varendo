@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { defineDataFeature, inferLocalDataShape } from '@varendo/core/features';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import type { MeaningDefinition } from '@varendo/core';
-import { createAeliqoRuntime, createLocalDataBinding } from '@varendo/runtime';
+import { createVarendoRuntime, createLocalDataBinding } from '@varendo/runtime';
 import type { DataRecord, LocalDataService, LocalSnapshot } from '@varendo/runtime/data';
 import { DEFAULT_BUDGET, createLocalDataService } from '@varendo/runtime/data';
 import { createPeopleFixture } from './fixtures/people.js';
@@ -223,7 +223,7 @@ it('revalidates the mounted feature schema on every source replacement', async (
           : { ok: false, diagnostics: [{ code: 'data.denied', message: 'Denied.', retryable: false }] },
     },
   });
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId: 'nullable-runtime',
     resources: [{ resource: feature.resource, data: binding.service }],
     authority: {

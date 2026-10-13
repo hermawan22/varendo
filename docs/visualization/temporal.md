@@ -25,7 +25,7 @@ rows, without implying those dates have zero observations in the population.
 Day counts mean loaded rows, not sums of the optional value measure. Exact
 values and labels remain in the table. Missing dates remain in the table.
 
-Keyboard-accessible selection buttons emit `aeliqo-visualization-select` with
+Keyboard-accessible selection buttons emit `varendo-visualization-select` with
 `{source: 'user', identity, result}`. The event is a proposal to the application;
 it does not execute an action. Matrix row movement preserves the focused keyed
 button. Result replacement resets pagination. Every view displays loaded count,

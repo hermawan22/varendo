@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
 import { testPort } from '../shared/port.mjs';
-const port = await testPort('AELIQO_TEMPORAL_TEST_PORT');
+const port = await testPort('VARENDO_TEMPORAL_TEST_PORT');
 export default defineConfig({
   outputDir: '../../artifacts/temporal-browser',
   testDir: '.',

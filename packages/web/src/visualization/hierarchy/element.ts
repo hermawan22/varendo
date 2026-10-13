@@ -3,11 +3,11 @@ import { resultCaption } from '../scope-caption.js';
 import { repeat } from 'lit/directives/repeat.js';
 import type { Result, ResultRef, Scalar } from '@varendo/core';
 import type { VisualizationBindingContext } from '@varendo/core/visualization';
-import { AeliqoFoundationElement } from '../../foundation/base.js';
+import { VarendoFoundationElement } from '../../foundation/base.js';
 import { compileHierarchyVisualization } from './geometry.js';
 import type { HierarchyGeometry, HierarchyVisualizationGeometry, RelationshipGeometry } from './geometry.js';
-import type { AeliqoVisualizationSelectionDetail, VisualizationDataset, VisualizationInputs } from '../types.js';
-import { aeliqoHierarchyStyles } from './styles.js';
+import type { VarendoVisualizationSelectionDetail, VisualizationDataset, VisualizationInputs } from '../types.js';
+import { varendoHierarchyStyles } from './styles.js';
 
 function scalarLabel(value: Scalar): string {
   if (value === null) return 'Missing';
@@ -15,7 +15,7 @@ function scalarLabel(value: Scalar): string {
   return String(value);
 }
 
-export abstract class AeliqoHierarchyElementBase extends AeliqoFoundationElement {
+export abstract class VarendoHierarchyElementBase extends VarendoFoundationElement {
   static readonly shadowRootOptions: ShadowRootInit = { mode: 'open', delegatesFocus: false };
   static readonly properties = {
     page: { state: true },
@@ -29,7 +29,7 @@ export abstract class AeliqoHierarchyElementBase extends AeliqoFoundationElement
     selectionEnabled: { type: Boolean, attribute: false },
     selectedIdentity: { type: String, attribute: 'selected-identity' },
   };
-  static readonly styles = aeliqoHierarchyStyles;
+  static readonly styles = varendoHierarchyStyles;
 
   visualization: VisualizationInputs['visualization'];
   context: VisualizationBindingContext = { results: [] };
@@ -133,8 +133,8 @@ export abstract class AeliqoHierarchyElementBase extends AeliqoFoundationElement
 
   private select(identity: string, result: ResultRef): void {
     if (!this.selectionEnabled) return;
-    const detail: AeliqoVisualizationSelectionDetail = Object.freeze({ source: 'user', identity, result });
-    const event = new CustomEvent<AeliqoVisualizationSelectionDetail>(this.selectionEventName(), {
+    const detail: VarendoVisualizationSelectionDetail = Object.freeze({ source: 'user', identity, result });
+    const event = new CustomEvent<VarendoVisualizationSelectionDetail>(this.selectionEventName(), {
       bubbles: true,
       composed: true,
       cancelable: true,
@@ -279,8 +279,8 @@ export abstract class AeliqoHierarchyElementBase extends AeliqoFoundationElement
   }
 
   private nodeFill(geometry: HierarchyGeometry, node: HierarchyGeometry['nodes'][number]): string {
-    if (geometry.kind === 'tree' || !node.leaf) return 'var(--aeliqo-color-surface-raised, #e2e8f0)';
-    return 'var(--aeliqo-color-accent, #6366f1)';
+    if (geometry.kind === 'tree' || !node.leaf) return 'var(--varendo-color-surface-raised, #e2e8f0)';
+    return 'var(--varendo-color-accent, #6366f1)';
   }
 
   private nodeFillOpacity(geometry: HierarchyGeometry, node: HierarchyGeometry['nodes'][number]): string {
@@ -394,7 +394,7 @@ export abstract class AeliqoHierarchyElementBase extends AeliqoFoundationElement
             return svg`<line part="edge" x1=${source.x} y1=${source.y} x2=${target.x} y2=${target.y} stroke="currentColor" stroke-opacity=".5" tabindex=${this.selectionEnabled ? '0' : '-1'} role="button" aria-disabled=${this.selectionEnabled ? 'false' : 'true'} aria-label=${edge.label?.trim() || `${edge.sourceLabel} → ${edge.targetLabel}`} aria-pressed=${selected === edge.identity ? 'true' : 'false'} @click=${() => this.select(edge.identity, geometry.result.ref)} @keydown=${(event: KeyboardEvent) => this.keySelect(event, edge.identity, geometry.result.ref)}></line>`;
           },
         )}
-        ${geometry.nodes.map((node) => svg`<circle cx=${node.x} cy=${node.y} r="9" fill=${node.namespace === 'source' ? 'var(--aeliqo-color-accent, #6366f1)' : 'var(--aeliqo-color-positive, #0f766e)'} stroke="currentColor"></circle><text class="relationship-node-label" x=${node.x + (node.namespace === 'source' ? -14 : 14)} y=${node.y + 5} text-anchor=${node.namespace === 'source' ? 'end' : 'start'}>${node.label.length > 12 ? `${node.label.slice(0, 11)}…` : node.label}</text>`)}
+        ${geometry.nodes.map((node) => svg`<circle cx=${node.x} cy=${node.y} r="9" fill=${node.namespace === 'source' ? 'var(--varendo-color-accent, #6366f1)' : 'var(--varendo-color-positive, #0f766e)'} stroke="currentColor"></circle><text class="relationship-node-label" x=${node.x + (node.namespace === 'source' ? -14 : 14)} y=${node.y + 5} text-anchor=${node.namespace === 'source' ? 'end' : 'start'}>${node.label.length > 12 ? `${node.label.slice(0, 11)}…` : node.label}</text>`)}
         <text class="relationship-column-label" x=${geometry.width * 0.25} y="18" text-anchor="middle">Source</text>
         <text class="relationship-column-label" x=${geometry.width * 0.75} y="18" text-anchor="middle">Target</text>
       </svg>
@@ -445,23 +445,23 @@ export abstract class AeliqoHierarchyElementBase extends AeliqoFoundationElement
   }
 }
 
-export class AeliqoTreeElement extends AeliqoHierarchyElementBase {
+export class VarendoTreeElement extends VarendoHierarchyElementBase {
   protected readonly expectedView = 'tree' as const;
   protected selectionEventName(): string {
-    return 'aeliqo-visualization-select';
+    return 'varendo-visualization-select';
   }
 }
 
-export class AeliqoTreemapElement extends AeliqoHierarchyElementBase {
+export class VarendoTreemapElement extends VarendoHierarchyElementBase {
   protected readonly expectedView = 'treemap' as const;
   protected selectionEventName(): string {
-    return 'aeliqo-visualization-select';
+    return 'varendo-visualization-select';
   }
 }
 
-export class AeliqoRelationshipElement extends AeliqoHierarchyElementBase {
+export class VarendoRelationshipElement extends VarendoHierarchyElementBase {
   protected readonly expectedView = 'relationship' as const;
   protected selectionEventName(): string {
-    return 'aeliqo-visualization-select';
+    return 'varendo-visualization-select';
   }
 }

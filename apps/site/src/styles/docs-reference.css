@@ -367,9 +367,9 @@
   background: var(--surface);
 }
 .component-links small[data-level='semantic'] {
-  border: 1px solid color-mix(in srgb, var(--aeliqo-color-info) 32%, transparent);
-  color: var(--aeliqo-color-info);
-  background: color-mix(in srgb, var(--aeliqo-color-info) 10%, var(--surface-raised));
+  border: 1px solid color-mix(in srgb, var(--varendo-color-info) 32%, transparent);
+  color: var(--varendo-color-info);
+  background: color-mix(in srgb, var(--varendo-color-info) 10%, var(--surface-raised));
 }
 .component-links small[data-level='adaptive'] {
   border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);

@@ -1,12 +1,12 @@
 import type { Outcome } from '@varendo/core';
 import type {
-  AeliqoBreadcrumbBinding,
-  AeliqoBreadcrumbBindingItem,
-  AeliqoMenuBinding,
-  AeliqoMenuBindingItem,
-  AeliqoNavigationFeedbackAction,
-  AeliqoNavigationFeedbackContent,
-  AeliqoNavigationFeedbackRoute,
+  VarendoBreadcrumbBinding,
+  VarendoBreadcrumbBindingItem,
+  VarendoMenuBinding,
+  VarendoMenuBindingItem,
+  VarendoNavigationFeedbackAction,
+  VarendoNavigationFeedbackContent,
+  VarendoNavigationFeedbackRoute,
 } from './navigation-feedback-types.js';
 import {
   MAX_ITEMS,
@@ -22,13 +22,13 @@ import {
 
 export function normalizeBreadcrumbs(
   value: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-): Outcome<readonly AeliqoBreadcrumbBinding[]> {
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+): Outcome<readonly VarendoBreadcrumbBinding[]> {
   const source = boundedArray(value, 'breadcrumbs');
   if (!source.ok) return source;
   const seen = new Set<string>();
-  const result: AeliqoBreadcrumbBinding[] = [];
+  const result: VarendoBreadcrumbBinding[] = [];
   for (const raw of source.value) {
     const entry = normalizeBreadcrumb(raw, contents, routes, seen);
     if (!entry.ok) return entry;
@@ -40,10 +40,10 @@ export function normalizeBreadcrumbs(
 
 function normalizeBreadcrumb(
   raw: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
   seen: ReadonlySet<string>,
-): Outcome<AeliqoBreadcrumbBinding> {
+): Outcome<VarendoBreadcrumbBinding> {
   const entry = record(raw);
   if (entry === undefined || !validBreadcrumbEntry(entry, contents, seen))
     return fail('bindings', 'Breadcrumb bindings require unique IDs, host labels and bounded items.');
@@ -57,7 +57,7 @@ function normalizeBreadcrumb(
 
 function validBreadcrumbEntry(
   entry: Record<string, unknown> | undefined,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   seen: ReadonlySet<string>,
 ): boolean {
   if (entry === undefined || !exactKeys(entry, ['id', 'labelRef', 'items'])) return false;
@@ -67,11 +67,11 @@ function validBreadcrumbEntry(
 
 function normalizeBreadcrumbItems(
   value: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-): Outcome<readonly AeliqoBreadcrumbBindingItem[]> {
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+): Outcome<readonly VarendoBreadcrumbBindingItem[]> {
   const ids = new Set<string>();
-  const items: AeliqoBreadcrumbBindingItem[] = [];
+  const items: VarendoBreadcrumbBindingItem[] = [];
   for (const raw of value as readonly unknown[]) {
     const item = normalizeBreadcrumbItem(raw, contents, routes, ids);
     if (!item.ok) return item;
@@ -83,10 +83,10 @@ function normalizeBreadcrumbItems(
 
 function normalizeBreadcrumbItem(
   raw: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
   ids: ReadonlySet<string>,
-): Outcome<AeliqoBreadcrumbBindingItem> {
+): Outcome<VarendoBreadcrumbBindingItem> {
   const item = record(raw);
   if (item === undefined || !validBreadcrumbItem(item, contents, routes, ids))
     return fail('bindings', 'Breadcrumb items must use unique host labels and registered routes.');
@@ -103,8 +103,8 @@ function normalizeBreadcrumbItem(
 
 function validBreadcrumbItem(
   item: Record<string, unknown> | undefined,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
   ids: ReadonlySet<string>,
 ): boolean {
   if (item === undefined || !exactKeys(item, ['id', 'labelRef', 'routeRef', 'current'])) return false;
@@ -115,14 +115,14 @@ function validBreadcrumbItem(
 
 export function normalizeMenus(
   value: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
-): Outcome<readonly AeliqoMenuBinding[]> {
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
+): Outcome<readonly VarendoMenuBinding[]> {
   const source = boundedArray(value, 'menus');
   if (!source.ok) return source;
   const seen = new Set<string>();
-  const result: AeliqoMenuBinding[] = [];
+  const result: VarendoMenuBinding[] = [];
   for (const raw of source.value) {
     const entry = normalizeMenu(raw, contents, routes, actions, seen);
     if (!entry.ok) return entry;
@@ -134,11 +134,11 @@ export function normalizeMenus(
 
 function normalizeMenu(
   raw: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
   seen: ReadonlySet<string>,
-): Outcome<AeliqoMenuBinding> {
+): Outcome<VarendoMenuBinding> {
   const entry = record(raw);
   if (entry === undefined || !validMenuEntry(entry, contents, seen))
     return fail('bindings', 'Menu bindings require unique IDs, host labels and bounded items.');
@@ -149,7 +149,7 @@ function normalizeMenu(
 
 function validMenuEntry(
   entry: Record<string, unknown> | undefined,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   seen: ReadonlySet<string>,
 ): boolean {
   if (entry === undefined || !exactKeys(entry, ['id', 'labelRef', 'items'])) return false;
@@ -159,12 +159,12 @@ function validMenuEntry(
 
 function normalizeMenuItems(
   value: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
-): Outcome<readonly AeliqoMenuBindingItem[]> {
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
+): Outcome<readonly VarendoMenuBindingItem[]> {
   const ids = new Set<string>();
-  const items: AeliqoMenuBindingItem[] = [];
+  const items: VarendoMenuBindingItem[] = [];
   for (const raw of value as readonly unknown[]) {
     const item = normalizeMenuItem(raw, contents, routes, actions, ids);
     if (!item.ok) return item;
@@ -176,11 +176,11 @@ function normalizeMenuItems(
 
 function normalizeMenuItem(
   raw: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
   ids: ReadonlySet<string>,
-): Outcome<AeliqoMenuBindingItem> {
+): Outcome<VarendoMenuBindingItem> {
   const item = record(raw);
   if (item === undefined || !validMenuItem(item, contents, routes, actions, ids))
     return fail('bindings', 'Menu items require exactly one registered action or route.');
@@ -198,9 +198,9 @@ function normalizeMenuItem(
 
 function validMenuItem(
   item: Record<string, unknown> | undefined,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
   ids: ReadonlySet<string>,
 ): boolean {
   if (item === undefined || !exactKeys(item, ['id', 'labelRef', 'actionRef', 'routeRef', 'disabled'])) return false;

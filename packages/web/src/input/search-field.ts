@@ -1,11 +1,11 @@
 import type { PropertyValues } from 'lit';
-import { AeliqoTextFieldElement } from './text-field.js';
-import { AeliqoSearchEvent } from './events.js';
+import { VarendoTextFieldElement } from './text-field.js';
+import { VarendoSearchEvent } from './events.js';
 
 /** Text field with an explicit, debounced query commit policy. */
-export class AeliqoSearchFieldElement extends AeliqoTextFieldElement {
+export class VarendoSearchFieldElement extends VarendoTextFieldElement {
   static readonly properties = {
-    ...AeliqoTextFieldElement.properties,
+    ...VarendoTextFieldElement.properties,
     queryOnInput: { attribute: 'query-on-input', type: Boolean },
     debounceMs: { attribute: 'debounce-ms', type: Number },
   };
@@ -19,14 +19,14 @@ export class AeliqoSearchFieldElement extends AeliqoTextFieldElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.addEventListener('aeliqo-input-change', this.handleProposal as EventListener);
+    this.addEventListener('varendo-input-change', this.handleProposal as EventListener);
     this.addEventListener('compositionstart', this.handleSearchCompositionStart as EventListener);
     this.addEventListener('compositionend', this.handleSearchCompositionEnd as EventListener);
     this.addEventListener('keydown', this.handleSearchKeyDown as EventListener);
   }
 
   override disconnectedCallback(): void {
-    this.removeEventListener('aeliqo-input-change', this.handleProposal as EventListener);
+    this.removeEventListener('varendo-input-change', this.handleProposal as EventListener);
     this.removeEventListener('compositionstart', this.handleSearchCompositionStart as EventListener);
     this.removeEventListener('compositionend', this.handleSearchCompositionEnd as EventListener);
     this.removeEventListener('keydown', this.handleSearchKeyDown as EventListener);
@@ -44,7 +44,7 @@ export class AeliqoSearchFieldElement extends AeliqoTextFieldElement {
   submitQuery(): void {
     if (this.fieldDisabled || this.readOnly || this.compositionActive) return;
     this.clearQueryTimer();
-    this.dispatchEvent(new AeliqoSearchEvent({ source: 'user', query: this.value }));
+    this.dispatchEvent(new VarendoSearchEvent({ source: 'user', query: this.value }));
   }
 
   private readonly handleProposal = (event: Event): void => {
@@ -74,13 +74,13 @@ export class AeliqoSearchFieldElement extends AeliqoTextFieldElement {
     this.clearQueryTimer();
     const delay = Number.isFinite(this.debounceMs) ? Math.max(0, Math.min(10_000, this.debounceMs)) : 250;
     if (delay === 0) {
-      this.dispatchEvent(new AeliqoSearchEvent({ source: 'user', query }));
+      this.dispatchEvent(new VarendoSearchEvent({ source: 'user', query }));
       return;
     }
     this.queryTimer = setTimeout(() => {
       this.queryTimer = undefined;
       if (this.isConnected && !this.compositionActive && !this.fieldDisabled)
-        this.dispatchEvent(new AeliqoSearchEvent({ source: 'user', query }));
+        this.dispatchEvent(new VarendoSearchEvent({ source: 'user', query }));
     }, delay);
   }
 

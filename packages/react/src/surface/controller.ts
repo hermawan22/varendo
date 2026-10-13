@@ -4,11 +4,11 @@ import type { DataFeatureDefinition, FeatureDefinition } from '@varendo/core/fea
 import type { DataSurfaceRequest, RequestResult, SurfaceController, SurfaceRequest } from '@varendo/runtime/surfaces';
 import type { CapabilitySurfaceBindings, DataSurfaceBindings, SurfaceOwnership } from '@varendo/runtime/surfaces';
 import type { DataRecord } from '@varendo/runtime/data';
-import type { AeliqoRuntime } from '@varendo/runtime/app';
+import type { VarendoRuntime } from '@varendo/runtime/app';
 import type { ScopeController } from '@varendo/runtime/scopes';
-import { useOptionalAeliqoRuntime } from '../app/context.js';
+import { useOptionalVarendoRuntime } from '../app/context.js';
 import { useLocalDataSurface, type LocalDataSurface, type LocalDataSurfaceOptions } from './local.js';
-import { useOptionalAeliqoScope } from './scope.js';
+import { useOptionalVarendoScope } from './scope.js';
 
 /** A host-owned factory. Keep this object stable with `useMemo` or module scope. */
 export interface SurfaceControllerFactory<I, S> {
@@ -49,7 +49,7 @@ type ScopedFeature<I> = DataFeatureDefinition | (FeatureDefinition<I> & { readon
 
 interface OwnedScopedSurface<I, S> {
   readonly controller: SurfaceController<I, S>;
-  readonly runtime: AeliqoRuntime;
+  readonly runtime: VarendoRuntime;
   readonly scope: ScopeController;
   readonly feature: ScopedFeature<I>;
   readonly epoch: number;
@@ -57,7 +57,7 @@ interface OwnedScopedSurface<I, S> {
 }
 
 function createScopedController<I, S>(
-  runtime: AeliqoRuntime,
+  runtime: VarendoRuntime,
   scope: ScopeController,
   feature: ScopedFeature<I>,
   options: ScopedOptions<I, S>,
@@ -87,7 +87,7 @@ function firstRequest<I, S>(feature: ScopedFeature<I>, options: ScopedOptions<I,
 
 function ownedIsCurrent<I, S>(
   owned: OwnedScopedSurface<I, S> | undefined,
-  runtime: AeliqoRuntime | undefined,
+  runtime: VarendoRuntime | undefined,
   scope: ScopeController | undefined,
   feature: ScopedFeature<I> | undefined,
   id: string | undefined,
@@ -140,13 +140,13 @@ function useScopedSurface<I, S>(
   feature: ScopedFeature<I> | undefined,
   options: ScopedOptions<I, S> | undefined,
 ): SurfaceController<I, S> | undefined {
-  const runtime = useOptionalAeliqoRuntime();
-  const scope = useOptionalAeliqoScope();
+  const runtime = useOptionalVarendoRuntime();
+  const scope = useOptionalVarendoScope();
   const [owned, setOwned] = useState<OwnedScopedSurface<I, S>>();
   const latest = useRef(options);
   latest.current = options;
   if (feature !== undefined && (runtime === undefined || scope === undefined))
-    throw new Error('Scoped useSurface requires AeliqoProvider and an active AeliqoScope.');
+    throw new Error('Scoped useSurface requires VarendoProvider and an active VarendoScope.');
   const activation = scope?.getSnapshot();
   const epoch = activation?.status === 'active' && activation.active ? activation.activationEpoch : undefined;
   useEffect(() => {

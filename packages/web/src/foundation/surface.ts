@@ -1,11 +1,11 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from './base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from './base.js';
 
-export type AeliqoSurfaceAs = 'div' | 'section' | 'article';
-export type AeliqoSurfaceTone = 'canvas' | 'surface' | 'raised';
+export type VarendoSurfaceAs = 'div' | 'section' | 'article';
+export type VarendoSurfaceTone = 'canvas' | 'surface' | 'raised';
 
 /** Bounded chrome primitive; it does not impose card semantics on its children. */
-export class AeliqoSurfaceElement extends AeliqoFoundationElement {
+export class VarendoSurfaceElement extends VarendoFoundationElement {
   static readonly properties = {
     as: { type: String },
     tone: { type: String },
@@ -13,8 +13,8 @@ export class AeliqoSurfaceElement extends AeliqoFoundationElement {
     label: { type: String },
   };
 
-  as: AeliqoSurfaceAs = 'div';
-  tone: AeliqoSurfaceTone = 'surface';
+  as: VarendoSurfaceAs = 'div';
+  tone: VarendoSurfaceTone = 'surface';
   labelledBy = '';
   label = '';
 
@@ -50,7 +50,7 @@ export class AeliqoSurfaceElement extends AeliqoFoundationElement {
   }
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: block;
@@ -60,22 +60,22 @@ export class AeliqoSurfaceElement extends AeliqoFoundationElement {
         min-inline-size: 0;
       }
       .tone-surface {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid
-          var(--_aeliqo-border-subtle, var(--aeliqo-color-border, #64748b));
-        border-radius: var(--aeliqo-radius-medium, 0.625rem);
-        padding: var(--aeliqo-space-16, 1rem);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: var(--varendo-control-border-width, 0.0625rem) solid
+          var(--_varendo-border-subtle, var(--varendo-color-border, #64748b));
+        border-radius: var(--varendo-radius-medium, 0.625rem);
+        padding: var(--varendo-space-16, 1rem);
       }
       .tone-raised {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid
-          var(--_aeliqo-border-subtle, var(--aeliqo-color-border, #64748b));
-        border-radius: var(--aeliqo-radius-medium, 0.625rem);
-        box-shadow: var(--aeliqo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
-        padding: var(--aeliqo-space-16, 1rem);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: var(--varendo-control-border-width, 0.0625rem) solid
+          var(--_varendo-border-subtle, var(--varendo-color-border, #64748b));
+        border-radius: var(--varendo-radius-medium, 0.625rem);
+        box-shadow: var(--varendo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
+        padding: var(--varendo-space-16, 1rem);
       }
       .tone-canvas {
-        background: var(--aeliqo-color-canvas, #fff);
+        background: var(--varendo-color-canvas, #fff);
       }
     `,
   ];

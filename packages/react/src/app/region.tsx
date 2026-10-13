@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, type CSSProperties } from 'react';
 import type { WebRenderReceipt } from '@varendo/web/app';
-import { useAeliqoApp } from './context.js';
+import { useVarendoApp } from './context.js';
 
-export interface AeliqoRegionProps {
+export interface VarendoRegionProps {
   readonly regionId: string;
   readonly resourceId: string;
   readonly intent?: unknown;
@@ -12,15 +12,15 @@ export interface AeliqoRegionProps {
 }
 
 /** Thin lifecycle binding around the same Web Component and runtime used by vanilla consumers. */
-export function AeliqoRegion({
+export function VarendoRegion({
   regionId,
   resourceId,
   intent,
   className,
   style,
   onReceipt,
-}: AeliqoRegionProps): React.JSX.Element {
-  const app = useAeliqoApp();
+}: VarendoRegionProps): React.JSX.Element {
+  const app = useVarendoApp();
   const target = useRef<HTMLDivElement>(null);
   const receipt = useRef(onReceipt);
   receipt.current = onReceipt;

@@ -1,20 +1,20 @@
 import { parseWireValue, type Outcome, type PresentationPlan, type VersionRef } from '@varendo/core';
 import { validatePresentationPlan } from '@varendo/core/presentation';
 import type {
-  AeliqoBreakdownRecipeInput,
-  AeliqoComparisonRecipeInput,
-  AeliqoCompoundRecipe,
-  AeliqoCompoundRecipeInput,
-  AeliqoExplorerRecipeInput,
-  AeliqoFormFlowRecipeInput,
-  AeliqoInvestigationRecipeInput,
-  AeliqoQualityPanelRecipeInput,
-  AeliqoRecordEditorRecipeInput,
-  AeliqoSearchResultsRecipeInput,
+  VarendoBreakdownRecipeInput,
+  VarendoComparisonRecipeInput,
+  VarendoCompoundRecipe,
+  VarendoCompoundRecipeInput,
+  VarendoExplorerRecipeInput,
+  VarendoFormFlowRecipeInput,
+  VarendoInvestigationRecipeInput,
+  VarendoQualityPanelRecipeInput,
+  VarendoRecordEditorRecipeInput,
+  VarendoSearchResultsRecipeInput,
 } from './types.js';
 
 /** Macro names are authoring identifiers. They are not invented renderer registrations. */
-export const AELIQO_COMPOUND_REFS = Object.freeze({
+export const VARENDO_COMPOUND_REFS = Object.freeze({
   explorer: { id: 'compound.explorer', revision: '1' },
   comparison: { id: 'compound.comparison', revision: '1' },
   breakdown: { id: 'compound.breakdown', revision: '1' },
@@ -44,7 +44,7 @@ type RecipePlanParts = Pick<
   'id' | 'revision' | 'preconditions' | 'nodes' | 'links' | 'coverage' | 'stateTransfer'
 >;
 
-function readPlanParts(input: AeliqoCompoundRecipeInput): Outcome<RecipePlanParts> {
+function readPlanParts(input: VarendoCompoundRecipeInput): Outcome<RecipePlanParts> {
   if (!input || !input.validation || !Array.isArray(input.parts) || input.parts.length === 0 || input.parts.length > 64)
     return failure('A compound recipe requires configured primitive nodes and the canonical validation context.');
   const checked = parseWireValue({
@@ -84,11 +84,11 @@ function topLevelChildren(nodes: PresentationPlan['nodes']): string[] {
 }
 
 function validatedPlan(
-  input: AeliqoCompoundRecipeInput,
+  input: VarendoCompoundRecipeInput,
   parts: RecipePlanParts,
   rootId: string,
   childIds: readonly string[],
-): Outcome<AeliqoCompoundRecipe> {
+): Outcome<VarendoCompoundRecipe> {
   const plan: PresentationPlan = {
     ...parts,
     rootId,
@@ -109,7 +109,7 @@ function validatedPlan(
   return { ok: true, value: Object.freeze({ plan: validated.value.plan, childIds: Object.freeze([...childIds]) }) };
 }
 
-function build(input: AeliqoCompoundRecipeInput, kind: keyof typeof required): Outcome<AeliqoCompoundRecipe> {
+function build(input: VarendoCompoundRecipeInput, kind: keyof typeof required): Outcome<VarendoCompoundRecipe> {
   const copied = readPlanParts(input);
   if (!copied.ok) return copied;
   if (!hasRequiredPrimitives(copied.value.nodes, kind))
@@ -122,21 +122,23 @@ function build(input: AeliqoCompoundRecipeInput, kind: keyof typeof required): O
   // configuration and experience restrictions are all checked by the shared pass.
   return validatedPlan(input, copied.value, rootId, childIds);
 }
-export const explorerPresentationRecipe = (input: AeliqoExplorerRecipeInput): Outcome<AeliqoCompoundRecipe> =>
+export const explorerPresentationRecipe = (input: VarendoExplorerRecipeInput): Outcome<VarendoCompoundRecipe> =>
   build(input, 'explorer');
-export const comparisonPresentationRecipe = (input: AeliqoComparisonRecipeInput): Outcome<AeliqoCompoundRecipe> =>
+export const comparisonPresentationRecipe = (input: VarendoComparisonRecipeInput): Outcome<VarendoCompoundRecipe> =>
   build(input, 'comparison');
-export const breakdownPresentationRecipe = (input: AeliqoBreakdownRecipeInput): Outcome<AeliqoCompoundRecipe> =>
+export const breakdownPresentationRecipe = (input: VarendoBreakdownRecipeInput): Outcome<VarendoCompoundRecipe> =>
   build(input, 'breakdown');
-export const investigationPresentationRecipe = (input: AeliqoInvestigationRecipeInput): Outcome<AeliqoCompoundRecipe> =>
-  build(input, 'investigation');
-export const searchResultsPresentationRecipe = (input: AeliqoSearchResultsRecipeInput): Outcome<AeliqoCompoundRecipe> =>
-  build(input, 'searchResults');
-export const recordEditorPresentationRecipe = (input: AeliqoRecordEditorRecipeInput): Outcome<AeliqoCompoundRecipe> =>
+export const investigationPresentationRecipe = (
+  input: VarendoInvestigationRecipeInput,
+): Outcome<VarendoCompoundRecipe> => build(input, 'investigation');
+export const searchResultsPresentationRecipe = (
+  input: VarendoSearchResultsRecipeInput,
+): Outcome<VarendoCompoundRecipe> => build(input, 'searchResults');
+export const recordEditorPresentationRecipe = (input: VarendoRecordEditorRecipeInput): Outcome<VarendoCompoundRecipe> =>
   build(input, 'recordEditor');
-export const formFlowPresentationRecipe = (input: AeliqoFormFlowRecipeInput): Outcome<AeliqoCompoundRecipe> =>
+export const formFlowPresentationRecipe = (input: VarendoFormFlowRecipeInput): Outcome<VarendoCompoundRecipe> =>
   build(input, 'formFlow');
-export const qualityPanelPresentationRecipe = (input: AeliqoQualityPanelRecipeInput): Outcome<AeliqoCompoundRecipe> =>
+export const qualityPanelPresentationRecipe = (input: VarendoQualityPanelRecipeInput): Outcome<VarendoCompoundRecipe> =>
   build(input, 'qualityPanel');
 export const compoundRecipeHelpers = Object.freeze({
   explorerPresentationRecipe,

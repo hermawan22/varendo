@@ -3,7 +3,7 @@
   "version": "0.10",
   "profiles": [
     {
-      "id": "aeliqo.inspection",
+      "id": "varendo.inspection",
       "mode": "adaptive",
       "allowedRepresentations": [
         "data.table",
@@ -28,7 +28,7 @@
       }
     },
     {
-      "id": "aeliqo.comparison",
+      "id": "varendo.comparison",
       "mode": "adaptive",
       "allowedRepresentations": [
         "data.table",
@@ -52,7 +52,7 @@
       }
     },
     {
-      "id": "aeliqo.analysis",
+      "id": "varendo.analysis",
       "mode": "composable",
       "allowedRepresentations": [
         "data.metric",
@@ -103,7 +103,7 @@
       }
     },
     {
-      "id": "aeliqo.editing",
+      "id": "varendo.editing",
       "mode": "fixed",
       "allowedRepresentations": [
         "compound.record-editor",

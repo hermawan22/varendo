@@ -1,7 +1,7 @@
 import { parseWireValue, WIRE_LIMITS, type Diagnostic, type Outcome } from '@varendo/core';
 import type { CallToolResult } from './types.js';
-import { AELIQO_MCP_TOOL_META } from './types.js';
-import { AELIQO_AGENT_VERSION } from '../version.js';
+import { VARENDO_MCP_TOOL_META } from './types.js';
+import { VARENDO_AGENT_VERSION } from '../version.js';
 import { boundedId, boundedText, isRecord } from '../guards.js';
 
 export { boundedId as validId, boundedText as validText, isRecord };
@@ -9,8 +9,8 @@ export { boundedId as validId, boundedText as validText, isRecord };
 export const ADAPTER_VERSION = '1' as const;
 const MAX_TEXT_BYTES = 256 * 1024;
 export const MAX_DEFINITION_COUNT = 256;
-export const DEFAULT_SERVER_NAME = 'aeliqo-agent';
-export const DEFAULT_SERVER_VERSION = AELIQO_AGENT_VERSION;
+export const DEFAULT_SERVER_NAME = 'varendo-agent';
+export const DEFAULT_SERVER_VERSION = VARENDO_AGENT_VERSION;
 
 export function failure<T>(code: string, message: string, path?: readonly (string | number)[]): Outcome<T> {
   const diagnostic: Diagnostic = {
@@ -67,7 +67,7 @@ export function outcomeToCallToolResult<T>(outcome: Outcome<T>): CallToolResult 
 export function requestIdFromContext(context: {
   readonly mcpReq: { readonly id: string | number; readonly _meta?: Record<string, unknown> };
 }): string {
-  const supplied = context.mcpReq._meta?.[AELIQO_MCP_TOOL_META];
+  const supplied = context.mcpReq._meta?.[VARENDO_MCP_TOOL_META];
   if (isRecord(supplied) && boundedId(supplied.requestId)) return supplied.requestId;
   return String(context.mcpReq.id);
 }

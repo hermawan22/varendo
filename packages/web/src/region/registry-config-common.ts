@@ -1,7 +1,7 @@
 import type { Outcome, Result } from '@varendo/core';
 import type { InteractionPort } from '@varendo/core/interaction';
 import type { PresentationValues, ResolvedPresentationConfig } from '@varendo/core/presentation';
-import type { AeliqoPresentationRegistryOptions } from './registry-contracts.js';
+import type { VarendoPresentationRegistryOptions } from './registry-contracts.js';
 import { MAX_ITEMS, MAX_LABEL } from './registry-contracts.js';
 import { fieldMap, numeric, object as record } from './data-registry-common.js';
 
@@ -128,7 +128,7 @@ export function trendGrain(seriesBy: readonly string[], labelField: string, resu
 
 export function trustedEntity(
   result: Result,
-  resolveEntity: AeliqoPresentationRegistryOptions['resolveEntity'],
+  resolveEntity: VarendoPresentationRegistryOptions['resolveEntity'],
 ): Outcome<string | undefined> {
   if (resolveEntity === undefined) return { ok: true, value: undefined };
   let value: string | undefined;
@@ -145,7 +145,7 @@ export function selectionPort(
   values: Record<string, unknown>,
   result: Result | undefined,
   portId: string,
-  resolveEntity: AeliqoPresentationRegistryOptions['resolveEntity'],
+  resolveEntity: VarendoPresentationRegistryOptions['resolveEntity'],
 ): Outcome<readonly [InteractionPort] | readonly []> {
   if (values.selection === undefined || values.selection === 'none') return { ok: true, value: [] };
   if (values.selection !== 'single' && values.selection !== 'multiple')

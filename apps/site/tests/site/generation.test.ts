@@ -38,7 +38,7 @@ describe('static page generation', () => {
       '@type': 'Organization',
       name: 'Varendo',
       url: canonical,
-      logo: 'https://hermawan22.github.io/varendo/aeliqo.png',
+      logo: 'https://hermawan22.github.io/varendo/varendo.png',
       sameAs: ['https://github.com/hermawan22/varendo', 'https://www.npmjs.com/package/@varendo/core'],
     });
     expect(website).toMatchObject({
@@ -109,7 +109,7 @@ describe('static page generation', () => {
       (await pageAt(route)).match(/<nav aria-label="Documentation">([\s\S]*?)<\/nav>/u)?.[1] ?? '';
     const componentNav = await navOf('components/data.table');
     const guideNav = await navOf('guides/resources');
-    const startNav = await navOf('start/what-is-aeliqo');
+    const startNav = await navOf('start/what-is-varendo');
     expect(componentNav).not.toBe('');
     expect(guideNav).not.toBe('');
     expect(startNav).not.toBe('');

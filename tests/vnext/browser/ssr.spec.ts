@@ -14,7 +14,7 @@ test('server output contains useful request-scoped DOM with JavaScript disabled'
   const context = await browser.newContext({
     baseURL,
     javaScriptEnabled: false,
-    extraHTTPHeaders: { 'x-aeliqo-principal': 'alpha' },
+    extraHTTPHeaders: { 'x-varendo-principal': 'alpha' },
   });
   try {
     const page = await context.newPage();
@@ -33,8 +33,8 @@ test('server output contains useful request-scoped DOM with JavaScript disabled'
 
 test('concurrent principals receive isolated markup and public snapshots', async ({ browser, baseURL }) => {
   if (!baseURL) throw new Error('SSR fixture requires baseURL');
-  const alpha = await browser.newContext({ baseURL, extraHTTPHeaders: { 'x-aeliqo-principal': 'alpha' } });
-  const beta = await browser.newContext({ baseURL, extraHTTPHeaders: { 'x-aeliqo-principal': 'beta' } });
+  const alpha = await browser.newContext({ baseURL, extraHTTPHeaders: { 'x-varendo-principal': 'alpha' } });
+  const beta = await browser.newContext({ baseURL, extraHTTPHeaders: { 'x-varendo-principal': 'beta' } });
   try {
     const [alphaPage, betaPage] = await Promise.all([alpha.newPage(), beta.newPage()]);
     const [alphaResponse, betaResponse] = await Promise.all([
@@ -58,7 +58,7 @@ test('concurrent principals receive isolated markup and public snapshots', async
 
 test('slow hydration preserves the server DOM and reports no browser errors', async ({ page }) => {
   const errors = captureBrowserErrors(page);
-  await page.setExtraHTTPHeaders({ 'x-aeliqo-principal': 'alpha' });
+  await page.setExtraHTTPHeaders({ 'x-varendo-principal': 'alpha' });
   // Keep a deterministic window in which the browser can observe the
   // server-rendered status before the intentionally delayed hydration runs.
   // The fixture caps this delay at 1s; the shorter delay raced on slower CI
@@ -67,18 +67,18 @@ test('slow hydration preserves the server DOM and reports no browser errors', as
   await expect(page.getByRole('cell', { name: 'Ada Chen', exact: true })).toBeVisible();
   await expect(page.locator('#ssr-status')).toHaveText('Server-rendered people table');
   await expect(page.locator('#ssr-status')).toHaveText('Hydrated people table');
-  await expect(page.locator('html')).toHaveAttribute('data-aeliqo-hydrated', 'true');
-  await expect(page.locator('html')).not.toHaveAttribute('data-aeliqo-hydration-error', /.+/);
+  await expect(page.locator('html')).toHaveAttribute('data-varendo-hydrated', 'true');
+  await expect(page.locator('html')).not.toHaveAttribute('data-varendo-hydration-error', /.+/);
   await expect(page.getByRole('cell', { name: 'Ada Chen', exact: true })).toHaveCount(1);
   expect(errors).toEqual([]);
 });
 
 test('rapid navigation fences an unfinished hydration to its original document', async ({ page }) => {
   const errors = captureBrowserErrors(page);
-  await page.setExtraHTTPHeaders({ 'x-aeliqo-principal': 'alpha' });
+  await page.setExtraHTTPHeaders({ 'x-varendo-principal': 'alpha' });
   await page.goto('/vnext/ssr/people?hydrationDelay=400');
   await expect(page.getByRole('cell', { name: 'Ada Chen', exact: true })).toBeVisible();
-  await page.setExtraHTTPHeaders({ 'x-aeliqo-principal': 'beta' });
+  await page.setExtraHTTPHeaders({ 'x-varendo-principal': 'beta' });
   await page.goto('/vnext/ssr/people?hydrationDelay=0');
   await expect(page.getByRole('cell', { name: 'Bela Rossi', exact: true })).toBeVisible();
   await expect(page.getByRole('cell', { name: 'Ada Chen', exact: true })).toHaveCount(0);
@@ -89,15 +89,15 @@ test('rapid navigation fences an unfinished hydration to its original document',
 test('server-selected RTL and theme bootstrap survive hydration', async ({ page }) => {
   const errors = captureBrowserErrors(page);
   await page.setExtraHTTPHeaders({
-    'x-aeliqo-principal': 'beta',
-    'x-aeliqo-direction': 'rtl',
-    'x-aeliqo-theme': 'dark',
+    'x-varendo-principal': 'beta',
+    'x-varendo-direction': 'rtl',
+    'x-varendo-theme': 'dark',
   });
   await page.goto('/vnext/ssr/people');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await expect(page.getByRole('cell', { name: 'Bela Rossi', exact: true })).toBeVisible();
-  await expect(page.locator('html')).toHaveAttribute('data-aeliqo-hydrated', 'true');
+  await expect(page.locator('html')).toHaveAttribute('data-varendo-hydrated', 'true');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   expect(errors).toEqual([]);

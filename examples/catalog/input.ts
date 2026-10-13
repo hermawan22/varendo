@@ -1,45 +1,45 @@
 import {
-  AeliqoCheckboxElement,
-  AeliqoComboboxElement,
-  AeliqoDateFieldElement,
-  AeliqoDateRangeElement,
-  AeliqoFieldGroupElement,
-  AeliqoFileInputElement,
-  AeliqoFormElement,
-  AeliqoNumberFieldElement,
-  AeliqoRadioGroupElement,
-  AeliqoSearchFieldElement,
-  AeliqoSelectElement,
-  AeliqoSliderElement,
-  AeliqoSwitchElement,
-  AeliqoTextAreaElement,
-  AeliqoTextFieldElement,
-  type AeliqoOption,
+  VarendoCheckboxElement,
+  VarendoComboboxElement,
+  VarendoDateFieldElement,
+  VarendoDateRangeElement,
+  VarendoFieldGroupElement,
+  VarendoFileInputElement,
+  VarendoFormElement,
+  VarendoNumberFieldElement,
+  VarendoRadioGroupElement,
+  VarendoSearchFieldElement,
+  VarendoSelectElement,
+  VarendoSliderElement,
+  VarendoSwitchElement,
+  VarendoTextAreaElement,
+  VarendoTextFieldElement,
+  type VarendoOption,
 } from '@varendo/web/inputs';
 import { cleanupCatalogRoot, createCatalogElement, createCatalogRoot } from './fixture.js';
 import { catalogMountSource, catalogSource } from './source.js';
 import type { CatalogExampleDefinition, CatalogExampleId, CatalogExampleMetadata } from './types.js';
 
 const sourceImports = `import {
-  AeliqoCheckboxElement,
-  AeliqoComboboxElement,
-  AeliqoDateFieldElement,
-  AeliqoDateRangeElement,
-  AeliqoFieldGroupElement,
-  AeliqoFileInputElement,
-  AeliqoFormElement,
-  AeliqoNumberFieldElement,
-  AeliqoRadioGroupElement,
-  AeliqoSearchFieldElement,
-  AeliqoSelectElement,
-  AeliqoSliderElement,
-  AeliqoSwitchElement,
-  AeliqoTextAreaElement,
-  AeliqoTextFieldElement,
-  type AeliqoOption,
+  VarendoCheckboxElement,
+  VarendoComboboxElement,
+  VarendoDateFieldElement,
+  VarendoDateRangeElement,
+  VarendoFieldGroupElement,
+  VarendoFileInputElement,
+  VarendoFormElement,
+  VarendoNumberFieldElement,
+  VarendoRadioGroupElement,
+  VarendoSearchFieldElement,
+  VarendoSelectElement,
+  VarendoSliderElement,
+  VarendoSwitchElement,
+  VarendoTextAreaElement,
+  VarendoTextFieldElement,
+  type VarendoOption,
 } from "@varendo/web/inputs";`;
 
-const sourceSetup = `const options: readonly AeliqoOption[] = [
+const sourceSetup = `const options: readonly VarendoOption[] = [
   {value: "ada", label: "Ada Lovelace", description: "Research"},
   {value: "grace", label: "Grace Hopper", description: "Product"},
   {value: "lin", label: "Lin Chen", disabled: true},
@@ -57,7 +57,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Set value for the current draft or defaultValue for its initial value; user input updates the local value and the host owns validation and persistence.',
     states: ['ready', 'disabled', 'read-only', 'invalid', 'pending'],
     keyboard: ['Tab', 'Type and edit', 'Enter commits where configured', 'IME composition'],
-    events: ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     expectedOutcome: 'The labelled text draft is editable and emits typed change/commit proposals.',
   },
   'text-area': {
@@ -67,7 +67,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Set the current or initial draft and observe changes; multiline input stays intact during IME composition.',
     states: ['ready', 'disabled', 'read-only', 'invalid', 'pending'],
     keyboard: ['Tab', 'Arrow keys', 'Enter creates a line', 'IME composition'],
-    events: ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     expectedOutcome: 'The notes draft preserves line breaks and emits changes without submitting implicitly.',
   },
   'number-field': {
@@ -77,7 +77,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'The host owns numeric meaning and validation; text is the draft representation and value is the committed representation.',
     states: ['ready', 'disabled', 'read-only', 'invalid', 'pending'],
     keyboard: ['Tab', 'Arrow keys', 'Home and End where supported', 'IME composition'],
-    events: ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     expectedOutcome: 'The amount remains precise while the user edits a locale-aware draft.',
   },
   checkbox: {
@@ -86,7 +86,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'checked is the boolean state; value is the submitted token chosen by the host.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab', 'Space'],
-    events: ['aeliqo-input-change', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-validation'],
     expectedOutcome: 'The checkbox exposes its checked state and emits a typed boolean change.',
   },
   'radio-group': {
@@ -95,7 +95,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Option IDs remain stable; user selection updates the local value and emits a change for the host.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab', 'Arrow keys', 'Space'],
-    events: ['aeliqo-input-change', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-validation'],
     expectedOutcome: 'The group exposes one selected owner and keeps the disabled option discoverable.',
   },
   switch: {
@@ -104,7 +104,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The switch communicates a boolean preference; the host decides whether to start live work.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab', 'Space'],
-    events: ['aeliqo-input-change', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-validation'],
     expectedOutcome: 'The boolean preference is keyboard operable and emitted as a typed change proposal.',
   },
   select: {
@@ -113,7 +113,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The host supplies the complete bounded options and controls selected value semantics.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab', 'Arrow keys', 'Enter', 'Escape'],
-    events: ['aeliqo-input-change', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-validation'],
     expectedOutcome: 'The selected team remains one of the supplied options and emits a typed change.',
   },
   combobox: {
@@ -123,7 +123,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'query is a draft separate from the selected value. Supply bounded options or a host-owned optionsLoader; stale loader results are cancelled and ignored.',
     states: ['ready', 'disabled', 'invalid', 'pending', 'error'],
     keyboard: ['Tab', 'Arrow keys', 'Enter', 'Escape', 'IME composition'],
-    events: ['aeliqo-input-change', 'aeliqo-combobox-query', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-combobox-query', 'varendo-validation'],
     expectedOutcome: 'The query and selected identity remain distinct while the list stays bounded.',
   },
   'date-field': {
@@ -132,7 +132,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Dates are calendar values with explicit bounds; the host decides any timezone or query meaning.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab', 'Arrow keys', 'Enter', 'IME composition'],
-    events: ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     expectedOutcome: 'The date draft stays within declared calendar bounds and emits typed changes.',
   },
   'date-range': {
@@ -142,7 +142,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Start and end are explicit values; boundary and timezone are part of the meaning, not display decoration.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab', 'Arrow keys', 'Enter', 'IME composition'],
-    events: ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     expectedOutcome: 'The range preserves ordering and boundary semantics while emitting a typed range proposal.',
   },
   slider: {
@@ -151,7 +151,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The host supplies numerical bounds and unit; each change is a proposal for host state.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab', 'Arrow keys', 'Page Up and Page Down', 'Home and End'],
-    events: ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     expectedOutcome: 'The value remains on the declared step grid and is announced with its unit.',
   },
   'search-field': {
@@ -160,7 +160,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The component emits a query proposal; the host decides whether and how to execute it.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab', 'Type and edit', 'Enter', 'Escape', 'IME composition'],
-    events: ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-search', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-input-commit', 'varendo-search', 'varendo-validation'],
     expectedOutcome: 'The query draft is editable and emits bounded search proposals without owning data access.',
   },
   'file-input': {
@@ -169,7 +169,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Only file metadata crosses the component boundary; the host owns upload and persistence.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab', 'Enter', 'Space'],
-    events: ['aeliqo-file-change', 'aeliqo-validation'],
+    events: ['varendo-file-change', 'varendo-validation'],
     expectedOutcome: 'The user can choose bounded file metadata without an implicit upload.',
   },
   'field-group': {
@@ -188,13 +188,13 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'The form coordinates validation and emits a submit proposal; persistence and navigation remain with the host.',
     states: ['ready', 'disabled', 'invalid', 'pending'],
     keyboard: ['Tab follows form order', 'Enter submits when valid', 'Escape preserves draft'],
-    events: ['aeliqo-form-submit', 'aeliqo-form-reset', 'aeliqo-validation'],
+    events: ['varendo-form-submit', 'varendo-form-reset', 'varendo-validation'],
     expectedOutcome:
       'The form reports validity and emits a cancellable submit/reset request without executing business effects.',
   },
 };
 
-const options: readonly AeliqoOption[] = [
+const options: readonly VarendoOption[] = [
   { value: 'ada', label: 'Ada Lovelace', description: 'Research' },
   { value: 'grace', label: 'Grace Hopper', description: 'Product' },
   { value: 'lin', label: 'Lin Chen', disabled: true },
@@ -213,7 +213,7 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
       'Value and draft props are explicit; the host remains responsible for validation authority and submit effects.',
     states: ['ready', 'disabled', 'read-only', 'invalid', 'pending'],
     keyboard: ['Tab', 'native control keys', 'Enter commits where applicable', 'IME composition is preserved'],
-    events: ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    events: ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     expectedOutcome:
       'The control renders with an explicit label and leaves authoritative validation and submission with the host.',
     ...componentNotes[id],
@@ -228,7 +228,7 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
 
 export const inputExamples: readonly CatalogExampleDefinition[] = [
   mount('text-field', (root) => {
-    const element = createCatalogElement<AeliqoTextFieldElement>('aeliqo-text-field', root, AeliqoTextFieldElement);
+    const element = createCatalogElement<VarendoTextFieldElement>('varendo-text-field', root, VarendoTextFieldElement);
     element.label = 'Display name';
     element.name = 'displayName';
     element.value = 'Ada Lovelace';
@@ -236,7 +236,7 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.autocomplete = 'name';
   }),
   mount('text-area', (root) => {
-    const element = createCatalogElement<AeliqoTextAreaElement>('aeliqo-text-area', root, AeliqoTextAreaElement);
+    const element = createCatalogElement<VarendoTextAreaElement>('varendo-text-area', root, VarendoTextAreaElement);
     element.label = 'Notes';
     element.name = 'notes';
     element.defaultValue = 'Draft notes';
@@ -244,10 +244,10 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.spellcheck = true;
   }),
   mount('number-field', (root) => {
-    const element = createCatalogElement<AeliqoNumberFieldElement>(
-      'aeliqo-number-field',
+    const element = createCatalogElement<VarendoNumberFieldElement>(
+      'varendo-number-field',
       root,
-      AeliqoNumberFieldElement,
+      VarendoNumberFieldElement,
     );
     element.label = 'Amount';
     element.name = 'amount';
@@ -258,14 +258,18 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.min = '0';
   }),
   mount('checkbox', (root) => {
-    const element = createCatalogElement<AeliqoCheckboxElement>('aeliqo-checkbox', root, AeliqoCheckboxElement);
+    const element = createCatalogElement<VarendoCheckboxElement>('varendo-checkbox', root, VarendoCheckboxElement);
     element.label = 'Include archived records';
     element.name = 'includeArchived';
     element.value = 'yes';
     element.checked = false;
   }),
   mount('radio-group', (root) => {
-    const element = createCatalogElement<AeliqoRadioGroupElement>('aeliqo-radio-group', root, AeliqoRadioGroupElement);
+    const element = createCatalogElement<VarendoRadioGroupElement>(
+      'varendo-radio-group',
+      root,
+      VarendoRadioGroupElement,
+    );
     element.label = 'Report owner';
     element.name = 'owner';
     element.options = options;
@@ -273,13 +277,13 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.orientation = 'vertical';
   }),
   mount('switch', (root) => {
-    const element = createCatalogElement<AeliqoSwitchElement>('aeliqo-switch', root, AeliqoSwitchElement);
+    const element = createCatalogElement<VarendoSwitchElement>('varendo-switch', root, VarendoSwitchElement);
     element.label = 'Live updates';
     element.name = 'live';
     element.checked = true;
   }),
   mount('select', (root) => {
-    const element = createCatalogElement<AeliqoSelectElement>('aeliqo-select', root, AeliqoSelectElement);
+    const element = createCatalogElement<VarendoSelectElement>('varendo-select', root, VarendoSelectElement);
     element.label = 'Team';
     element.name = 'team';
     element.options = [
@@ -290,7 +294,7 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.emptyLabel = 'Choose a team';
   }),
   mount('combobox', (root) => {
-    const element = createCatalogElement<AeliqoComboboxElement>('aeliqo-combobox', root, AeliqoComboboxElement);
+    const element = createCatalogElement<VarendoComboboxElement>('varendo-combobox', root, VarendoComboboxElement);
     element.label = 'Person';
     element.name = 'person';
     element.options = options;
@@ -300,7 +304,7 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.minQueryLength = 1;
   }),
   mount('date-field', (root) => {
-    const element = createCatalogElement<AeliqoDateFieldElement>('aeliqo-date-field', root, AeliqoDateFieldElement);
+    const element = createCatalogElement<VarendoDateFieldElement>('varendo-date-field', root, VarendoDateFieldElement);
     element.label = 'Report date';
     element.name = 'reportDate';
     element.value = '2026-09-09';
@@ -309,7 +313,7 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.calendar = 'gregory';
   }),
   mount('date-range', (root) => {
-    const element = createCatalogElement<AeliqoDateRangeElement>('aeliqo-date-range', root, AeliqoDateRangeElement);
+    const element = createCatalogElement<VarendoDateRangeElement>('varendo-date-range', root, VarendoDateRangeElement);
     element.label = 'Reporting period';
     element.name = 'period';
     element.start = '2026-09-01';
@@ -318,7 +322,7 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.timezone = 'calendar';
   }),
   mount('slider', (root) => {
-    const element = createCatalogElement<AeliqoSliderElement>('aeliqo-slider', root, AeliqoSliderElement);
+    const element = createCatalogElement<VarendoSliderElement>('varendo-slider', root, VarendoSliderElement);
     element.label = 'Confidence';
     element.name = 'confidence';
     element.min = 0;
@@ -328,10 +332,10 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.unit = '%';
   }),
   mount('search-field', (root) => {
-    const element = createCatalogElement<AeliqoSearchFieldElement>(
-      'aeliqo-search-field',
+    const element = createCatalogElement<VarendoSearchFieldElement>(
+      'varendo-search-field',
       root,
-      AeliqoSearchFieldElement,
+      VarendoSearchFieldElement,
     );
     element.label = 'Search reports';
     element.name = 'query';
@@ -341,7 +345,7 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.placeholder = 'Search by name';
   }),
   mount('file-input', (root) => {
-    const element = createCatalogElement<AeliqoFileInputElement>('aeliqo-file-input', root, AeliqoFileInputElement);
+    const element = createCatalogElement<VarendoFileInputElement>('varendo-file-input', root, VarendoFileInputElement);
     element.label = 'Evidence file';
     element.name = 'evidence';
     element.accept = '.csv,text/csv';
@@ -350,18 +354,18 @@ export const inputExamples: readonly CatalogExampleDefinition[] = [
     element.maxBytes = 2_000_000;
   }),
   mount('field-group', (root) => {
-    const group = createCatalogElement<AeliqoFieldGroupElement>('aeliqo-field-group', root, AeliqoFieldGroupElement);
+    const group = createCatalogElement<VarendoFieldGroupElement>('varendo-field-group', root, VarendoFieldGroupElement);
     group.legend = 'Profile details';
     group.description = 'All fields are validated together.';
-    const field = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+    const field = document.createElement('varendo-text-field') as VarendoTextFieldElement;
     field.label = 'Preferred name';
     field.name = 'preferredName';
     group.append(field);
   }),
   mount('form', (root) => {
-    const form = createCatalogElement<AeliqoFormElement>('aeliqo-form', root, AeliqoFormElement);
+    const form = createCatalogElement<VarendoFormElement>('varendo-form', root, VarendoFormElement);
     form.label = 'Report filters';
-    const field = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+    const field = document.createElement('varendo-text-field') as VarendoTextFieldElement;
     field.label = 'Required filter';
     field.name = 'filter';
     field.required = true;

@@ -1,18 +1,18 @@
-import type { AeliqoRuntimeOptions, RuntimeResourceBinding } from './types.js';
+import type { VarendoRuntimeOptions, RuntimeResourceBinding } from './types.js';
 
-export function validateOptions(options: AeliqoRuntimeOptions): void {
+export function validateOptions(options: VarendoRuntimeOptions): void {
   if (
     options === null ||
     typeof options !== 'object' ||
     options.authority === null ||
     typeof options.authority?.read !== 'function'
   )
-    throw new TypeError('createAeliqoRuntime requires one trusted authority adapter.');
+    throw new TypeError('createVarendoRuntime requires one trusted authority adapter.');
   if (!Array.isArray(options.resources) || options.resources.length === 0)
-    throw new TypeError('createAeliqoRuntime requires at least one resource binding.');
+    throw new TypeError('createVarendoRuntime requires at least one resource binding.');
 }
 
-export function indexResources(resources: AeliqoRuntimeOptions['resources']): Map<string, RuntimeResourceBinding> {
+export function indexResources(resources: VarendoRuntimeOptions['resources']): Map<string, RuntimeResourceBinding> {
   const indexed = new Map<string, RuntimeResourceBinding>();
   for (const binding of resources) {
     if (indexed.has(binding.resource.id))

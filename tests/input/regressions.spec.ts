@@ -1,17 +1,17 @@
 import { expect, test } from '@playwright/test';
-import type { AeliqoDateRangeElement, AeliqoFormElement } from '../../packages/web/src/input/index.js';
+import type { VarendoDateRangeElement, VarendoFormElement } from '../../packages/web/src/input/index.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/tests/input/index.html');
-  await page.waitForFunction(() => (window as Window & { aeliqoInputReady?: boolean }).aeliqoInputReady === true);
+  await page.waitForFunction(() => (window as Window & { varendoInputReady?: boolean }).varendoInputReady === true);
 });
 
 test('DateRange contributes the same endpoints through native and wrapper forms', async ({ page }) => {
   const result = await page.evaluate(async () => {
-    const wrapper = document.createElement('aeliqo-form') as AeliqoFormElement;
+    const wrapper = document.createElement('varendo-form') as VarendoFormElement;
     const native = document.createElement('form');
     const fields = [wrapper, native].map((form) => {
-      const field = document.createElement('aeliqo-date-range') as AeliqoDateRangeElement;
+      const field = document.createElement('varendo-date-range') as VarendoDateRangeElement;
       field.name = 'period';
       field.defaultStart = '2026-09-01';
       field.defaultEnd = '2026-09-08';
@@ -60,16 +60,16 @@ test('DateRange contributes the same endpoints through native and wrapper forms'
 for (const method of ['click', 'Enter'] as const) {
   test(`invalid slotted ${method} focuses the Form error summary`, async ({ page }) => {
     await page.evaluate(async () => {
-      const form = document.createElement('aeliqo-form') as AeliqoFormElement;
+      const form = document.createElement('varendo-form') as VarendoFormElement;
       form.id = 'summary-regression';
       form.innerHTML =
-        '<aeliqo-text-field label="Required name" required></aeliqo-text-field><button type="submit">Save</button>';
+        '<varendo-text-field label="Required name" required></varendo-text-field><button type="submit">Save</button>';
       document.body.append(form);
       await form.updateComplete;
     });
     const form = page.locator('#summary-regression');
     if (method === 'click') await form.locator('button').click();
-    else await form.locator('aeliqo-text-field').locator('input').press('Enter');
+    else await form.locator('varendo-text-field').locator('input').press('Enter');
     await expect(form.locator('[part=error-summary]')).toBeFocused();
   });
 }
@@ -78,19 +78,19 @@ test('Form matches native disabled fieldsets including the first legend', async 
   const result = await page.evaluate(async () => {
     const markup = `<fieldset disabled>
       <legend><input name="first" value="included"><input name="direct" value="excluded" disabled>
-        <aeliqo-text-field name="custom-first" default-value="included"></aeliqo-text-field>
-        <aeliqo-text-field name="custom-direct" default-value="excluded" disabled></aeliqo-text-field>
+        <varendo-text-field name="custom-first" default-value="included"></varendo-text-field>
+        <varendo-text-field name="custom-direct" default-value="excluded" disabled></varendo-text-field>
         <fieldset disabled><legend><input name="nested-first" value="included">
-          <aeliqo-text-field name="custom-nested-first" default-value="included"></aeliqo-text-field></legend>
+          <varendo-text-field name="custom-nested-first" default-value="included"></varendo-text-field></legend>
           <input name="nested-body" value="excluded">
-          <aeliqo-text-field name="custom-nested-body" default-value="excluded"></aeliqo-text-field></fieldset>
+          <varendo-text-field name="custom-nested-body" default-value="excluded"></varendo-text-field></fieldset>
       </legend>
       <legend><input name="later" value="excluded">
-        <aeliqo-text-field name="custom-later" default-value="excluded"></aeliqo-text-field></legend>
+        <varendo-text-field name="custom-later" default-value="excluded"></varendo-text-field></legend>
       <input name="body" value="excluded">
-      <aeliqo-text-field name="custom-body" default-value="excluded"></aeliqo-text-field>
+      <varendo-text-field name="custom-body" default-value="excluded"></varendo-text-field>
     </fieldset>`;
-    const wrapper = document.createElement('aeliqo-form') as AeliqoFormElement;
+    const wrapper = document.createElement('varendo-form') as VarendoFormElement;
     const native = document.createElement('form');
     wrapper.innerHTML = markup;
     native.innerHTML = markup;
@@ -98,7 +98,7 @@ test('Form matches native disabled fieldsets including the first legend', async 
     await Promise.all([
       wrapper.updateComplete,
       ...[wrapper, native].flatMap((form) =>
-        [...form.querySelectorAll<HTMLElement & { updateComplete: Promise<unknown> }>('aeliqo-text-field')].map(
+        [...form.querySelectorAll<HTMLElement & { updateComplete: Promise<unknown> }>('varendo-text-field')].map(
           (field) => field.updateComplete,
         ),
       ),
@@ -109,7 +109,7 @@ test('Form matches native disabled fieldsets including the first legend', async 
     enabled.required = true;
     enabled.value = '';
     let submits = 0;
-    wrapper.addEventListener('aeliqo-form-submit', () => {
+    wrapper.addEventListener('varendo-form-submit', () => {
       submits += 1;
     });
     wrapper.requestSubmit();
@@ -141,16 +141,16 @@ test('Form matches native disabled fieldsets including the first legend', async 
 
 test('an outer disabled fieldset excludes an inner first legend outside its own first legend', async ({ page }) => {
   const result = await page.evaluate(async () => {
-    const form = document.createElement('aeliqo-form') as AeliqoFormElement;
+    const form = document.createElement('varendo-form') as VarendoFormElement;
     form.innerHTML = `<fieldset disabled><legend>Disabled outer group</legend>
       <fieldset disabled><legend><input name="inner-first" required>
-        <aeliqo-text-field name="custom-inner-first" required></aeliqo-text-field></legend></fieldset>
+        <varendo-text-field name="custom-inner-first" required></varendo-text-field></legend></fieldset>
       </fieldset><button type="submit">Save</button>`;
     document.body.append(form);
-    const field = form.querySelector<HTMLElement & { updateComplete: Promise<unknown> }>('aeliqo-text-field')!;
+    const field = form.querySelector<HTMLElement & { updateComplete: Promise<unknown> }>('varendo-text-field')!;
     await Promise.all([form.updateComplete, field.updateComplete]);
     let submits = 0;
-    form.addEventListener('aeliqo-form-submit', () => {
+    form.addEventListener('varendo-form-submit', () => {
       submits += 1;
     });
     const entries = [...(form.formData()?.entries() ?? [])];
@@ -183,7 +183,7 @@ test('a result queued before a same-turn host replacement emits no stale validat
     for (const kind of ['number-field', 'select']) {
       for (const replacement of ['value', 'validator']) {
         for (const validResult of [false, true]) {
-          const field = document.createElement(`aeliqo-${kind}`) as Field;
+          const field = document.createElement(`varendo-${kind}`) as Field;
           Object.assign(field, {
             options: [
               { value: 'old', label: 'Old' },
@@ -202,7 +202,7 @@ test('a result queued before a same-turn host replacement emits no stale validat
           input.dispatchEvent(new Event(kind === 'select' ? 'change' : 'input', { bubbles: true }));
           await field.updateComplete;
           const states: string[] = [];
-          field.addEventListener('aeliqo-validation', (event) =>
+          field.addEventListener('varendo-validation', (event) =>
             states.push((event as CustomEvent<{ state: string }>).detail.state),
           );
           finish(validResult ? true : 'Old value invalid');
@@ -234,7 +234,7 @@ test('a result queued before a same-turn host replacement emits no stale validat
 
 test('NumberField compares signed zero equally while preserving its exact value', async ({ page }) => {
   const result = await page.evaluate(async () => {
-    const field = document.createElement('aeliqo-number-field') as HTMLElement & {
+    const field = document.createElement('varendo-number-field') as HTMLElement & {
       value: string;
       min: string;
       max: string;
@@ -310,7 +310,7 @@ for (const tag of validatingTags) {
         'reset',
         'disconnect',
       ]) {
-        const field = document.createElement(`aeliqo-${kind}`) as Field;
+        const field = document.createElement(`varendo-${kind}`) as Field;
         Object.assign(field, {
           options: [
             { value: 'old', label: 'Old' },

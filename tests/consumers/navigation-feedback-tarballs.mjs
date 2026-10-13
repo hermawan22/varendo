@@ -21,7 +21,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/navigation-feedback-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-navigation-feedback-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-navigation-feedback-consumer-'));
 const consumerReal = await realpath(consumer);
 
 function run(argv, cwd, encoding = 'utf8') {
@@ -92,7 +92,7 @@ for (const name of ['core', 'runtime', 'web', 'react']) {
   await clearCompiledOutput(dist);
   run(['pnpm', 'build'], directory);
   await assertRegularTree(dist);
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));
@@ -248,55 +248,55 @@ await writeFile(
   join(consumer, 'consumer.tsx'),
   `
 import React from "react";
-import {AeliqoTabs, AeliqoBreadcrumb, AeliqoPagination, AeliqoMenu, AeliqoTreeNav} from "@varendo/react/navigation";
-import {AeliqoDialog, AeliqoDrawer, AeliqoPopover, AeliqoTooltip, AeliqoAlert, AeliqoToast, AeliqoProgress, AeliqoSkeleton, AeliqoEmptyState} from "@varendo/react/feedback";
-import type {AeliqoTabItem, AeliqoBreadcrumbItem, AeliqoTreeNavNode} from "@varendo/web/navigation";
-import type {AeliqoEmptyStateKind} from "@varendo/web/empty-state";
-import {createAeliqoPresentationRegistry, type AeliqoNavigationFeedbackBindings} from "@varendo/web/region";
-const semanticBindings = {revision:"nav-1",contents:[{id:"title",text:"Navigation"}]} satisfies AeliqoNavigationFeedbackBindings;
-const semanticRegistry = createAeliqoPresentationRegistry({navigationFeedback:semanticBindings});
+import {VarendoTabs, VarendoBreadcrumb, VarendoPagination, VarendoMenu, VarendoTreeNav} from "@varendo/react/navigation";
+import {VarendoDialog, VarendoDrawer, VarendoPopover, VarendoTooltip, VarendoAlert, VarendoToast, VarendoProgress, VarendoSkeleton, VarendoEmptyState} from "@varendo/react/feedback";
+import type {VarendoTabItem, VarendoBreadcrumbItem, VarendoTreeNavNode} from "@varendo/web/navigation";
+import type {VarendoEmptyStateKind} from "@varendo/web/empty-state";
+import {createVarendoPresentationRegistry, type VarendoNavigationFeedbackBindings} from "@varendo/web/region";
+const semanticBindings = {revision:"nav-1",contents:[{id:"title",text:"Navigation"}]} satisfies VarendoNavigationFeedbackBindings;
+const semanticRegistry = createVarendoPresentationRegistry({navigationFeedback:semanticBindings});
 void semanticRegistry;
-import {AeliqoTabsElement} from "@varendo/web/tabs";
-import {AeliqoBreadcrumbElement} from "@varendo/web/breadcrumb";
-import {AeliqoPaginationElement} from "@varendo/web/pagination";
-import {AeliqoMenuElement} from "@varendo/web/menu";
-import {AeliqoTreeNavElement} from "@varendo/web/tree-nav";
-import {AeliqoDialogElement} from "@varendo/web/dialog";
-import {AeliqoDrawerElement} from "@varendo/web/drawer";
-import {AeliqoPopoverElement} from "@varendo/web/popover";
-import {AeliqoTooltipElement} from "@varendo/web/tooltip";
-import {AeliqoAlertElement} from "@varendo/web/alert";
-import {AeliqoToastElement} from "@varendo/web/toast";
-import {AeliqoProgressElement} from "@varendo/web/progress";
-import {AeliqoSkeletonElement} from "@varendo/web/skeleton";
-import {AeliqoEmptyStateElement} from "@varendo/web/empty-state";
+import {VarendoTabsElement} from "@varendo/web/tabs";
+import {VarendoBreadcrumbElement} from "@varendo/web/breadcrumb";
+import {VarendoPaginationElement} from "@varendo/web/pagination";
+import {VarendoMenuElement} from "@varendo/web/menu";
+import {VarendoTreeNavElement} from "@varendo/web/tree-nav";
+import {VarendoDialogElement} from "@varendo/web/dialog";
+import {VarendoDrawerElement} from "@varendo/web/drawer";
+import {VarendoPopoverElement} from "@varendo/web/popover";
+import {VarendoTooltipElement} from "@varendo/web/tooltip";
+import {VarendoAlertElement} from "@varendo/web/alert";
+import {VarendoToastElement} from "@varendo/web/toast";
+import {VarendoProgressElement} from "@varendo/web/progress";
+import {VarendoSkeletonElement} from "@varendo/web/skeleton";
+import {VarendoEmptyStateElement} from "@varendo/web/empty-state";
 
-const tabs: readonly AeliqoTabItem[] = [{id:"overview",label:"Overview",content:"Overview"}];
-const crumbs: readonly AeliqoBreadcrumbItem[] = [{id:"home",label:"Home",href:"/"}];
-const nodes: readonly AeliqoTreeNavNode[] = [{id:"root",label:"Root",children:[{id:"child",label:"Child"}]}];
+const tabs: readonly VarendoTabItem[] = [{id:"overview",label:"Overview",content:"Overview"}];
+const crumbs: readonly VarendoBreadcrumbItem[] = [{id:"home",label:"Home",href:"/"}];
+const nodes: readonly VarendoTreeNavNode[] = [{id:"root",label:"Root",children:[{id:"child",label:"Child"}]}];
 const tone: "info" = "info";
-const kind: AeliqoEmptyStateKind = "no-records";
+const kind: VarendoEmptyStateKind = "no-records";
 const typed = (
   <>
-    <AeliqoTabs items={tabs} onSelectionChange={event => { const id: string = event.detail.id; const source: "user" = event.detail.source; void [id, source]; }} />
-    <AeliqoBreadcrumb items={crumbs} onNavigate={event => { const id: string = event.detail.id; const href: string | undefined = event.detail.href; void [id, href]; }} />
-    <AeliqoPagination page={1} hasNext onPageChange={event => { const page: number = event.detail.page; const direction: "previous" | "next" = event.detail.direction; void [page, direction]; }} />
-    <AeliqoMenu items={[{id:"open",label:"Open"}]} onAction={event => { const id: string = event.detail.id; const source: "user" = event.detail.source; void [id, source]; }} />
-    <AeliqoTreeNav nodes={nodes} onSelectionChange={event => { const id: string = event.detail.id; void id; }} onExpand={event => { const expanded: boolean = event.detail.expanded; void expanded; }} />
-    <AeliqoDialog onClose={event => { const source: "user" = event.detail.source; void source; }} />
-    <AeliqoDrawer onClose={event => { const source: "user" = event.detail.source; void source; }} />
-    <AeliqoPopover onClose={event => { const source: "user" = event.detail.source; void source; }} />
-    <AeliqoTooltip label="Tip" />
-    <AeliqoAlert tone={tone} onDismiss={event => { const source: "user" = event.detail.source; void source; }} onAction={event => { const source: "user" = event.detail.source; void source; }} />
-    <AeliqoToast onDismiss={event => { const source: "user" = event.detail.source; void source; }} />
-    <AeliqoProgress value={1} />
-    <AeliqoSkeleton />
-    <AeliqoEmptyState kind={kind} onAction={event => { const received: AeliqoEmptyStateKind = event.detail.kind; void received; }} />
+    <VarendoTabs items={tabs} onSelectionChange={event => { const id: string = event.detail.id; const source: "user" = event.detail.source; void [id, source]; }} />
+    <VarendoBreadcrumb items={crumbs} onNavigate={event => { const id: string = event.detail.id; const href: string | undefined = event.detail.href; void [id, href]; }} />
+    <VarendoPagination page={1} hasNext onPageChange={event => { const page: number = event.detail.page; const direction: "previous" | "next" = event.detail.direction; void [page, direction]; }} />
+    <VarendoMenu items={[{id:"open",label:"Open"}]} onAction={event => { const id: string = event.detail.id; const source: "user" = event.detail.source; void [id, source]; }} />
+    <VarendoTreeNav nodes={nodes} onSelectionChange={event => { const id: string = event.detail.id; void id; }} onExpand={event => { const expanded: boolean = event.detail.expanded; void expanded; }} />
+    <VarendoDialog onClose={event => { const source: "user" = event.detail.source; void source; }} />
+    <VarendoDrawer onClose={event => { const source: "user" = event.detail.source; void source; }} />
+    <VarendoPopover onClose={event => { const source: "user" = event.detail.source; void source; }} />
+    <VarendoTooltip label="Tip" />
+    <VarendoAlert tone={tone} onDismiss={event => { const source: "user" = event.detail.source; void source; }} onAction={event => { const source: "user" = event.detail.source; void source; }} />
+    <VarendoToast onDismiss={event => { const source: "user" = event.detail.source; void source; }} />
+    <VarendoProgress value={1} />
+    <VarendoSkeleton />
+    <VarendoEmptyState kind={kind} onAction={event => { const received: VarendoEmptyStateKind = event.detail.kind; void received; }} />
   </>
 );
 void typed;
 void React;
-void [AeliqoTabsElement,AeliqoBreadcrumbElement,AeliqoPaginationElement,AeliqoMenuElement,AeliqoTreeNavElement,AeliqoDialogElement,AeliqoDrawerElement,AeliqoPopoverElement,AeliqoTooltipElement,AeliqoAlertElement,AeliqoToastElement,AeliqoProgressElement,AeliqoSkeletonElement,AeliqoEmptyStateElement];
+void [VarendoTabsElement,VarendoBreadcrumbElement,VarendoPaginationElement,VarendoMenuElement,VarendoTreeNavElement,VarendoDialogElement,VarendoDrawerElement,VarendoPopoverElement,VarendoTooltipElement,VarendoAlertElement,VarendoToastElement,VarendoProgressElement,VarendoSkeletonElement,VarendoEmptyStateElement];
 `,
 );
 await writeFile(
@@ -334,26 +334,26 @@ import "@varendo/react/ssr";
 import {createElement} from "react";
 import {renderToString} from "react-dom/server";
 import {html} from "lit";
-import {renderAeliqo} from "@varendo/web/server";
-import {AeliqoTabs, AeliqoMenu} from "@varendo/react/navigation";
-import {AeliqoDialog, AeliqoAlert} from "@varendo/react/feedback";
+import {renderVarendo} from "@varendo/web/server";
+import {VarendoTabs, VarendoMenu} from "@varendo/react/navigation";
+import {VarendoDialog, VarendoAlert} from "@varendo/react/feedback";
 assert.equal(typeof window, "undefined");
 const [first, second] = await Promise.all([
-  renderAeliqo(html\`<aeliqo-tabs .items=\${[{id:"one",label:"One",content:"First request"}]}></aeliqo-tabs><aeliqo-dialog heading="Request one"></aeliqo-dialog>\`),
-  renderAeliqo(html\`<aeliqo-tabs .items=\${[{id:"two",label:"Two",content:"Second request"}]}></aeliqo-tabs><aeliqo-dialog heading="Request two"></aeliqo-dialog>\`),
+  renderVarendo(html\`<varendo-tabs .items=\${[{id:"one",label:"One",content:"First request"}]}></varendo-tabs><varendo-dialog heading="Request one"></varendo-dialog>\`),
+  renderVarendo(html\`<varendo-tabs .items=\${[{id:"two",label:"Two",content:"Second request"}]}></varendo-tabs><varendo-dialog heading="Request two"></varendo-dialog>\`),
 ]);
 assert.match(first, /First request/); assert.match(first, /Request one/); assert.doesNotMatch(first, /Second request|Request two/);
 assert.match(second, /Second request/); assert.match(second, /Request two/); assert.doesNotMatch(second, /First request|Request one/);
 const markup = renderToString(createElement("section", null,
-  createElement(AeliqoTabs, {items: [{id:"ssr", label:"SSR", content:"React tabs"}]}),
-  createElement(AeliqoDialog, {heading: "React dialog"}),
-  createElement(AeliqoAlert, {heading: "React alert", message: "React alert body"}),
-  createElement(AeliqoMenu, {items: [{id:"item", label:"React menu"}]}),
+  createElement(VarendoTabs, {items: [{id:"ssr", label:"SSR", content:"React tabs"}]}),
+  createElement(VarendoDialog, {heading: "React dialog"}),
+  createElement(VarendoAlert, {heading: "React alert", message: "React alert body"}),
+  createElement(VarendoMenu, {items: [{id:"item", label:"React menu"}]}),
 ));
-for (const tag of ["aeliqo-tabs", "aeliqo-dialog", "aeliqo-alert", "aeliqo-menu"]) assert.match(markup, new RegExp(tag));
+for (const tag of ["varendo-tabs", "varendo-dialog", "varendo-alert", "varendo-menu"]) assert.match(markup, new RegExp(tag));
 assert.match(markup, /shadowrootmode="open"/);
 assert.match(markup, /React alert body/);
-const secondReactRequest = renderToString(createElement(AeliqoAlert, {heading: "Second React request", message: "Second body"}));
+const secondReactRequest = renderToString(createElement(VarendoAlert, {heading: "Second React request", message: "Second body"}));
 assert.match(secondReactRequest, /Second body/);
 assert.doesNotMatch(secondReactRequest, /React alert body|React dialog/);
 console.log(JSON.stringify({firstBytes:first.length, secondBytes:second.length, reactBytes:markup.length, secondReactBytes:secondReactRequest.length}));
@@ -363,13 +363,13 @@ const ssrReport = JSON.parse(run(['node', 'ssr-consumer.mjs'], consumer).trim().
 
 await writeFile(
   join(consumer, 'index.html'),
-  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Installed navigation and feedback</title></head><body><main><button id="outside" type="button">Outside</button><aeliqo-tabs id="tabs"></aeliqo-tabs><aeliqo-breadcrumb id="breadcrumb"></aeliqo-breadcrumb><aeliqo-pagination id="pagination"></aeliqo-pagination><aeliqo-menu id="menu"></aeliqo-menu><aeliqo-tree-nav id="tree"></aeliqo-tree-nav><aeliqo-dialog id="dialog"></aeliqo-dialog><aeliqo-popover id="popover"></aeliqo-popover><aeliqo-drawer id="drawer"></aeliqo-drawer><aeliqo-tooltip id="tooltip"></aeliqo-tooltip><aeliqo-alert id="alert"></aeliqo-alert><aeliqo-toast id="toast"></aeliqo-toast><aeliqo-progress id="progress"></aeliqo-progress><aeliqo-skeleton id="skeleton"></aeliqo-skeleton><aeliqo-empty-state id="empty"></aeliqo-empty-state></main><script type="module" src="/browser.js"></script></body></html>\n`,
+  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Installed navigation and feedback</title></head><body><main><button id="outside" type="button">Outside</button><varendo-tabs id="tabs"></varendo-tabs><varendo-breadcrumb id="breadcrumb"></varendo-breadcrumb><varendo-pagination id="pagination"></varendo-pagination><varendo-menu id="menu"></varendo-menu><varendo-tree-nav id="tree"></varendo-tree-nav><varendo-dialog id="dialog"></varendo-dialog><varendo-popover id="popover"></varendo-popover><varendo-drawer id="drawer"></varendo-drawer><varendo-tooltip id="tooltip"></varendo-tooltip><varendo-alert id="alert"></varendo-alert><varendo-toast id="toast"></varendo-toast><varendo-progress id="progress"></varendo-progress><varendo-skeleton id="skeleton"></varendo-skeleton><varendo-empty-state id="empty"></varendo-empty-state></main><script type="module" src="/browser.js"></script></body></html>\n`,
 );
 await writeFile(
   join(consumer, 'browser.js'),
   `
-import {registerAeliqoElements} from "@varendo/web/register";
-registerAeliqoElements();
+import {registerVarendoElements} from "@varendo/web/register";
+registerVarendoElements();
 const byId = id => document.getElementById(id);
 const tabs = byId("tabs"); tabs.items = [{id:"overview",label:"Overview",content:"Overview panel"},{id:"details",label:"Details",content:"Details panel"}];
 const breadcrumb = byId("breadcrumb"); breadcrumb.items = [{id:"home",label:"Home",href:"/home"},{id:"current",label:"Current",current:true}];
@@ -386,7 +386,7 @@ const progress = byId("progress"); progress.value = 40; progress.label = "Loadin
 const skeleton = byId("skeleton"); skeleton.lines = 2; skeleton.animated = false;
 const empty = byId("empty"); empty.heading = "No rows"; empty.message = "Nothing matched"; empty.actionLabel = "Retry";
 const events = [];
-for (const [element, type] of [[tabs,"aeliqo-tabs-change"],[breadcrumb,"aeliqo-navigation"],[pagination,"aeliqo-page-change"],[menu,"aeliqo-menu-action"],[tree,"aeliqo-tree-nav-select"],[tree,"aeliqo-tree-nav-expand"],[dialog,"aeliqo-dialog-close"],[popover,"aeliqo-popover-close"],[drawer,"aeliqo-drawer-close"],[alert,"aeliqo-alert-dismiss"],[toast,"aeliqo-toast-dismiss"],[empty,"aeliqo-empty-state-action"]]) element.addEventListener(type, event => { events.push({type, detail:event.detail}); if (type === "aeliqo-navigation") event.preventDefault(); });
+for (const [element, type] of [[tabs,"varendo-tabs-change"],[breadcrumb,"varendo-navigation"],[pagination,"varendo-page-change"],[menu,"varendo-menu-action"],[tree,"varendo-tree-nav-select"],[tree,"varendo-tree-nav-expand"],[dialog,"varendo-dialog-close"],[popover,"varendo-popover-close"],[drawer,"varendo-drawer-close"],[alert,"varendo-alert-dismiss"],[toast,"varendo-toast-dismiss"],[empty,"varendo-empty-state-action"]]) element.addEventListener(type, event => { events.push({type, detail:event.detail}); if (type === "varendo-navigation") event.preventDefault(); });
 window.fixture = {tabs, breadcrumb, pagination, menu, tree, dialog, popover, drawer, tooltip, alert, toast, progress, skeleton, empty, events};
 `,
 );
@@ -449,8 +449,8 @@ try {
       failures.push(`${request.url()}: ${request.failure()?.errorText}`);
   });
   await page.goto(`http://127.0.0.1:${server.address().port}`);
-  await page.locator('aeliqo-tabs').evaluate((element) => customElements.whenDefined(element.localName));
-  const tabs = page.locator('aeliqo-tabs');
+  await page.locator('varendo-tabs').evaluate((element) => customElements.whenDefined(element.localName));
+  const tabs = page.locator('varendo-tabs');
   const tabButtons = tabs.locator('[role=tab]');
   await tabButtons.first().waitFor();
   assert.equal((await tabs.locator('[role=tabpanel]:not([hidden])').textContent()).trim(), 'Overview panel');
@@ -459,12 +459,12 @@ try {
   assert.equal(await tabButtons.nth(1).getAttribute('aria-selected'), 'true');
   assert.equal(
     (await page.evaluate(() => window.fixture.events)).some(
-      (event) => event.type === 'aeliqo-tabs-change' && event.detail.id === 'details',
+      (event) => event.type === 'varendo-tabs-change' && event.detail.id === 'details',
     ),
     true,
   );
 
-  const menu = page.locator('aeliqo-menu');
+  const menu = page.locator('varendo-menu');
   const menuTrigger = menu.locator('[part=trigger]');
   await menuTrigger.focus();
   await menuTrigger.click();
@@ -473,9 +473,9 @@ try {
   await menuItem.focus();
   assert.equal(await menuItem.evaluate((element) => element.getRootNode().activeElement === element), true);
   await page.keyboard.press('Escape');
-  await page.waitForFunction(() => !document.querySelector('aeliqo-menu').open);
+  await page.waitForFunction(() => !document.querySelector('varendo-menu').open);
   await page.waitForFunction(() => {
-    const host = document.querySelector('aeliqo-menu');
+    const host = document.querySelector('varendo-menu');
     const trigger = host?.shadowRoot?.querySelector('[part=trigger]');
     return host?.shadowRoot?.activeElement === trigger;
   });
@@ -485,7 +485,7 @@ try {
   await page.getByRole('button', { name: 'Outside' }).click();
   assert.equal(await menu.locator('[part=menu]').getAttribute('hidden'), '');
 
-  const tree = page.locator('aeliqo-tree-nav');
+  const tree = page.locator('varendo-tree-nav');
   const rootItem = tree.locator('[role=treeitem][data-tree-id=root]');
   await rootItem.focus();
   await page.keyboard.press('ArrowDown');
@@ -498,28 +498,28 @@ try {
   await page.keyboard.press('Enter');
   assert.equal(
     (await page.evaluate(() => window.fixture.events)).some(
-      (event) => event.type === 'aeliqo-tree-nav-select' && event.detail.id === 'child',
+      (event) => event.type === 'varendo-tree-nav-select' && event.detail.id === 'child',
     ),
     true,
   );
 
-  const pagination = page.locator('aeliqo-pagination');
+  const pagination = page.locator('varendo-pagination');
   await pagination.getByRole('button', { name: 'Next page' }).click();
   assert.equal(
     (await page.evaluate(() => window.fixture.events)).some(
-      (event) => event.type === 'aeliqo-page-change' && event.detail.page === 3,
+      (event) => event.type === 'varendo-page-change' && event.detail.page === 3,
     ),
     true,
   );
-  await page.locator('aeliqo-breadcrumb').getByRole('link', { name: 'Home' }).click();
+  await page.locator('varendo-breadcrumb').getByRole('link', { name: 'Home' }).click();
   assert.equal(
     (await page.evaluate(() => window.fixture.events)).some(
-      (event) => event.type === 'aeliqo-navigation' && event.detail.id === 'home',
+      (event) => event.type === 'varendo-navigation' && event.detail.id === 'home',
     ),
     true,
   );
 
-  const dialog = page.locator('aeliqo-dialog');
+  const dialog = page.locator('varendo-dialog');
   const dialogHost = dialog;
   await page.locator('#outside').focus();
   await dialogHost.evaluate((element) => {
@@ -527,47 +527,47 @@ try {
   });
   await dialogHost.locator('dialog').waitFor();
   await page.keyboard.press('Escape');
-  await page.waitForFunction(() => !document.querySelector('aeliqo-dialog').open);
+  await page.waitForFunction(() => !document.querySelector('varendo-dialog').open);
   assert.equal(
-    (await page.evaluate(() => window.fixture.events)).some((event) => event.type === 'aeliqo-dialog-close'),
+    (await page.evaluate(() => window.fixture.events)).some((event) => event.type === 'varendo-dialog-close'),
     true,
   );
   assert.equal(await page.locator('#outside').evaluate((element) => document.activeElement === element), true);
 
-  const popover = page.locator('aeliqo-popover');
+  const popover = page.locator('varendo-popover');
   await popover.locator('[part=trigger]').click();
   await popover.locator('dialog').waitFor();
   await page.keyboard.press('Escape');
-  await page.waitForFunction(() => !document.querySelector('aeliqo-popover').open);
+  await page.waitForFunction(() => !document.querySelector('varendo-popover').open);
   assert.equal(
-    (await page.evaluate(() => window.fixture.events)).some((event) => event.type === 'aeliqo-popover-close'),
+    (await page.evaluate(() => window.fixture.events)).some((event) => event.type === 'varendo-popover-close'),
     true,
   );
 
-  const drawer = page.locator('aeliqo-drawer');
+  const drawer = page.locator('varendo-drawer');
   await drawer.evaluate((element) => {
     element.open = true;
   });
   await drawer.locator('dialog').waitFor();
   await drawer.getByRole('button', { name: 'Close' }).click();
-  await page.waitForFunction(() => !document.querySelector('aeliqo-drawer').open);
+  await page.waitForFunction(() => !document.querySelector('varendo-drawer').open);
   assert.equal(
-    (await page.evaluate(() => window.fixture.events)).some((event) => event.type === 'aeliqo-drawer-close'),
+    (await page.evaluate(() => window.fixture.events)).some((event) => event.type === 'varendo-drawer-close'),
     true,
   );
 
-  await page.locator('aeliqo-alert').getByRole('button', { name: 'Dismiss' }).click();
-  await page.locator('aeliqo-toast').getByRole('button', { name: 'Dismiss' }).click();
-  await page.locator('aeliqo-empty-state').getByRole('button', { name: 'Retry' }).click();
+  await page.locator('varendo-alert').getByRole('button', { name: 'Dismiss' }).click();
+  await page.locator('varendo-toast').getByRole('button', { name: 'Dismiss' }).click();
+  await page.locator('varendo-empty-state').getByRole('button', { name: 'Retry' }).click();
   const eventTypes = await page.evaluate(() => window.fixture.events.map((event) => event.type));
-  assert(eventTypes.includes('aeliqo-alert-dismiss'));
-  assert(eventTypes.includes('aeliqo-toast-dismiss'));
-  assert(eventTypes.includes('aeliqo-empty-state-action'));
-  await page.locator('aeliqo-tooltip').locator('[part=trigger]').focus();
-  assert.equal(await page.locator('aeliqo-tooltip').locator('[role=tooltip]').getAttribute('hidden'), null);
-  assert.equal(await page.locator('aeliqo-progress').locator('progress').getAttribute('aria-label'), 'Loading');
-  assert.equal(await page.locator('aeliqo-skeleton').locator('[part=line]').count(), 2);
-  assert.equal(await page.locator('aeliqo-empty-state').locator('[role=status]').count(), 1);
+  assert(eventTypes.includes('varendo-alert-dismiss'));
+  assert(eventTypes.includes('varendo-toast-dismiss'));
+  assert(eventTypes.includes('varendo-empty-state-action'));
+  await page.locator('varendo-tooltip').locator('[part=trigger]').focus();
+  assert.equal(await page.locator('varendo-tooltip').locator('[role=tooltip]').getAttribute('hidden'), null);
+  assert.equal(await page.locator('varendo-progress').locator('progress').getAttribute('aria-label'), 'Loading');
+  assert.equal(await page.locator('varendo-skeleton').locator('[part=line]').count(), 2);
+  assert.equal(await page.locator('varendo-empty-state').locator('[role=status]').count(), 1);
   assert.deepEqual(failures, []);
   browserReport = {
     tabsSelection: true,

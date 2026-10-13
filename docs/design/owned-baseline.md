@@ -16,9 +16,9 @@ by hand.
 
 ## Component theming
 
-`aeliqoThemeStyles` scopes variables to a custom element's `:host`; it does not
-reset the consumer document. `aeliqoStandaloneThemeStyles` scopes them to a
-host-selected container marked with `data-aeliqo-theme`. The default component
+`varendoThemeStyles` scopes variables to a custom element's `:host`; it does not
+reset the consumer document. `varendoStandaloneThemeStyles` scopes them to a
+host-selected container marked with `data-varendo-theme`. The default component
 palette can follow the system color preference. A consumer can select `light`,
 `dark`, or `inherit` explicitly, or override semantic custom properties directly.
 These options belong to applications using the component library; they do not
@@ -26,11 +26,11 @@ add a theme switch to the Varendo site.
 
 ```ts
 import { css, LitElement } from 'lit';
-import { aeliqoThemeStyles } from '@varendo/web/styles';
+import { varendoThemeStyles } from '@varendo/web/styles';
 
 export class ExampleElement extends LitElement {
   static styles = [
-    aeliqoThemeStyles,
+    varendoThemeStyles,
     css`
       :host {
         display: block;
@@ -40,13 +40,13 @@ export class ExampleElement extends LitElement {
 }
 ```
 
-Host applications may set `data-aeliqo-theme="dark"` or
-`data-aeliqo-theme="light"` on the component or on a container using
-`aeliqoStandaloneThemeStyles`. Use `inherit` when an element should inherit the
+Host applications may set `data-varendo-theme="dark"` or
+`data-varendo-theme="light"` on the component or on a container using
+`varendoStandaloneThemeStyles`. Use `inherit` when an element should inherit the
 container's tokens without selecting a new palette. Prefer semantic roles such
 as canvas, surface, text, border, focus, accent, and status colors over a fixed
 component color. Existing family-specific variables such as
-`--aeliqo-input-*`, `--aeliqo-table-*`, and `--aeliqo-chart-*` remain available
+`--varendo-input-*`, `--varendo-table-*`, and `--varendo-chart-*` remain available
 for targeted host customization.
 
 ## Interaction and direction
@@ -57,16 +57,16 @@ colors. Reduced-motion sets shared transition durations to zero; each component
 decides whether a transition applies. Components use CSS logical properties so
 RTL layouts do not need a separate stylesheet.
 
-`createAeliqoLocaleContext` validates and canonicalizes a BCP 47 language tag.
+`createVarendoLocaleContext` validates and canonicalizes a BCP 47 language tag.
 Pass `direction` when the host must control direction explicitly; otherwise the
 runtime uses `Intl.Locale.prototype.getTextInfo()` when the platform provides
 it. The helper returns immutable `lang` and `dir` metadata and does not mutate
 global locale state.
 
 ```ts
-import { createAeliqoLocaleContext } from '@varendo/web/styles';
+import { createVarendoLocaleContext } from '@varendo/web/styles';
 
-const locale = createAeliqoLocaleContext('ar-EG', { direction: 'rtl' });
+const locale = createVarendoLocaleContext('ar-EG', { direction: 'rtl' });
 // {lang: 'ar-EG', dir: 'rtl'}
 ```
 

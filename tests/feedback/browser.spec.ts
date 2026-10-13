@@ -3,7 +3,9 @@ import { expect, test } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
   await page.goto('/tests/feedback/index.html');
   await expect
-    .poll(() => page.evaluate(() => (window as typeof window & { aeliqoFeedbackReady?: boolean }).aeliqoFeedbackReady))
+    .poll(() =>
+      page.evaluate(() => (window as typeof window & { varendoFeedbackReady?: boolean }).varendoFeedbackReady),
+    )
     .toBe(true);
 });
 
@@ -236,7 +238,7 @@ test('toast, alert and progress expose honest status states', async ({ page }) =
   await expect
     .poll(() =>
       page.evaluate(() => {
-        const events = (window as typeof window & { aeliqoFeedbackEvents: CustomEvent[] }).aeliqoFeedbackEvents;
+        const events = (window as typeof window & { varendoFeedbackEvents: CustomEvent[] }).varendoFeedbackEvents;
         return events?.[events.length - 1]?.detail;
       }),
     )
@@ -269,7 +271,7 @@ test('toast, alert and progress expose honest status states', async ({ page }) =
   await expect
     .poll(() =>
       page.evaluate(() => {
-        const events = (window as typeof window & { aeliqoFeedbackEvents: CustomEvent[] }).aeliqoFeedbackEvents;
+        const events = (window as typeof window & { varendoFeedbackEvents: CustomEvent[] }).varendoFeedbackEvents;
         return events?.[events.length - 1]?.detail;
       }),
     )
@@ -333,7 +335,7 @@ test.describe('enlarged narrow feedback controls', () => {
         const host = page.locator('#dialog');
         await host.evaluate((element, dir) => {
           element.setAttribute('dir', dir);
-          element.setAttribute('data-aeliqo-theme', 'dark');
+          element.setAttribute('data-varendo-theme', 'dark');
           Object.assign(element, { heading: 'Confirm archive', open: true });
         }, direction);
         const close = host.locator('[part=close]');
@@ -405,7 +407,7 @@ test.describe('enlarged narrow feedback controls', () => {
         const host = page.locator('#popover');
         await host.evaluate((element, dir) => {
           element.setAttribute('dir', dir);
-          element.setAttribute('data-aeliqo-theme', 'dark');
+          element.setAttribute('data-varendo-theme', 'dark');
           Object.assign(element, { content: 'The report includes the authorized current scope.', open: true });
         }, direction);
         const close = host.locator('[part=close]');

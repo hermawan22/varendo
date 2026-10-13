@@ -1,6 +1,6 @@
 # End-to-end scenarios
 
-This suite exercises public Aeliqo contracts through code-defined meaning, bounded data evaluation, and queryless or unknown-result paths.
+This suite exercises public Varendo contracts through code-defined meaning, bounded data evaluation, and queryless or unknown-result paths.
 
 ```sh
 pnpm test:scenarios

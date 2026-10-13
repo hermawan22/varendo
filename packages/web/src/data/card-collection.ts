@@ -1,15 +1,15 @@
 import { css, html, LitElement, nothing } from 'lit';
-import { aeliqoThemeStyles } from '../styles/theme.js';
-import { AELIQO_WEB_VERSION } from '../version.js';
+import { varendoThemeStyles } from '../styles/theme.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
 import type { ResultRef } from '@varendo/core';
 import type {
-  AeliqoDataColumn,
-  AeliqoDataRecord,
-  AeliqoDataScope,
-  AeliqoDataStatus,
-  AeliqoSelectionMode,
+  VarendoDataColumn,
+  VarendoDataRecord,
+  VarendoDataScope,
+  VarendoDataStatus,
+  VarendoSelectionMode,
 } from './types.js';
-import { AeliqoDataLoadMoreEvent, AeliqoDataSelectionEvent } from './events.js';
+import { VarendoDataLoadMoreEvent, VarendoDataSelectionEvent } from './events.js';
 import {
   dataStyles,
   dataValueText,
@@ -20,8 +20,8 @@ import {
 } from './shared.js';
 
 /** Repeated records with explicit headings and a bounded load-more affordance. */
-export class AeliqoCardCollectionElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoCardCollectionElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     rows: { attribute: false },
     columns: { attribute: false },
@@ -40,17 +40,17 @@ export class AeliqoCardCollectionElement extends LitElement {
     loadLabel: { attribute: 'load-label', type: String },
   };
 
-  rows: readonly AeliqoDataRecord[] = [];
-  columns: readonly AeliqoDataColumn[] = [];
+  rows: readonly VarendoDataRecord[] = [];
+  columns: readonly VarendoDataColumn[] = [];
   identity: readonly string[] = [];
   entity = 'record';
   headingKey = '';
-  selection: AeliqoSelectionMode = 'none';
+  selection: VarendoSelectionMode = 'none';
   selectedKeys: readonly string[] = [];
   result: ResultRef | undefined = undefined;
   title = '';
-  scope: AeliqoDataScope | undefined = undefined;
-  status: AeliqoDataStatus = 'ready';
+  scope: VarendoDataScope | undefined = undefined;
+  status: VarendoDataStatus = 'ready';
   message = '';
   hasMore = false;
   loadingMore = false;
@@ -74,7 +74,7 @@ export class AeliqoCardCollectionElement extends LitElement {
     `;
   }
 
-  private renderCard(row: AeliqoDataRecord) {
+  private renderCard(row: VarendoDataRecord) {
     const key = stableDataRecordKey(row, this.identity);
     const selected = key !== undefined && this.selectedKeys.includes(key);
     const heading =
@@ -110,31 +110,31 @@ export class AeliqoCardCollectionElement extends LitElement {
       scope: this.scope,
     });
     if (detail === undefined) return;
-    this.dispatchEvent(new AeliqoDataSelectionEvent('aeliqo-card-selection', detail));
+    this.dispatchEvent(new VarendoDataSelectionEvent('varendo-card-selection', detail));
   };
 
   private readonly loadMore = (): void => {
-    if (!this.loadingMore) this.dispatchEvent(new AeliqoDataLoadMoreEvent());
+    if (!this.loadingMore) this.dispatchEvent(new VarendoDataLoadMoreEvent());
   };
 
   static readonly styles = [
-    aeliqoThemeStyles,
+    varendoThemeStyles,
     dataStyles,
     css`
       h2 {
-        font-size: var(--aeliqo-typography-font-size-title, 1.125rem);
-        margin: 0 0 var(--aeliqo-space-8, 0.5rem);
+        font-size: var(--varendo-typography-font-size-title, 1.125rem);
+        margin: 0 0 var(--varendo-space-8, 0.5rem);
       }
       [part='cards'] {
         display: grid;
-        gap: var(--aeliqo-space-12, 0.75rem);
+        gap: var(--varendo-space-12, 0.75rem);
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
       }
       [part='card'] {
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid var(--aeliqo-color-border, #c9d0d8);
-        border-radius: var(--aeliqo-radius-medium, 0.625rem);
+        border: var(--varendo-control-border-width, 0.0625rem) solid var(--varendo-color-border, #c9d0d8);
+        border-radius: var(--varendo-radius-medium, 0.625rem);
         min-inline-size: 0;
-        padding: var(--aeliqo-space-12, 0.75rem);
+        padding: var(--varendo-space-12, 0.75rem);
       }
       [part='card-button'] {
         background: transparent;
@@ -144,54 +144,54 @@ export class AeliqoCardCollectionElement extends LitElement {
         display: block;
         font: inherit;
         inline-size: 100%;
-        padding: var(--aeliqo-space-8, 0.5rem);
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
+        padding: var(--varendo-space-8, 0.5rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
         text-align: start;
       }
       [part='card']:has([part='card-button']):hover {
-        border-color: var(--aeliqo-color-accent, #4338ca);
+        border-color: var(--varendo-color-accent, #4338ca);
       }
       [part='card'][data-selected] {
-        border-color: var(--aeliqo-color-accent, #4338ca);
-        box-shadow: inset 0 0 0 0.125rem color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 20%, transparent);
+        border-color: var(--varendo-color-accent, #4338ca);
+        box-shadow: inset 0 0 0 0.125rem color-mix(in srgb, var(--varendo-color-accent, #4338ca) 20%, transparent);
       }
       [part='heading'] {
-        font-size: var(--aeliqo-typography-font-size-title, 1.0625rem);
+        font-size: var(--varendo-typography-font-size-title, 1.0625rem);
         margin: 0;
         overflow-wrap: anywhere;
       }
       dl {
         display: grid;
-        gap: var(--aeliqo-space-8, 0.5rem);
-        margin: var(--aeliqo-space-12, 0.75rem) 0 0;
+        gap: var(--varendo-space-8, 0.5rem);
+        margin: var(--varendo-space-12, 0.75rem) 0 0;
       }
       [part='fact'] {
         display: grid;
-        gap: var(--aeliqo-space-4, 0.25rem);
+        gap: var(--varendo-space-4, 0.25rem);
         min-inline-size: 0;
       }
       dt,
       [part='scope'] {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
       }
       dd {
         margin: 0;
         overflow-wrap: anywhere;
       }
       [part='scope'] {
-        margin: var(--aeliqo-space-8, 0) 0;
+        margin: var(--varendo-space-8, 0) 0;
       }
       [part='load-more'] {
-        background: var(--aeliqo-color-surface, #fff);
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid var(--aeliqo-color-accent, #4338ca);
-        border-radius: var(--aeliqo-radius-medium, 0.625rem);
-        color: var(--aeliqo-color-accent, #4338ca);
+        background: var(--varendo-color-surface, #fff);
+        border: var(--varendo-control-border-width, 0.0625rem) solid var(--varendo-color-accent, #4338ca);
+        border-radius: var(--varendo-radius-medium, 0.625rem);
+        color: var(--varendo-color-accent, #4338ca);
         cursor: pointer;
         font: inherit;
-        margin-block-start: var(--aeliqo-space-12, 0.75rem);
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        padding-inline: var(--aeliqo-space-12, 0.75rem);
+        margin-block-start: var(--varendo-space-12, 0.75rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        padding-inline: var(--varendo-space-12, 0.75rem);
       }
       @media (forced-colors: active) {
         [part='card'][data-selected] {

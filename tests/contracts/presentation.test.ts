@@ -332,7 +332,7 @@ describe('registered presentation feasibility', () => {
     const transfer = {
       fromNode: 'table-1',
       toNode: 'table-1',
-      mapping: { id: 'aeliqo.state.identity', revision: '1' },
+      mapping: { id: 'varendo.state.identity', revision: '1' },
     };
     expect(checked({ ...p, stateTransfer: [transfer] }, c).ok).toBe(true);
     expect(checked({ ...p, stateTransfer: [transfer, transfer] }, c).ok).toBe(false);
@@ -951,8 +951,8 @@ it('requires a registered archival owner before removing a composable view', () 
     ...incumbent,
     nodes: [{ ...root, children: ['table-1'] }, ...plan().nodes],
     stateTransfer: [
-      { fromNode: 'layout', toNode: 'layout', mapping: { id: 'aeliqo.state.identity', revision: '1' } },
-      { fromNode: 'table-1', toNode: 'table-1', mapping: { id: 'aeliqo.state.identity', revision: '1' } },
+      { fromNode: 'layout', toNode: 'layout', mapping: { id: 'varendo.state.identity', revision: '1' } },
+      { fromNode: 'table-1', toNode: 'table-1', mapping: { id: 'varendo.state.identity', revision: '1' } },
       { fromNode: 'secondary', toNode: 'layout', mapping: archive.ref },
     ],
   };

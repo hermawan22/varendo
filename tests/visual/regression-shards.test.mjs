@@ -159,7 +159,7 @@ test('real CLI rejects failed matrix and selected shard attempts before capture'
   const filtered = spawnSync(process.execPath, [run, '--probe', '--shard', 'chromium'], {
     cwd: directory,
     encoding: 'utf8',
-    env: { ...process.env, AELIQO_VISUAL_BATCH: 'catalog' },
+    env: { ...process.env, VARENDO_VISUAL_BATCH: 'catalog' },
   });
   assert.equal(filtered.status, 1);
   assert.match(filtered.stdout, /rejects selection filters/u);

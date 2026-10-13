@@ -1,7 +1,7 @@
 import { parseIntent, type Intent, type Outcome } from '@varendo/core';
 import type { AgentModelToolEndpoint } from '@varendo/agent/protocol';
 import type { WebMcpAdapter, WebMcpEvidence } from '@varendo/agent/webmcp';
-import type { AeliqoApp, WebRenderReceipt } from '@varendo/web/app';
+import type { VarendoApp, WebRenderReceipt } from '@varendo/web/app';
 import { playgroundContext } from './context.js';
 import { failure } from './guards.js';
 
@@ -10,7 +10,7 @@ type PlaygroundRender = (target: HTMLElement, intent: Intent, signal?: AbortSign
 type WebMcpConnection = { readonly registrations: number; readonly evidence: WebMcpEvidence };
 
 interface AgentConnectionOptions {
-  readonly app: AeliqoApp;
+  readonly app: VarendoApp;
   readonly regionId: string;
   readonly getTarget: () => HTMLElement | undefined;
   readonly render: PlaygroundRender;

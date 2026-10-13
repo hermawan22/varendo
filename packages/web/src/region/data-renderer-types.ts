@@ -1,5 +1,5 @@
 import type { InteractionPayload, InteractionState } from '@varendo/core';
-import type { AeliqoPageRequest, AeliqoSortState, AeliqoTableWindowDetail } from '../data/types.js';
+import type { VarendoPageRequest, VarendoSortState, VarendoTableWindowDetail } from '../data/types.js';
 
 /**
  * Host requests emitted by the renderer. Selection and filter carry the
@@ -7,7 +7,7 @@ import type { AeliqoPageRequest, AeliqoSortState, AeliqoTableWindowDetail } from
  * component requests because the core wire contract has no implicit window or
  * sort payload. The host decides whether and how to query.
  */
-export type AeliqoDataHostRequest =
+export type VarendoDataHostRequest =
   | {
       readonly kind: 'selection';
       readonly nodeId: string;
@@ -24,19 +24,19 @@ export type AeliqoDataHostRequest =
       readonly kind: 'page';
       readonly nodeId: string;
       readonly portId: string;
-      readonly request: AeliqoPageRequest;
+      readonly request: VarendoPageRequest;
     }
   | {
       readonly kind: 'sort';
       readonly nodeId: string;
       readonly portId: string;
-      readonly request: AeliqoSortState | undefined;
+      readonly request: VarendoSortState | undefined;
     }
   | {
       readonly kind: 'window';
       readonly nodeId: string;
       readonly portId: string;
-      readonly request: AeliqoTableWindowDetail;
+      readonly request: VarendoTableWindowDetail;
     }
   | {
       readonly kind: 'load-more';
@@ -44,9 +44,9 @@ export type AeliqoDataHostRequest =
       readonly portId: string;
     };
 
-export type AeliqoDataHostRequestHandler = (request: AeliqoDataHostRequest) => void;
+export type VarendoDataHostRequestHandler = (request: VarendoDataHostRequest) => void;
 
-export interface AeliqoDataRenderContext {
+export interface VarendoDataRenderContext {
   readonly interaction?: InteractionState;
-  readonly onRequest?: AeliqoDataHostRequestHandler;
+  readonly onRequest?: VarendoDataHostRequestHandler;
 }

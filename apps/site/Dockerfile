@@ -4,8 +4,8 @@ ARG SDK_VERSION=unknown
 
 FROM node:24.20.0-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf AS site-build
 
-ARG AELIQO_EXPORT_VERIFIED_VERSION=
-ENV AELIQO_EXPORT_VERIFIED_VERSION=${AELIQO_EXPORT_VERIFIED_VERSION}
+ARG VARENDO_EXPORT_VERIFIED_VERSION=
+ENV VARENDO_EXPORT_VERIFIED_VERSION=${VARENDO_EXPORT_VERIFIED_VERSION}
 
 WORKDIR /workspace
 RUN corepack enable && corepack prepare pnpm@11.24.0 --activate
@@ -35,7 +35,7 @@ COPY apps/site/deploy/server.go ./server.go
 
 RUN CGO_ENABLED=0 GOOS=linux go build -trimpath \
   -ldflags="-s -w -X main.revision=${SOURCE_REVISION} -X main.sdkRevision=${SDK_SOURCE_REVISION} -X main.sdkVersion=${SDK_VERSION}" \
-  -o /aeliqo-static-server ./server.go
+  -o /varendo-static-server ./server.go
 
 FROM scratch
 
@@ -45,13 +45,13 @@ ARG SDK_VERSION
 LABEL org.opencontainers.image.source="https://github.com/hermawan22/varendo"
 LABEL org.opencontainers.image.description="Varendo public web, documentation, and playground"
 LABEL org.opencontainers.image.revision="${SOURCE_REVISION}"
-LABEL com.aeliqo.sdk.revision="${SDK_SOURCE_REVISION}"
-LABEL com.aeliqo.sdk.version="${SDK_VERSION}"
+LABEL com.varendo.sdk.revision="${SDK_SOURCE_REVISION}"
+LABEL com.varendo.sdk.version="${SDK_VERSION}"
 
-COPY --from=server-build /aeliqo-static-server /aeliqo-static-server
-COPY --from=site-build /workspace/apps/site/dist /srv/aeliqo
+COPY --from=server-build /varendo-static-server /varendo-static-server
+COPY --from=site-build /workspace/apps/site/dist /srv/varendo
 
-WORKDIR /srv/aeliqo
+WORKDIR /srv/varendo
 USER 101:101
 EXPOSE 8080
-ENTRYPOINT ["/aeliqo-static-server"]
+ENTRYPOINT ["/varendo-static-server"]

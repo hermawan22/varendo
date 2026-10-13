@@ -1,11 +1,11 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
-import { AeliqoInputChangeEvent } from './events.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
+import { VarendoInputChangeEvent } from './events.js';
 
 /** Native checkbox with explicit indeterminate and submitted-value semantics. */
-export class AeliqoCheckboxElement extends AeliqoFieldElement<boolean> {
+export class VarendoCheckboxElement extends VarendoFieldElement<boolean> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     checked: { type: Boolean, reflect: true },
     defaultChecked: { attribute: 'default-checked', type: Boolean },
     indeterminate: { type: Boolean, reflect: true },
@@ -75,7 +75,7 @@ export class AeliqoCheckboxElement extends AeliqoFieldElement<boolean> {
     }
     this.checked = input.checked;
     this.indeterminate = false;
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value: this.checked }));
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value: this.checked }));
     void this.validateProposed(this.checked);
     this.syncNative();
   };
@@ -102,16 +102,16 @@ export class AeliqoCheckboxElement extends AeliqoFieldElement<boolean> {
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       .choice-label {
         align-items: center;
         display: inline-flex;
-        gap: var(--aeliqo-space-8, 0.5rem);
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
+        gap: var(--varendo-space-8, 0.5rem);
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
       }
       input {
-        accent-color: var(--aeliqo-color-accent, #4338ca);
+        accent-color: var(--varendo-color-accent, #4338ca);
         block-size: 1.25rem;
         inline-size: 1.25rem;
       }

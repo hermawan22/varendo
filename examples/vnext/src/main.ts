@@ -1,8 +1,8 @@
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { defineResource, type Intent } from '@varendo/core';
 import { createLocalDataService, type AuthorizeRead } from '@varendo/runtime/data';
-import type { AeliqoAuthority } from '@varendo/runtime/app';
-import { createAeliqoApp, type WebRenderReceipt } from '@varendo/web/app';
+import type { VarendoAuthority } from '@varendo/runtime/app';
+import { createVarendoApp, type WebRenderReceipt } from '@varendo/web/app';
 import { z } from 'zod';
 
 const PEOPLE = Object.freeze([
@@ -115,7 +115,7 @@ let accessGranted = true;
 let holdNextPeopleRead = false;
 let releaseHeldPeopleRead: (() => void) | undefined;
 
-const authority: AeliqoAuthority['read'] = () => {
+const authority: VarendoAuthority['read'] = () => {
   if (!accessGranted)
     return {
       ok: false as const,
@@ -160,7 +160,7 @@ const authorize: AuthorizeRead = async ({ context }) => {
   return { ok: true as const, value: { scopeDigest: 'vnext-scope', policyRevision: 'vnext-policy-1' } };
 };
 
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [
     {
       resource: people,

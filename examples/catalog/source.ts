@@ -12,16 +12,16 @@ export interface CatalogSourceOptions {
 }
 
 export function catalogSource({ imports, setup = '', mount }: CatalogSourceOptions): string {
-  return `import {registerAeliqoElements} from "@varendo/web";
+  return `import {registerVarendoElements} from "@varendo/web";
 ${imports.trim()}
 
 ${setup.trim()}
 
-registerAeliqoElements();
+registerVarendoElements();
 
-const host = document.querySelector<HTMLElement>("#aeliqo-example") ?? (() => {
+const host = document.querySelector<HTMLElement>("#varendo-example") ?? (() => {
   const created = document.createElement("div");
-  created.id = "aeliqo-example";
+  created.id = "varendo-example";
   (document.body ?? document.documentElement).append(created);
   return created;
 })();
@@ -37,7 +37,7 @@ function createCatalogRoot(container: HTMLElement): HTMLElement {
 
 function createCatalogElement<T extends HTMLElement>(tagName: string, container: HTMLElement): T {
   const element = document.createElement(tagName) as T;
-  element.setAttribute("data-aeliqo-theme", "light");
+  element.setAttribute("data-varendo-theme", "light");
   container.append(element);
   return element;
 }

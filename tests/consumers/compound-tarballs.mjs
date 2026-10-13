@@ -13,7 +13,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/compound-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-compound-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-compound-consumer-'));
 const consumerReal = await realpath(consumer);
 
 function run(argv, cwd, encoding = 'utf8', env = process.env) {
@@ -46,7 +46,7 @@ const packages = [];
 for (const name of ['core', 'runtime', 'web', 'react']) {
   const directory = join(root, 'packages', name);
   const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));
@@ -153,24 +153,24 @@ const tags = [
 await writeFile(
   join(consumer, 'node.mjs'),
   `
-import {html} from 'lit';import {renderAeliqo} from '@varendo/web/server';import * as bindings from '@varendo/react/compound';import '@varendo/react/ssr';import React from 'react';import {renderToString} from 'react-dom/server';
-const output=await renderAeliqo(html\`<aeliqo-explorer></aeliqo-explorer><aeliqo-comparison></aeliqo-comparison><aeliqo-breakdown></aeliqo-breakdown><aeliqo-investigation></aeliqo-investigation><aeliqo-search-results></aeliqo-search-results><aeliqo-record-editor></aeliqo-record-editor><aeliqo-form-flow></aeliqo-form-flow><aeliqo-quality-panel></aeliqo-quality-panel>\`);
+import {html} from 'lit';import {renderVarendo} from '@varendo/web/server';import * as bindings from '@varendo/react/compound';import '@varendo/react/ssr';import React from 'react';import {renderToString} from 'react-dom/server';
+const output=await renderVarendo(html\`<varendo-explorer></varendo-explorer><varendo-comparison></varendo-comparison><varendo-breakdown></varendo-breakdown><varendo-investigation></varendo-investigation><varendo-search-results></varendo-search-results><varendo-record-editor></varendo-record-editor><varendo-form-flow></varendo-form-flow><varendo-quality-panel></varendo-quality-panel>\`);
 if((output.match(/shadowrootmode=/g)||[]).length<8)throw Error('Missing compound SSR');
-for(const name of ${JSON.stringify(names)}){if(typeof bindings['Aeliqo'+name]!=='object'&&typeof bindings['Aeliqo'+name]!=='function')throw Error('Missing React binding');}
-const react=renderToString(React.createElement(bindings.AeliqoRecordEditor,{entity:'person',entityKey:'a',entityRevision:'1'},React.createElement('input',{name:'name',defaultValue:'Ada'})));if(!react.includes('aeliqo-record-editor')||!react.includes('Ada'))throw Error('React SSR');console.log(JSON.stringify({webSsr:true,reactSsr:true,eightBindings:true}));
+for(const name of ${JSON.stringify(names)}){if(typeof bindings['Varendo'+name]!=='object'&&typeof bindings['Varendo'+name]!=='function')throw Error('Missing React binding');}
+const react=renderToString(React.createElement(bindings.VarendoRecordEditor,{entity:'person',entityKey:'a',entityRevision:'1'},React.createElement('input',{name:'name',defaultValue:'Ada'})));if(!react.includes('varendo-record-editor')||!react.includes('Ada'))throw Error('React SSR');console.log(JSON.stringify({webSsr:true,reactSsr:true,eightBindings:true}));
 `,
 );
 const nodeReport = JSON.parse(run(['node', '--disallow-code-generation-from-strings', 'node.mjs'], consumer).trim());
 await writeFile(
   join(consumer, 'consumer.tsx'),
   `
-import React from 'react';import {AeliqoRecordEditor,AeliqoFormFlow,AeliqoComparison,AeliqoExplorer,AeliqoBreakdown,AeliqoInvestigation,AeliqoSearchResults,AeliqoQualityPanel} from '@varendo/react/compound';import type {AeliqoRecordEditorSaveDetail,AeliqoCompoundRecipeInput} from '@varendo/web/compound';import {explorerPresentationRecipe} from '@varendo/web/explorer';
-const editor=<AeliqoRecordEditor entity="person" entityKey="a" entityRevision="1" onSave={event=>{const detail:AeliqoRecordEditorSaveDetail=event.detail;void detail;}}/>;
-const flow=<AeliqoFormFlow steps={[{id:'a',label:'A'}]} draft={{values:['a','b']}} onCommit={event=>{void event.detail.draft;}}/>;
-const compare=<AeliqoComparison metrics={[{id:'amount',label:'Amount',values:{a:{decimal:'9007199254740993.01'}}}]} compareKeys={['a']}/>;
-const all=[<AeliqoExplorer/>,<AeliqoBreakdown/>,<AeliqoInvestigation/>,<AeliqoSearchResults/>,<AeliqoQualityPanel/>];void [editor,flow,compare,all];declare const input:AeliqoCompoundRecipeInput;explorerPresentationRecipe(input);
+import React from 'react';import {VarendoRecordEditor,VarendoFormFlow,VarendoComparison,VarendoExplorer,VarendoBreakdown,VarendoInvestigation,VarendoSearchResults,VarendoQualityPanel} from '@varendo/react/compound';import type {VarendoRecordEditorSaveDetail,VarendoCompoundRecipeInput} from '@varendo/web/compound';import {explorerPresentationRecipe} from '@varendo/web/explorer';
+const editor=<VarendoRecordEditor entity="person" entityKey="a" entityRevision="1" onSave={event=>{const detail:VarendoRecordEditorSaveDetail=event.detail;void detail;}}/>;
+const flow=<VarendoFormFlow steps={[{id:'a',label:'A'}]} draft={{values:['a','b']}} onCommit={event=>{void event.detail.draft;}}/>;
+const compare=<VarendoComparison metrics={[{id:'amount',label:'Amount',values:{a:{decimal:'9007199254740993.01'}}}]} compareKeys={['a']}/>;
+const all=[<VarendoExplorer/>,<VarendoBreakdown/>,<VarendoInvestigation/>,<VarendoSearchResults/>,<VarendoQualityPanel/>];void [editor,flow,compare,all];declare const input:VarendoCompoundRecipeInput;explorerPresentationRecipe(input);
 // @ts-expect-error Commit receipts require host revision identity.
-const wrong:AeliqoRecordEditorSaveDetail={source:'user',entity:'person',key:'a',values:{}};void wrong;
+const wrong:VarendoRecordEditorSaveDetail={source:'user',entity:'person',key:'a',values:{}};void wrong;
 `,
 );
 await writeFile(
@@ -196,8 +196,8 @@ await writeFile(join(consumer, 'index.html'), '<div id="app"></div><script type=
 await writeFile(
   join(consumer, 'browser.mjs'),
   `
-import React from 'react';import {createRoot} from 'react-dom/client';import {registerAeliqoElements} from '@varendo/web';import * as wrappers from '@varendo/react/compound';registerAeliqoElements();window.receipts=[];
-const components=${JSON.stringify(names)}.map(name=>React.createElement(wrappers['Aeliqo'+name],{key:name,...(name==='RecordEditor'?{entity:'person',entityKey:'a',entityRevision:'1',onSave:event=>window.receipts.push(event.detail)}:{})},name==='RecordEditor'?React.createElement('input',{name:'name',defaultValue:'Ada',required:true,'aria-label':'Name'}):undefined));
+import React from 'react';import {createRoot} from 'react-dom/client';import {registerVarendoElements} from '@varendo/web';import * as wrappers from '@varendo/react/compound';registerVarendoElements();window.receipts=[];
+const components=${JSON.stringify(names)}.map(name=>React.createElement(wrappers['Varendo'+name],{key:name,...(name==='RecordEditor'?{entity:'person',entityKey:'a',entityRevision:'1',onSave:event=>window.receipts.push(event.detail)}:{})},name==='RecordEditor'?React.createElement('input',{name:'name',defaultValue:'Ada',required:true,'aria-label':'Name'}):undefined));
 createRoot(document.querySelector('#app')).render(React.createElement(React.Fragment,null,...components));
 `,
 );
@@ -225,7 +225,7 @@ try {
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('http://127.0.0.1:' + server.address().port);
   await page.waitForFunction(
-    (tags) => tags.every((tag) => document.querySelector('aeliqo-' + tag)?.shadowRoot?.querySelector('section')),
+    (tags) => tags.every((tag) => document.querySelector('varendo-' + tag)?.shadowRoot?.querySelector('section')),
     tags,
   );
   await page.getByRole('textbox', { name: 'Name', exact: true }).fill('Ada Lovelace');

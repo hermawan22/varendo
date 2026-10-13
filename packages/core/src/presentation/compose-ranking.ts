@@ -297,4 +297,4 @@ export function buildPlan(
   };
 }
 
-const stateIdentity = { id: 'aeliqo.state.identity', revision: '1' } as const;
+const stateIdentity = { id: 'varendo.state.identity', revision: '1' } as const;

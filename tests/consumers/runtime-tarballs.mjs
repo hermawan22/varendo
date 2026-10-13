@@ -1003,7 +1003,7 @@ import type {Catalog,
 } from '@varendo/core';
 import {defineDataFeature, defineFeature} from '@varendo/core/features';
 import {z} from 'zod';
-import {createAeliqoRuntime, createLocalDataBinding as createRootLocalDataBinding, type AeliqoRuntime} from '@varendo/runtime';
+import {createVarendoRuntime, createLocalDataBinding as createRootLocalDataBinding, type VarendoRuntime} from '@varendo/runtime';
 import {createLocalDataBinding} from '@varendo/runtime/surfaces';
 import type {CapabilitySurfaceBindings, CreateLocalDataBindingInput, DataSurfaceBindings, ExternalSurfaceStore, LocalDataSurfaceBinding, SurfaceController} from '@varendo/runtime/surfaces';
 import type {ScopeBinding, ScopeController} from '@varendo/runtime/scopes';
@@ -1102,7 +1102,7 @@ const peopleBindings: DataSurfaceBindings<PeopleState> = {
     normalize: async () => ({rows: []}),
   },
 };
-declare const surfaceRuntime: AeliqoRuntime;
+declare const surfaceRuntime: VarendoRuntime;
 declare const scopeBinding: ScopeBinding;
 const appScope: ScopeController = surfaceRuntime.createScope({binding: scopeBinding, initial: {kind: 'workspace', id: 'acme'}});
 appScope.attach();
@@ -1123,7 +1123,7 @@ typedSurface.address.surfaceGeneration = 2;
 declare const bypassBinding: CapabilitySurfaceBindings<Intent, PeopleState>;
 // @ts-expect-error Data features must use DataService bindings.
 surfaceRuntime.createSurface({scope: surfaceScope, id: 'bypass', feature: peopleFeature, bindings: bypassBinding});
-void [createAeliqoRuntime, typedSurface, installedBinding, installedBindingInput, typedInstalledBinding, rootBindingFactory];
+void [createVarendoRuntime, typedSurface, installedBinding, installedBindingInput, typedInstalledBinding, rootBindingFactory];
 `,
 );
 await writeFile(
@@ -1148,8 +1148,8 @@ await writeFile(
   join(consumerDirectory, 'audit-io-blocker.cjs'),
   [
     "const {syncBuiltinESMExports} = require('node:module');",
-    'const state = {attempts: []}; globalThis.__aeliqoAuditIo = state;',
-    "const blocked = label => () => { state.attempts.push(label); const error = new Error('I/O is forbidden in the local audit proof'); error.code = 'AELIQO_AUDIT_IO_BLOCKED'; throw error; };",
+    'const state = {attempts: []}; globalThis.__varendoAuditIo = state;',
+    "const blocked = label => () => { state.attempts.push(label); const error = new Error('I/O is forbidden in the local audit proof'); error.code = 'VARENDO_AUDIT_IO_BLOCKED'; throw error; };",
     "globalThis.fetch = blocked('fetch');",
     "for (const name of ['node:http', 'node:https']) { const value = require(name); value.request = blocked(name + '.request'); value.get = blocked(name + '.get'); }",
     "const net = require('node:net'); net.connect = blocked('node:net.connect'); net.createConnection = blocked('node:net.createConnection'); net.Socket.prototype.connect = blocked('node:net.Socket.connect');",
@@ -1162,7 +1162,7 @@ await writeFile(
   [
     "const auditModule = await import('@varendo/runtime/audit');",
     "const {createRequire, syncBuiltinESMExports} = await import('node:module'); const require = createRequire(import.meta.url);",
-    "const state = globalThis.__aeliqoAuditIo; const blocked = label => () => { state.attempts.push(label); const error = new Error('I/O is forbidden in the local audit proof'); error.code = 'AELIQO_AUDIT_IO_BLOCKED'; throw error; };",
+    "const state = globalThis.__varendoAuditIo; const blocked = label => () => { state.attempts.push(label); const error = new Error('I/O is forbidden in the local audit proof'); error.code = 'VARENDO_AUDIT_IO_BLOCKED'; throw error; };",
     "const fsMutable = require('node:fs'); for (const name of ['readFile', 'readFileSync', 'writeFile', 'writeFileSync', 'appendFile', 'appendFileSync', 'open', 'openSync', 'createReadStream', 'createWriteStream']) fsMutable[name] = blocked('node:fs.' + name); const fsp = require('node:fs/promises'); for (const name of ['readFile', 'writeFile', 'appendFile', 'open']) fsp[name] = blocked('node:fs/promises.' + name); syncBuiltinESMExports();",
     'const audit = auditModule.createLocalAuditExporter({maxEvents: 2, maxBytes: 1024, now: () => 1});',
     "const recorded = audit.record({kind: 'source', transport: 'local', status: 'error', code: 'source.invalid'}); const exported = audit.exportSnapshot(); audit.dispose();",
@@ -1170,7 +1170,7 @@ await writeFile(
     "if (!recorded.ok || !exported.ok || exported.value.records.length !== 1 || auditIoAttempts.length !== 0) throw new Error('installed audit did not execute offline');",
     "const [http, fs] = await Promise.all([import('node:http'), import('node:fs')]);",
     "const probes = [['fetch', () => fetch('https://example.invalid')], ['node:http.get', () => http.get('http://example.invalid')], ['node:fs.readFileSync', () => fs.readFileSync('/not-read')]];",
-    "for (const [label, probe] of probes) { try { probe(); throw new Error('I/O blocker probe unexpectedly succeeded: ' + label); } catch (error) { if (error?.code !== 'AELIQO_AUDIT_IO_BLOCKED') throw error; } }",
+    "for (const [label, probe] of probes) { try { probe(); throw new Error('I/O blocker probe unexpectedly succeeded: ' + label); } catch (error) { if (error?.code !== 'VARENDO_AUDIT_IO_BLOCKED') throw error; } }",
     'process.stdout.write(JSON.stringify({auditExecuted:true,auditIoAttempts,blockerProbeAttempts:state.attempts.slice(auditIoAttempts.length)}));',
   ].join('\n') + '\n',
 );
@@ -1190,7 +1190,7 @@ import assert from 'node:assert/strict';
 import {z} from 'zod';
 import {defineDataFeature, defineFeature} from '@varendo/core/features';
 import {createQueryFunctionRegistry} from '@varendo/core/expressions';
-import {createAeliqoRuntime, createLocalDataBinding as createRootLocalDataBinding} from '@varendo/runtime';
+import {createVarendoRuntime, createLocalDataBinding as createRootLocalDataBinding} from '@varendo/runtime';
 import {createLocalDataBinding} from '@varendo/runtime/surfaces';
 assert.equal(createRootLocalDataBinding, createLocalDataBinding);
 const diagnosticsCode = outcome => outcome.ok ? undefined : outcome.diagnostics[0]?.code;
@@ -1211,7 +1211,7 @@ assert.equal(binding.source.coverage.stableOrder[0].nulls, 'last');
 assert.deepEqual(binding.source.coverage.stableOrderIdentity, ['id']);
 assert(Object.isFrozen(binding.source.coverage));
 assert(Object.isFrozen(binding.source.coverage.stableOrder));
-const runtime = createAeliqoRuntime({runtimeId: 'installed-runtime', resources: [{resource: feature.resource, data}], authority: {read: () => ({ok: true, value: {principalKey: 'local', scopeDigest: 'local', policyRevision: '1', experienceRevision: '1', grants: ['catalog.read', 'task.evaluate', 'result.inspect'], readContext: {principal: 'local'}}})}});
+const runtime = createVarendoRuntime({runtimeId: 'installed-runtime', resources: [{resource: feature.resource, data}], authority: {read: () => ({ok: true, value: {principalKey: 'local', scopeDigest: 'local', policyRevision: '1', experienceRevision: '1', grants: ['catalog.read', 'task.evaluate', 'result.inspect'], readContext: {principal: 'local'}}})}});
 const scope = runtime.createLocalSurfaceScope({id: 'installed-scope', allowedFeatures: ['people', 'report']});
 const bindings = binding;
 const left = runtime.createSurface({scope, id: 'left', feature, bindings});
@@ -1604,7 +1604,7 @@ const audit = {...exerciseAudit(), browserIoAttempts: [...auditBrowserIoAttempts
 globalThis.fetch = realFetch;
 globalThis.XMLHttpRequest = RealXMLHttpRequest;
 globalThis.WebSocket = RealWebSocket;
-globalThis.__aeliqoBrowserData = {local,network,transportFlows,regions,actions,interaction,audit};
+globalThis.__varendoBrowserData = {local,network,transportFlows,regions,actions,interaction,audit};
 \`);
   await writeFile('vite.config.mjs', \`export default {build:{minify:true,outDir:'dist',rollupOptions:{input:'index.html'}},plugins:[{name:'record-runtime-modules',generateBundle(_,bundle){const modules=Object.values(bundle).filter(item=>item.type==='chunk').flatMap(item=>Object.keys(item.modules));this.emitFile({type:'asset',fileName:'modules.json',source:JSON.stringify(modules)});}}]};\`);
   run(['node_modules/.bin/vite', 'build'], process.cwd());
@@ -1662,8 +1662,8 @@ globalThis.__aeliqoBrowserData = {local,network,transportFlows,regions,actions,i
     page.on('console', message => { if (message.type() === 'error') browserFailures.push(message.text()); });
     page.on('requestfailed', request => browserFailures.push(request.url() + ': ' + request.failure()?.errorText));
     await page.goto('http://127.0.0.1:' + staticServer.address().port + '/');
-    await page.waitForFunction(() => globalThis.__aeliqoBrowserData !== undefined, null, {polling: 100, timeout: 30_000});
-    browserResult = await page.evaluate(() => globalThis.__aeliqoBrowserData);
+    await page.waitForFunction(() => globalThis.__varendoBrowserData !== undefined, null, {polling: 100, timeout: 30_000});
+    browserResult = await page.evaluate(() => globalThis.__varendoBrowserData);
     assert.equal(browserResult.local.rows, 3);
     assert.equal(browserResult.network.rows, 1);
     assert.equal(browserResult.transportFlows, 21);

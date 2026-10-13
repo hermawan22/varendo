@@ -1,7 +1,7 @@
 import type { CommitPreconditions, Intent, Outcome, PresentationPlan, Result, Task, VersionRef } from '@varendo/core';
 import type { PresentationEnvironment } from '@varendo/core/presentation';
-import type { AeliqoViewDefinition } from '../region/types.js';
-import type { AeliqoInputBindings } from '../region/input-registry.js';
+import type { VarendoViewDefinition } from '../region/types.js';
+import type { VarendoInputBindings } from '../region/input-registry.js';
 
 export interface RecipePresentationPolicy {
   /** Canonical representation IDs permitted by the mounted resource. */
@@ -15,10 +15,10 @@ export interface RecipeContext {
   readonly result?: Result;
   /** Every authorized output descriptor. Always supplied by the app facade. */
   readonly results?: readonly Result[];
-  readonly inputBindings?: AeliqoInputBindings;
+  readonly inputBindings?: VarendoInputBindings;
   readonly current: CommitPreconditions;
   readonly environment: PresentationEnvironment;
-  readonly availableViews: readonly AeliqoViewDefinition[];
+  readonly availableViews: readonly VarendoViewDefinition[];
   /** Supplied by the app facade. Optional for source compatibility with direct recipe consumers. */
   readonly presentationPolicy?: RecipePresentationPolicy;
   readonly incumbent?: PresentationPlan;
@@ -37,4 +37,4 @@ export interface RecipeDefinition {
 
 export interface RecipeInput extends RecipeDefinition {}
 
-export interface ViewInput extends AeliqoViewDefinition {}
+export interface ViewInput extends VarendoViewDefinition {}

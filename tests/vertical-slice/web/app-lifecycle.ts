@@ -1,7 +1,7 @@
 import { defineResource } from '@varendo/core';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { createLocalDataService } from '@varendo/runtime/data';
-import { createAeliqoApp } from '@varendo/web/app';
+import { createVarendoApp } from '@varendo/web/app';
 import { z } from 'zod';
 
 const people = defineResource({
@@ -28,7 +28,7 @@ const data = createLocalDataService({
   authorize: () => ({ ok: true, value: { scopeDigest: 'lifecycle-scope', policyRevision: 'lifecycle-policy-1' } }),
 });
 
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [{ resource: people, data }],
   authority: {
     read: () => ({

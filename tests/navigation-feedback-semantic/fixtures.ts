@@ -1,13 +1,13 @@
 import type { PresentationPlan } from '../../packages/core/src/contracts/index.js';
 import type { PresentationContext } from '../../packages/core/src/presentation/index.js';
 import {
-  AELIQO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS,
-  AELIQO_NAVIGATION_FEEDBACK_REFS,
+  VARENDO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS,
+  VARENDO_NAVIGATION_FEEDBACK_REFS,
   createNavigationFeedbackPresentationManifests,
-  type AeliqoNavigationFeedbackBindings,
+  type VarendoNavigationFeedbackBindings,
 } from '../../packages/web/src/region/navigation-feedback-registry.js';
 
-export const navigationFeedbackBindings: AeliqoNavigationFeedbackBindings = {
+export const navigationFeedbackBindings: VarendoNavigationFeedbackBindings = {
   revision: 'experience-nav-1',
   contents: [
     { id: 'crumb.label', text: 'Reports' },
@@ -149,8 +149,8 @@ const preconditions = {
 } as const;
 
 export function navigationFeedbackPresentationPlan(): PresentationPlan {
-  const ref = AELIQO_NAVIGATION_FEEDBACK_REFS;
-  const schema = AELIQO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS;
+  const ref = VARENDO_NAVIGATION_FEEDBACK_REFS;
+  const schema = VARENDO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS;
   const config = (key: keyof typeof schema, bindingRef: string, values: Record<string, unknown> = {}) => ({
     schema: schema[key],
     values: { bindingRevision: navigationFeedbackBindings.revision, bindingRef, ...values },
@@ -259,7 +259,7 @@ export function navigationFeedbackPresentationPlan(): PresentationPlan {
 }
 
 export function navigationFeedbackPresentationContext(): PresentationContext {
-  const representations = Object.values(AELIQO_NAVIGATION_FEEDBACK_REFS).map((value) => value.id);
+  const representations = Object.values(VARENDO_NAVIGATION_FEEDBACK_REFS).map((value) => value.id);
   return {
     task: {
       version: '1',
@@ -302,7 +302,7 @@ export function navigationFeedbackPresentationContext(): PresentationContext {
       reducedMotion: false,
       forcedColors: false,
     },
-    rendererCapabilities: Object.values(AELIQO_NAVIGATION_FEEDBACK_REFS),
+    rendererCapabilities: Object.values(VARENDO_NAVIGATION_FEEDBACK_REFS),
   };
 }
 

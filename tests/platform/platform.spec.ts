@@ -1,20 +1,20 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { html } from 'lit';
-import { renderAeliqo } from '../../packages/web/src/server.js';
+import { renderVarendo } from '../../packages/web/src/server.js';
 
 test('vanilla embedding keeps controlled events, forms, focus and style isolation', async ({ page }) => {
   await page.goto('/index.html');
-  const input = page.locator('#standalone-form aeliqo-text-field').locator('input');
+  const input = page.locator('#standalone-form varendo-text-field').locator('input');
   await expect(input).toHaveValue('Ada');
   await expect(input).toHaveAccessibleName('Name');
   await expect(input).toHaveAccessibleDescription('The value is controlled by the host.');
-  await page.locator('#standalone-form aeliqo-text-field').evaluate((element) => {
+  await page.locator('#standalone-form varendo-text-field').evaluate((element) => {
     (element as HTMLElement & { error: string }).error = 'Name is invalid.';
   });
   await expect(input).toHaveAccessibleName('Name');
   await expect(input).toHaveAccessibleDescription('The value is controlled by the host. Name is invalid.');
-  await page.locator('#standalone-form aeliqo-text-field').evaluate((element) => {
+  await page.locator('#standalone-form varendo-text-field').evaluate((element) => {
     (element as HTMLElement & { error: string }).error = '';
   });
   await expect(input).toHaveAccessibleDescription('The value is controlled by the host.');
@@ -25,13 +25,13 @@ test('vanilla embedding keeps controlled events, forms, focus and style isolatio
 
   await input.focus();
   await input.evaluate((element) => (element as HTMLInputElement).setSelectionRange(2, 2));
-  const focusedInsideShadow = await page.locator('#standalone-form aeliqo-text-field').evaluate((element) => {
+  const focusedInsideShadow = await page.locator('#standalone-form varendo-text-field').evaluate((element) => {
     const nativeInput = element.shadowRoot?.querySelector('input');
     return document.activeElement === element && element.shadowRoot?.activeElement === nativeInput;
   });
   expect(focusedInsideShadow).toBe(true);
 
-  const shadowStyle = await page.locator('#standalone-form aeliqo-text-field').evaluate((element) => {
+  const shadowStyle = await page.locator('#standalone-form varendo-text-field').evaluate((element) => {
     const style = element.shadowRoot?.querySelector('style');
     const nativeInput = element.shadowRoot?.querySelector('input');
     return {
@@ -43,11 +43,11 @@ test('vanilla embedding keeps controlled events, forms, focus and style isolatio
   expect(shadowStyle.nonce === 't02nonce' || shadowStyle.hasAdoptedStyleSheet).toBe(true);
   expect(shadowStyle.color).not.toBe('rgb(255, 0, 0)');
 
-  await page.locator('#standalone-form aeliqo-text-field').evaluate((element) => {
+  await page.locator('#standalone-form varendo-text-field').evaluate((element) => {
     (element as HTMLElement & { value: string }).value = 'Externally accepted';
   });
   await expect(input).toHaveValue('Externally accepted');
-  const focusAfterControlledUpdate = await page.locator('#standalone-form aeliqo-text-field').evaluate((element) => {
+  const focusAfterControlledUpdate = await page.locator('#standalone-form varendo-text-field').evaluate((element) => {
     const nativeInput = element.shadowRoot?.querySelector('input');
     return document.activeElement === element && element.shadowRoot?.activeElement === nativeInput;
   });
@@ -97,18 +97,18 @@ test('a rejected controlled edit cannot become native form data', async ({ page 
       throw new Error('form missing');
     }
     form.replaceChildren();
-    const input = document.createElement('aeliqo-text-field') as HTMLElement & { value: string };
+    const input = document.createElement('varendo-text-field') as HTMLElement & { value: string };
     input.setAttribute('label', 'Locked');
     input.setAttribute('name', 'locked');
     input.setAttribute('value', 'fixed');
-    input.addEventListener('aeliqo-input-change', (event) => {
+    input.addEventListener('varendo-input-change', (event) => {
       const proposedValue = (event as CustomEvent<{ readonly value: string }>).detail.value;
       if (proposedValue !== 'fixed') input.value = 'fixed';
     });
     form.append(input);
   });
 
-  const input = page.locator('#standalone-form aeliqo-text-field').locator('input');
+  const input = page.locator('#standalone-form varendo-text-field').locator('input');
   await expect(input).toHaveValue('fixed');
   await input.fill('rejected');
   await expect(input).toHaveValue('fixed');
@@ -127,7 +127,7 @@ test('property-only names remain form-associated', async ({ page }) => {
       throw new Error('form missing');
     }
     form.replaceChildren();
-    const input = document.createElement('aeliqo-text-field') as HTMLElement & {
+    const input = document.createElement('varendo-text-field') as HTMLElement & {
       name: string;
       value: string;
       updateComplete: Promise<unknown>;
@@ -135,19 +135,19 @@ test('property-only names remain form-associated', async ({ page }) => {
     input.setAttribute('label', 'Property name');
     input.name = 'person-property';
     input.value = 'Ada';
-    input.addEventListener('aeliqo-input-change', (event) => {
+    input.addEventListener('varendo-input-change', (event) => {
       input.value = (event as CustomEvent<{ readonly value: string }>).detail.value;
     });
     form.append(input);
     await input.updateComplete;
   });
 
-  const input = page.locator('#standalone-form aeliqo-text-field').locator('input');
+  const input = page.locator('#standalone-form varendo-text-field').locator('input');
   await input.fill('Lin');
   const submitted = await page.locator('#standalone-form').evaluate((element) => {
     const form = element as HTMLFormElement;
     return {
-      name: form.querySelector('aeliqo-text-field')?.getAttribute('name'),
+      name: form.querySelector('varendo-text-field')?.getAttribute('name'),
       value: new FormData(form).get('person-property'),
     };
   });
@@ -162,7 +162,7 @@ test('IME composition preserves drafts across host updates and commits once', as
       throw new Error('form missing');
     }
     form.replaceChildren();
-    const element = document.createElement('aeliqo-text-field') as HTMLElement & {
+    const element = document.createElement('varendo-text-field') as HTMLElement & {
       name: string;
       value: string;
       updateComplete: Promise<unknown>;
@@ -170,7 +170,7 @@ test('IME composition preserves drafts across host updates and commits once', as
     element.name = 'ime';
     element.value = 'base';
     const state = { accept: true, proposals: [] as string[] };
-    element.addEventListener('aeliqo-input-change', (event) => {
+    element.addEventListener('varendo-input-change', (event) => {
       const value = (event as CustomEvent<{ readonly value: string }>).detail.value;
       state.proposals.push(value);
       element.value = state.accept ? value : 'host update';
@@ -277,7 +277,7 @@ async function runEnterScenario(
     nativeInput.id = 'native-enter-input';
     nativeInput.name = 'field';
     nativeInput.value = currentScenario === 'readonly-required-empty' ? '' : 'value';
-    const customInput = document.createElement('aeliqo-text-field') as HTMLElement & {
+    const customInput = document.createElement('varendo-text-field') as HTMLElement & {
       name: string;
       value: string;
       required: boolean;
@@ -398,7 +398,7 @@ async function runEnterScenario(
 
   await page.locator('#native-enter-form #native-enter-input').press('Enter');
   await page.waitForTimeout(30);
-  await page.locator('#custom-enter-form aeliqo-text-field').locator('input').press('Enter');
+  await page.locator('#custom-enter-form varendo-text-field').locator('input').press('Enter');
   await page.waitForTimeout(30);
   return page.evaluate(() => ({
     native: (document.querySelector('#native-enter-form') as HTMLFormElement & { records: SubmissionRecord[] }).records,
@@ -442,7 +442,7 @@ test('readonly required empty inputs also match native direct requestSubmit', as
     nativeInput.name = 'field';
     nativeInput.required = true;
     nativeInput.readOnly = true;
-    const customInput = document.createElement('aeliqo-text-field') as HTMLElement & {
+    const customInput = document.createElement('varendo-text-field') as HTMLElement & {
       name: string;
       required: boolean;
       readOnly: boolean;
@@ -492,7 +492,7 @@ test('Enter bridge honors outer cancellation and default submitter click cancell
         button.type = 'submit';
         button.textContent = 'Submit';
         const control = custom
-          ? (document.createElement('aeliqo-text-field') as HTMLElement & { name: string; value: string })
+          ? (document.createElement('varendo-text-field') as HTMLElement & { name: string; value: string })
           : document.createElement('input');
         control.id = custom ? 'custom-cancel-input' : 'native-cancel-input';
         control.name = 'field';
@@ -513,13 +513,13 @@ test('Enter bridge honors outer cancellation and default submitter click cancell
           event.preventDefault();
         });
       }
-      await (customForm.querySelector('aeliqo-text-field') as HTMLElement & { updateComplete: Promise<unknown> })
+      await (customForm.querySelector('varendo-text-field') as HTMLElement & { updateComplete: Promise<unknown> })
         .updateComplete;
     }, cancellation);
 
     await page.locator('#native-cancel-form #native-cancel-input').press('Enter');
     await page.waitForTimeout(30);
-    await page.locator('#custom-cancel-form aeliqo-text-field').locator('input').press('Enter');
+    await page.locator('#custom-cancel-form varendo-text-field').locator('input').press('Enter');
     await page.waitForTimeout(30);
     const result = await page.evaluate(() => ({
       native: (document.querySelector('#native-cancel-form') as HTMLFormElement & { submitted: number }).submitted,
@@ -537,29 +537,29 @@ test('strict script CSP blocks injected inline code while the fixture remains in
     document.head.append(script);
   });
   expect(await page.locator('body').getAttribute('data-inline-executed')).toBeNull();
-  await expect(page.locator('#standalone-root aeliqo-table')).toBeVisible();
+  await expect(page.locator('#standalone-root varendo-table')).toBeVisible();
 });
 
 test('React and Vue consume the same registered web elements', async ({ page }) => {
   await page.goto('/react.html');
-  const reactInput = page.locator('#react-form aeliqo-text-field').locator('input');
+  const reactInput = page.locator('#react-form varendo-text-field').locator('input');
   await expect(reactInput).toHaveValue('React');
   await reactInput.fill('React updated');
   await expect(page.locator('#react-value')).toHaveText('React updated');
-  await expect(page.locator('aeliqo-table').locator('tbody tr')).toHaveCount(2);
+  await expect(page.locator('varendo-table').locator('tbody tr')).toHaveCount(2);
 
   await page.goto('/vue.html');
-  const vueInput = page.locator('#vue-form aeliqo-text-field').locator('input');
+  const vueInput = page.locator('#vue-form varendo-text-field').locator('input');
   await expect(vueInput).toHaveValue('Vue');
   await vueInput.fill('Vue updated');
   await expect(page.locator('#vue-value')).toHaveText('Vue updated');
-  await expect(page.locator('aeliqo-chart').locator('details')).toBeVisible();
+  await expect(page.locator('varendo-chart').locator('details')).toBeVisible();
 });
 
 test('SSR declarative shadow content upgrades and hydrates without duplication', async ({ page }) => {
-  const serverMarkup = await renderAeliqo(html`
+  const serverMarkup = await renderVarendo(html`
     <main>
-      <aeliqo-text-field label="Name" value="Ada" name="person"></aeliqo-text-field>
+      <varendo-text-field label="Name" value="Ada" name="person"></varendo-text-field>
     </main>
   `);
   const pageErrors: string[] = [];
@@ -569,16 +569,16 @@ test('SSR declarative shadow content upgrades and hydrates without duplication',
   });
   await page.goto('/ssr-document');
 
-  const registryBefore = await page.evaluate(() => customElements.get('aeliqo-text-field'));
+  const registryBefore = await page.evaluate(() => customElements.get('varendo-text-field'));
   expect(registryBefore).toBeUndefined();
 
-  const before = await page.locator('aeliqo-text-field').evaluate((element) => ({
+  const before = await page.locator('varendo-text-field').evaluate((element) => ({
     hasShadow: element.shadowRoot !== null,
     inputCount: element.shadowRoot?.querySelectorAll('input').length ?? 0,
   }));
   expect(before).toEqual({ hasShadow: true, inputCount: 1 });
 
-  const serverInput = page.locator('aeliqo-text-field').locator('input');
+  const serverInput = page.locator('varendo-text-field').locator('input');
   const serverInputHandle = await serverInput.elementHandle();
   if (serverInputHandle === null) {
     throw new Error('server input missing');
@@ -587,20 +587,20 @@ test('SSR declarative shadow content upgrades and hydrates without duplication',
   await serverInput.focus();
   await page.addScriptTag({ url: `${new URL('/src/hydrate.ts', page.url())}`, type: 'module' });
   await page.waitForFunction(() => {
-    const constructor = customElements.get('aeliqo-text-field');
-    const element = document.querySelector('aeliqo-text-field');
+    const constructor = customElements.get('varendo-text-field');
+    const element = document.querySelector('varendo-text-field');
     return constructor !== undefined && element instanceof constructor;
   });
   await expect(serverInput).toHaveValue('typed before hydration');
 
-  const after = await page.locator('aeliqo-text-field').evaluate((element) => ({
+  const after = await page.locator('varendo-text-field').evaluate((element) => ({
     inputCount: element.shadowRoot?.querySelectorAll('input').length ?? 0,
     shadowTemplateCount: element.shadowRoot?.querySelectorAll('template').length ?? 0,
     focused: document.activeElement === element && element.shadowRoot?.activeElement?.localName === 'input',
   }));
   expect(after).toEqual({ inputCount: 1, shadowTemplateCount: 0, focused: true });
   const sameInputNode = await page
-    .locator('aeliqo-text-field')
+    .locator('varendo-text-field')
     .evaluate(
       (element, originalInput) => element.shadowRoot?.querySelector('input') === originalInput,
       serverInputHandle,

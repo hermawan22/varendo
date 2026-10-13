@@ -1,8 +1,8 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFoundationElement } from '../foundation/base.js';
+import { VarendoFoundationElement } from '../foundation/base.js';
 import { isFormControlDisabled } from './form-disabled.js';
-import { AeliqoFormResetEvent, AeliqoFormSubmitEvent } from './events.js';
-import { aeliqoInputStyles } from './base.js';
+import { VarendoFormResetEvent, VarendoFormSubmitEvent } from './events.js';
+import { varendoInputStyles } from './base.js';
 
 const BUTTON_INPUT_TYPES: ReadonlySet<string> = new Set(['submit', 'reset', 'button', 'image']);
 const ENTER_OWNING_INPUT_TYPES: ReadonlySet<string> = new Set([
@@ -14,7 +14,7 @@ const ENTER_OWNING_INPUT_TYPES: ReadonlySet<string> = new Set([
 ]);
 
 /** Native form boundary with explicit host-controlled submit handling. */
-export class AeliqoFormElement extends AeliqoFoundationElement {
+export class VarendoFormElement extends VarendoFoundationElement {
   static readonly properties = {
     label: { type: String },
     noValidate: { attribute: 'no-validate', type: Boolean },
@@ -182,7 +182,7 @@ export class AeliqoFormElement extends AeliqoFoundationElement {
 
   private emitSubmit(submitter: HTMLElement | null): void {
     const identifier = submitter?.getAttribute('name') || submitter?.id || undefined;
-    this.dispatchEvent(new AeliqoFormSubmitEvent({ source: 'user', submitter: identifier }));
+    this.dispatchEvent(new VarendoFormSubmitEvent({ source: 'user', submitter: identifier }));
   }
 
   private readonly handleSlottedClick = (event: Event): void => {
@@ -263,7 +263,7 @@ export class AeliqoFormElement extends AeliqoFoundationElement {
   }
 
   private readonly handleReset = (event: Event): void => {
-    const reset = new AeliqoFormResetEvent();
+    const reset = new VarendoFormResetEvent();
     this.dispatchEvent(reset);
     if (reset.defaultPrevented) event.preventDefault();
     if (!reset.defaultPrevented) {
@@ -346,7 +346,7 @@ export class AeliqoFormElement extends AeliqoFoundationElement {
         reset?: () => void;
         reportValidity?: () => boolean;
       } =>
-        child.closest('aeliqo-form') === this &&
+        child.closest('varendo-form') === this &&
         'formValue' in child &&
         'checkValidity' in child &&
         typeof (child as { checkValidity?: unknown }).checkValidity === 'function' &&
@@ -361,7 +361,7 @@ export class AeliqoFormElement extends AeliqoFoundationElement {
       this.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement>(
         'input, select, textarea, button',
       ),
-    ).filter((control) => control.closest('aeliqo-form') === this);
+    ).filter((control) => control.closest('varendo-form') === this);
   }
 
   private nativeControlFromEvent(
@@ -391,7 +391,7 @@ export class AeliqoFormElement extends AeliqoFoundationElement {
   private ownsEvent(event: Event): boolean {
     const owner = event
       .composedPath()
-      .find((target): target is AeliqoFormElement => target instanceof AeliqoFormElement);
+      .find((target): target is VarendoFormElement => target instanceof VarendoFormElement);
     return owner === this;
   }
 
@@ -460,23 +460,23 @@ export class AeliqoFormElement extends AeliqoFoundationElement {
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       :host {
         display: block;
       }
       form {
         display: grid;
-        gap: var(--aeliqo-space-12, 0.75rem);
+        gap: var(--varendo-space-12, 0.75rem);
       }
       ::slotted(button) {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid var(--aeliqo-color-border, #64748b);
-        color: var(--aeliqo-color-text, #111827);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: var(--varendo-control-border-width, 0.0625rem) solid var(--varendo-color-border, #64748b);
+        color: var(--varendo-color-text, #111827);
         font: inherit;
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
-        min-inline-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
-        padding: var(--aeliqo-space-8, 0.5rem) var(--aeliqo-control-inline-padding, 0.875rem);
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
+        min-inline-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
+        padding: var(--varendo-space-8, 0.5rem) var(--varendo-control-inline-padding, 0.875rem);
       }
       @media (forced-colors: active) {
         ::slotted(button) {
@@ -485,12 +485,12 @@ export class AeliqoFormElement extends AeliqoFoundationElement {
         }
       }
       [part='error-summary'] {
-        background: color-mix(in srgb, var(--aeliqo-color-danger, #b91c1c) 10%, transparent);
-        border-inline-start: 0.25rem solid var(--aeliqo-color-danger, #b91c1c);
-        padding: var(--aeliqo-space-12, 0.75rem);
+        background: color-mix(in srgb, var(--varendo-color-danger, #b91c1c) 10%, transparent);
+        border-inline-start: 0.25rem solid var(--varendo-color-danger, #b91c1c);
+        padding: var(--varendo-space-12, 0.75rem);
       }
       [part='error-summary'] ul {
-        margin-block: var(--aeliqo-space-8, 0.5rem) 0;
+        margin-block: var(--varendo-space-8, 0.5rem) 0;
         padding-inline-start: 1.25rem;
       }
     `,

@@ -5,7 +5,7 @@ import { testPort } from '../shared/port.mjs';
 
 const configDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(configDirectory, '../..');
-const port = await testPort('AELIQO_ADAPTATION_SEMANTIC_PORT');
+const port = await testPort('VARENDO_ADAPTATION_SEMANTIC_PORT');
 const origin = `http://127.0.0.1:${port}`;
 
 export default defineConfig({

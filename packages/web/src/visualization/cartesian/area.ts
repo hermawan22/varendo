@@ -1,4 +1,4 @@
-import { AeliqoCartesianElement } from './base.js';
-export class AeliqoAreaElement extends AeliqoCartesianElement {
+import { VarendoCartesianElement } from './base.js';
+export class VarendoAreaElement extends VarendoCartesianElement {
   protected readonly expectedView = 'area' as const;
 }

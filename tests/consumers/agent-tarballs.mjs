@@ -60,7 +60,7 @@ const packages = [];
 for (const name of ['core', 'runtime', 'agent']) {
   const directory = join(root, 'packages', name);
   const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));
@@ -149,7 +149,7 @@ const compositionFixture = {
   environment: fixture.environment,
 };
 const probe = `
-import { AELIQO_AGENT_INSTRUCTIONS, createAppToolEndpoint, createAppToolSession } from '@varendo/agent';
+import { VARENDO_AGENT_INSTRUCTIONS, createAppToolEndpoint, createAppToolSession } from '@varendo/agent';
 import { createAppToolSession as createSessionFromApp } from '@varendo/agent/app';
 import {
   createAgentCapabilityDispatcher,
@@ -161,7 +161,7 @@ import { createAgentSession } from '@varendo/agent/session';
 import { defineResource, parseWireValue } from '@varendo/core';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { validatePresentationPlan } from '@varendo/core/presentation';
-import { createAeliqoRuntime } from '@varendo/runtime/app';
+import { createVarendoRuntime } from '@varendo/runtime/app';
 import { createLocalDataService } from '@varendo/runtime/data';
 import { z } from 'zod';
 
@@ -190,7 +190,7 @@ export async function probe() {
     functionRegistry: functions.value,
     authorize: () => ({ ok: true, value: { scopeDigest: 'scope-1', policyRevision: 'policy-1' } }),
   });
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     resources: [{ resource: people, data }],
     authority: {
       read: () => ({
@@ -240,10 +240,10 @@ export async function probe() {
   check(endpoint.ok, 'app endpoint');
   const tools = await endpoint.value.discover();
   check(
-    tools.ok && tools.value.map((tool) => tool.name).join(',') === 'aeliqo_context,aeliqo_render,aeliqo_act',
+    tools.ok && tools.value.map((tool) => tool.name).join(',') === 'varendo_context,varendo_render,varendo_act',
     'bounded app tool discovery',
   );
-  const context = await endpoint.value.invoke('aeliqo_context', {}, { requestId: 'context' });
+  const context = await endpoint.value.invoke('varendo_context', {}, { requestId: 'context' });
   check(context.ok && context.value.state === 'accepted', 'context capability');
   check(context.value.value.activeResource === 'people', 'paired resource context');
   check(JSON.stringify(context.value.value.resources[0].customIntents) === JSON.stringify(contextMetadata.customIntents), 'installed custom-intent metadata');
@@ -252,9 +252,9 @@ export async function probe() {
   check(!JSON.stringify(context).includes('principalKey'), 'private authority stays out of context');
   check(Array.isArray(context.value.value.resources[0].examples) && context.value.value.resources[0].examples[0].kind === 'browse', 'installed context examples');
   check(JSON.stringify(context.value.value.timeGrains) === JSON.stringify(['day', 'week', 'month', 'quarter', 'year']), 'installed time grains');
-  const renderTool = tools.value.find((tool) => tool.name === 'aeliqo_render');
-  check(renderTool.description.includes('aeliqo_context') && !JSON.stringify(renderTool.inputSchema.oneOf[0].required).includes('version'), 'installed agent-friendly render tool');
-  check(AELIQO_AGENT_INSTRUCTIONS.includes('aeliqo_context'), 'installed recommended agent instructions');
+  const renderTool = tools.value.find((tool) => tool.name === 'varendo_render');
+  check(renderTool.description.includes('varendo_context') && !JSON.stringify(renderTool.inputSchema.oneOf[0].required).includes('version'), 'installed agent-friendly render tool');
+  check(VARENDO_AGENT_INSTRUCTIONS.includes('varendo_context'), 'installed recommended agent instructions');
   endpoint.value.close();
   check(createSessionFromApp === createAppToolSession, 'root/app session export parity');
   const appSession = createAppToolSession({ runtime, regionId: 'main', goalEpoch: 'host-session', transport: 'manual', expiresAt: Date.now() + 60_000 });
@@ -367,17 +367,17 @@ console.log(JSON.stringify(await probe()));
 const nodeReport = JSON.parse(run(['node', '--disallow-code-generation-from-strings', 'node.mjs'], consumer).trim());
 await writeFile(
   join(consumer, 'consumer.ts'),
-  `import { createAppToolEndpoint, createAppToolSession, type AeliqoAppToolSession } from '@varendo/agent';
+  `import { createAppToolEndpoint, createAppToolSession, type VarendoAppToolSession } from '@varendo/agent';
 import { createAppToolSession as createSessionFromApp } from '@varendo/agent/app';
 import { createAgentCapabilityRegistry, type AgentCapabilityDispatcher } from '@varendo/agent/capabilities';
 import { createAgentSession } from '@varendo/agent/session';
 import type { OperationGrant } from '@varendo/core/agent';
-import type { AeliqoRuntime } from '@varendo/runtime/app';
-declare const runtime: AeliqoRuntime;
+import type { VarendoRuntime } from '@varendo/runtime/app';
+declare const runtime: VarendoRuntime;
 const endpoint = createAppToolEndpoint({ runtime, regionId: 'main', goalEpoch: 'goal', transport: 'manual', expiresAt: Date.now() + 60_000 });
 void endpoint;
 const appSession = createAppToolSession({ runtime, regionId: 'main', goalEpoch: 'goal', transport: 'manual', expiresAt: Date.now() + 60_000 });
-if (appSession.ok) { const typed: AeliqoAppToolSession = appSession.value; void typed.createEndpoint({ principalKey: 'person-1', scopeDigest: 'scope-1' }); typed.close(); }
+if (appSession.ok) { const typed: VarendoAppToolSession = appSession.value; void typed.createEndpoint({ principalKey: 'person-1', scopeDigest: 'scope-1' }); typed.close(); }
 void createSessionFromApp;
 // @ts-expect-error Model quality does not create an act grant.
 const invalid:OperationGrant='act';void invalid;
@@ -419,7 +419,7 @@ await writeFile(join(consumer, 'vite.config.mjs'), `export default {build:{targe
 const browserSecretSentinel = 'synthetic-browser-bundle-secret-sentinel';
 run(['node', 'node_modules/vite/bin/vite.js', 'build'], consumer, 'utf8', {
   ...process.env,
-  AELIQO_BROWSER_SECRET_SENTINEL: browserSecretSentinel,
+  VARENDO_BROWSER_SECRET_SENTINEL: browserSecretSentinel,
 });
 for (const relative of await readdir(join(consumer, 'dist'), { recursive: true })) {
   const path = join(consumer, 'dist', relative);

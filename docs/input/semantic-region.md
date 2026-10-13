@@ -3,7 +3,7 @@
 The direct input components are ordinary native-friendly controls. A region adds a reviewed semantic binding around those controls. The presentation graph carries only a `bindingRef` and the immutable `bindingRevision`; it cannot provide the label, option list, semantic field, default, action, upload behavior or file schema.
 
 ```ts
-import {createAeliqoPresentationRegistry, type AeliqoInputBindings} from "@varendo/web/region";
+import {createVarendoPresentationRegistry, type VarendoInputBindings} from "@varendo/web/region";
 
 const bindings = {
   revision: "checkout-inputs-3",
@@ -19,9 +19,9 @@ const bindings = {
       type: {value: "text", nullable: false},
     },
   }],
-} satisfies AeliqoInputBindings;
+} satisfies VarendoInputBindings;
 
-const registry = createAeliqoPresentationRegistry({inputs: bindings});
+const registry = createVarendoPresentationRegistry({inputs: bindings});
 ```
 
 The host validates and owns this table. A draft event contains the registered `entity`, `key`, `field` and `entityRevision`, with its value revalidated against the registered `SemanticType`. Text, date, number, checkbox, select, radio, combobox, search and slider proposals use the shared `draft` interaction payload. Number controls never emit an invalid value. Date ranges have separate registered `start` and `end` ports, so each side retains its own field identity. Slider and number units must match the registered unit exactly.

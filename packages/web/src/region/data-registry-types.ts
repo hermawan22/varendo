@@ -1,15 +1,15 @@
 import type { Outcome, Result, VersionRef } from '@varendo/core';
 import type { InteractionPort } from '@varendo/core/interaction';
 import type {
-  AeliqoDataColumn,
-  AeliqoDataRecord,
-  AeliqoDataScope,
-  AeliqoDeltaMode,
-  AeliqoSelectionMode,
+  VarendoDataColumn,
+  VarendoDataRecord,
+  VarendoDataScope,
+  VarendoDeltaMode,
+  VarendoSelectionMode,
 } from '../data/index.js';
 
 /** The nine data views share one trusted semantic registry. */
-export const AELIQO_DATA_REFS = Object.freeze({
+export const VARENDO_DATA_REFS = Object.freeze({
   metric: { id: 'data.metric', revision: '1' },
   delta: { id: 'data.delta', revision: '1' },
   keyValue: { id: 'data.key-value', revision: '1' },
@@ -21,9 +21,9 @@ export const AELIQO_DATA_REFS = Object.freeze({
   selectionSummary: { id: 'data.selection-summary', revision: '1' },
 } satisfies Record<string, VersionRef>);
 
-export type AeliqoDataComponentId = keyof typeof AELIQO_DATA_REFS;
+export type VarendoDataComponentId = keyof typeof VARENDO_DATA_REFS;
 
-export const AELIQO_DATA_CONFIG_SCHEMAS = Object.freeze({
+export const VARENDO_DATA_CONFIG_SCHEMAS = Object.freeze({
   metric: { id: 'data.metric.config', revision: '1' },
   delta: { id: 'data.delta.config', revision: '1' },
   keyValue: { id: 'data.key-value.config', revision: '1' },
@@ -33,85 +33,85 @@ export const AELIQO_DATA_CONFIG_SCHEMAS = Object.freeze({
   table: { id: 'data.table.config', revision: '1' },
   filterBuilder: { id: 'control.filter-builder.config', revision: '1' },
   selectionSummary: { id: 'data.selection-summary.config', revision: '1' },
-} satisfies Record<AeliqoDataComponentId, VersionRef>);
+} satisfies Record<VarendoDataComponentId, VersionRef>);
 
 /**
  * A region host supplies this object after it has authorized a Result and
  * materialized exactly `result.counts.loaded` rows for that ResultRef. The
  * registry never fetches, aggregates, or discovers another source.
  */
-export interface AeliqoDataBinding {
+export interface VarendoDataBinding {
   readonly result: Result;
-  readonly rows: readonly AeliqoDataRecord[];
-  readonly columns?: readonly AeliqoDataColumn[];
+  readonly rows: readonly VarendoDataRecord[];
+  readonly columns?: readonly VarendoDataColumn[];
   /** Optional host-owned display scope. Numeric members are checked against the descriptor. */
-  readonly scope?: AeliqoDataScope;
+  readonly scope?: VarendoDataScope;
 }
 
-export interface AeliqoDataRegistryOptions {
+export interface VarendoDataRegistryOptions {
   /** Trusted application binding for the entity represented by this Result. */
   readonly resolveEntity?: (result: Result) => string | undefined;
   readonly maxRows?: number;
 }
 
-export interface AeliqoDataNodeInput {
+export interface VarendoDataNodeInput {
   readonly id: string;
   /** Either the public data component ID (`metric`) or its versioned representation ref. */
-  readonly component: AeliqoDataComponentId | VersionRef;
+  readonly component: VarendoDataComponentId | VersionRef;
   readonly config?: Readonly<Record<string, unknown>>;
 }
 
-export interface AeliqoDataResolvedConfig {
+export interface VarendoDataResolvedConfig {
   readonly values: Readonly<Record<string, unknown>>;
   readonly fields: readonly string[];
   /** Ports are derived by reviewed code. They are never accepted from config. */
   readonly ports: readonly InteractionPort[];
   readonly identity: readonly string[];
-  readonly columns: readonly AeliqoDataColumn[];
-  readonly selection: AeliqoSelectionMode;
-  readonly selectedRow?: AeliqoDataRecord;
+  readonly columns: readonly VarendoDataColumn[];
+  readonly selection: VarendoSelectionMode;
+  readonly selectedRow?: VarendoDataRecord;
   readonly selectedIndex?: number;
   readonly metricField?: string;
   readonly delta?: {
     readonly currentField: string;
     readonly baselineField: string;
-    readonly mode: AeliqoDeltaMode;
-    readonly currentRow: AeliqoDataRecord;
-    readonly baselineRow: AeliqoDataRecord;
+    readonly mode: VarendoDeltaMode;
+    readonly currentRow: VarendoDataRecord;
+    readonly baselineRow: VarendoDataRecord;
   };
-  readonly detailRow?: AeliqoDataRecord;
+  readonly detailRow?: VarendoDataRecord;
 }
 
-export interface AeliqoDataResolvedNode {
+export interface VarendoDataResolvedNode {
   readonly id: string;
-  readonly component: AeliqoDataComponentId;
+  readonly component: VarendoDataComponentId;
   readonly ref: VersionRef;
   readonly result: Result;
-  readonly rows: readonly AeliqoDataRecord[];
-  readonly columns: readonly AeliqoDataColumn[];
-  readonly scope: AeliqoDataScope;
-  readonly config: AeliqoDataResolvedConfig;
+  readonly rows: readonly VarendoDataRecord[];
+  readonly columns: readonly VarendoDataColumn[];
+  readonly scope: VarendoDataScope;
+  readonly config: VarendoDataResolvedConfig;
 }
 
-export interface AeliqoDataManifest {
+export interface VarendoDataManifest {
   readonly ref: VersionRef;
   readonly configSchema: VersionRef;
   readonly result: 'required';
   readonly resolveConfig: (
     values: Readonly<Record<string, unknown>>,
-    binding: AeliqoValidatedBinding,
-    options: AeliqoDataRegistryOptions,
-  ) => Outcome<AeliqoDataResolvedConfig>;
+    binding: VarendoValidatedBinding,
+    options: VarendoDataRegistryOptions,
+  ) => Outcome<VarendoDataResolvedConfig>;
 }
 
-export interface AeliqoDataRegistry {
-  readonly manifests: readonly AeliqoDataManifest[];
-  readonly resolve: (input: AeliqoDataNodeInput, binding: AeliqoDataBinding) => Outcome<AeliqoDataResolvedNode>;
+export interface VarendoDataRegistry {
+  readonly manifests: readonly VarendoDataManifest[];
+  readonly resolve: (input: VarendoDataNodeInput, binding: VarendoDataBinding) => Outcome<VarendoDataResolvedNode>;
 }
 
-export interface AeliqoValidatedBinding extends AeliqoDataBinding {
+export interface VarendoValidatedBinding extends VarendoDataBinding {
   readonly result: Result;
-  readonly rows: readonly AeliqoDataRecord[];
-  readonly columns: readonly AeliqoDataColumn[];
-  readonly scope: AeliqoDataScope;
+  readonly rows: readonly VarendoDataRecord[];
+  readonly columns: readonly VarendoDataColumn[];
+  readonly scope: VarendoDataScope;
 }

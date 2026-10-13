@@ -5,7 +5,7 @@ test('shared region preserves input defaults, drafts and semantic targets', asyn
   const name = page.getByRole('textbox', { name: 'Name', exact: true });
   await expect(name).toHaveValue('Ada');
   await expect(page.getByRole('textbox', { name: 'Amount', exact: true })).toHaveValue('1.234,50');
-  await expect(page.locator('aeliqo-region').locator('[part=region]')).toHaveAttribute('dir', 'rtl');
+  await expect(page.locator('varendo-region').locator('[part=region]')).toHaveAttribute('dir', 'rtl');
   await expect(page.getByRole('checkbox', { name: 'Enabled' })).toBeChecked();
   await name.fill('Grace');
   await name.press('Tab');

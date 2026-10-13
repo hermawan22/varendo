@@ -1,86 +1,86 @@
 import React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import {
-  AeliqoExplorerElement,
-  AeliqoComparisonElement,
-  AeliqoBreakdownElement,
-  AeliqoInvestigationElement,
-  AeliqoSearchResultsElement,
-  AeliqoRecordEditorElement,
-  AeliqoFormFlowElement,
-  AeliqoQualityPanelElement,
+  VarendoExplorerElement,
+  VarendoComparisonElement,
+  VarendoBreakdownElement,
+  VarendoInvestigationElement,
+  VarendoSearchResultsElement,
+  VarendoRecordEditorElement,
+  VarendoFormFlowElement,
+  VarendoQualityPanelElement,
 } from '@varendo/web/compound';
 import type {
-  AeliqoBreakdownGroupDetail,
-  AeliqoComparisonSetDetail,
-  AeliqoFormFlowCommitDetail,
-  AeliqoFormFlowStepDetail,
-  AeliqoRecordEditorCancelDetail,
-  AeliqoRecordEditorSaveDetail,
+  VarendoBreakdownGroupDetail,
+  VarendoComparisonSetDetail,
+  VarendoFormFlowCommitDetail,
+  VarendoFormFlowStepDetail,
+  VarendoRecordEditorCancelDetail,
+  VarendoRecordEditorSaveDetail,
 } from '@varendo/web/compound';
-import type { AeliqoFilterChangeDetail, AeliqoSelectionDetail } from '@varendo/web/data';
-export const AeliqoExplorer = createComponent({
+import type { VarendoFilterChangeDetail, VarendoSelectionDetail } from '@varendo/web/data';
+export const VarendoExplorer = createComponent({
   react: React,
-  tagName: 'aeliqo-explorer',
-  elementClass: AeliqoExplorerElement,
+  tagName: 'varendo-explorer',
+  elementClass: VarendoExplorerElement,
   events: {
-    onFilterChange: 'aeliqo-explorer-filter' as EventName<CustomEvent<AeliqoFilterChangeDetail>>,
-    onSelectionChange: 'aeliqo-explorer-selection' as EventName<CustomEvent<AeliqoSelectionDetail>>,
+    onFilterChange: 'varendo-explorer-filter' as EventName<CustomEvent<VarendoFilterChangeDetail>>,
+    onSelectionChange: 'varendo-explorer-selection' as EventName<CustomEvent<VarendoSelectionDetail>>,
   },
-  displayName: 'AeliqoExplorer',
+  displayName: 'VarendoExplorer',
 });
-export const AeliqoComparison = createComponent({
+export const VarendoComparison = createComponent({
   react: React,
-  tagName: 'aeliqo-comparison',
-  elementClass: AeliqoComparisonElement,
-  events: { onCompareSetChange: 'aeliqo-comparison-set' as EventName<CustomEvent<AeliqoComparisonSetDetail>> },
-  displayName: 'AeliqoComparison',
+  tagName: 'varendo-comparison',
+  elementClass: VarendoComparisonElement,
+  events: { onCompareSetChange: 'varendo-comparison-set' as EventName<CustomEvent<VarendoComparisonSetDetail>> },
+  displayName: 'VarendoComparison',
 });
-export const AeliqoBreakdown = createComponent({
+export const VarendoBreakdown = createComponent({
   react: React,
-  tagName: 'aeliqo-breakdown',
-  elementClass: AeliqoBreakdownElement,
-  events: { onGroupChange: 'aeliqo-breakdown-group' as EventName<CustomEvent<AeliqoBreakdownGroupDetail>> },
-  displayName: 'AeliqoBreakdown',
+  tagName: 'varendo-breakdown',
+  elementClass: VarendoBreakdownElement,
+  events: { onGroupChange: 'varendo-breakdown-group' as EventName<CustomEvent<VarendoBreakdownGroupDetail>> },
+  displayName: 'VarendoBreakdown',
 });
-export const AeliqoInvestigation = createComponent({
+export const VarendoInvestigation = createComponent({
   react: React,
-  tagName: 'aeliqo-investigation',
-  elementClass: AeliqoInvestigationElement,
+  tagName: 'varendo-investigation',
+  elementClass: VarendoInvestigationElement,
   events: {},
-  displayName: 'AeliqoInvestigation',
+  displayName: 'VarendoInvestigation',
 });
-export const AeliqoSearchResults = createComponent({
+export const VarendoSearchResults = createComponent({
   react: React,
-  tagName: 'aeliqo-search-results',
-  elementClass: AeliqoSearchResultsElement,
-  events: { onSelectionChange: 'aeliqo-search-results-selection' as EventName<CustomEvent<AeliqoSelectionDetail>> },
-  displayName: 'AeliqoSearchResults',
+  tagName: 'varendo-search-results',
+  elementClass: VarendoSearchResultsElement,
+  events: { onSelectionChange: 'varendo-search-results-selection' as EventName<CustomEvent<VarendoSelectionDetail>> },
+  displayName: 'VarendoSearchResults',
 });
-export const AeliqoRecordEditor = createComponent({
+export const VarendoRecordEditor = createComponent({
   react: React,
-  tagName: 'aeliqo-record-editor',
-  elementClass: AeliqoRecordEditorElement,
+  tagName: 'varendo-record-editor',
+  elementClass: VarendoRecordEditorElement,
   events: {
-    onSave: 'aeliqo-record-editor-save' as EventName<CustomEvent<AeliqoRecordEditorSaveDetail>>,
-    onCancel: 'aeliqo-record-editor-cancel' as EventName<CustomEvent<AeliqoRecordEditorCancelDetail>>,
+    onSave: 'varendo-record-editor-save' as EventName<CustomEvent<VarendoRecordEditorSaveDetail>>,
+    onCancel: 'varendo-record-editor-cancel' as EventName<CustomEvent<VarendoRecordEditorCancelDetail>>,
   },
-  displayName: 'AeliqoRecordEditor',
+  displayName: 'VarendoRecordEditor',
 });
-export const AeliqoFormFlow = createComponent({
+export const VarendoFormFlow = createComponent({
   react: React,
-  tagName: 'aeliqo-form-flow',
-  elementClass: AeliqoFormFlowElement,
+  tagName: 'varendo-form-flow',
+  elementClass: VarendoFormFlowElement,
   events: {
-    onStepChange: 'aeliqo-form-flow-step' as EventName<CustomEvent<AeliqoFormFlowStepDetail>>,
-    onCommit: 'aeliqo-form-flow-commit' as EventName<CustomEvent<AeliqoFormFlowCommitDetail>>,
+    onStepChange: 'varendo-form-flow-step' as EventName<CustomEvent<VarendoFormFlowStepDetail>>,
+    onCommit: 'varendo-form-flow-commit' as EventName<CustomEvent<VarendoFormFlowCommitDetail>>,
   },
-  displayName: 'AeliqoFormFlow',
+  displayName: 'VarendoFormFlow',
 });
-export const AeliqoQualityPanel = createComponent({
+export const VarendoQualityPanel = createComponent({
   react: React,
-  tagName: 'aeliqo-quality-panel',
-  elementClass: AeliqoQualityPanelElement,
+  tagName: 'varendo-quality-panel',
+  elementClass: VarendoQualityPanelElement,
   events: {},
-  displayName: 'AeliqoQualityPanel',
+  displayName: 'VarendoQualityPanel',
 });

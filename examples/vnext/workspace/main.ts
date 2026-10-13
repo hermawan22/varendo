@@ -2,7 +2,7 @@ import { defineResource, type Intent, type QuerySpec, type Task } from '@varendo
 import { createIntentCompilerRegistry } from '@varendo/core/app';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { createLocalDataService, type AuthorizeRead } from '@varendo/runtime/data';
-import { createAeliqoApp, type WebRenderReceipt } from '@varendo/web/app';
+import { createVarendoApp, type WebRenderReceipt } from '@varendo/web/app';
 import { defineRecipe } from '@varendo/web/recipes';
 import { z } from 'zod';
 
@@ -143,7 +143,7 @@ const registered = createIntentCompilerRegistry([
 ]);
 if (!registered.ok) throw new Error(registered.diagnostics[0]!.message);
 function childStateTransfers(role: Role, existing: boolean) {
-  return existing ? [{ fromNode: role, toNode: role, mapping: { id: 'aeliqo.state.identity', revision: '1' } }] : [];
+  return existing ? [{ fromNode: role, toNode: role, mapping: { id: 'varendo.state.identity', revision: '1' } }] : [];
 }
 
 const recipe = defineRecipe({
@@ -200,7 +200,7 @@ const recipe = defineRecipe({
     };
   },
 });
-const app = createAeliqoApp({
+const app = createVarendoApp({
   intents: registered.value,
   recipes: [recipe],
   resources: [

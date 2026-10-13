@@ -1,5 +1,5 @@
 /**
- * DECLARATION-ONLY DESIGN CONSUMER, NOT AELIQO IMPLEMENTATION.
+ * DECLARATION-ONLY DESIGN CONSUMER, NOT VARENDO IMPLEMENTATION.
  * This fixture describes the providerless local/no-AI adoption path.
  */
 import type { ReactElement } from 'react';

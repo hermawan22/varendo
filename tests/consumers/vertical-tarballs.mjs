@@ -18,7 +18,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/vertical-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-vertical-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-vertical-consumer-'));
 const consumerReal = await realpath(consumer);
 const source = {
   examples: resolve(root, 'examples/vertical-slice'),
@@ -63,7 +63,7 @@ const packages = [];
 for (const name of ['core', 'runtime', 'web']) {
   const directory = join(root, 'packages', name);
   const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));
@@ -250,12 +250,12 @@ assert.equal(nodeReport.trendRows, 60);
 await writeFile(
   join(consumer, 'browser-entry.ts'),
   `
-import {registerAeliqoElements} from '@varendo/web/register';
-import type {AeliqoRegionElement} from '@varendo/web/region';
+import {registerVarendoElements} from '@varendo/web/register';
+import type {VarendoRegionElement} from '@varendo/web/region';
 import {createHrViewSession} from './examples/vertical-slice/src/view-session.js';
 declare global { interface Window { hrFixture?: Awaited<ReturnType<typeof createHrViewSession>>; } }
-registerAeliqoElements();
-const view = document.querySelector<AeliqoRegionElement>('#hr-region');
+registerVarendoElements();
+const view = document.querySelector<VarendoRegionElement>('#hr-region');
 const status = document.querySelector<HTMLElement>('#status');
 const reorder = document.querySelector<HTMLButtonElement>('#reorder');
 if (!view || !status || !reorder) throw new Error('Consumer fixture shell is incomplete.');
@@ -281,7 +281,7 @@ reorder.addEventListener('click', async () => {
 run([join(consumer, 'node_modules/.bin/tsc'), '--project', 'tsconfig.json'], consumer);
 await writeFile(
   join(consumer, 'index.html'),
-  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Installed vertical slice</title></head><body><main data-aeliqo-theme="light"><button id="reorder" disabled>Swap view order</button><p id="status">Loading…</p><aeliqo-region id="hr-region" data-aeliqo-theme="inherit"></aeliqo-region></main><script type="module" src="/browser-entry.ts"></script></body></html>\n`,
+  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Installed vertical slice</title></head><body><main data-varendo-theme="light"><button id="reorder" disabled>Swap view order</button><p id="status">Loading…</p><varendo-region id="hr-region" data-varendo-theme="inherit"></varendo-region></main><script type="module" src="/browser-entry.ts"></script></body></html>\n`,
 );
 await writeFile(join(consumer, 'vite.browser.config.mjs'), `export default {build: {outDir: 'dist-browser'}};\n`);
 run([join(consumer, 'node_modules/.bin/vite'), 'build', '--config', 'vite.browser.config.mjs'], consumer);
@@ -325,7 +325,7 @@ try {
   await page.goto(`http://127.0.0.1:${server.address().port}`);
   await assert.doesNotReject(() => page.locator('#status').waitFor());
   await page.waitForFunction(() => document.querySelector('#status')?.textContent?.includes('Five employees'));
-  const table = page.locator('#hr-region aeliqo-table');
+  const table = page.locator('#hr-region varendo-table');
   await assert.doesNotReject(() => table.locator('tbody tr').first().waitFor());
   assert.equal(await table.locator('tbody tr').count(), 5);
   const selected = table.getByRole('radio', { name: 'Select employees e2', exact: true });

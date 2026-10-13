@@ -42,11 +42,11 @@ export function measurements(layout, visualization, sourceSHA) {
 
 export async function runWorkloads(source, sourceSHA, manifest, destination) {
   const env = {
-    AELIQO_SOURCE_COMMIT: sourceSHA,
-    AELIQO_SOURCE_ARCHIVE_MANIFEST: manifest,
-    AELIQO_RUN_PERFORMANCE: '1',
-    AELIQO_ENFORCE_PERFORMANCE_BUDGETS: '1',
-    AELIQO_PERFORMANCE_PAIR_OUTPUT: destination,
+    VARENDO_SOURCE_COMMIT: sourceSHA,
+    VARENDO_SOURCE_ARCHIVE_MANIFEST: manifest,
+    VARENDO_RUN_PERFORMANCE: '1',
+    VARENDO_ENFORCE_PERFORMANCE_BUDGETS: '1',
+    VARENDO_PERFORMANCE_PAIR_OUTPUT: destination,
     TZ: 'UTC',
   };
   execute(

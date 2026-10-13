@@ -99,7 +99,7 @@ function itemById(values: Values, id: string): Values | undefined {
 }
 
 function emitNavigation(node: Node, event: Event, emit: Emit): void {
-  const detail = ownedEvent(event, 'aeliqo-navigation', ['id', 'href', 'source']);
+  const detail = ownedEvent(event, 'varendo-navigation', ['id', 'href', 'source']);
   const id = detail?.id;
   if (typeof id !== 'string') return;
   const item = itemById(valuesOf(node), id);
@@ -110,7 +110,7 @@ function emitNavigation(node: Node, event: Event, emit: Emit): void {
 }
 
 function emitItemAction(node: Node, event: Event, emit: Emit): void {
-  const detail = ownedEvent(event, 'aeliqo-menu-action', ['id', 'source']);
+  const detail = ownedEvent(event, 'varendo-menu-action', ['id', 'source']);
   const id = detail?.id;
   if (typeof id !== 'string') return;
   const item = itemById(valuesOf(node), id);
@@ -129,18 +129,18 @@ function emitItemAction(node: Node, event: Event, emit: Emit): void {
 function emitNodeAction(
   node: Node,
   event: Event,
-  type: 'aeliqo-alert-action' | 'aeliqo-empty-state-action',
+  type: 'varendo-alert-action' | 'varendo-empty-state-action',
   emit: Emit,
 ): void {
-  const detail = ownedEvent(event, type, type === 'aeliqo-empty-state-action' ? ['kind', 'source'] : ['source']);
-  if (detail === undefined || (type === 'aeliqo-empty-state-action' && detail.kind !== valuesOf(node).kind)) return;
+  const detail = ownedEvent(event, type, type === 'varendo-empty-state-action' ? ['kind', 'source'] : ['source']);
+  if (detail === undefined || (type === 'varendo-empty-state-action' && detail.kind !== valuesOf(node).kind)) return;
   const payload = actionPayload(valuesOf(node));
   if (payload === undefined || !declared(node, 'action', 'action-request', payload.action)) return;
   emit(node, 'action', payload);
 }
 
 function emitTreeNavigation(node: Node, event: Event, emit: Emit): void {
-  const detail = ownedEvent(event, 'aeliqo-tree-nav-select', ['id', 'previousId', 'source']);
+  const detail = ownedEvent(event, 'varendo-tree-nav-select', ['id', 'previousId', 'source']);
   const id = detail?.id;
   if (typeof id !== 'string') return;
   const nodes: Values[] = [];
@@ -204,7 +204,7 @@ function pagePayload(
 }
 
 function emitPage(node: Node, event: Event, emit: Emit): void {
-  const detail = ownedEvent(event, 'aeliqo-page-change', ['page', 'previousPage', 'direction', 'source']);
+  const detail = ownedEvent(event, 'varendo-page-change', ['page', 'previousPage', 'direction', 'source']);
   if (detail === undefined) return;
   const payload = pagePayload(valuesOf(node), detail);
   if (payload === undefined || !declared(node, 'page', 'page', PAGE_OPERATION)) return;
@@ -229,7 +229,7 @@ function tabChildren(node: Node, child: ChildRenderer): unknown {
       const item = items[index];
       return item === undefined || typeof item.id !== 'string'
         ? nothing
-        : html`<div slot=${item.id} data-aeliqo-tab-content=${item.id}>${child(childId)}</div>`;
+        : html`<div slot=${item.id} data-varendo-tab-content=${item.id}>${child(childId)}</div>`;
     },
   );
 }
@@ -243,55 +243,55 @@ function navigationNode(context: RenderContext): TemplateResult | undefined {
   const { node, child, emit, values, id } = context;
   switch (node.manifest.id) {
     case 'navigation.breadcrumb':
-      return html`<aeliqo-breadcrumb
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-breadcrumb
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .items=${values.items ?? []}
         .label=${text(values.label)}
-        @aeliqo-navigation=${(event: Event) => emitNavigation(node, event, emit)}
-      ></aeliqo-breadcrumb>`;
+        @varendo-navigation=${(event: Event) => emitNavigation(node, event, emit)}
+      ></varendo-breadcrumb>`;
     case 'navigation.menu':
-      return html`<aeliqo-menu
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-menu
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .items=${values.items ?? []}
         .label=${text(values.label)}
-        @aeliqo-menu-action=${(event: Event) => emitItemAction(node, event, emit)}
-      ></aeliqo-menu>`;
+        @varendo-menu-action=${(event: Event) => emitItemAction(node, event, emit)}
+      ></varendo-menu>`;
     case 'navigation.pagination':
-      return html`<aeliqo-pagination
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-pagination
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .page=${values.page}
         .pageCount=${values.pageCount}
         .hasPrevious=${booleanValue(values.hasPrevious, false)}
         .hasNext=${booleanValue(values.hasNext, false)}
         .label=${text(values.label)}
         .pending=${booleanValue(values.pending, false)}
-        @aeliqo-page-change=${(event: Event) => emitPage(node, event, emit)}
-      ></aeliqo-pagination>`;
+        @varendo-page-change=${(event: Event) => emitPage(node, event, emit)}
+      ></varendo-pagination>`;
     case 'navigation.tabs':
-      return html`<aeliqo-tabs
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-tabs
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .items=${values.items ?? []}
         .value=${text(values.value)}
         .defaultValue=${text(values.defaultValue)}
         .activation=${text(values.activation, 'automatic')}
         .orientation=${text(values.orientation, 'horizontal')}
-        .idPrefix=${text(values.idPrefix, `aeliqo-tabs-${id}`)}
-        >${tabChildren(node, child)}</aeliqo-tabs
+        .idPrefix=${text(values.idPrefix, `varendo-tabs-${id}`)}
+        >${tabChildren(node, child)}</varendo-tabs
       >`;
     case 'navigation.tree-nav':
-      return html`<aeliqo-tree-nav
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-tree-nav
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .nodes=${values.nodes ?? []}
         .expandedIds=${values.expandedIds ?? []}
         .selectedId=${text(values.selectedId)}
         .label=${text(values.label)}
-        @aeliqo-tree-nav-select=${(event: Event) => emitTreeNavigation(node, event, emit)}
-      ></aeliqo-tree-nav>`;
+        @varendo-tree-nav-select=${(event: Event) => emitTreeNavigation(node, event, emit)}
+      ></varendo-tree-nav>`;
     default:
       return undefined;
   }
@@ -301,43 +301,43 @@ function overlayFeedbackNode(context: RenderContext): TemplateResult | undefined
   const { node, child, values, id } = context;
   switch (node.manifest.id) {
     case 'feedback.tooltip':
-      return html`<aeliqo-tooltip
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-tooltip
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .label=${text(values.label)}
         .content=${text(values.content)}
         .open=${booleanValue(values.open, false)}
-      ></aeliqo-tooltip>`;
+      ></varendo-tooltip>`;
     case 'feedback.popover':
-      return html`<aeliqo-popover
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-popover
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .label=${text(values.label)}
         .content=${text(values.content)}
         .open=${booleanValue(values.open, false)}
         .modal=${booleanValue(values.modal, false)}
         .closeOnOutside=${booleanValue(values.closeOnOutside, true)}
-        >${children(node, child)}</aeliqo-popover
+        >${children(node, child)}</varendo-popover
       >`;
     case 'feedback.dialog':
-      return html`<aeliqo-dialog
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-dialog
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .heading=${text(values.heading)}
         .open=${booleanValue(values.open, false)}
         .modal=${booleanValue(values.modal, true)}
         .closeOnEscape=${booleanValue(values.closeOnEscape, true)}
-        >${children(node, child)}</aeliqo-dialog
+        >${children(node, child)}</varendo-dialog
       >`;
     case 'feedback.drawer':
-      return html`<aeliqo-drawer
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-drawer
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .heading=${text(values.heading)}
         .open=${booleanValue(values.open, false)}
         .mode=${text(values.mode, 'inline')}
         .side=${text(values.side, 'end')}
-        >${children(node, child)}</aeliqo-drawer
+        >${children(node, child)}</varendo-drawer
       >`;
     default:
       return undefined;
@@ -348,54 +348,54 @@ function messageFeedbackNode(context: RenderContext): TemplateResult | undefined
   const { node, emit, values, id } = context;
   switch (node.manifest.id) {
     case 'feedback.toast':
-      return html`<aeliqo-toast
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-toast
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .message=${text(values.message)}
         .open=${booleanValue(values.open, false)}
         .tone=${text(values.tone, 'info')}
         .duration=${values.duration}
         .dismissible=${booleanValue(values.dismissible, true)}
-      ></aeliqo-toast>`;
+      ></varendo-toast>`;
     case 'feedback.alert':
-      return html`<aeliqo-alert
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-alert
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .heading=${text(values.heading)}
         .message=${text(values.message)}
         .open=${booleanValue(values.open, true)}
         .tone=${text(values.tone, 'info')}
         .actionLabel=${text(values.actionLabel)}
         .dismissible=${booleanValue(values.dismissible, false)}
-        @aeliqo-alert-action=${(event: Event) => emitNodeAction(node, event, 'aeliqo-alert-action', emit)}
-      ></aeliqo-alert>`;
+        @varendo-alert-action=${(event: Event) => emitNodeAction(node, event, 'varendo-alert-action', emit)}
+      ></varendo-alert>`;
     case 'feedback.progress':
-      return html`<aeliqo-progress
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-progress
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .label=${text(values.label)}
         .value=${values.progressValue}
         .max=${values.progressMax}
-      ></aeliqo-progress>`;
+      ></varendo-progress>`;
     case 'feedback.skeleton':
-      return html`<aeliqo-skeleton
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-skeleton
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .label=${text(values.label)}
         .lines=${values.lines}
         .variant=${text(values.variant, 'text')}
         .animated=${booleanValue(values.animated, true)}
-      ></aeliqo-skeleton>`;
+      ></varendo-skeleton>`;
     case 'feedback.empty-state':
-      return html`<aeliqo-empty-state
-        data-aeliqo-node-id=${id}
-        data-aeliqo-theme="inherit"
+      return html`<varendo-empty-state
+        data-varendo-node-id=${id}
+        data-varendo-theme="inherit"
         .kind=${text(values.kind, 'failure')}
         .heading=${text(values.heading)}
         .message=${text(values.message)}
         .actionLabel=${text(values.actionLabel)}
-        @aeliqo-empty-state-action=${(event: Event) => emitNodeAction(node, event, 'aeliqo-empty-state-action', emit)}
-      ></aeliqo-empty-state>`;
+        @varendo-empty-state-action=${(event: Event) => emitNodeAction(node, event, 'varendo-empty-state-action', emit)}
+      ></varendo-empty-state>`;
     default:
       return undefined;
   }

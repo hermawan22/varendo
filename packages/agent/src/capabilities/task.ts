@@ -3,7 +3,7 @@ import type { AgentBindingOutcome, AgentTaskProposal } from '@varendo/core/agent
 import type { AgentBinder } from '../binder-types.js';
 import type { AgentCapabilityContext, AgentCapabilityHandlerResult, AgentCapabilityManifest } from './types.js';
 
-const DEFAULT_REF: VersionRef = Object.freeze({ id: 'aeliqo.task.binding', revision: '1' });
+const DEFAULT_REF: VersionRef = Object.freeze({ id: 'varendo.task.binding', revision: '1' });
 
 function stateResult(outcome: AgentBindingOutcome): AgentCapabilityHandlerResult<Task | AgentBindingOutcome> {
   switch (outcome.state) {

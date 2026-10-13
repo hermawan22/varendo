@@ -3,7 +3,7 @@
  * no custom element imports; the region registry can validate a node here and
  * resolve registered action/route/content references through host policy.
  */
-export const AELIQO_FOUNDATION_REFS = {
+export const VARENDO_FOUNDATION_REFS = {
   button: { id: 'foundation.button', revision: '1' },
   iconButton: { id: 'foundation.icon-button', revision: '1' },
   link: { id: 'foundation.link', revision: '1' },
@@ -19,32 +19,32 @@ export const AELIQO_FOUNDATION_REFS = {
   scrollArea: { id: 'foundation.scroll-area', revision: '1' },
 } as const;
 
-export type AeliqoFoundationRef = (typeof AELIQO_FOUNDATION_REFS)[keyof typeof AELIQO_FOUNDATION_REFS];
-export type AeliqoFoundationId = AeliqoFoundationRef['id'];
+export type VarendoFoundationRef = (typeof VARENDO_FOUNDATION_REFS)[keyof typeof VARENDO_FOUNDATION_REFS];
+export type VarendoFoundationId = VarendoFoundationRef['id'];
 
-export interface AeliqoFoundationDiagnostic {
+export interface VarendoFoundationDiagnostic {
   readonly code: 'foundation.config' | 'foundation.reference';
   readonly message: string;
   readonly retryable: false;
 }
 
-export type AeliqoFoundationOutcome<T> =
+export type VarendoFoundationOutcome<T> =
   | { readonly ok: true; readonly value: T }
-  | { readonly ok: false; readonly diagnostics: readonly AeliqoFoundationDiagnostic[] };
+  | { readonly ok: false; readonly diagnostics: readonly VarendoFoundationDiagnostic[] };
 
-export interface AeliqoFoundationConfig {
-  readonly ref: AeliqoFoundationRef;
+export interface VarendoFoundationConfig {
+  readonly ref: VarendoFoundationRef;
   readonly values: Readonly<Record<string, unknown>>;
 }
 
-export interface AeliqoFoundationManifest {
-  readonly ref: AeliqoFoundationRef;
-  readonly tagName: `aeliqo-${string}`;
+export interface VarendoFoundationManifest {
+  readonly ref: VarendoFoundationRef;
+  readonly tagName: `varendo-${string}`;
   readonly role: 'action' | 'content' | 'structure';
   readonly namedParts: readonly string[];
   readonly events: readonly string[];
   readonly configKeys: readonly string[];
-  readonly resolveConfig: (input: unknown) => AeliqoFoundationOutcome<AeliqoFoundationConfig>;
+  readonly resolveConfig: (input: unknown) => VarendoFoundationOutcome<VarendoFoundationConfig>;
 }
 
 function record(value: unknown): Record<string, unknown> | undefined {
@@ -53,7 +53,7 @@ function record(value: unknown): Record<string, unknown> | undefined {
     : undefined;
 }
 
-function fail(code: AeliqoFoundationDiagnostic['code'], message: string): AeliqoFoundationOutcome<never> {
+function fail(code: VarendoFoundationDiagnostic['code'], message: string): VarendoFoundationOutcome<never> {
   return { ok: false, diagnostics: [{ code, message, retryable: false }] };
 }
 
@@ -83,11 +83,11 @@ const optionalEnum =
     value === undefined || (typeof value === 'string' && allowed.includes(value as T));
 
 function validate(
-  ref: AeliqoFoundationRef,
+  ref: VarendoFoundationRef,
   keys: readonly string[],
   input: unknown,
   validators: Readonly<Record<string, ConfigFieldValidator>> = {},
-): AeliqoFoundationOutcome<AeliqoFoundationConfig> {
+): VarendoFoundationOutcome<VarendoFoundationConfig> {
   try {
     const values = record(input);
     if (values === undefined) return fail('foundation.config', `${ref.id} configuration must be an object.`);
@@ -105,12 +105,12 @@ function validate(
 }
 
 function requiredReferences(
-  ref: AeliqoFoundationRef,
+  ref: VarendoFoundationRef,
   keys: readonly string[],
   input: unknown,
   references: readonly string[],
   validators: Readonly<Record<string, ConfigFieldValidator>> = {},
-): AeliqoFoundationOutcome<AeliqoFoundationConfig> {
+): VarendoFoundationOutcome<VarendoFoundationConfig> {
   const checked = validate(ref, keys, input, validators);
   if (!checked.ok) return checked;
   for (const reference of references) {
@@ -121,24 +121,24 @@ function requiredReferences(
 }
 
 function requiredReference(
-  ref: AeliqoFoundationRef,
+  ref: VarendoFoundationRef,
   keys: readonly string[],
   input: unknown,
   reference: string,
   validators: Readonly<Record<string, ConfigFieldValidator>> = {},
-): AeliqoFoundationOutcome<AeliqoFoundationConfig> {
+): VarendoFoundationOutcome<VarendoFoundationConfig> {
   return requiredReferences(ref, keys, input, [reference], validators);
 }
 
 const manifest = (
-  ref: AeliqoFoundationRef,
-  tagName: `aeliqo-${string}`,
-  role: AeliqoFoundationManifest['role'],
+  ref: VarendoFoundationRef,
+  tagName: `varendo-${string}`,
+  role: VarendoFoundationManifest['role'],
   namedParts: readonly string[],
   events: readonly string[],
   configKeys: readonly string[],
-  resolver: (input: unknown) => AeliqoFoundationOutcome<AeliqoFoundationConfig>,
-): AeliqoFoundationManifest => ({ ref, tagName, role, namedParts, events, configKeys, resolveConfig: resolver });
+  resolver: (input: unknown) => VarendoFoundationOutcome<VarendoFoundationConfig>,
+): VarendoFoundationManifest => ({ ref, tagName, role, namedParts, events, configKeys, resolveConfig: resolver });
 
 const actionKeys = ['actionRef', 'contentRef', 'variant', 'size', 'type'] as const;
 const iconActionKeys = ['actionRef', 'contentRef', 'size', 'type'] as const;
@@ -208,9 +208,9 @@ const splitValidators = {
   max: optionalFinite(1, 100),
   step: optionalFinite(Number.MIN_VALUE, 100),
 } satisfies Readonly<Record<string, ConfigFieldValidator>>;
-function splitConfig(input: unknown): AeliqoFoundationOutcome<AeliqoFoundationConfig> {
+function splitConfig(input: unknown): VarendoFoundationOutcome<VarendoFoundationConfig> {
   const checked = validate(
-    AELIQO_FOUNDATION_REFS.splitPane,
+    VARENDO_FOUNDATION_REFS.splitPane,
     ['orientation', 'position', 'min', 'max', 'step'],
     input,
     splitValidators,
@@ -230,17 +230,17 @@ const scrollValidators = {
   labelRef: optionalString,
 } satisfies Readonly<Record<string, ConfigFieldValidator>>;
 
-export const AELIQO_FOUNDATION_MANIFESTS: readonly AeliqoFoundationManifest[] = [
+export const VARENDO_FOUNDATION_MANIFESTS: readonly VarendoFoundationManifest[] = [
   manifest(
-    AELIQO_FOUNDATION_REFS.button,
-    'aeliqo-button',
+    VARENDO_FOUNDATION_REFS.button,
+    'varendo-button',
     'action',
     ['button', 'pending'],
-    ['aeliqo-action'],
+    ['varendo-action'],
     actionKeys,
     (input) =>
       requiredReferences(
-        AELIQO_FOUNDATION_REFS.button,
+        VARENDO_FOUNDATION_REFS.button,
         actionKeys,
         input,
         ['actionRef', 'contentRef'],
@@ -248,34 +248,34 @@ export const AELIQO_FOUNDATION_MANIFESTS: readonly AeliqoFoundationManifest[] = 
       ),
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.iconButton,
-    'aeliqo-icon-button',
+    VARENDO_FOUNDATION_REFS.iconButton,
+    'varendo-icon-button',
     'action',
     ['button', 'icon', 'pending'],
-    ['aeliqo-action'],
+    ['varendo-action'],
     iconActionKeys,
     (input) =>
       requiredReferences(
-        AELIQO_FOUNDATION_REFS.iconButton,
+        VARENDO_FOUNDATION_REFS.iconButton,
         iconActionKeys,
         input,
         ['actionRef', 'contentRef'],
         iconActionValidators,
       ),
   ),
-  manifest(AELIQO_FOUNDATION_REFS.link, 'aeliqo-link', 'action', ['link'], ['aeliqo-link'], linkKeys, (input) =>
-    requiredReferences(AELIQO_FOUNDATION_REFS.link, linkKeys, input, ['routeRef', 'contentRef'], linkValidators),
+  manifest(VARENDO_FOUNDATION_REFS.link, 'varendo-link', 'action', ['link'], ['varendo-link'], linkKeys, (input) =>
+    requiredReferences(VARENDO_FOUNDATION_REFS.link, linkKeys, input, ['routeRef', 'contentRef'], linkValidators),
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.text,
-    'aeliqo-text',
+    VARENDO_FOUNDATION_REFS.text,
+    'varendo-text',
     'content',
     ['text'],
     [],
     ['contentRef', 'as', 'muted'],
     (input) =>
       requiredReference(
-        AELIQO_FOUNDATION_REFS.text,
+        VARENDO_FOUNDATION_REFS.text,
         ['contentRef', 'as', 'muted'],
         input,
         'contentRef',
@@ -283,34 +283,34 @@ export const AELIQO_FOUNDATION_MANIFESTS: readonly AeliqoFoundationManifest[] = 
       ),
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.heading,
-    'aeliqo-heading',
+    VARENDO_FOUNDATION_REFS.heading,
+    'varendo-heading',
     'content',
     ['heading'],
     [],
     ['contentRef', 'level', 'size'],
     (input) =>
       requiredReference(
-        AELIQO_FOUNDATION_REFS.heading,
+        VARENDO_FOUNDATION_REFS.heading,
         ['contentRef', 'level', 'size'],
         input,
         'contentRef',
         headingValidators,
       ),
   ),
-  manifest(AELIQO_FOUNDATION_REFS.badge, 'aeliqo-badge', 'content', ['badge'], [], ['contentRef', 'tone'], (input) =>
-    requiredReference(AELIQO_FOUNDATION_REFS.badge, ['contentRef', 'tone'], input, 'contentRef', badgeValidators),
+  manifest(VARENDO_FOUNDATION_REFS.badge, 'varendo-badge', 'content', ['badge'], [], ['contentRef', 'tone'], (input) =>
+    requiredReference(VARENDO_FOUNDATION_REFS.badge, ['contentRef', 'tone'], input, 'contentRef', badgeValidators),
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.avatar,
-    'aeliqo-avatar',
+    VARENDO_FOUNDATION_REFS.avatar,
+    'varendo-avatar',
     'content',
     ['avatar', 'image', 'initials'],
     [],
     ['identityRef', 'size', 'decorative'],
     (input) =>
       requiredReference(
-        AELIQO_FOUNDATION_REFS.avatar,
+        VARENDO_FOUNDATION_REFS.avatar,
         ['identityRef', 'size', 'decorative'],
         input,
         'identityRef',
@@ -318,62 +318,62 @@ export const AELIQO_FOUNDATION_MANIFESTS: readonly AeliqoFoundationManifest[] = 
       ),
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.separator,
-    'aeliqo-separator',
+    VARENDO_FOUNDATION_REFS.separator,
+    'varendo-separator',
     'structure',
     ['separator'],
     [],
     ['orientation', 'decorative'],
-    (input) => validate(AELIQO_FOUNDATION_REFS.separator, ['orientation', 'decorative'], input, separatorValidators),
+    (input) => validate(VARENDO_FOUNDATION_REFS.separator, ['orientation', 'decorative'], input, separatorValidators),
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.surface,
-    'aeliqo-surface',
+    VARENDO_FOUNDATION_REFS.surface,
+    'varendo-surface',
     'structure',
     ['surface'],
     [],
     ['as', 'tone', 'labelRef'],
-    (input) => validate(AELIQO_FOUNDATION_REFS.surface, ['as', 'tone', 'labelRef'], input, surfaceValidators),
+    (input) => validate(VARENDO_FOUNDATION_REFS.surface, ['as', 'tone', 'labelRef'], input, surfaceValidators),
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.stack,
-    'aeliqo-stack',
+    VARENDO_FOUNDATION_REFS.stack,
+    'varendo-stack',
     'structure',
     ['stack'],
     [],
     ['direction', 'gap', 'align', 'justify', 'wrap'],
     (input) =>
-      validate(AELIQO_FOUNDATION_REFS.stack, ['direction', 'gap', 'align', 'justify', 'wrap'], input, stackValidators),
+      validate(VARENDO_FOUNDATION_REFS.stack, ['direction', 'gap', 'align', 'justify', 'wrap'], input, stackValidators),
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.grid,
-    'aeliqo-grid',
+    VARENDO_FOUNDATION_REFS.grid,
+    'varendo-grid',
     'structure',
     ['grid'],
     [],
     ['columns', 'gap', 'minItem'],
-    (input) => validate(AELIQO_FOUNDATION_REFS.grid, ['columns', 'gap', 'minItem'], input, gridValidators),
+    (input) => validate(VARENDO_FOUNDATION_REFS.grid, ['columns', 'gap', 'minItem'], input, gridValidators),
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.splitPane,
-    'aeliqo-split-pane',
+    VARENDO_FOUNDATION_REFS.splitPane,
+    'varendo-split-pane',
     'structure',
     ['split', 'start', 'splitter', 'end'],
-    ['aeliqo-split-change'],
+    ['varendo-split-change'],
     ['orientation', 'position', 'min', 'max', 'step'],
     splitConfig,
   ),
   manifest(
-    AELIQO_FOUNDATION_REFS.scrollArea,
-    'aeliqo-scroll-area',
+    VARENDO_FOUNDATION_REFS.scrollArea,
+    'varendo-scroll-area',
     'structure',
     ['scroll'],
     [],
     ['axis', 'labelRef'],
-    (input) => validate(AELIQO_FOUNDATION_REFS.scrollArea, ['axis', 'labelRef'], input, scrollValidators),
+    (input) => validate(VARENDO_FOUNDATION_REFS.scrollArea, ['axis', 'labelRef'], input, scrollValidators),
   ),
 ];
 
-export function getAeliqoFoundationManifest(id: AeliqoFoundationId): AeliqoFoundationManifest | undefined {
-  return AELIQO_FOUNDATION_MANIFESTS.find((candidate) => candidate.ref.id === id);
+export function getVarendoFoundationManifest(id: VarendoFoundationId): VarendoFoundationManifest | undefined {
+  return VARENDO_FOUNDATION_MANIFESTS.find((candidate) => candidate.ref.id === id);
 }

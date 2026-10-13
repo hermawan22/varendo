@@ -1832,7 +1832,7 @@ const parsed = [
   validateCommitReadSet(commitPins, commitPins, commitPins.results),
   {ok: true, value: installedInteractionGraph}, {ok:true,value:installedPresentation},
 ];
-globalThis.__aeliqoParsed = parsed;
+globalThis.__varendoParsed = parsed;
 export {parsed};
 `,
 );
@@ -1878,7 +1878,7 @@ const bundleFiles = (await sortedFiles(join(consumerDirectory, 'dist'))).filter(
 const bundleMetrics = [];
 for (const path of bundleFiles) {
   const bytes = await readFile(path);
-  assert(bytes.includes(Buffer.from('__aeliqoParsed')), `Bundle does not retain observable parser output: ${path}`);
+  assert(bytes.includes(Buffer.from('__varendoParsed')), `Bundle does not retain observable parser output: ${path}`);
   bundleMetrics.push({
     file: relative(join(consumerDirectory, 'dist'), path),
     bytes: bytes.length,
@@ -1918,8 +1918,8 @@ try {
   page.on('pageerror', (error) => errors.push(error.stack ?? error.message));
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
   assert.deepEqual(errors, [], 'Installed browser consumer raised an exception');
-  await page.waitForFunction(() => Array.isArray(globalThis.__aeliqoParsed), null, { timeout: 10_000 });
-  browserOutcomes = await page.evaluate(() => globalThis.__aeliqoParsed.map((value) => value.ok));
+  await page.waitForFunction(() => Array.isArray(globalThis.__varendoParsed), null, { timeout: 10_000 });
+  browserOutcomes = await page.evaluate(() => globalThis.__varendoParsed.map((value) => value.ok));
   assert.deepEqual(errors, [], 'Installed browser consumer raised an exception');
   assert(
     browserOutcomes.length > 0 && browserOutcomes.every(Boolean),

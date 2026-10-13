@@ -1,36 +1,36 @@
 import {
-  AeliqoAvatarElement,
-  AeliqoBadgeElement,
-  AeliqoButtonElement,
-  AeliqoGridElement,
-  AeliqoHeadingElement,
-  AeliqoIconButtonElement,
-  AeliqoLinkElement,
-  AeliqoScrollAreaElement,
-  AeliqoSeparatorElement,
-  AeliqoSplitPaneElement,
-  AeliqoStackElement,
-  AeliqoSurfaceElement,
-  AeliqoTextElement,
+  VarendoAvatarElement,
+  VarendoBadgeElement,
+  VarendoButtonElement,
+  VarendoGridElement,
+  VarendoHeadingElement,
+  VarendoIconButtonElement,
+  VarendoLinkElement,
+  VarendoScrollAreaElement,
+  VarendoSeparatorElement,
+  VarendoSplitPaneElement,
+  VarendoStackElement,
+  VarendoSurfaceElement,
+  VarendoTextElement,
 } from '@varendo/web/foundation';
 import { appendSlottedText, cleanupCatalogRoot, createCatalogElement, createCatalogRoot } from './fixture.js';
 import { catalogMountSource, catalogSource } from './source.js';
 import type { CatalogExampleDefinition, CatalogExampleId, CatalogExampleMetadata } from './types.js';
 
 const sourceImports = `import {
-  AeliqoAvatarElement,
-  AeliqoBadgeElement,
-  AeliqoButtonElement,
-  AeliqoGridElement,
-  AeliqoHeadingElement,
-  AeliqoIconButtonElement,
-  AeliqoLinkElement,
-  AeliqoScrollAreaElement,
-  AeliqoSeparatorElement,
-  AeliqoSplitPaneElement,
-  AeliqoStackElement,
-  AeliqoSurfaceElement,
-  AeliqoTextElement,
+  VarendoAvatarElement,
+  VarendoBadgeElement,
+  VarendoButtonElement,
+  VarendoGridElement,
+  VarendoHeadingElement,
+  VarendoIconButtonElement,
+  VarendoLinkElement,
+  VarendoScrollAreaElement,
+  VarendoSeparatorElement,
+  VarendoSplitPaneElement,
+  VarendoStackElement,
+  VarendoSurfaceElement,
+  VarendoTextElement,
 } from "@varendo/web/foundation";`;
 
 type MetadataNotes = Pick<
@@ -44,7 +44,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The host chooses the action type and pending state; the component never performs persistence.',
     states: ['ready', 'disabled', 'pending'],
     keyboard: ['Tab', 'Enter', 'Space'],
-    events: ['aeliqo-action'],
+    events: ['varendo-action'],
     expectedOutcome: 'A cancellable action proposal is emitted when the native button is activated.',
   },
   'icon-button': {
@@ -53,7 +53,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The label is required for the icon-only affordance; the host owns the action.',
     states: ['ready', 'disabled', 'pending'],
     keyboard: ['Tab', 'Enter', 'Space'],
-    events: ['aeliqo-action'],
+    events: ['varendo-action'],
     expectedOutcome: 'The icon action remains keyboard reachable and emits the typed action proposal.',
   },
   link: {
@@ -62,7 +62,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The host supplies an approved href and target; arbitrary model URLs are not interpreted.',
     states: ['ready', 'disabled'],
     keyboard: ['Tab', 'Enter'],
-    events: ['aeliqo-link'],
+    events: ['varendo-link'],
     expectedOutcome: 'The approved link is navigable and emits a cancellable link proposal.',
   },
   text: {
@@ -153,7 +153,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Use position for controlled layout and defaultPosition for initial uncontrolled state.',
     states: ['ready', 'disabled'],
     keyboard: ['Tab', 'Arrow keys', 'Home', 'End'],
-    events: ['aeliqo-split-change'],
+    events: ['varendo-split-change'],
     expectedOutcome: 'The divider exposes its range and emits a typed position proposal when adjusted.',
   },
   'scroll-area': {
@@ -179,7 +179,7 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
       'Set the smallest semantic props needed by the host; content remains ordinary light-DOM children or slots.',
     states: ['ready', 'disabled', 'read-only'],
     keyboard: ['Tab', 'Enter or Space when actionable', 'native focus order'],
-    events: ['aeliqo-action where the primitive is actionable'],
+    events: ['varendo-action where the primitive is actionable'],
     expectedOutcome:
       'The primitive renders directly in the supplied host and preserves its native interaction boundary.',
     ...componentNotes[id],
@@ -194,57 +194,61 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
 
 export const foundationExamples: readonly CatalogExampleDefinition[] = [
   mount('button', (root) => {
-    const element = createCatalogElement<AeliqoButtonElement>('aeliqo-button', root, AeliqoButtonElement);
+    const element = createCatalogElement<VarendoButtonElement>('varendo-button', root, VarendoButtonElement);
     element.label = 'Save report';
     element.variant = 'solid';
     element.type = 'button';
   }),
   mount('icon-button', (root) => {
-    const element = createCatalogElement<AeliqoIconButtonElement>('aeliqo-icon-button', root, AeliqoIconButtonElement);
+    const element = createCatalogElement<VarendoIconButtonElement>(
+      'varendo-icon-button',
+      root,
+      VarendoIconButtonElement,
+    );
     element.label = 'Open details';
     appendSlottedText(element, 'icon', '⋯');
   }),
   mount('link', (root) => {
-    const element = createCatalogElement<AeliqoLinkElement>('aeliqo-link', root, AeliqoLinkElement);
+    const element = createCatalogElement<VarendoLinkElement>('varendo-link', root, VarendoLinkElement);
     element.label = 'View report';
     element.href = '/reports/weekly';
     element.target = '_self';
   }),
   mount('text', (root) => {
-    const element = createCatalogElement<AeliqoTextElement>('aeliqo-text', root, AeliqoTextElement);
+    const element = createCatalogElement<VarendoTextElement>('varendo-text', root, VarendoTextElement);
     element.text = 'A plain, trusted text value.';
     element.as = 'p';
   }),
   mount('heading', (root) => {
-    const element = createCatalogElement<AeliqoHeadingElement>('aeliqo-heading', root, AeliqoHeadingElement);
+    const element = createCatalogElement<VarendoHeadingElement>('varendo-heading', root, VarendoHeadingElement);
     element.level = 2;
     element.size = 'heading';
     element.text = 'Weekly report';
   }),
   mount('badge', (root) => {
-    const element = createCatalogElement<AeliqoBadgeElement>('aeliqo-badge', root, AeliqoBadgeElement);
+    const element = createCatalogElement<VarendoBadgeElement>('varendo-badge', root, VarendoBadgeElement);
     element.text = 'Ready';
     element.tone = 'success';
   }),
   mount('avatar', (root) => {
-    const element = createCatalogElement<AeliqoAvatarElement>('aeliqo-avatar', root, AeliqoAvatarElement);
+    const element = createCatalogElement<VarendoAvatarElement>('varendo-avatar', root, VarendoAvatarElement);
     element.name = 'Ada Lovelace';
     element.alt = 'Ada Lovelace';
     element.size = 'medium';
   }),
   mount('separator', (root) => {
-    const element = createCatalogElement<AeliqoSeparatorElement>('aeliqo-separator', root, AeliqoSeparatorElement);
+    const element = createCatalogElement<VarendoSeparatorElement>('varendo-separator', root, VarendoSeparatorElement);
     element.orientation = 'horizontal';
   }),
   mount('surface', (root) => {
-    const element = createCatalogElement<AeliqoSurfaceElement>('aeliqo-surface', root, AeliqoSurfaceElement);
+    const element = createCatalogElement<VarendoSurfaceElement>('varendo-surface', root, VarendoSurfaceElement);
     element.as = 'section';
     element.tone = 'surface';
     element.label = 'Report panel';
     element.textContent = 'Bounded surface content';
   }),
   mount('stack', (root) => {
-    const element = createCatalogElement<AeliqoStackElement>('aeliqo-stack', root, AeliqoStackElement);
+    const element = createCatalogElement<VarendoStackElement>('varendo-stack', root, VarendoStackElement);
     element.direction = 'row';
     element.gap = 12;
     element.align = 'center';
@@ -255,7 +259,7 @@ export const foundationExamples: readonly CatalogExampleDefinition[] = [
     }
   }),
   mount('grid', (root) => {
-    const element = createCatalogElement<AeliqoGridElement>('aeliqo-grid', root, AeliqoGridElement);
+    const element = createCatalogElement<VarendoGridElement>('varendo-grid', root, VarendoGridElement);
     element.columns = 2;
     element.gap = 16;
     element.minItem = 'small';
@@ -266,7 +270,7 @@ export const foundationExamples: readonly CatalogExampleDefinition[] = [
     }
   }),
   mount('split-pane', (root) => {
-    const element = createCatalogElement<AeliqoSplitPaneElement>('aeliqo-split-pane', root, AeliqoSplitPaneElement);
+    const element = createCatalogElement<VarendoSplitPaneElement>('varendo-split-pane', root, VarendoSplitPaneElement);
     element.defaultPosition = 42;
     element.min = 20;
     element.max = 80;
@@ -276,7 +280,11 @@ export const foundationExamples: readonly CatalogExampleDefinition[] = [
     appendSlottedText(element, 'end', 'Secondary panel');
   }),
   mount('scroll-area', (root) => {
-    const element = createCatalogElement<AeliqoScrollAreaElement>('aeliqo-scroll-area', root, AeliqoScrollAreaElement);
+    const element = createCatalogElement<VarendoScrollAreaElement>(
+      'varendo-scroll-area',
+      root,
+      VarendoScrollAreaElement,
+    );
     element.axis = 'y';
     element.label = 'Report rows';
     element.tabIndex = 0;

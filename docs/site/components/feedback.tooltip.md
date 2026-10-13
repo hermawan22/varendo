@@ -7,9 +7,9 @@ contract: 'Supplemental nonessential information; works on focus, dismisses, not
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -28,19 +28,19 @@ A short supplemental explanation shown when its built-in trigger gets focus or h
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 The built-in trigger opens the tooltip on focus or pointer hover and closes
 it on blur, pointer leave, or Escape. There is no `disabled` property and no
@@ -53,11 +53,11 @@ tooltip content is supplementary.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -65,9 +65,9 @@ Keep essential instructions outside the tooltip. The trigger remains the layout 
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -76,7 +76,7 @@ Keep essential instructions outside the tooltip. The trigger remains the layout 
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

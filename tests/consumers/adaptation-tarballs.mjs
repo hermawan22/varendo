@@ -12,7 +12,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/adaptation-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-adaptation-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-adaptation-consumer-'));
 const run = (args, cwd = root) => {
   const r = spawnSync(args[0], args.slice(1), { cwd, encoding: 'utf8', timeout: 180000 });
   if (r.error || r.status !== 0) throw Error(`${args.join(' ')}\n${r.error ?? ''}\n${r.stdout}\n${r.stderr}`);
@@ -75,7 +75,7 @@ await writeFile(
   join(consumer, 'recipes.ts'),
   `import type {RecipeContext, RecipePresentationPolicy} from '@varendo/web';
 import type {RecipePresentationPolicy as SubpathPolicy} from '@varendo/web/recipes';
-import type {AeliqoAppOptions, AeliqoAppDraftExitRequest, RendererReadyReceipt} from '@varendo/web/app';
+import type {VarendoAppOptions, VarendoAppDraftExitRequest, RendererReadyReceipt} from '@varendo/web/app';
 import type {RuntimeRenderOptions, RuntimePreparedRender, RuntimePresentationProjection} from '@varendo/runtime/app';
 import type {RuntimeRenderPreparation as RootPreparation} from '@varendo/runtime';
 const transaction = { prepare(candidate: RootPreparation) {
@@ -86,7 +86,7 @@ declare const prepared: RuntimePreparedRender;
 const projection: RuntimePresentationProjection = prepared;
 void transaction; void projection;
 import type {PresentationPatternManifest, PresentationStateMappingManifest} from '@varendo/core/presentation';
-declare const options: AeliqoAppOptions;
+declare const options: VarendoAppOptions;
 const patterns: readonly PresentationPatternManifest[] = options.patterns ?? [];
 const stateMappings: readonly PresentationStateMappingManifest[] = options.stateMappings ?? [];
 void patterns; void stateMappings;
@@ -94,9 +94,9 @@ type PatternContext = Parameters<PresentationPatternManifest['expand']>[0]['cont
 declare const patternContext: PatternContext;
 void patternContext.incumbent?.nodes;
 const hooks = {
-  onDraftExit(request: AeliqoAppDraftExitRequest) { void request.signal; return {status: 'stay' as const}; },
+  onDraftExit(request: VarendoAppDraftExitRequest) { void request.signal; return {status: 'stay' as const}; },
   onPresentation(receipt: RendererReadyReceipt) { void receipt.environment; },
-} satisfies Pick<AeliqoAppOptions, 'onDraftExit' | 'onPresentation'>;
+} satisfies Pick<VarendoAppOptions, 'onDraftExit' | 'onPresentation'>;
 void hooks;
 export const policy = {allowedRepresentations: ['data.table']} satisfies RecipePresentationPolicy;
 const subpathPolicy: SubpathPolicy = policy;
@@ -146,7 +146,7 @@ run(
     '--disallow-code-generation-from-strings',
     '--input-type=module',
     '-e',
-    `import assert from 'node:assert/strict';import {measureAeliqoRegionEnvironment} from '@varendo/web/region/adaptation';import {createPresentationAdaptationController} from '@varendo/runtime/presentation';assert.equal(typeof createPresentationAdaptationController,'function');assert.equal(measureAeliqoRegionEnvironment(undefined).keyboard,'unknown');assert.equal(measureAeliqoRegionEnvironment(undefined).inlineSize.state,'unknown');`,
+    `import assert from 'node:assert/strict';import {measureVarendoRegionEnvironment} from '@varendo/web/region/adaptation';import {createPresentationAdaptationController} from '@varendo/runtime/presentation';assert.equal(typeof createPresentationAdaptationController,'function');assert.equal(measureVarendoRegionEnvironment(undefined).keyboard,'unknown');assert.equal(measureVarendoRegionEnvironment(undefined).inlineSize.state,'unknown');`,
   ],
   consumer,
 );
@@ -189,10 +189,10 @@ try {
   assert.equal((await page.evaluate(() => window.proof.request(320))).value.status, 'deferred');
   await expect(input).toBeFocused();
   await page.locator('#outside').click();
-  await expect.poll(() => page.locator('aeliqo-stack').evaluate((el) => el.direction)).toBe('column');
+  await expect.poll(() => page.locator('varendo-stack').evaluate((el) => el.direction)).toBe('column');
   await expect(input).toHaveValue('Installed draft');
   assert.equal((await page.evaluate(() => window.proof.request(900))).value.status, 'committed');
-  await expect.poll(() => page.locator('aeliqo-stack').evaluate((el) => el.direction)).toBe('row');
+  await expect.poll(() => page.locator('varendo-stack').evaluate((el) => el.direction)).toBe('row');
   assert.equal(
     await page.evaluate(
       () =>
@@ -229,12 +229,12 @@ try {
   await expect(workspace).toHaveAttribute('data-node-results', 'summary:summary,trend:trend,breakdown:breakdown');
   for (const width of [360, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await expect(page.locator('[data-aeliqo-node-id="summary"]')).toContainText('2');
-    await expect(page.locator('[data-aeliqo-node-id="breakdown"]')).toContainText('Ada');
+    await expect(page.locator('[data-varendo-node-id="summary"]')).toContainText('2');
+    await expect(page.locator('[data-varendo-node-id="breakdown"]')).toContainText('Ada');
   }
   await page.getByRole('button', { name: 'Fail breakdown update' }).click();
   await expect(page.getByTestId('goal-status')).toHaveText('failed:attendance.breakdown-failed');
-  await expect(page.locator('[data-aeliqo-node-id="summary"]')).toContainText('2');
+  await expect(page.locator('[data-varendo-node-id="summary"]')).toContainText('2');
   await page.goto('http://127.0.0.1:' + server.address().port + '/page/index.html');
   await expect(page.locator('#status')).toContainText('renderer-ready');
   await page.getByRole('button', { name: 'Workspace', exact: true }).click();
@@ -245,7 +245,7 @@ try {
   for (const width of [360, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await expect(page.getByRole('heading', { name: 'Attendance overview', exact: true })).toBeVisible();
-    await expect(page.locator('[data-aeliqo-node-id="breakdown"]')).toContainText('Ada');
+    await expect(page.locator('[data-varendo-node-id="breakdown"]')).toContainText('Ada');
   }
   assert.deepEqual(errors, []);
 } finally {

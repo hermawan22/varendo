@@ -1,15 +1,15 @@
 import { css, html, LitElement, nothing } from 'lit';
-import { aeliqoThemeStyles } from '../styles/theme.js';
-import { AELIQO_WEB_VERSION } from '../version.js';
+import { varendoThemeStyles } from '../styles/theme.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
 import type { ResultRef } from '@varendo/core';
 import type {
-  AeliqoDataColumn,
-  AeliqoDataRecord,
-  AeliqoDataScope,
-  AeliqoDataStatus,
-  AeliqoSelectionMode,
+  VarendoDataColumn,
+  VarendoDataRecord,
+  VarendoDataScope,
+  VarendoDataStatus,
+  VarendoSelectionMode,
 } from './types.js';
-import { AeliqoDataSelectionEvent } from './events.js';
+import { VarendoDataSelectionEvent } from './events.js';
 import {
   dataStyles,
   dataValueText,
@@ -22,8 +22,8 @@ import {
 /** A compact, keyboard-scannable record collection. Selection is controlled by
  * the host: this element emits stable identity proposals and never mutates
  * `selectedKeys` itself. */
-export class AeliqoRecordListElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoRecordListElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     rows: { attribute: false },
     columns: { attribute: false },
@@ -39,17 +39,17 @@ export class AeliqoRecordListElement extends LitElement {
     message: { type: String },
   };
 
-  rows: readonly AeliqoDataRecord[] = [];
-  columns: readonly AeliqoDataColumn[] = [];
+  rows: readonly VarendoDataRecord[] = [];
+  columns: readonly VarendoDataColumn[] = [];
   identity: readonly string[] = [];
   entity = 'record';
-  selection: AeliqoSelectionMode = 'none';
+  selection: VarendoSelectionMode = 'none';
   selectedKeys: readonly string[] = [];
   result: ResultRef | undefined = undefined;
   title = '';
   emptyLabel = 'No records to display.';
-  scope: AeliqoDataScope | undefined = undefined;
-  status: AeliqoDataStatus = 'ready';
+  scope: VarendoDataScope | undefined = undefined;
+  status: VarendoDataStatus = 'ready';
   message = '';
 
   protected override render() {
@@ -73,7 +73,7 @@ export class AeliqoRecordListElement extends LitElement {
     `;
   }
 
-  private renderRow(row: AeliqoDataRecord) {
+  private renderRow(row: VarendoDataRecord) {
     const key = stableDataRecordKey(row, this.identity);
     const selected = key !== undefined && this.selectedKeys.includes(key);
     const primary = this.columns[0];
@@ -120,20 +120,20 @@ export class AeliqoRecordListElement extends LitElement {
       scope: this.scope,
     });
     if (detail === undefined) return;
-    this.dispatchEvent(new AeliqoDataSelectionEvent('aeliqo-record-list-selection', detail));
+    this.dispatchEvent(new VarendoDataSelectionEvent('varendo-record-list-selection', detail));
   };
 
   static readonly styles = [
-    aeliqoThemeStyles,
+    varendoThemeStyles,
     dataStyles,
     css`
       h2 {
-        font-size: var(--aeliqo-typography-font-size-title, 1.125rem);
-        margin: 0 0 var(--aeliqo-space-8, 0.5rem);
+        font-size: var(--varendo-typography-font-size-title, 1.125rem);
+        margin: 0 0 var(--varendo-space-8, 0.5rem);
       }
       ul {
         display: grid;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         list-style: none;
         margin: 0;
         padding: 0;
@@ -143,53 +143,53 @@ export class AeliqoRecordListElement extends LitElement {
       }
       article,
       [part='record-button'] {
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid var(--aeliqo-color-border, #c9d0d8);
-        border-radius: var(--aeliqo-radius-medium, 0.625rem);
+        border: var(--varendo-control-border-width, 0.0625rem) solid var(--varendo-color-border, #c9d0d8);
+        border-radius: var(--varendo-radius-medium, 0.625rem);
         display: block;
         inline-size: 100%;
-        padding: var(--aeliqo-space-12, 0.75rem);
+        padding: var(--varendo-space-12, 0.75rem);
         text-align: start;
       }
       [part='record-button'] {
-        background: var(--aeliqo-color-surface, #fff);
+        background: var(--varendo-color-surface, #fff);
         color: inherit;
         cursor: pointer;
         font: inherit;
       }
       [part='record-button']:hover {
-        border-color: var(--aeliqo-color-accent, #4338ca);
+        border-color: var(--varendo-color-accent, #4338ca);
       }
       li[data-selected] [part='record-button'] {
-        border-color: var(--aeliqo-color-accent, #4338ca);
-        box-shadow: inset 0 0 0 0.125rem color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 20%, transparent);
+        border-color: var(--varendo-color-accent, #4338ca);
+        box-shadow: inset 0 0 0 0.125rem color-mix(in srgb, var(--varendo-color-accent, #4338ca) 20%, transparent);
       }
       [part='primary'] {
         display: block;
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
         overflow-wrap: anywhere;
       }
       [part='facts'] {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-4, 0.25rem) var(--aeliqo-space-12, 0.75rem);
-        margin-block-start: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-4, 0.25rem) var(--varendo-space-12, 0.75rem);
+        margin-block-start: var(--varendo-space-8, 0.5rem);
       }
       [part='fact'] {
         display: inline-flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-4, 0.25rem);
+        gap: var(--varendo-space-4, 0.25rem);
         max-inline-size: 100%;
       }
       [part='field-label'],
       [part='scope'] {
-        color: var(--aeliqo-color-muted, #475569);
-        font-size: var(--aeliqo-typography-font-size-caption, 0.8125rem);
+        color: var(--varendo-color-muted, #475569);
+        font-size: var(--varendo-typography-font-size-caption, 0.8125rem);
       }
       [part='field-value'] {
         overflow-wrap: anywhere;
       }
       [part='scope'] {
-        margin: var(--aeliqo-space-8, 0) 0 0;
+        margin: var(--varendo-space-8, 0) 0 0;
       }
       @media (forced-colors: active) {
         [part='record-button'] {

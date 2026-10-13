@@ -1,15 +1,15 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles, clampNumber } from './base.js';
-import { AeliqoSplitChangeEvent } from './events.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles, clampNumber } from './base.js';
+import { VarendoSplitChangeEvent } from './events.js';
 
-export type AeliqoSplitOrientation = 'horizontal' | 'vertical';
+export type VarendoSplitOrientation = 'horizontal' | 'vertical';
 
 const HORIZONTAL_KEYS: Readonly<Record<string, -1 | 1>> = { ArrowLeft: -1, ArrowRight: 1 };
 const VERTICAL_KEYS: Readonly<Record<string, -1 | 1>> = { ArrowUp: -1, ArrowDown: 1 };
 
 function keyboardPosition(
   key: string,
-  orientation: AeliqoSplitOrientation,
+  orientation: VarendoSplitOrientation,
   rtl: boolean,
   position: number,
   step: number,
@@ -24,7 +24,7 @@ function keyboardPosition(
 }
 
 /** Resizable two-pane layout with a typed, controlled position proposal. */
-export class AeliqoSplitPaneElement extends AeliqoFoundationElement {
+export class VarendoSplitPaneElement extends VarendoFoundationElement {
   static readonly properties = {
     orientation: { type: String },
     position: { type: Number },
@@ -38,7 +38,7 @@ export class AeliqoSplitPaneElement extends AeliqoFoundationElement {
     separatorLabel: { attribute: 'separator-label', type: String },
   };
 
-  orientation: AeliqoSplitOrientation = 'horizontal';
+  orientation: VarendoSplitOrientation = 'horizontal';
   position: number | undefined = undefined;
   defaultPosition = 50;
   min = 20;
@@ -62,8 +62,8 @@ export class AeliqoSplitPaneElement extends AeliqoFoundationElement {
     const position = this.effectivePosition();
     const { minimum, maximum } = this.positionBounds();
     return html`
-      <div part="split" class=${`orientation-${orientation}`} style=${`--aeliqo-split-position:${position}`}>
-        <div part="start" id="aeliqo-split-primary" role="region" aria-label=${this.primaryLabel || 'Primary pane'}>
+      <div part="split" class=${`orientation-${orientation}`} style=${`--varendo-split-position:${position}`}>
+        <div part="start" id="varendo-split-primary" role="region" aria-label=${this.primaryLabel || 'Primary pane'}>
           <slot name="start"></slot>
         </div>
         <div
@@ -71,7 +71,7 @@ export class AeliqoSplitPaneElement extends AeliqoFoundationElement {
           role="separator"
           tabindex=${this.disabled ? -1 : 0}
           aria-orientation=${orientation === 'horizontal' ? 'vertical' : 'horizontal'}
-          aria-controls="aeliqo-split-primary"
+          aria-controls="varendo-split-primary"
           aria-label=${this.separatorLabel || 'Resize panes'}
           aria-valuemin=${minimum}
           aria-valuemax=${maximum}
@@ -169,7 +169,7 @@ export class AeliqoSplitPaneElement extends AeliqoFoundationElement {
       this.requestUpdate();
     }
     this.dispatchEvent(
-      new AeliqoSplitChangeEvent({
+      new VarendoSplitChangeEvent({
         source: 'user',
         orientation: this.orientation === 'vertical' ? 'vertical' : 'horizontal',
         position,
@@ -178,7 +178,7 @@ export class AeliqoSplitPaneElement extends AeliqoFoundationElement {
   }
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: block;
@@ -206,21 +206,21 @@ export class AeliqoSplitPaneElement extends AeliqoFoundationElement {
         overflow-wrap: anywhere;
       }
       .orientation-horizontal [part='start'] {
-        flex: var(--aeliqo-split-position) 1 0;
+        flex: var(--varendo-split-position) 1 0;
       }
       .orientation-horizontal [part='end'] {
-        flex: calc(100 - var(--aeliqo-split-position)) 1 0;
+        flex: calc(100 - var(--varendo-split-position)) 1 0;
       }
       .orientation-vertical [part='start'] {
-        flex: var(--aeliqo-split-position) 1 0;
+        flex: var(--varendo-split-position) 1 0;
       }
       .orientation-vertical [part='end'] {
-        flex: calc(100 - var(--aeliqo-split-position)) 1 0;
+        flex: calc(100 - var(--varendo-split-position)) 1 0;
       }
       [part='splitter'] {
-        flex: 0 0 max(0.5rem, var(--_aeliqo-coarse-target, 0px));
-        min-block-size: var(--_aeliqo-coarse-target, 0px);
-        min-inline-size: var(--_aeliqo-coarse-target, 0px);
+        flex: 0 0 max(0.5rem, var(--_varendo-coarse-target, 0px));
+        min-block-size: var(--_varendo-coarse-target, 0px);
+        min-inline-size: var(--_varendo-coarse-target, 0px);
         position: relative;
         touch-action: none;
         z-index: 1;
@@ -232,20 +232,20 @@ export class AeliqoSplitPaneElement extends AeliqoFoundationElement {
         cursor: row-resize;
       }
       [part='splitter']::after {
-        background: var(--aeliqo-color-border, #64748b);
+        background: var(--varendo-color-border, #64748b);
         content: '';
         inset: 0;
         position: absolute;
       }
       .orientation-horizontal [part='splitter']::after {
-        inset-inline: calc((100% - var(--aeliqo-control-border-width, 0.0625rem)) / 2);
+        inset-inline: calc((100% - var(--varendo-control-border-width, 0.0625rem)) / 2);
       }
       .orientation-vertical [part='splitter']::after {
-        inset-block: calc((100% - var(--aeliqo-control-border-width, 0.0625rem)) / 2);
+        inset-block: calc((100% - var(--varendo-control-border-width, 0.0625rem)) / 2);
       }
       [part='splitter']:focus-visible {
-        outline: var(--aeliqo-focus-width, 0.1875rem) solid var(--aeliqo-color-focus, #4338ca);
-        outline-offset: calc(-1 * var(--aeliqo-focus-width, 0.1875rem));
+        outline: var(--varendo-focus-width, 0.1875rem) solid var(--varendo-color-focus, #4338ca);
+        outline-offset: calc(-1 * var(--varendo-focus-width, 0.1875rem));
         box-shadow: none;
       }
       :host([disabled]) [part='splitter'] {

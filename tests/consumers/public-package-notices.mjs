@@ -28,7 +28,7 @@ for (const name of workspacePackages) {
   assert.equal(manifest.private === true, name === 'testkit', `${manifest.name} public/private classification drift`);
 }
 
-const output = await mkdtemp(join(tmpdir(), 'aeliqo-public-notices-'));
+const output = await mkdtemp(join(tmpdir(), 'varendo-public-notices-'));
 try {
   for (const name of publicPackages) {
     const directory = join(root, 'packages', name);

@@ -1,22 +1,22 @@
 import {
-  AeliqoMetricElement,
-  AeliqoDeltaElement,
-  AeliqoKeyValueElement,
-  AeliqoDetailElement,
-  AeliqoRecordListElement,
-  AeliqoCardCollectionElement,
-  AeliqoSelectionSummaryElement,
-  AeliqoFilterBuilderElement,
+  VarendoMetricElement,
+  VarendoDeltaElement,
+  VarendoKeyValueElement,
+  VarendoDetailElement,
+  VarendoRecordListElement,
+  VarendoCardCollectionElement,
+  VarendoSelectionSummaryElement,
+  VarendoFilterBuilderElement,
 } from './data/index.js';
 import type { ElementRegistration } from './register-elements.js';
 
 export const registrations: readonly ElementRegistration[] = [
-  { name: 'aeliqo-metric', constructor: AeliqoMetricElement },
-  { name: 'aeliqo-delta', constructor: AeliqoDeltaElement },
-  { name: 'aeliqo-key-value', constructor: AeliqoKeyValueElement },
-  { name: 'aeliqo-detail', constructor: AeliqoDetailElement },
-  { name: 'aeliqo-record-list', constructor: AeliqoRecordListElement },
-  { name: 'aeliqo-card-collection', constructor: AeliqoCardCollectionElement },
-  { name: 'aeliqo-selection-summary', constructor: AeliqoSelectionSummaryElement },
-  { name: 'aeliqo-filter-builder', constructor: AeliqoFilterBuilderElement },
+  { name: 'varendo-metric', constructor: VarendoMetricElement },
+  { name: 'varendo-delta', constructor: VarendoDeltaElement },
+  { name: 'varendo-key-value', constructor: VarendoKeyValueElement },
+  { name: 'varendo-detail', constructor: VarendoDetailElement },
+  { name: 'varendo-record-list', constructor: VarendoRecordListElement },
+  { name: 'varendo-card-collection', constructor: VarendoCardCollectionElement },
+  { name: 'varendo-selection-summary', constructor: VarendoSelectionSummaryElement },
+  { name: 'varendo-filter-builder', constructor: VarendoFilterBuilderElement },
 ];

@@ -4,12 +4,12 @@ import { createModelAdapter } from './model-adapter.mjs';
 import { readModelConfiguration } from './model-config.mjs';
 
 const env = {
-  AELIQO_MODEL_BASE_URL: 'https://model.example/v1/',
-  AELIQO_MODEL: 'tools-model',
-  AELIQO_MODEL_PROTOCOL: 'openai-compatible-chat',
-  AELIQO_MODEL_AUTH_SCHEME: 'bearer',
-  AELIQO_MODEL_API_KEY: 'server-only-secret',
-  AELIQO_MODEL_CAPABILITIES: 'tool-calls,usage',
+  VARENDO_MODEL_BASE_URL: 'https://model.example/v1/',
+  VARENDO_MODEL: 'tools-model',
+  VARENDO_MODEL_PROTOCOL: 'openai-compatible-chat',
+  VARENDO_MODEL_AUTH_SCHEME: 'bearer',
+  VARENDO_MODEL_API_KEY: 'server-only-secret',
+  VARENDO_MODEL_CAPABILITIES: 'tool-calls,usage',
 };
 
 test('the generic chat profile sends the credential only to its configured provider endpoint', async () => {
@@ -60,8 +60,8 @@ test('the explicit Responses profile uses one bounded completion request without
   const model = createModelAdapter(
     readModelConfiguration({
       ...env,
-      AELIQO_MODEL_PROTOCOL: 'openai-compatible-responses',
-      AELIQO_MODEL_CAPABILITIES: 'tool-calls,usage,input-token-estimate',
+      VARENDO_MODEL_PROTOCOL: 'openai-compatible-responses',
+      VARENDO_MODEL_CAPABILITIES: 'tool-calls,usage,input-token-estimate',
     }),
     {
       fetch: async (url, init) => {

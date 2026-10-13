@@ -46,7 +46,7 @@ export interface AppAuthorityRequest {
   readonly signal?: AbortSignal;
 }
 
-export interface AeliqoAuthority {
+export interface VarendoAuthority {
   read(
     request: AppAuthorityRequest,
   ):
@@ -59,10 +59,10 @@ export interface RuntimeResourceBinding {
   readonly data: DataService;
 }
 
-export interface AeliqoRuntimeOptions {
+export interface VarendoRuntimeOptions {
   readonly runtimeId?: string;
   readonly resources: readonly RuntimeResourceBinding[];
-  readonly authority: AeliqoAuthority;
+  readonly authority: VarendoAuthority;
   readonly intents?: IntentCompilerRegistry;
   readonly actionPort?: ActionPort;
   readonly resultStore?: ResultStore;
@@ -189,7 +189,7 @@ export interface RuntimeRegionState {
 
 export type RuntimeUnsubscribe = () => void;
 
-export interface AeliqoRuntime {
+export interface VarendoRuntime {
   readonly actionPort?: ActionPort;
   createScope(input: CreateScopeInput): ScopeController;
   createLocalSurfaceScope(input?: CreateLocalSurfaceScopeInput): LocalSurfaceScope;

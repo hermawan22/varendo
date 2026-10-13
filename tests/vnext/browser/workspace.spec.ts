@@ -12,11 +12,11 @@ test('J3 registered overview evaluates one three-need Task and renders its selec
   await expect(workspace).toHaveAttribute('data-plan-nodes', 'workspace,summary,trend,breakdown');
   await expect(workspace).toHaveAttribute('data-node-results', 'summary:summary,trend:trend,breakdown:breakdown');
   await expect(workspace).toHaveAttribute('data-scope', 'attendance-scope');
-  await expect(page.locator('aeliqo-region [data-aeliqo-node-id="workspace"]')).toBeVisible();
-  await expect(page.locator('aeliqo-region [data-aeliqo-node-id="summary"]')).toContainText('2');
-  await expect(page.locator('aeliqo-region [data-aeliqo-node-id="trend"]')).toContainText('2026-09-01');
-  await expect(page.locator('aeliqo-region [data-aeliqo-node-id="breakdown"]')).toContainText('Ada');
-  await expect(page.locator('aeliqo-region [data-aeliqo-node-id="breakdown"]')).not.toContainText('Lee');
+  await expect(page.locator('varendo-region [data-varendo-node-id="workspace"]')).toBeVisible();
+  await expect(page.locator('varendo-region [data-varendo-node-id="summary"]')).toContainText('2');
+  await expect(page.locator('varendo-region [data-varendo-node-id="trend"]')).toContainText('2026-09-01');
+  await expect(page.locator('varendo-region [data-varendo-node-id="breakdown"]')).toContainText('Ada');
+  await expect(page.locator('varendo-region [data-varendo-node-id="breakdown"]')).not.toContainText('Lee');
   for (const width of [360, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await expect(workspace).toHaveAttribute('data-node-results', 'summary:summary,trend:trend,breakdown:breakdown');
@@ -33,7 +33,7 @@ test('J3 rejected goal retains the committed multi-need workspace', async ({ pag
   await page.getByRole('button', { name: 'Request anomaly' }).click();
   await expect(page.getByTestId('goal-status')).toHaveText('unsupported:intent.unknown-custom');
   await expect(workspace).toHaveAttribute('data-plan-nodes', 'workspace,summary,trend,breakdown');
-  await expect(page.locator('aeliqo-region [data-aeliqo-node-id="summary"]')).toContainText('2');
+  await expect(page.locator('varendo-region [data-varendo-node-id="summary"]')).toContainText('2');
 });
 
 test('J3 mandatory breakdown failure retains the authorized prior workspace', async ({ page }) => {
@@ -43,8 +43,8 @@ test('J3 mandatory breakdown failure retains the authorized prior workspace', as
   await page.getByRole('button', { name: 'Fail breakdown update' }).click();
   await expect(page.getByTestId('goal-status')).toHaveText('failed:attendance.breakdown-failed');
   await expect(workspace).toHaveAttribute('data-plan-nodes', 'workspace,summary,trend,breakdown');
-  await expect(page.locator('aeliqo-region [data-aeliqo-node-id="summary"]')).toContainText('2');
-  await expect(page.locator('aeliqo-region [data-aeliqo-node-id="breakdown"]')).toContainText('Ada');
+  await expect(page.locator('varendo-region [data-varendo-node-id="summary"]')).toContainText('2');
+  await expect(page.locator('varendo-region [data-varendo-node-id="breakdown"]')).toContainText('Ada');
 });
 
 test('J3 child surfaces mount registered summary, trend and breakdown together', async ({ page }) => {

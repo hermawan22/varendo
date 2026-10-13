@@ -1,10 +1,10 @@
 import type { Outcome } from '@varendo/core';
 import type {
-  AeliqoNavigationFeedbackContent,
-  AeliqoPaginationBinding,
-  AeliqoPaginationCursor,
-  AeliqoTabsBinding,
-  AeliqoTabsBindingItem,
+  VarendoNavigationFeedbackContent,
+  VarendoPaginationBinding,
+  VarendoPaginationCursor,
+  VarendoTabsBinding,
+  VarendoTabsBindingItem,
 } from './navigation-feedback-types.js';
 import {
   MAX_ITEMS,
@@ -20,12 +20,12 @@ import {
 
 export function normalizePagination(
   value: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-): Outcome<readonly AeliqoPaginationBinding[]> {
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+): Outcome<readonly VarendoPaginationBinding[]> {
   const source = boundedArray(value, 'pagination');
   if (!source.ok) return source;
   const seen = new Set<string>();
-  const result: AeliqoPaginationBinding[] = [];
+  const result: VarendoPaginationBinding[] = [];
   for (const raw of source.value) {
     const entry = normalizePaginationBinding(raw, contents, seen);
     if (!entry.ok) return entry;
@@ -37,9 +37,9 @@ export function normalizePagination(
 
 function normalizePaginationBinding(
   raw: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   seen: ReadonlySet<string>,
-): Outcome<AeliqoPaginationBinding> {
+): Outcome<VarendoPaginationBinding> {
   const entry = record(raw);
   if (entry === undefined || !validPaginationEntry(entry, contents, seen))
     return fail('bindings', 'Pagination bindings require bounded page scope and cursor metadata.');
@@ -68,7 +68,7 @@ function normalizePaginationBinding(
 
 function validPaginationEntry(
   entry: Record<string, unknown> | undefined,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   seen: ReadonlySet<string>,
 ): boolean {
   if (entry === undefined || !exactKeys(entry, paginationKeys)) return false;
@@ -96,7 +96,7 @@ const paginationKeys = [
 
 function validPaginationIdentity(
   entry: Record<string, unknown>,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   seen: ReadonlySet<string>,
 ): boolean {
   if (!bounded(entry.id) || seen.has(entry.id) || !requireContent(contents, entry.labelRef)) return false;
@@ -120,11 +120,11 @@ function validPageFlags(entry: Record<string, unknown>): boolean {
   return entry.pending === undefined || typeof entry.pending === 'boolean';
 }
 
-function normalizeCursors(value: unknown): Outcome<readonly AeliqoPaginationCursor[]> {
+function normalizeCursors(value: unknown): Outcome<readonly VarendoPaginationCursor[]> {
   if (!Array.isArray(value) || value.length > MAX_ITEMS)
     return fail('bindings', 'Pagination cursors must have unique bounded page numbers.');
   const pages = new Set<number>();
-  const cursors: AeliqoPaginationCursor[] = [];
+  const cursors: VarendoPaginationCursor[] = [];
   for (const raw of value) {
     const cursor = normalizeCursor(raw, pages);
     if (!cursor.ok) return cursor;
@@ -134,7 +134,7 @@ function normalizeCursors(value: unknown): Outcome<readonly AeliqoPaginationCurs
   return { ok: true, value: cursors };
 }
 
-function normalizeCursor(raw: unknown, pages: ReadonlySet<number>): Outcome<AeliqoPaginationCursor> {
+function normalizeCursor(raw: unknown, pages: ReadonlySet<number>): Outcome<VarendoPaginationCursor> {
   const cursor = record(raw);
   if (cursor === undefined || !validCursor(cursor, pages))
     return fail('bindings', 'Pagination cursors must have unique bounded page numbers.');
@@ -149,7 +149,7 @@ function validCursor(cursor: Record<string, unknown> | undefined, pages: Readonl
   return bounded(cursor.cursor, MAX_TEXT);
 }
 
-function hasAdjacentCursors(entry: Record<string, unknown>, cursors: readonly AeliqoPaginationCursor[]): boolean {
+function hasAdjacentCursors(entry: Record<string, unknown>, cursors: readonly VarendoPaginationCursor[]): boolean {
   const pages = new Set(cursors.map((cursor) => cursor.page));
   const page = entry.page as number;
   if (entry.hasNext === true && !pages.has(page + 1)) return false;
@@ -159,12 +159,12 @@ function hasAdjacentCursors(entry: Record<string, unknown>, cursors: readonly Ae
 
 export function normalizeTabs(
   value: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-): Outcome<readonly AeliqoTabsBinding[]> {
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+): Outcome<readonly VarendoTabsBinding[]> {
   const source = boundedArray(value, 'tabs');
   if (!source.ok) return source;
   const seen = new Set<string>();
-  const result: AeliqoTabsBinding[] = [];
+  const result: VarendoTabsBinding[] = [];
   for (const raw of source.value) {
     const entry = normalizeTabsBinding(raw, contents, seen);
     if (!entry.ok) return entry;
@@ -176,9 +176,9 @@ export function normalizeTabs(
 
 function normalizeTabsBinding(
   raw: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   seen: ReadonlySet<string>,
-): Outcome<AeliqoTabsBinding> {
+): Outcome<VarendoTabsBinding> {
   const entry = record(raw);
   if (entry === undefined || !validTabsEntry(entry, seen))
     return fail('bindings', 'Tab bindings require unique IDs and one to thirty-two items.');
@@ -197,10 +197,10 @@ function validTabsEntry(entry: Record<string, unknown> | undefined, seen: Readon
 
 function normalizeTabItems(
   value: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-): Outcome<readonly AeliqoTabsBindingItem[]> {
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+): Outcome<readonly VarendoTabsBindingItem[]> {
   const seen = new Set<string>();
-  const items: AeliqoTabsBindingItem[] = [];
+  const items: VarendoTabsBindingItem[] = [];
   for (const raw of value as readonly unknown[]) {
     const item = normalizeTabItem(raw, contents, seen);
     if (!item.ok) return item;
@@ -212,9 +212,9 @@ function normalizeTabItems(
 
 function normalizeTabItem(
   raw: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   seen: ReadonlySet<string>,
-): Outcome<AeliqoTabsBindingItem> {
+): Outcome<VarendoTabsBindingItem> {
   const tab = record(raw);
   if (tab === undefined || !validTabItem(tab, contents, seen))
     return fail('bindings', 'Tab items must use unique host labels and optional host content.');
@@ -231,7 +231,7 @@ function normalizeTabItem(
 
 function validTabItem(
   tab: Record<string, unknown> | undefined,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   seen: ReadonlySet<string>,
 ): boolean {
   if (tab === undefined || !exactKeys(tab, ['id', 'labelRef', 'contentRef', 'disabled'])) return false;

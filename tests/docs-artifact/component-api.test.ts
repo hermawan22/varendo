@@ -19,15 +19,15 @@ type ComponentApiModule = {
 it('keeps generated component metadata inside the selected class lineage', async () => {
   const api = (await import('../../scripts/docs/component-api.mjs')) as ComponentApiModule;
   const classes = await api.loadComponentSources(resolve(process.cwd(), 'packages/web/src'));
-  const table = api.componentApi(classes, 'AeliqoTableElement');
-  const formFlow = api.componentApi(classes, 'AeliqoFormFlowElement');
-  const comparison = api.componentApi(classes, 'AeliqoComparisonElement');
-  const trend = api.componentApi(classes, 'AeliqoTrendElement');
+  const table = api.componentApi(classes, 'VarendoTableElement');
+  const formFlow = api.componentApi(classes, 'VarendoFormFlowElement');
+  const comparison = api.componentApi(classes, 'VarendoComparisonElement');
+  const trend = api.componentApi(classes, 'VarendoTrendElement');
 
-  expect(table.sourceFiles).toEqual(['packages/web/src/elements/aeliqo-table.ts']);
+  expect(table.sourceFiles).toEqual(['packages/web/src/elements/varendo-table.ts']);
   expect(table.sourceFiles.every((path) => !path.startsWith('/') && !path.includes('..'))).toBe(true);
   expect(table.sizing).toContain('grid-template-columns');
-  expect(table.bounds).toContain('The source-defined `AELIQO_TABLE_MAX_VIRTUAL_ROWS` limit is 100.');
+  expect(table.bounds).toContain('The source-defined `VARENDO_TABLE_MAX_VIRTUAL_ROWS` limit is 100.');
   expect(table.bounds.join(' ')).toContain('`virtualCount` (default 40)');
 
   expect(formFlow.sourceFiles).toEqual([

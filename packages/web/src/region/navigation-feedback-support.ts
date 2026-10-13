@@ -1,10 +1,10 @@
 import type { Outcome, Scalar, VersionRef } from '@varendo/core';
-import type { AeliqoEmptyStateKind } from '../feedback/empty-state.js';
+import type { VarendoEmptyStateKind } from '../feedback/empty-state.js';
 import type {
-  AeliqoNavigationFeedbackAction,
-  AeliqoNavigationFeedbackBindings,
-  AeliqoNavigationFeedbackContent,
-  AeliqoNavigationFeedbackRoute,
+  VarendoNavigationFeedbackAction,
+  VarendoNavigationFeedbackBindings,
+  VarendoNavigationFeedbackContent,
+  VarendoNavigationFeedbackRoute,
 } from './navigation-feedback-types.js';
 export { freezeValue as freeze } from './registry-value.js';
 
@@ -12,7 +12,7 @@ export const MAX_ITEMS = 128;
 export const MAX_TREE_NODES = 512;
 export const MAX_TEXT = 4_096;
 export const MAX_PAGE = 1_000_000;
-export const EMPTY_STATE_KINDS: readonly AeliqoEmptyStateKind[] = [
+export const EMPTY_STATE_KINDS: readonly VarendoEmptyStateKind[] = [
   'no-records',
   'no-matches',
   'forbidden',
@@ -95,7 +95,7 @@ export function safeHref(value: unknown, image = false): value is string {
   if (!bounded(value, 4_096)) return false;
   try {
     return (image ? ['http:', 'https:'] : ['http:', 'https:', 'mailto:', 'tel:']).includes(
-      new URL(value, 'https://aeliqo.invalid').protocol,
+      new URL(value, 'https://varendo.invalid').protocol,
     );
   } catch {
     return false;
@@ -111,26 +111,26 @@ export function uniqueRefs(values: readonly VersionRef[]): readonly VersionRef[]
   return [...new Map(values.map((value) => [JSON.stringify([value.id, value.revision]), value])).values()];
 }
 
-export function contentMap(bindings: AeliqoNavigationFeedbackBindings): Map<string, AeliqoNavigationFeedbackContent> {
+export function contentMap(bindings: VarendoNavigationFeedbackBindings): Map<string, VarendoNavigationFeedbackContent> {
   return new Map((bindings.contents ?? []).map((entry) => [entry.id, entry]));
 }
 
-export function routeMap(bindings: AeliqoNavigationFeedbackBindings): Map<string, AeliqoNavigationFeedbackRoute> {
+export function routeMap(bindings: VarendoNavigationFeedbackBindings): Map<string, VarendoNavigationFeedbackRoute> {
   return new Map((bindings.routes ?? []).map((entry) => [entry.id, entry]));
 }
 
-export function actionMap(bindings: AeliqoNavigationFeedbackBindings): Map<string, AeliqoNavigationFeedbackAction> {
+export function actionMap(bindings: VarendoNavigationFeedbackBindings): Map<string, VarendoNavigationFeedbackAction> {
   return new Map((bindings.actions ?? []).map((entry) => [entry.id, entry]));
 }
 
-export function requireContent(contents: Map<string, AeliqoNavigationFeedbackContent>, value: unknown): boolean {
+export function requireContent(contents: Map<string, VarendoNavigationFeedbackContent>, value: unknown): boolean {
   return bounded(value) && contents.has(value);
 }
 
-export function requireRoute(routes: Map<string, AeliqoNavigationFeedbackRoute>, value: unknown): boolean {
+export function requireRoute(routes: Map<string, VarendoNavigationFeedbackRoute>, value: unknown): boolean {
   return bounded(value) && routes.has(value);
 }
 
-export function requireAction(actions: Map<string, AeliqoNavigationFeedbackAction>, value: unknown): boolean {
+export function requireAction(actions: Map<string, VarendoNavigationFeedbackAction>, value: unknown): boolean {
   return bounded(value) && actions.has(value);
 }

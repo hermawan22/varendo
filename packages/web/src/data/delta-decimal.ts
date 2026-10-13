@@ -1,17 +1,17 @@
-import type { AeliqoDataValue } from './types.js';
+import type { VarendoDataValue } from './types.js';
 
 interface DecimalRational {
   readonly numerator: bigint;
   readonly denominator: bigint;
 }
 
-export function decimalInput(value: AeliqoDataValue | undefined): string | undefined {
+export function decimalInput(value: VarendoDataValue | undefined): string | undefined {
   if (typeof value === 'number' && Number.isFinite(value)) return String(value);
   if (isDecimalValue(value)) return value.decimal;
   return undefined;
 }
 
-function isDecimalValue(value: AeliqoDataValue | undefined): value is { readonly decimal: string } {
+function isDecimalValue(value: VarendoDataValue | undefined): value is { readonly decimal: string } {
   return typeof value === 'object' && value !== null && !Array.isArray(value) && typeof value.decimal === 'string';
 }
 

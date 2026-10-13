@@ -83,7 +83,7 @@ actions.register({
 The app emits an action event when a proposal is ready. Your UI reviews it and calls `confirm()` — or `cancel()`.
 
 ```ts
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources,
   authority,
   onActionEvent: async (event) => {

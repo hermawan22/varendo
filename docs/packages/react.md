@@ -11,24 +11,24 @@ dependency.
 ## Main entry point
 
 ```tsx
-import { AeliqoProvider, AeliqoRegion, useAeliqoRender } from '@varendo/react';
-import type { AeliqoApp } from '@varendo/web/app';
+import { VarendoProvider, VarendoRegion, useVarendoRender } from '@varendo/react';
+import type { VarendoApp } from '@varendo/web/app';
 
-export function PeopleRegion({ app }: { app: AeliqoApp }) {
+export function PeopleRegion({ app }: { app: VarendoApp }) {
   return (
-    <AeliqoProvider app={app}>
-      <AeliqoRegion regionId="people-main" resourceId="people" />
-    </AeliqoProvider>
+    <VarendoProvider app={app}>
+      <VarendoRegion regionId="people-main" resourceId="people" />
+    </VarendoProvider>
   );
 }
 ```
 
-Create the `AeliqoApp` at the application boundary and pass that instance into
+Create the `VarendoApp` at the application boundary and pass that instance into
 the provider. The provider exposes the app to its descendants; the host still
 owns the app's data and authority adapters. Call
-`registerAeliqoReactElements()` from the client entry point when the page uses
+`registerVarendoReactElements()` from the client entry point when the page uses
 custom elements directly. The app API from `@varendo/react/app` mounts and loads
-its required shared elements through `createAeliqoApp`; it needs no separate
+its required shared elements through `createVarendoApp`; it needs no separate
 registration call. Standard app views load component families as needed, while
 custom view callbacks load the full shared catalog for compatibility.
 
@@ -71,7 +71,7 @@ from a wire payload. The host creates the surface at its runtime boundary and
 registers trusted local React components explicitly.
 
 ```tsx
-import { AeliqoScope, ViewSurface, defineReactViews, useSurfaceState } from '@varendo/react/surface';
+import { VarendoScope, ViewSurface, defineReactViews, useSurfaceState } from '@varendo/react/surface';
 import type { SurfaceController } from '@varendo/runtime/surfaces';
 
 const peopleViews = defineReactViews([
@@ -91,15 +91,15 @@ export function PeopleNativeView({
 }) {
   const rowCount = useSurfaceState(surface, snapshot => snapshot.state.rows.length);
   return (
-    <AeliqoScope scope={scope}>
+    <VarendoScope scope={scope}>
       <p>{rowCount} rows</p>
       <ViewSurface surface={surface} views={peopleViews} view={{ id: 'people.native-table', revision: '1' }} />
-    </AeliqoScope>
+    </VarendoScope>
   );
 }
 ```
 
-`AeliqoScope` attaches and detaches the supplied scope for committed React
+`VarendoScope` attaches and detaches the supplied scope for committed React
 lifecycle work, but never disposes it. It renders children only for an active,
 authorized activation. Initial resolution, denied access, forced invalidation,
 and disposal show a safe status without rendering the scoped children. During a
@@ -139,8 +139,8 @@ the old view immediately. The loader is application code; neither a model nor
 a wire payload may choose its import path. Keep a view definition immutable for
 one ID and revision; increment the revision when its implementation changes.
 
-For a feature bound to an application scope, mount `AeliqoProvider` with the
-host runtime, then `AeliqoScope` with its host scope. A descendant can use
+For a feature bound to an application scope, mount `VarendoProvider` with the
+host runtime, then `VarendoScope` with its host scope. A descendant can use
 `useSurface(feature, { id, bindings })`. The hook reads those nearest owners,
 creates the controller only after commit, makes the first request then, and
 returns `undefined` until the controller exists. A data feature starts with browse; a
@@ -148,10 +148,10 @@ capability feature starts from its typed `bindings.initialIntent`. Supply a
 stable surface ID within an activation and bindings for that activation:
 
 ```tsx
-import { AeliqoProvider } from '@varendo/react/app';
-import { AeliqoScope, useSurface } from '@varendo/react/surface';
+import { VarendoProvider } from '@varendo/react/app';
+import { VarendoScope, useSurface } from '@varendo/react/surface';
 import type { DataFeatureDefinition } from '@varendo/core/features';
-import type { AeliqoRuntime } from '@varendo/runtime/app';
+import type { VarendoRuntime } from '@varendo/runtime/app';
 import type { ScopeController } from '@varendo/runtime/scopes';
 import type { DataSurfaceBindings } from '@varendo/runtime/surfaces';
 
@@ -166,14 +166,14 @@ function Orders({ feature, bindings }: {
 }
 
 export function OrdersWorkspace({ runtime, scope, feature, bindings }: {
-  runtime: AeliqoRuntime;
+  runtime: VarendoRuntime;
   scope: ScopeController;
   feature: DataFeatureDefinition;
   bindings: DataSurfaceBindings<OrdersState>;
 }) {
-  return <AeliqoProvider runtime={runtime}>
-    <AeliqoScope scope={scope}><Orders feature={feature} bindings={bindings} /></AeliqoScope>
-  </AeliqoProvider>;
+  return <VarendoProvider runtime={runtime}>
+    <VarendoScope scope={scope}><Orders feature={feature} bindings={bindings} /></VarendoScope>
+  </VarendoProvider>;
 }
 ```
 

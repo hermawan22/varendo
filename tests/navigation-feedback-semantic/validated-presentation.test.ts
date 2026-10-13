@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createPresentationRegistry, validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
 import {
-  AELIQO_NAVIGATION_FEEDBACK_REFS,
+  VARENDO_NAVIGATION_FEEDBACK_REFS,
   createNavigationFeedbackPresentationManifests,
 } from '../../packages/web/src/region/navigation-feedback-registry.js';
 import {
@@ -101,16 +101,16 @@ describe('canonical navigation and feedback presentation', () => {
     );
     expect(checked).toMatchObject({ ok: false, diagnostics: [{ code: 'presentation.coverage' }] });
     expect(
-      registry.value.manifests.find((manifest) => manifest.ref.id === AELIQO_NAVIGATION_FEEDBACK_REFS.menu.id),
+      registry.value.manifests.find((manifest) => manifest.ref.id === VARENDO_NAVIGATION_FEEDBACK_REFS.menu.id),
     ).toBeDefined();
   });
 });
 
 it('uses the public shared registry without duplicate representations', async () => {
-  const { createAeliqoPresentationRegistry } = await import('../../packages/web/src/region/registry.js');
+  const { createVarendoPresentationRegistry } = await import('../../packages/web/src/region/registry.js');
   const { navigationFeedbackBindings, navigationFeedbackPresentationPlan, navigationFeedbackPresentationContext } =
     await import('./fixtures.js');
-  const registry = createAeliqoPresentationRegistry({ navigationFeedback: navigationFeedbackBindings });
+  const registry = createVarendoPresentationRegistry({ navigationFeedback: navigationFeedbackBindings });
   expect(registry.ok).toBe(true);
   if (!registry.ok) return;
   expect(new Set(registry.value.manifests.map((m) => m.ref.id)).size).toBe(registry.value.manifests.length);

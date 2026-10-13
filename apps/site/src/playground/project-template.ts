@@ -78,7 +78,7 @@ function application(resource: TemplateResource): string {
   return `import {defineResource} from '@varendo/core';
 import {createQueryFunctionRegistry} from '@varendo/core/expressions';
 import {createLocalDataService} from '@varendo/runtime/data';
-import {createAeliqoApp} from '@varendo/web/app';
+import {createVarendoApp} from '@varendo/web/app';
 import {z} from 'zod';
 import './style.css';
 
@@ -98,7 +98,7 @@ const data = createLocalDataService({
   authorize: () => ({ok: true, value: {scopeDigest: 'local-demo', policyRevision: 'policy-1'}}),
 });
 
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [{resource, data}],
   authority: {read: () => ({ok: true, value: {
     principalKey: 'local-user', scopeDigest: 'local-demo', policyRevision: 'policy-1',
@@ -131,7 +131,7 @@ export function projectFiles(scenario: ScenarioId, releaseVersion: string): read
   return Object.freeze([
     {
       path: 'package.json',
-      content: `${JSON.stringify({ name: `aeliqo-${scenario}-example`, private: true, type: 'module', scripts: { dev: 'vite', build: 'tsc --noEmit && vite build' }, dependencies: { ...packages, zod: '4.5.4' }, devDependencies: { typescript: '7.0.2', vite: '8.2.2' } }, null, 2)}\n`,
+      content: `${JSON.stringify({ name: `varendo-${scenario}-example`, private: true, type: 'module', scripts: { dev: 'vite', build: 'tsc --noEmit && vite build' }, dependencies: { ...packages, zod: '4.5.4' }, devDependencies: { typescript: '7.0.2', vite: '8.2.2' } }, null, 2)}\n`,
     },
     {
       path: 'tsconfig.json',

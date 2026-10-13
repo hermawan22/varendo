@@ -7,9 +7,9 @@ contract: 'Stable reserved geometry with reduced motion and a named loading stat
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -28,19 +28,19 @@ Reserves a visible shape for content that is still loading. Line count and varia
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 The text variant renders between one and twelve lines, clamping an out-of-range
 `lines` value; rectangular and circular variants render one shape. Reduced
@@ -51,11 +51,11 @@ but it cannot tell whether a request later became empty, denied, or failed.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -63,9 +63,9 @@ Match the width of the content it replaces without forcing horizontal scroll. Re
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -74,7 +74,7 @@ Match the width of the content it replaces without forcing horizontal scroll. Re
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

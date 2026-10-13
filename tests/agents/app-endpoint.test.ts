@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { defineResource } from '../../packages/core/src/index.js';
 import { createQueryFunctionRegistry } from '../../packages/core/src/expressions/index.js';
 import { createAppToolEndpoint } from '../../packages/agent/src/app/index.js';
-import { createAeliqoRuntime, type RuntimeResourceContext } from '../../packages/runtime/src/app/index.js';
+import { createVarendoRuntime, type RuntimeResourceContext } from '../../packages/runtime/src/app/index.js';
 import { createLocalDataService } from '../../packages/runtime/src/data/index.js';
 import { ActionRegistry, createActionPort } from '../../packages/runtime/src/actions/index.js';
 
@@ -86,7 +86,7 @@ function setup() {
       issueConfirmation: () => ({ ok: true, value: undefined }),
     },
   });
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     resources: [{ resource, data }],
     actionPort,
     authority: {
@@ -130,8 +130,12 @@ describe('standard app tool endpoint', () => {
     if (!endpoint.ok) return;
     const tools = await endpoint.value.discover();
     if (!tools.ok) throw new Error(tools.diagnostics.map((item) => `${item.code}: ${item.message}`).join('\n'));
-    expect(tools.ok && tools.value.map((tool) => tool.name)).toEqual(['aeliqo_context', 'aeliqo_render', 'aeliqo_act']);
-    const context = await endpoint.value.invoke('aeliqo_context', {}, { requestId: 'context-1' });
+    expect(tools.ok && tools.value.map((tool) => tool.name)).toEqual([
+      'varendo_context',
+      'varendo_render',
+      'varendo_act',
+    ]);
+    const context = await endpoint.value.invoke('varendo_context', {}, { requestId: 'context-1' });
     expect(context).toMatchObject({
       ok: true,
       value: {
@@ -192,7 +196,7 @@ describe('standard app tool endpoint', () => {
       context: { read: () => ({ ok: true, value: [active.value, secondary] }) },
     });
     if (!endpoint.ok) throw new Error(endpoint.diagnostics[0].message);
-    const context = await endpoint.value.invoke('aeliqo_context', {}, { requestId: 'context-multi' });
+    const context = await endpoint.value.invoke('varendo_context', {}, { requestId: 'context-multi' });
     expect(context).toMatchObject({
       ok: true,
       value: {
@@ -225,7 +229,7 @@ describe('standard app tool endpoint', () => {
     });
     if (!endpoint.ok) throw new Error(endpoint.diagnostics.map((item) => `${item.code}: ${item.message}`).join('\n'));
     const rendered = await endpoint.value.invoke(
-      'aeliqo_render',
+      'varendo_render',
       {
         version: '1',
         id: 'browse-people',
@@ -260,7 +264,7 @@ describe('standard app tool endpoint', () => {
     });
     if (!endpoint.ok) throw new Error(endpoint.diagnostics[0].message);
     const preview = await endpoint.value.invoke(
-      'aeliqo_act',
+      'varendo_act',
       {
         mode: 'preview',
         action: { id: 'people.create', revision: '1' },
@@ -274,18 +278,18 @@ describe('standard app tool endpoint', () => {
     const previewId = preview.value.value.previewId;
     expect(preview.value.state).toBe('needs-choice');
     await expect(
-      endpoint.value.invoke('aeliqo_act', { mode: 'execute', previewId }, { requestId: 'action-execute-early' }),
+      endpoint.value.invoke('varendo_act', { mode: 'execute', previewId }, { requestId: 'action-execute-early' }),
     ).resolves.toMatchObject({ ok: true, value: { state: 'needs-choice' } });
     expect(executions()).toBe(0);
 
     await expect(endpoint.value.confirmAction(previewId)).resolves.toMatchObject({ ok: true });
     await expect(
-      endpoint.value.invoke('aeliqo_act', { mode: 'execute', previewId }, { requestId: 'action-execute-1' }),
+      endpoint.value.invoke('varendo_act', { mode: 'execute', previewId }, { requestId: 'action-execute-1' }),
     ).resolves.toMatchObject({ ok: true, value: { state: 'accepted', value: { state: 'executed' } } });
     expect(executions()).toBe(1);
 
     const abandoned = await endpoint.value.invoke(
-      'aeliqo_act',
+      'varendo_act',
       {
         mode: 'preview',
         action: { id: 'people.create', revision: '1' },

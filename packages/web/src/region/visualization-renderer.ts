@@ -12,9 +12,9 @@ import type { ValidatedPresentation } from '@varendo/core/presentation';
 import { html, nothing, type TemplateResult } from 'lit';
 import { materializeVisualizationRows } from '../visualization/materialization.js';
 import type {
-  AeliqoVisualizationBinding,
-  AeliqoVisualizationPresentationRenderContext,
-  AeliqoVisualizationRegistryOptions,
+  VarendoVisualizationBinding,
+  VarendoVisualizationPresentationRenderContext,
+  VarendoVisualizationRegistryOptions,
 } from './visualization-registry.js';
 import { canonicalValue as canonical, resultRefKey as refKey } from './registry-value.js';
 
@@ -22,8 +22,8 @@ type CoreNode = ValidatedPresentation['nodes'][number];
 type VisualizationView = VisualizationSpec['view'];
 interface VisualizationElementProps {
   readonly visualization: VisualizationSpec;
-  readonly context: AeliqoVisualizationBinding['context'];
-  readonly datasets: AeliqoVisualizationBinding['datasets'];
+  readonly context: VarendoVisualizationBinding['context'];
+  readonly datasets: VarendoVisualizationBinding['datasets'];
   readonly label: string;
   readonly selected: string | undefined;
   readonly selectionEnabled: boolean;
@@ -115,7 +115,7 @@ function selectedIdentity(
 
 const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], VisualizationElementRenderer> = {
   trend: (props, onSelect) =>
-    html`<aeliqo-trend
+    html`<varendo-trend
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -125,10 +125,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-trend>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-trend>`,
   bar: (props, onSelect) =>
-    html`<aeliqo-bar
+    html`<varendo-bar
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -138,10 +138,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-bar>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-bar>`,
   area: (props, onSelect) =>
-    html`<aeliqo-area
+    html`<varendo-area
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -151,10 +151,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-area>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-area>`,
   scatter: (props, onSelect) =>
-    html`<aeliqo-scatter
+    html`<varendo-scatter
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -164,10 +164,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-scatter>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-scatter>`,
   histogram: (props, onSelect) =>
-    html`<aeliqo-histogram
+    html`<varendo-histogram
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -177,10 +177,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-histogram>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-histogram>`,
   heatmap: (props, onSelect) =>
-    html`<aeliqo-heatmap
+    html`<varendo-heatmap
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -190,10 +190,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-heatmap>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-heatmap>`,
   matrix: (props, onSelect) =>
-    html`<aeliqo-matrix
+    html`<varendo-matrix
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -203,10 +203,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-matrix>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-matrix>`,
   timeline: (props, onSelect) =>
-    html`<aeliqo-timeline
+    html`<varendo-timeline
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -216,10 +216,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-timeline>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-timeline>`,
   'calendar-grid': (props, onSelect) =>
-    html`<aeliqo-calendar-grid
+    html`<varendo-calendar-grid
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -229,10 +229,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-calendar-grid>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-calendar-grid>`,
   tree: (props, onSelect) =>
-    html`<aeliqo-tree
+    html`<varendo-tree
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -242,10 +242,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-tree>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-tree>`,
   treemap: (props, onSelect) =>
-    html`<aeliqo-treemap
+    html`<varendo-treemap
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -255,10 +255,10 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-treemap>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-treemap>`,
   relationship: (props, onSelect) =>
-    html`<aeliqo-relationship
+    html`<varendo-relationship
       .visualization=${props.visualization}
       .context=${props.context}
       .datasets=${props.datasets}
@@ -268,8 +268,8 @@ const VISUALIZATION_ELEMENT_RENDERERS: Record<VisualizationSpec['view'], Visuali
       .maxMarks=${20_000}
       .selectedIdentity=${props.selected ?? ''}
       .selectionEnabled=${props.selectionEnabled}
-      @aeliqo-visualization-select=${onSelect}
-    ></aeliqo-relationship>`,
+      @varendo-visualization-select=${onSelect}
+    ></varendo-relationship>`,
 };
 
 /** Names the chart from the result it answers, for example "New hires by Team". */
@@ -287,7 +287,7 @@ function visualizationLabel(result: Result, view: string): string {
 
 function renderElement(
   spec: VisualizationSpec,
-  binding: AeliqoVisualizationBinding,
+  binding: VarendoVisualizationBinding,
   label: string,
   selected: string | undefined,
   selectionEnabled: boolean,
@@ -342,8 +342,8 @@ function visualizationView(node: CoreNode): VisualizationView | undefined {
 
 function trustedBindingMatches(
   result: Result,
-  current: AeliqoVisualizationBinding,
-  authorized: ReadonlyMap<string, AeliqoVisualizationBinding> | undefined,
+  current: VarendoVisualizationBinding,
+  authorized: ReadonlyMap<string, VarendoVisualizationBinding> | undefined,
 ): boolean {
   const trusted = authorized?.get(refKey(result.ref));
   if (trusted !== undefined && canonical(trusted) !== canonical(current)) return false;
@@ -353,7 +353,7 @@ function trustedBindingMatches(
 function validateBoundVisualization(
   node: CoreNode,
   result: Result,
-  current: AeliqoVisualizationBinding,
+  current: VarendoVisualizationBinding,
   view: VisualizationView,
 ): { readonly spec: VisualizationSpec; readonly bound: BoundVisualization } | undefined {
   const parsed = parseVisualizationSpec(node.config.values.visualization);
@@ -367,7 +367,7 @@ function validateBoundVisualization(
 }
 
 function trustedEntity(
-  resolver: AeliqoVisualizationRegistryOptions['resolveEntity'],
+  resolver: VarendoVisualizationRegistryOptions['resolveEntity'],
   result: Result,
 ): string | undefined {
   if (resolver === undefined) return undefined;
@@ -416,10 +416,10 @@ function configMatches(node: CoreNode, spec: VisualizationSpec, result: Result, 
 
 function dispatchSelection(
   node: CoreNode,
-  current: AeliqoVisualizationBinding,
+  current: VarendoVisualizationBinding,
   bound: BoundVisualization,
   detail: { readonly identity: string; readonly result: ResultRef },
-  callback: NonNullable<AeliqoVisualizationPresentationRenderContext['onSemanticInteraction']>,
+  callback: NonNullable<VarendoVisualizationPresentationRenderContext['onSemanticInteraction']>,
 ): void {
   if (node.result === undefined || !sameRef(detail.result, node.result.ref)) return;
   const rows = materializeVisualizationRows(bound, node.result.ref, current.datasets);
@@ -439,9 +439,9 @@ function dispatchSelection(
 
 function selectionHandler(
   node: CoreNode,
-  current: AeliqoVisualizationBinding,
+  current: VarendoVisualizationBinding,
   bound: BoundVisualization,
-  context: AeliqoVisualizationPresentationRenderContext,
+  context: VarendoVisualizationPresentationRenderContext,
 ): (event: Event) => void {
   return (event) => {
     const callback = context.onSemanticInteraction;
@@ -456,10 +456,10 @@ function selectionHandler(
 
 function renderWith(
   node: CoreNode,
-  current: AeliqoVisualizationBinding,
-  context: AeliqoVisualizationPresentationRenderContext,
-  options: AeliqoVisualizationRegistryOptions,
-  authorized?: ReadonlyMap<string, AeliqoVisualizationBinding>,
+  current: VarendoVisualizationBinding,
+  context: VarendoVisualizationPresentationRenderContext,
+  options: VarendoVisualizationRegistryOptions,
+  authorized?: ReadonlyMap<string, VarendoVisualizationBinding>,
 ): TemplateResult | typeof nothing {
   const result = node.result;
   if (result === undefined) return nothing;
@@ -479,12 +479,12 @@ function renderWith(
   return renderElement(validated.spec, current, visualizationLabel(result, view), selected, selectionEnabled, handler);
 }
 
-export function renderAeliqoVisualizationPresentationNode(
+export function renderVarendoVisualizationPresentationNode(
   node: CoreNode,
-  current: AeliqoVisualizationBinding,
-  context: AeliqoVisualizationPresentationRenderContext = {},
-  options: AeliqoVisualizationRegistryOptions = {},
-  authorized?: ReadonlyMap<string, AeliqoVisualizationBinding>,
+  current: VarendoVisualizationBinding,
+  context: VarendoVisualizationPresentationRenderContext = {},
+  options: VarendoVisualizationRegistryOptions = {},
+  authorized?: ReadonlyMap<string, VarendoVisualizationBinding>,
 ): TemplateResult | typeof nothing {
   try {
     return renderWith(node, current, context, options, authorized);

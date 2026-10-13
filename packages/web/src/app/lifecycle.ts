@@ -1,10 +1,10 @@
 import type { RuntimeRegionState } from '@varendo/runtime/app';
-import type { AeliqoApp } from './types.js';
+import type { VarendoApp } from './types.js';
 import { cancelActiveAction } from './interaction.js';
 import type { WebAppContext, WebRegion } from './context.js';
 import { cancelPendingPresentation } from './presentation-operation.js';
 
-type StateListener = Parameters<AeliqoApp['subscribe']>[1];
+type StateListener = Parameters<VarendoApp['subscribe']>[1];
 
 function notifyListeners(context: WebAppContext, regionId: string, state: RuntimeRegionState): void {
   for (const listener of [...(context.stateListeners.get(regionId) ?? [])]) {

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import type { AeliqoFieldElement } from '@varendo/web/inputs';
+import type { VarendoFieldElement } from '@varendo/web/inputs';
 import { REVIEW_VARIANTS, reviewColorScheme, reviewViewport } from './review-variants.js';
 
 const fields = [
@@ -36,11 +36,11 @@ for (const id of fields)
         });
         await page.goto(`/tests/visual/index.html?component=${id}&variant=${variant}`);
         await page.waitForFunction(() =>
-          Boolean((window as typeof window & { aeliqoReviewReady?: boolean }).aeliqoReviewReady),
+          Boolean((window as typeof window & { varendoReviewReady?: boolean }).varendoReviewReady),
         );
-        const field = page.locator(`#fixture aeliqo-${id}`).first();
+        const field = page.locator(`#fixture varendo-${id}`).first();
         await field.evaluate(async (node, state) => {
-          const element = node as AeliqoFieldElement;
+          const element = node as VarendoFieldElement;
           if (!('validationState' in element) || !('fieldDisabled' in element))
             throw new Error('Fixture is not a real field');
           if (state === 'disabled') element.disabled = true;
@@ -70,7 +70,7 @@ for (const id of fields)
             expect(await messageDirection('description')).toEqual({ dir: 'auto', direction: 'ltr' });
             expect(await messageDirection('error')).toEqual({ dir: 'auto', direction: 'ltr' });
             await field.evaluate(async (node) => {
-              const element = node as AeliqoFieldElement;
+              const element = node as VarendoFieldElement;
               element.description = 'تظهر هذه المساعدة في التقرير.';
               element.error = 'יש לבדוק את הערך שסופק.';
               await element.updateComplete;
@@ -78,7 +78,7 @@ for (const id of fields)
             expect(await messageDirection('description')).toEqual({ dir: 'auto', direction: 'rtl' });
             expect(await messageDirection('error')).toEqual({ dir: 'auto', direction: 'rtl' });
             await field.evaluate(async (node) => {
-              const element = node as AeliqoFieldElement;
+              const element = node as VarendoFieldElement;
               element.description = 'تظهر هذه المساعدة في التقرير.';
               element.error = '';
               element.validationState = 'pending';
@@ -87,7 +87,7 @@ for (const id of fields)
             expect(await messageDirection('description')).toEqual({ dir: 'auto', direction: 'rtl' });
             expect(await messageDirection('pending')).toEqual({ dir: 'auto', direction: 'ltr' });
             await field.evaluate(async (node) => {
-              const element = node as AeliqoFieldElement;
+              const element = node as VarendoFieldElement;
               element.description = 'Used in the report header.';
               element.error = 'This value needs review. Check the supplied value.';
               element.validationState = 'invalid';

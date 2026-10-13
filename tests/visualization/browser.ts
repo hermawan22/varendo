@@ -1,14 +1,14 @@
-import { registerAeliqoElements } from '../../packages/web/src/register.js';
-import type { AeliqoHierarchyElementBase } from '../../packages/web/src/visualization/hierarchy/index.js';
+import { registerVarendoElements } from '../../packages/web/src/register.js';
+import type { VarendoHierarchyElementBase } from '../../packages/web/src/visualization/hierarchy/index.js';
 import * as fixtures from './hierarchy-fixtures.js';
-registerAeliqoElements();
+registerVarendoElements();
 for (const view of ['tree', 'treemap', 'relationship'] as const) {
-  const element = document.createElement(`aeliqo-${view}`) as AeliqoHierarchyElementBase;
+  const element = document.createElement(`varendo-${view}`) as VarendoHierarchyElementBase;
   element.label = `Browser ${view}`;
   element.visualization = fixtures[view];
   element.context = fixtures.context;
   element.datasets = fixtures.datasets;
-  element.addEventListener('aeliqo-visualization-select', (event) => {
+  element.addEventListener('varendo-visualization-select', (event) => {
     Object.assign(window, { selection: (event as CustomEvent).detail });
   });
   document.querySelector('main')!.append(element);

@@ -259,7 +259,7 @@ export function assertTagMayAdvance({ name, tag, desiredVersion, currentVersion,
 
 function assertRecordIdentity(record, version, sourceRevision, message) {
   if (
-    record?.schema !== 'aeliqo.release-candidate.v1' ||
+    record?.schema !== 'varendo.release-candidate.v1' ||
     record.version !== version ||
     record.sourceRevision !== sourceRevision
   ) {
@@ -269,7 +269,7 @@ function assertRecordIdentity(record, version, sourceRevision, message) {
 
 function assertPublication(publication, tag, version, sourceRevision, message) {
   if (
-    publication?.schema !== 'aeliqo.npm-publication.v2' ||
+    publication?.schema !== 'varendo.npm-publication.v2' ||
     publication.version !== version ||
     publication.sourceRevision !== sourceRevision ||
     publication.tag !== tag ||
@@ -282,7 +282,7 @@ function assertPublication(publication, tag, version, sourceRevision, message) {
 
 function assertConsumerRecord(consumer, version, sourceRevision, message) {
   if (
-    consumer?.schema !== 'aeliqo.registry-consumer.v2' ||
+    consumer?.schema !== 'varendo.registry-consumer.v2' ||
     consumer.version !== version ||
     consumer.expectedSourceRevision !== sourceRevision ||
     consumer.provenanceVerified !== true

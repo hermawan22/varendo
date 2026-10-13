@@ -63,8 +63,8 @@ test('create supersedes the first browse while its renderer family is still load
   } finally {
     await route.continue();
   }
-  await expect(page.locator('aeliqo-form')).toBeVisible();
-  await expect(page.locator('#pg-region aeliqo-card-collection')).toHaveCount(0);
+  await expect(page.locator('varendo-form')).toBeVisible();
+  await expect(page.locator('#pg-region varendo-card-collection')).toHaveCount(0);
   await fillProductDraft(page);
   await page.getByRole('button', { name: 'Create record' }).click();
   await expect(page.getByRole('dialog', { name: 'Review action' })).toBeVisible();
@@ -113,7 +113,7 @@ test('confirmed creation resets the form and permits a second complete product',
     await expect(page.getByRole('textbox', { name, exact: true })).toHaveValue('');
   }
 
-  await page.locator('aeliqo-form').screenshot({ path: testInfo.outputPath('saved-form-defaults.png') });
+  await page.locator('varendo-form').screenshot({ path: testInfo.outputPath('saved-form-defaults.png') });
   await fillProductDraft(page, 'pr-6', 'Pocket compass', '3.75', '9');
   await page.getByRole('button', { name: 'Create record' }).click();
   await expect(page.getByRole('dialog', { name: 'Review action' })).toBeVisible();
@@ -125,7 +125,7 @@ test('confirmed creation resets the form and permits a second complete product',
   await expectRetainedFormFocus(page, '');
 
   await page.getByRole('button', { name: 'Browse products' }).click();
-  const products = page.locator('aeliqo-card-collection');
+  const products = page.locator('varendo-card-collection');
   await expect(products).toBeVisible();
   for (const [name, price, stock] of [
     ['Travel ruler', '6.5', '24'],

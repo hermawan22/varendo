@@ -7,10 +7,10 @@ and workers and does not access the DOM.
 ## Main entry point
 
 ```ts
-import { createAeliqoRuntime } from '@varendo/runtime';
-import type { AeliqoRuntimeOptions } from '@varendo/runtime';
+import { createVarendoRuntime } from '@varendo/runtime';
+import type { VarendoRuntimeOptions } from '@varendo/runtime';
 
-const runtime = createAeliqoRuntime({ resources, authority });
+const runtime = createVarendoRuntime({ resources, authority });
 const mounted = runtime.mount({ regionId: 'people-main', resourceId: 'people' });
 if (!mounted.ok) throw new Error(mounted.diagnostics[0].message);
 ```
@@ -21,7 +21,7 @@ intent cannot grant itself access.
 
 ## Transactional presentation (0.6)
 
-Most browser applications should use `createAeliqoApp` from `@varendo/web/app`.
+Most browser applications should use `createVarendoApp` from `@varendo/web/app`.
 It connects the runtime transaction to the shared renderer automatically.
 A custom host renderer can instead supply `RuntimeRenderOptions` to
 `runtime.render(input, options)`. These types are exported from both
@@ -59,10 +59,10 @@ app/Region compatibility path. A host creates an explicit local read-only scope
 and may create multiple controllers from one immutable feature definition:
 
 ```ts
-import { createAeliqoRuntime } from '@varendo/runtime';
+import { createVarendoRuntime } from '@varendo/runtime';
 import type { DataSurfaceBindings } from '@varendo/runtime/surfaces';
 
-const runtime = createAeliqoRuntime({ runtimeId: 'app', resources, authority });
+const runtime = createVarendoRuntime({ runtimeId: 'app', resources, authority });
 const scope = runtime.createLocalSurfaceScope({
   id: 'local-session',
   allowedFeatures: [peopleFeature.id],
@@ -259,7 +259,7 @@ the browser client and use it in the ordinary surface binding:
 import { createHttpDataService } from '@varendo/runtime/data';
 
 const peopleData = createHttpDataService({
-  baseUrl: 'https://app.example/api/aeliqo-data',
+  baseUrl: 'https://app.example/api/varendo-data',
   headers: { 'x-csrf-token': csrfToken },
 });
 
@@ -345,10 +345,10 @@ action authority. The host resolves and authorizes it, then returns revisions
 that the runtime captures in immutable activation addresses.
 
 ```ts
-import { createAeliqoRuntime } from '@varendo/runtime';
+import { createVarendoRuntime } from '@varendo/runtime';
 import type { ScopeBinding } from '@varendo/runtime/scopes';
 
-const runtime = createAeliqoRuntime({ resources, authority });
+const runtime = createVarendoRuntime({ resources, authority });
 const binding: ScopeBinding = {
   resolve: (selector) => host.resolveWorkspace(selector),
   authorize: (resolution) => host.authorizeWorkspace(resolution),

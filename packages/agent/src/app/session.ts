@@ -3,8 +3,8 @@ import type { ActionReceipt } from '@varendo/runtime/actions';
 import { closeActionState, confirmAction, createActionCapabilityState } from './action-capability.js';
 import { createSharedAppToolEndpoint } from './endpoint.js';
 import type {
-  AeliqoAppToolEndpoint,
-  AeliqoAppToolSession,
+  VarendoAppToolEndpoint,
+  VarendoAppToolSession,
   AppToolEndpointOptions,
   AppToolSessionIdentity,
 } from './types.js';
@@ -18,7 +18,7 @@ interface SessionState {
   readonly milliseconds: number;
   readonly now: () => number;
   readonly actions: ReturnType<typeof createActionCapabilityState>;
-  readonly endpoints: Set<AeliqoAppToolEndpoint>;
+  readonly endpoints: Set<VarendoAppToolEndpoint>;
   readonly lifetime: AbortController;
 }
 
@@ -51,7 +51,7 @@ function active(state: SessionState): Outcome<void> {
   return failure('agent.app.stale', 'The application tool session expired or its authenticated scope changed.');
 }
 
-function createEndpoint(state: SessionState, identity: AppToolSessionIdentity): Outcome<AeliqoAppToolEndpoint> {
+function createEndpoint(state: SessionState, identity: AppToolSessionIdentity): Outcome<VarendoAppToolEndpoint> {
   if (
     identity === null ||
     typeof identity !== 'object' ||
@@ -61,7 +61,7 @@ function createEndpoint(state: SessionState, identity: AppToolSessionIdentity): 
     return failure('agent.app.denied', 'The authenticated request does not match this tool session.');
   const checked = active(state);
   if (!checked.ok) return checked;
-  let borrowed: AeliqoAppToolEndpoint | undefined;
+  let borrowed: VarendoAppToolEndpoint | undefined;
   const endpoint = createSharedAppToolEndpoint(
     state.options,
     state.actions,
@@ -92,7 +92,7 @@ async function confirm(
 }
 
 /** Owns action continuity for fresh MCP endpoints within one immutable, expiring host pairing. */
-export function createAppToolSession(input: AppToolEndpointOptions): Outcome<AeliqoAppToolSession> {
+export function createAppToolSession(input: AppToolEndpointOptions): Outcome<VarendoAppToolSession> {
   if (
     input === null ||
     typeof input !== 'object' ||

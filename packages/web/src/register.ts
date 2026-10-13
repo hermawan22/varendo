@@ -11,10 +11,10 @@ import { registrations as input } from './register-input.js';
 import { registrations as plot } from './register-plot.js';
 import { registrations as foundation } from './register-foundation.js';
 
-export { AELIQO_WEB_VERSION } from './version.js';
+export { VARENDO_WEB_VERSION } from './version.js';
 
 /** Register the shared elements exactly once in the supplied browser registry. */
-export function registerAeliqoElements(registry?: CustomElementRegistry): void {
+export function registerVarendoElements(registry?: CustomElementRegistry): void {
   registerElements(compound, registry);
   registerElements(hierarchy, registry);
   registerElements(cartesian, registry);

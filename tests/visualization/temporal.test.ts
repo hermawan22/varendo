@@ -4,9 +4,9 @@ import { result as source } from '../contracts/fixtures.js';
 import type { VisualizationInputs } from '../../packages/web/src/visualization/types.js';
 import { compileTemporalVisualization } from '../../packages/web/src/visualization/temporal/geometry.js';
 import {
-  AeliqoCalendarGridElement,
-  AeliqoMatrixElement,
-  AeliqoTimelineElement,
+  VarendoCalendarGridElement,
+  VarendoMatrixElement,
+  VarendoTimelineElement,
   defineTemporalElements,
 } from '../../packages/web/src/visualization/temporal/index.js';
 const type = {
@@ -132,14 +132,14 @@ it('registers temporal elements in the supplied registry and rejects incompatibl
     define: (name: string, constructor: CustomElementConstructor) => constructors.set(name, constructor),
   } as unknown as CustomElementRegistry;
   defineTemporalElements(registry);
-  expect(constructors.get('aeliqo-matrix')).toBe(AeliqoMatrixElement);
-  expect(constructors.get('aeliqo-timeline')).toBe(AeliqoTimelineElement);
-  expect(constructors.get('aeliqo-calendar-grid')).toBe(AeliqoCalendarGridElement);
+  expect(constructors.get('varendo-matrix')).toBe(VarendoMatrixElement);
+  expect(constructors.get('varendo-timeline')).toBe(VarendoTimelineElement);
+  expect(constructors.get('varendo-calendar-grid')).toBe(VarendoCalendarGridElement);
   defineTemporalElements(registry);
   const incompatible = {
     get: () =>
       class {
-        static readonly aeliqoVersion = '0.1.0-m0';
+        static readonly varendoVersion = '0.1.0-m0';
       },
     define: () => undefined,
   } as unknown as CustomElementRegistry;

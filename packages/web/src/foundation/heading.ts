@@ -1,21 +1,21 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from './base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from './base.js';
 
-export type AeliqoHeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
-export type AeliqoHeadingSize = 'display' | 'heading' | 'title' | 'body';
+export type VarendoHeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+export type VarendoHeadingSize = 'display' | 'heading' | 'title' | 'body';
 
-const HEADING_SIZES: ReadonlySet<AeliqoHeadingSize> = new Set(['display', 'heading', 'title', 'body']);
+const HEADING_SIZES: ReadonlySet<VarendoHeadingSize> = new Set(['display', 'heading', 'title', 'body']);
 
 /** Heading level controls document hierarchy; visual size is independently selectable. */
-export class AeliqoHeadingElement extends AeliqoFoundationElement {
+export class VarendoHeadingElement extends VarendoFoundationElement {
   static readonly properties = {
     level: { type: Number },
     size: { type: String },
     text: { type: String },
   };
 
-  level: AeliqoHeadingLevel = 2;
-  size: AeliqoHeadingSize = 'heading';
+  level: VarendoHeadingLevel = 2;
+  size: VarendoHeadingSize = 'heading';
   text = '';
 
   protected override render() {
@@ -38,7 +38,7 @@ export class AeliqoHeadingElement extends AeliqoFoundationElement {
   }
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: block;
@@ -49,20 +49,20 @@ export class AeliqoHeadingElement extends AeliqoFoundationElement {
         overflow-wrap: anywhere;
       }
       .display {
-        font-size: var(--aeliqo-typography-font-size-display, 2rem);
-        line-height: var(--aeliqo-typography-line-height-tight, 1.25);
+        font-size: var(--varendo-typography-font-size-display, 2rem);
+        line-height: var(--varendo-typography-line-height-tight, 1.25);
       }
       .heading {
-        font-size: var(--aeliqo-typography-font-size-heading, 1.5rem);
-        line-height: var(--aeliqo-typography-line-height-tight, 1.25);
+        font-size: var(--varendo-typography-font-size-heading, 1.5rem);
+        line-height: var(--varendo-typography-line-height-tight, 1.25);
       }
       .title {
-        font-size: var(--aeliqo-typography-font-size-title, 1.25rem);
-        line-height: var(--aeliqo-typography-line-height-tight, 1.25);
+        font-size: var(--varendo-typography-font-size-title, 1.25rem);
+        line-height: var(--varendo-typography-line-height-tight, 1.25);
       }
       .body {
-        font-size: var(--aeliqo-typography-font-size-body-large, 1rem);
-        line-height: var(--aeliqo-typography-line-height-normal, 1.5);
+        font-size: var(--varendo-typography-font-size-body-large, 1rem);
+        line-height: var(--varendo-typography-line-height-normal, 1.5);
       }
     `,
   ];

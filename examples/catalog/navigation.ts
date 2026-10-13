@@ -1,46 +1,46 @@
 import {
-  AeliqoBreadcrumbElement,
-  AeliqoMenuElement,
-  AeliqoPaginationElement,
-  AeliqoTabsElement,
-  AeliqoTreeNavElement,
-  type AeliqoBreadcrumbItem,
-  type AeliqoMenuItem,
-  type AeliqoTabItem,
-  type AeliqoTreeNavNode,
+  VarendoBreadcrumbElement,
+  VarendoMenuElement,
+  VarendoPaginationElement,
+  VarendoTabsElement,
+  VarendoTreeNavElement,
+  type VarendoBreadcrumbItem,
+  type VarendoMenuItem,
+  type VarendoTabItem,
+  type VarendoTreeNavNode,
 } from '@varendo/web/navigation';
 import { cleanupCatalogRoot, createCatalogElement, createCatalogRoot } from './fixture.js';
 import { catalogMountSource, catalogSource } from './source.js';
 import type { CatalogExampleDefinition, CatalogExampleId, CatalogExampleMetadata } from './types.js';
 
 const sourceImports = `import {
-  AeliqoBreadcrumbElement,
-  AeliqoMenuElement,
-  AeliqoPaginationElement,
-  AeliqoTabsElement,
-  AeliqoTreeNavElement,
-  type AeliqoBreadcrumbItem,
-  type AeliqoMenuItem,
-  type AeliqoTabItem,
-  type AeliqoTreeNavNode,
+  VarendoBreadcrumbElement,
+  VarendoMenuElement,
+  VarendoPaginationElement,
+  VarendoTabsElement,
+  VarendoTreeNavElement,
+  type VarendoBreadcrumbItem,
+  type VarendoMenuItem,
+  type VarendoTabItem,
+  type VarendoTreeNavNode,
 } from "@varendo/web/navigation";`;
 
-const sourceSetup = `const tabs: readonly AeliqoTabItem[] = [
+const sourceSetup = `const tabs: readonly VarendoTabItem[] = [
   {id: "overview", label: "Overview", content: "Overview content"},
   {id: "details", label: "Details", content: "Details content"},
   {id: "history", label: "History", content: "History content", disabled: true},
 ];
-const breadcrumb: readonly AeliqoBreadcrumbItem[] = [
+const breadcrumb: readonly VarendoBreadcrumbItem[] = [
   {id: "home", label: "Home", href: "/"},
   {id: "reports", label: "Reports", href: "/reports"},
   {id: "current", label: "Weekly report", current: true},
 ];
-const menuItems: readonly AeliqoMenuItem[] = [
+const menuItems: readonly VarendoMenuItem[] = [
   {id: "open", label: "Open report"},
   {id: "archive", label: "Archive"},
   {id: "disabled", label: "Unavailable", disabled: true},
 ];
-const treeNodes: readonly AeliqoTreeNavNode[] = [
+const treeNodes: readonly VarendoTreeNavNode[] = [
   {id: "reports", label: "Reports", children: [{id: "weekly", label: "Weekly"}, {id: "monthly", label: "Monthly"}]},
   {id: "settings", label: "Settings", disabled: true},
 ];`;
@@ -57,7 +57,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Item IDs and the selected value are stable; manual activation lets the host decide when selection commits.',
     states: ['ready', 'disabled'],
     keyboard: ['Tab', 'Arrow keys', 'Home and End', 'Enter'],
-    events: ['aeliqo-tabs-change'],
+    events: ['varendo-tabs-change'],
     expectedOutcome: 'The active panel follows a stable tab ID and emits a cancellable change request.',
   },
   breadcrumb: {
@@ -66,7 +66,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Only approved hrefs are supplied and the current item is exposed as the page endpoint.',
     states: ['ready'],
     keyboard: ['Tab', 'Enter'],
-    events: ['aeliqo-navigation'],
+    events: ['varendo-navigation'],
     expectedOutcome: 'The path is navigable while the current location remains semantically marked.',
   },
   pagination: {
@@ -75,7 +75,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The host owns page data and applies the requested page after validating it.',
     states: ['ready', 'disabled'],
     keyboard: ['Tab', 'Enter', 'Space'],
-    events: ['aeliqo-page-change'],
+    events: ['varendo-page-change'],
     expectedOutcome:
       'The current page and available directions are announced and page changes are emitted as requests.',
   },
@@ -85,7 +85,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Menu item IDs are stable and action effects remain with the host.',
     states: ['ready', 'disabled'],
     keyboard: ['Tab', 'Arrow keys', 'Enter', 'Escape'],
-    events: ['aeliqo-menu-action'],
+    events: ['varendo-menu-action'],
     expectedOutcome: 'The menu manages roving focus and emits only the chosen enabled action.',
   },
   'tree-nav': {
@@ -95,7 +95,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Node IDs are stable. After an uncancelled event, the component updates its selected ID or local expanded set; the host can supply selectedId and expandedIds to synchronize external state.',
     states: ['ready', 'disabled'],
     keyboard: ['Tab', 'Arrow keys', 'Home and End', 'Enter', 'Space'],
-    events: ['aeliqo-tree-nav-select', 'aeliqo-tree-nav-expand'],
+    events: ['varendo-tree-nav-select', 'varendo-tree-nav-expand'],
     expectedOutcome: 'The tree preserves hierarchy and emits typed selection or expansion requests by node ID.',
   },
 };
@@ -111,7 +111,7 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
     propsNotes: 'Items carry stable IDs; labels are visible and disabled entries remain discoverable.',
     states: ['ready', 'disabled', 'pending'],
     keyboard: ['Tab', 'Arrow keys', 'Enter or Space', 'Home and End where supported'],
-    events: ['aeliqo-navigation', 'component-specific change event'],
+    events: ['varendo-navigation', 'component-specific change event'],
     expectedOutcome:
       'Navigation state remains addressable by stable IDs and user intent is emitted as a cancellable host request.',
     ...componentNotes[id],
@@ -124,22 +124,22 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
   },
 });
 
-const tabs: readonly AeliqoTabItem[] = [
+const tabs: readonly VarendoTabItem[] = [
   { id: 'overview', label: 'Overview', content: 'Overview content' },
   { id: 'details', label: 'Details', content: 'Details content' },
   { id: 'history', label: 'History', content: 'History content', disabled: true },
 ];
-const breadcrumb: readonly AeliqoBreadcrumbItem[] = [
+const breadcrumb: readonly VarendoBreadcrumbItem[] = [
   { id: 'home', label: 'Home', href: '/' },
   { id: 'reports', label: 'Reports', href: '/reports' },
   { id: 'current', label: 'Weekly report', current: true },
 ];
-const menuItems: readonly AeliqoMenuItem[] = [
+const menuItems: readonly VarendoMenuItem[] = [
   { id: 'open', label: 'Open report' },
   { id: 'archive', label: 'Archive' },
   { id: 'disabled', label: 'Unavailable', disabled: true },
 ];
-const treeNodes: readonly AeliqoTreeNavNode[] = [
+const treeNodes: readonly VarendoTreeNavNode[] = [
   {
     id: 'reports',
     label: 'Reports',
@@ -153,18 +153,26 @@ const treeNodes: readonly AeliqoTreeNavNode[] = [
 
 export const navigationExamples: readonly CatalogExampleDefinition[] = [
   mount('tabs', (root) => {
-    const element = createCatalogElement<AeliqoTabsElement>('aeliqo-tabs', root, AeliqoTabsElement);
+    const element = createCatalogElement<VarendoTabsElement>('varendo-tabs', root, VarendoTabsElement);
     element.items = tabs;
     element.value = 'overview';
     element.activation = 'manual';
   }),
   mount('breadcrumb', (root) => {
-    const element = createCatalogElement<AeliqoBreadcrumbElement>('aeliqo-breadcrumb', root, AeliqoBreadcrumbElement);
+    const element = createCatalogElement<VarendoBreadcrumbElement>(
+      'varendo-breadcrumb',
+      root,
+      VarendoBreadcrumbElement,
+    );
     element.items = breadcrumb;
     element.label = 'Report path';
   }),
   mount('pagination', (root) => {
-    const element = createCatalogElement<AeliqoPaginationElement>('aeliqo-pagination', root, AeliqoPaginationElement);
+    const element = createCatalogElement<VarendoPaginationElement>(
+      'varendo-pagination',
+      root,
+      VarendoPaginationElement,
+    );
     element.page = 2;
     element.pageCount = 4;
     element.hasPrevious = true;
@@ -172,13 +180,13 @@ export const navigationExamples: readonly CatalogExampleDefinition[] = [
     element.label = 'Report pages';
   }),
   mount('menu', (root) => {
-    const element = createCatalogElement<AeliqoMenuElement>('aeliqo-menu', root, AeliqoMenuElement);
+    const element = createCatalogElement<VarendoMenuElement>('varendo-menu', root, VarendoMenuElement);
     element.items = menuItems;
     element.label = 'Report actions';
     element.open = true;
   }),
   mount('tree-nav', (root) => {
-    const element = createCatalogElement<AeliqoTreeNavElement>('aeliqo-tree-nav', root, AeliqoTreeNavElement);
+    const element = createCatalogElement<VarendoTreeNavElement>('varendo-tree-nav', root, VarendoTreeNavElement);
     element.nodes = treeNodes;
     element.expandedIds = ['reports'];
     element.selectedId = 'weekly';

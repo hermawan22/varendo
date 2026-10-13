@@ -1,7 +1,7 @@
-export type AeliqoFilterOperator = 'eq' | 'ne' | 'lt' | 'lte' | 'gt' | 'gte' | 'is-null' | 'not-null' | 'in';
+export type VarendoFilterOperator = 'eq' | 'ne' | 'lt' | 'lte' | 'gt' | 'gte' | 'is-null' | 'not-null' | 'in';
 
-export interface AeliqoFilterClause {
+export interface VarendoFilterClause {
   readonly field: string;
-  readonly operator: AeliqoFilterOperator;
+  readonly operator: VarendoFilterOperator;
   readonly value?: string;
 }

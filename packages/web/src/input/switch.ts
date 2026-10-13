@@ -1,8 +1,8 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoCheckboxElement } from './checkbox.js';
+import { VarendoCheckboxElement } from './checkbox.js';
 
 /** Binary setting using native checkbox form behavior with switch semantics. */
-export class AeliqoSwitchElement extends AeliqoCheckboxElement {
+export class VarendoSwitchElement extends VarendoCheckboxElement {
   protected override render() {
     const describedBy = this.describedByIds();
     return html`
@@ -31,29 +31,29 @@ export class AeliqoSwitchElement extends AeliqoCheckboxElement {
   }
 
   static readonly styles = [
-    ...AeliqoCheckboxElement.styles,
+    ...VarendoCheckboxElement.styles,
     css`
       .switch-label {
         align-items: center;
         display: inline-flex;
-        gap: var(--aeliqo-space-8, 0.5rem);
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
+        gap: var(--varendo-space-8, 0.5rem);
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
       }
       .switch-track {
-        background: var(--aeliqo-color-muted, #4b5563);
+        background: var(--varendo-color-muted, #4b5563);
         border-radius: 999px;
         display: inline-flex;
         inline-size: 2.75rem;
         padding: 0.125rem;
-        transition: background-color var(--aeliqo-motion-duration-fast, 120ms) ease;
+        transition: background-color var(--varendo-motion-duration-fast, 120ms) ease;
       }
       .switch-thumb {
-        background: var(--aeliqo-color-canvas, #fff);
+        background: var(--varendo-color-canvas, #fff);
         border-radius: 50%;
         block-size: 1.25rem;
         inline-size: 1.25rem;
         transform: translateX(0);
-        transition: transform var(--aeliqo-motion-duration-fast, 120ms) ease;
+        transition: transform var(--varendo-motion-duration-fast, 120ms) ease;
       }
       input {
         block-size: 1px;
@@ -62,7 +62,7 @@ export class AeliqoSwitchElement extends AeliqoCheckboxElement {
         position: absolute;
       }
       input:checked + .switch-track {
-        background: var(--aeliqo-color-accent, #4338ca);
+        background: var(--varendo-color-accent, #4338ca);
       }
       input:checked + .switch-track .switch-thumb {
         transform: translateX(1.25rem);

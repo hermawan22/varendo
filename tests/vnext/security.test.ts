@@ -204,7 +204,7 @@ describe('vNext security boundaries', () => {
       });
       const body = JSON.stringify(describeRequest);
       const noCsrf = await cookieHandler(
-        new Request('https://security.aeliqo.test/adc/describe', {
+        new Request('https://security.varendo.test/adc/describe', {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
@@ -216,7 +216,7 @@ describe('vNext security boundaries', () => {
       );
       expect(noCsrf.status).toBe(403);
       const withCsrf = await cookieHandler(
-        new Request('https://security.aeliqo.test/adc/describe', {
+        new Request('https://security.varendo.test/adc/describe', {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
@@ -236,7 +236,7 @@ describe('vNext security boundaries', () => {
   it('rejects cross-origin endpoint configuration and unexpected redirects', async () => {
     expect(() =>
       createHttpDataService({
-        baseUrl: 'https://security.aeliqo.test',
+        baseUrl: 'https://security.varendo.test',
         paths: { describe: 'https://evil.test/adc/describe' },
       }),
     ).toThrow('configured origin');
@@ -250,7 +250,7 @@ describe('vNext security boundaries', () => {
       body: null,
     } as unknown as Response;
     const client = createHttpDataService({
-      baseUrl: 'https://security.aeliqo.test',
+      baseUrl: 'https://security.varendo.test',
       fetch: async () => redirected,
     });
     const result = await client.describe(describeRequest);
@@ -276,10 +276,10 @@ describe('vNext security boundaries', () => {
   it('does not expose prompt-injected rows or accept forged target authority', async () => {
     const fixture = createAgentFixture();
     try {
-      const context = await fixture.connection.invoke('aeliqo_surface_context', {});
+      const context = await fixture.connection.invoke('varendo_surface_context', {});
       expect(context).toMatchObject({ ok: true, value: { value: { targets: [{ id: 'people-main' }] } } });
       expect(JSON.stringify(context)).not.toContain('Ada Chen');
-      const forged = await fixture.connection.invoke('aeliqo_surface_render', {
+      const forged = await fixture.connection.invoke('varendo_surface_render', {
         targetId: 'people-main',
         intent: { kind: 'browse', principalKey: 'tenant-b', html: '<script>steal()</script>', module: './evil.js' },
       });
@@ -290,7 +290,7 @@ describe('vNext security boundaries', () => {
       const getterPayload = {} as Record<string, unknown>;
       Object.defineProperty(getterPayload, 'targetId', { enumerable: true, get: () => 'people-main' });
       Object.defineProperty(getterPayload, 'intent', { enumerable: true, get: () => ({ kind: 'browse' }) });
-      await expect(fixture.connection.invoke('aeliqo_surface_render', getterPayload)).resolves.toMatchObject({
+      await expect(fixture.connection.invoke('varendo_surface_render', getterPayload)).resolves.toMatchObject({
         ok: false,
       });
     } finally {
@@ -364,13 +364,13 @@ describe('vNext security boundaries', () => {
     if (!endpoint.ok) return;
     try {
       const first = endpoint.value.invoke(
-        'aeliqo_surface_render',
+        'varendo_surface_render',
         { targetId: 'quota-surface', intent: { kind: 'browse' } },
         { requestId: 'quota-first' },
       );
       await startedPromise;
       const saturated = await endpoint.value.invoke(
-        'aeliqo_surface_render',
+        'varendo_surface_render',
         { targetId: 'quota-surface', intent: { kind: 'browse' } },
         { requestId: 'quota-second' },
       );
@@ -378,7 +378,7 @@ describe('vNext security boundaries', () => {
       release();
       await expect(first).resolves.toMatchObject({ ok: true, value: { state: 'renderer-ready' } });
       const oversized = await endpoint.value.invoke(
-        'aeliqo_surface_render',
+        'varendo_surface_render',
         { targetId: 'quota-surface', intent: { kind: 'browse', text: 'x'.repeat(256) } },
         { requestId: 'quota-large' },
       );

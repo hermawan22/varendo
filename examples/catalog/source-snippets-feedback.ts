@@ -2,20 +2,20 @@ import type { CatalogExampleId } from './types.js';
 
 export const FEEDBACK_MOUNT_SOURCES = {
   tooltip: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoTooltipElement>("aeliqo-tooltip", root);
+		const element = createCatalogElement<VarendoTooltipElement>("varendo-tooltip", root);
 		element.label = "More information";
 		element.content = "Values are scoped to the current report.";
 		element.open = true;
 	})`,
   popover: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoPopoverElement>("aeliqo-popover", root);
+		const element = createCatalogElement<VarendoPopoverElement>("varendo-popover", root);
 		element.label = "Report details";
 		element.content = "The report includes the authorized current scope.";
 		element.open = true;
 		element.modal = false;
 	})`,
   dialog: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoDialogElement>("aeliqo-dialog", root);
+		const element = createCatalogElement<VarendoDialogElement>("varendo-dialog", root);
 		element.heading = "Confirm archive";
 		element.open = false;
 		element.modal = true;
@@ -36,11 +36,11 @@ export const FEEDBACK_MOUNT_SOURCES = {
 		action.textContent = "Archive report";
 		action.addEventListener("click", () => void close());
 		element.append(action);
-		element.addEventListener("aeliqo-dialog-close", () => void close());
+		element.addEventListener("varendo-dialog-close", () => void close());
 		root.append(trigger);
 	})`,
   drawer: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoDrawerElement>("aeliqo-drawer", root);
+		const element = createCatalogElement<VarendoDrawerElement>("varendo-drawer", root);
 		element.heading = "Report details";
 		element.mode = "inline";
 		element.side = "end";
@@ -48,7 +48,7 @@ export const FEEDBACK_MOUNT_SOURCES = {
 		element.textContent = "Inline detail content keeps the surrounding task visible.";
 	})`,
   toast: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoToastElement>("aeliqo-toast", root);
+		const element = createCatalogElement<VarendoToastElement>("varendo-toast", root);
 		element.message = "Report saved";
 		element.tone = "success";
 		element.open = true;
@@ -56,7 +56,7 @@ export const FEEDBACK_MOUNT_SOURCES = {
 		element.dismissible = true;
 	})`,
   alert: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoAlertElement>("aeliqo-alert", root);
+		const element = createCatalogElement<VarendoAlertElement>("varendo-alert", root);
 		element.heading = "Review scope";
 		element.message = "This page contains the first authorized result window.";
 		element.tone = "warning";
@@ -65,20 +65,20 @@ export const FEEDBACK_MOUNT_SOURCES = {
 		element.open = true;
 	})`,
   progress: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoProgressElement>("aeliqo-progress", root);
+		const element = createCatalogElement<VarendoProgressElement>("varendo-progress", root);
 		element.label = "Loading report";
 		element.value = 62;
 		element.max = 100;
 	})`,
   skeleton: String.raw`((root) => {
-		const element = createCatalogElement<AeliqoSkeletonElement>("aeliqo-skeleton", root);
+		const element = createCatalogElement<VarendoSkeletonElement>("varendo-skeleton", root);
 		element.label = "Loading report rows";
 		element.lines = 3;
 		element.variant = "text";
 		element.animated = false;
 	})`,
   'empty-state': String.raw`((root) => {
-		const element = createCatalogElement<AeliqoEmptyStateElement>("aeliqo-empty-state", root);
+		const element = createCatalogElement<VarendoEmptyStateElement>("varendo-empty-state", root);
 		element.kind = "no-matches";
 		element.heading = "No matching reports";
 		element.message = "Try a broader team or date filter.";

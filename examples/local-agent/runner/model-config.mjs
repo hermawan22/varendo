@@ -1,11 +1,11 @@
 const MODEL_KEYS = [
-  'AELIQO_MODEL_BASE_URL',
-  'AELIQO_MODEL',
-  'AELIQO_MODEL_PROTOCOL',
-  'AELIQO_MODEL_AUTH_SCHEME',
-  'AELIQO_MODEL_API_KEY',
-  'AELIQO_MODEL_AUTH_HEADER',
-  'AELIQO_MODEL_CAPABILITIES',
+  'VARENDO_MODEL_BASE_URL',
+  'VARENDO_MODEL',
+  'VARENDO_MODEL_PROTOCOL',
+  'VARENDO_MODEL_AUTH_SCHEME',
+  'VARENDO_MODEL_API_KEY',
+  'VARENDO_MODEL_AUTH_HEADER',
+  'VARENDO_MODEL_CAPABILITIES',
 ];
 const CAPABILITIES = new Set(['tool-calls', 'usage', 'request-cancellation', 'input-token-estimate', 'request-retry']);
 
@@ -26,7 +26,7 @@ function endpointFor(baseURL, env) {
     throw new Error('Model endpoint credentials belong in server environment.');
   if (endpoint.search || endpoint.hash) throw new Error('Model endpoint query and fragment are forbidden.');
   const loopback = ['127.0.0.1', 'localhost', '[::1]'].includes(endpoint.hostname);
-  if (endpoint.protocol === 'http:' && (!loopback || env.AELIQO_ALLOW_INSECURE_MODEL_HTTP !== '1'))
+  if (endpoint.protocol === 'http:' && (!loopback || env.VARENDO_ALLOW_INSECURE_MODEL_HTTP !== '1'))
     throw new Error('HTTP model endpoints require loopback and an explicit opt-in.');
   if (endpoint.protocol !== 'https:' && endpoint.protocol !== 'http:')
     throw new Error('Model endpoints must use HTTPS, or opted-in loopback HTTP.');
@@ -34,9 +34,9 @@ function endpointFor(baseURL, env) {
 }
 
 function authFor(env, endpoint) {
-  const scheme = env.AELIQO_MODEL_AUTH_SCHEME;
-  const secret = env.AELIQO_MODEL_API_KEY;
-  const headerName = env.AELIQO_MODEL_AUTH_HEADER;
+  const scheme = env.VARENDO_MODEL_AUTH_SCHEME;
+  const secret = env.VARENDO_MODEL_API_KEY;
+  const headerName = env.VARENDO_MODEL_AUTH_HEADER;
   if (!['none', 'bearer', 'header'].includes(scheme))
     throw new Error('An explicit model authentication scheme is required.');
   if (scheme === 'none') {
@@ -70,32 +70,32 @@ function capabilitiesFor(value) {
 /** Read one trusted local model profile before opening the runner listener. */
 export function readModelConfiguration(env) {
   if (!MODEL_KEYS.some((key) => env[key] !== undefined && env[key] !== '')) return undefined;
-  const baseURL = env.AELIQO_MODEL_BASE_URL;
-  const model = env.AELIQO_MODEL;
+  const baseURL = env.VARENDO_MODEL_BASE_URL;
+  const model = env.VARENDO_MODEL;
   if (!bounded(baseURL, 2048) || !bounded(model))
     throw new Error(
       'Model endpoint and model must be configured together with protocol, authentication and capabilities.',
     );
-  if (!['openai-compatible-chat', 'openai-compatible-responses'].includes(env.AELIQO_MODEL_PROTOCOL))
+  if (!['openai-compatible-chat', 'openai-compatible-responses'].includes(env.VARENDO_MODEL_PROTOCOL))
     throw new Error('An explicit supported model protocol is required.');
   const endpoint = endpointFor(baseURL, env);
   const auth = authFor(env, endpoint);
-  const capabilities = capabilitiesFor(env.AELIQO_MODEL_CAPABILITIES);
+  const capabilities = capabilitiesFor(env.VARENDO_MODEL_CAPABILITIES);
   if (
-    env.AELIQO_MODEL_PROTOCOL === 'openai-compatible-responses' &&
+    env.VARENDO_MODEL_PROTOCOL === 'openai-compatible-responses' &&
     (endpoint.protocol !== 'https:' || auth.scheme !== 'bearer')
   )
     throw new Error('The Responses profile requires HTTPS and bearer authentication.');
-  if (env.AELIQO_MODEL_PROTOCOL === 'openai-compatible-responses' && capabilities.includes('request-retry'))
+  if (env.VARENDO_MODEL_PROTOCOL === 'openai-compatible-responses' && capabilities.includes('request-retry'))
     throw new Error('The Responses profile does not support request-retry capability.');
   return {
     endpoint,
     model,
-    protocol: env.AELIQO_MODEL_PROTOCOL,
+    protocol: env.VARENDO_MODEL_PROTOCOL,
     auth,
     capabilities,
     public: {
-      protocol: env.AELIQO_MODEL_PROTOCOL,
+      protocol: env.VARENDO_MODEL_PROTOCOL,
       model,
       endpointOrigin: endpoint.origin,
       authScheme: auth.scheme,

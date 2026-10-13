@@ -59,7 +59,7 @@ function bridgeCall(value: unknown): BridgeCall | undefined {
 }
 
 async function acknowledge(id: string, outcome: Outcome<unknown>): Promise<void> {
-  const response = await fetch('/api/aeliqo/ack', {
+  const response = await fetch('/api/varendo/ack', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ id, outcome }),
@@ -85,7 +85,7 @@ async function connectEndpoints(session: LocalSession): Promise<BridgeEndpoints>
 export async function connectLocalHost(session: LocalSession, onDisconnect: () => void): Promise<LocalHostConnection> {
   const endpoints = await connectEndpoints(session);
   const pending = new Map<string, AbortController>();
-  const events = new EventSource('/api/aeliqo/events');
+  const events = new EventSource('/api/varendo/events');
   await new Promise<void>((resolve, reject) => {
     const timeout = window.setTimeout(
       () => reject(new Error('The local host event stream did not become ready.')),
@@ -129,7 +129,7 @@ export async function connectLocalHost(session: LocalSession, onDisconnect: () =
       abortBridgeCalls(pending);
       endpoints.byok.close();
       endpoints.mcp.close();
-      void fetch('/api/aeliqo/disconnect', { method: 'POST', keepalive: true }).catch(() => undefined);
+      void fetch('/api/varendo/disconnect', { method: 'POST', keepalive: true }).catch(() => undefined);
     },
   });
   events.addEventListener('error', () => {

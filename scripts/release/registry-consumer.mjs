@@ -64,7 +64,7 @@ function assertRegistryMatchesCandidate(candidatePackages, registryPackages) {
   }
 }
 
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-registry-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-registry-consumer-'));
 try {
   const peers = await collectExternalPeerVersions();
   const dependencies = Object.fromEntries(PUBLIC_PACKAGE_NAMES.map((name) => [name, version]));
@@ -118,7 +118,7 @@ try {
     const candidate = await readJson(resolve(root, expectedCandidatePath));
     assertCandidateIdentity(candidate, { tag: releaseCandidateNumber(version) === undefined ? 'latest' : 'next' });
     if (
-      candidate.schema !== 'aeliqo.release-candidate.v1' ||
+      candidate.schema !== 'varendo.release-candidate.v1' ||
       candidate.version !== version ||
       candidate.sourceRevision !== expectedSourceRevision
     ) {
@@ -135,7 +135,7 @@ try {
     );
   }
   const report = {
-    schema: 'aeliqo.registry-consumer.v2',
+    schema: 'varendo.registry-consumer.v2',
     checkedAt: new Date().toISOString(),
     version,
     exportCount: imports.length,

@@ -1,14 +1,14 @@
 import {
-  AeliqoBreakdownElement,
-  AeliqoComparisonElement,
-  AeliqoExplorerElement,
-  AeliqoFormFlowElement,
-  AeliqoInvestigationElement,
-  AeliqoQualityPanelElement,
-  AeliqoRecordEditorElement,
-  AeliqoSearchResultsElement,
+  VarendoBreakdownElement,
+  VarendoComparisonElement,
+  VarendoExplorerElement,
+  VarendoFormFlowElement,
+  VarendoInvestigationElement,
+  VarendoQualityPanelElement,
+  VarendoRecordEditorElement,
+  VarendoSearchResultsElement,
 } from '@varendo/web/compound';
-import { AeliqoDateRangeElement, AeliqoTextFieldElement } from '@varendo/web/inputs';
+import { VarendoDateRangeElement, VarendoTextFieldElement } from '@varendo/web/inputs';
 import {
   catalogColumns,
   catalogFields,
@@ -26,26 +26,26 @@ import type { CatalogExampleDefinition, CatalogExampleId, CatalogExampleMetadata
 import { catalogMountSource, catalogSource } from './source.js';
 
 const sourceImports = `import {
-  AeliqoBreakdownElement,
-  AeliqoComparisonElement,
-  AeliqoExplorerElement,
-  AeliqoFormFlowElement,
-  AeliqoInvestigationElement,
-  AeliqoQualityPanelElement,
-  AeliqoRecordEditorElement,
-  AeliqoSearchResultsElement,
+  VarendoBreakdownElement,
+  VarendoComparisonElement,
+  VarendoExplorerElement,
+  VarendoFormFlowElement,
+  VarendoInvestigationElement,
+  VarendoQualityPanelElement,
+  VarendoRecordEditorElement,
+  VarendoSearchResultsElement,
   } from "@varendo/web/compound";`;
-const sourceInputImports = `import {AeliqoDateRangeElement, AeliqoTextFieldElement} from "@varendo/web/inputs";`;
+const sourceInputImports = `import {VarendoDateRangeElement, VarendoTextFieldElement} from "@varendo/web/inputs";`;
 const sourceTypeImports = `import type {ResultRef, Scalar} from "@varendo/core";
 import type {VisualizationBindingContext, VisualizationSpec} from "@varendo/core/visualization";
-import type {AeliqoDataColumn, AeliqoDataScope, AeliqoFieldOption} from "@varendo/web/data";
+import type {VarendoDataColumn, VarendoDataScope, VarendoFieldOption} from "@varendo/web/data";
 import type {VisualizationDataset} from "@varendo/web/visualization";`;
 
 const sourceSetup = `${sourceInputImports}
 ${sourceTypeImports}
 
 const catalogRef: ResultRef = {
-  id: "aeliqo-catalog-example",
+  id: "varendo-catalog-example",
   revision: "1",
   outputId: "people",
   queryDigest: "catalog-query",
@@ -56,19 +56,19 @@ const catalogRows: readonly Readonly<Record<string, Scalar>>[] = [
   {id: "lin", name: "Lin Chen", team: "Product", date: "2026-09-09", amount: 96},
   {id: "grace", name: "Grace Hopper", team: "Research", date: "2026-09-10", amount: 144},
 ];
-const catalogColumns: readonly AeliqoDataColumn[] = [
+const catalogColumns: readonly VarendoDataColumn[] = [
   {key: "id", label: "ID", type: "text", sortable: true},
   {key: "name", label: "Name", type: "text", sortable: true},
   {key: "team", label: "Team", type: "text"},
   {key: "date", label: "Date", type: "date", sortable: true},
   {key: "amount", label: "Amount", type: "integer", align: "end"},
 ];
-const catalogFields: readonly AeliqoFieldOption[] = [
+const catalogFields: readonly VarendoFieldOption[] = [
   {id: "name", label: "Name", type: "text"},
   {id: "team", label: "Team", type: "text"},
   {id: "amount", label: "Amount", type: "integer"},
 ];
-const catalogScope: AeliqoDataScope = {loaded: catalogRows.length, filteredTotal: catalogRows.length, populationDigest: catalogRef.scopeDigest, kind: "filtered", label: "Authorized people"};
+const catalogScope: VarendoDataScope = {loaded: catalogRows.length, filteredTotal: catalogRows.length, populationDigest: catalogRef.scopeDigest, kind: "filtered", label: "Authorized people"};
 const catalogVisualizationContext: VisualizationBindingContext = {results: []};
 const catalogVisualizationDataset: VisualizationDataset = {result: catalogRef, rows: catalogRows};
 const catalogVisualizationSpecs: Readonly<Record<"trend", VisualizationSpec>> = {trend: {version: "1", view: "trend", plot: {version: "1", root: {kind: "unit", mark: "line", result: catalogRef, missing: "gap", encoding: {x: {field: "date", scale: "temporal"}, y: {field: "amount", scale: "linear"}}}}}};`;
@@ -98,7 +98,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Filter and selection requests retain result lineage and scope; persistence, navigation, and query execution remain with the host.',
     states: ['ready', 'loading', 'empty', 'partial', 'stale', 'error'],
     keyboard: ['Tab', 'Arrow keys in child controls', 'Enter or Space', 'focus follows stable identity'],
-    events: ['aeliqo-explorer-filter', 'aeliqo-explorer-selection'],
+    events: ['varendo-explorer-filter', 'varendo-explorer-selection'],
     expectedOutcome:
       'The three panels share one scope and stable identity while emitting typed filter and selection requests.',
   },
@@ -109,7 +109,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Comparison keys and compatible metric meanings are host supplied; the component does not infer a causal difference.',
     states: ['ready', 'partial', 'stale', 'error', 'invalid'],
     keyboard: ['Tab', 'Arrow keys across comparison controls', 'Enter or Space'],
-    events: ['aeliqo-comparison-set'],
+    events: ['varendo-comparison-set'],
     expectedOutcome: 'The selected comparison set stays bounded and emits a typed set request with scope lineage.',
   },
   breakdown: {
@@ -118,7 +118,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Group keys and values are supplied by the host; group selection does not expand result scope.',
     states: ['ready', 'empty', 'partial', 'loading', 'stale', 'error'],
     keyboard: ['Tab', 'Arrow keys', 'Enter or Space'],
-    events: ['aeliqo-breakdown-group'],
+    events: ['varendo-breakdown-group'],
     expectedOutcome: 'The breakdown preserves group identity and emits a host request when a group is selected.',
   },
   investigation: {
@@ -141,7 +141,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Trend and event specs remain evidence in the selected scope; associations are not upgraded to causal claims.',
     states: ['ready', 'loading', 'empty', 'partial', 'stale', 'error'],
     keyboard: ['Tab', 'Arrow keys in child visualizations', 'Enter selects evidence'],
-    events: ['Child aeliqo-visualization-select events'],
+    events: ['Child varendo-visualization-select events'],
     expectedOutcome:
       'The investigation aligns baseline, evidence visualizations, and detail without changing their lineage.',
   },
@@ -164,7 +164,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'Query and result revisions expose stale results explicitly; selection remains an identity request.',
     states: ['ready', 'stale', 'empty', 'loading', 'partial', 'error'],
     keyboard: ['Tab', 'Enter', 'Space', 'focus follows stable identity'],
-    events: ['aeliqo-search-results-selection'],
+    events: ['varendo-search-results-selection'],
     expectedOutcome: 'The result window labels stale revisions and emits selection requests only for supplied rows.',
   },
   'record-editor': {
@@ -189,7 +189,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Escape or cancel preserves draft',
       'IME composition',
     ],
-    events: ['aeliqo-record-editor-save', 'aeliqo-record-editor-cancel'],
+    events: ['varendo-record-editor-save', 'varendo-record-editor-cancel'],
     expectedOutcome:
       'The editor validates its fields and emits a versioned save or cancel proposal without persisting it.',
   },
@@ -205,7 +205,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Arrow keys within controls',
       'focus moves to new step',
     ],
-    events: ['aeliqo-form-flow-step', 'aeliqo-form-flow-commit'],
+    events: ['varendo-form-flow-step', 'varendo-form-flow-commit'],
     expectedOutcome: 'The flow preserves drafts and focus while emitting step or commit proposals after validation.',
   },
   'quality-panel': {
@@ -240,9 +240,9 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
     ],
     events: [
       'compound-specific typed interaction events',
-      'aeliqo-record-editor-save',
-      'aeliqo-form-flow-step',
-      'aeliqo-form-flow-commit',
+      'varendo-record-editor-save',
+      'varendo-form-flow-step',
+      'varendo-form-flow-commit',
     ],
     expectedOutcome:
       'The compound shares one scope and result lineage across its child primitives while leaving business actions with the host.',
@@ -259,7 +259,7 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
 
 export const compoundExamples: readonly CatalogExampleDefinition[] = [
   mount('explorer', (root) => {
-    const element = createCatalogElement<AeliqoExplorerElement>('aeliqo-explorer', root, AeliqoExplorerElement);
+    const element = createCatalogElement<VarendoExplorerElement>('varendo-explorer', root, VarendoExplorerElement);
     element.fields = catalogFields;
     element.rows = catalogRows;
     element.columns = catalogColumns;
@@ -273,7 +273,11 @@ export const compoundExamples: readonly CatalogExampleDefinition[] = [
     element.selection = 'single';
   }),
   mount('comparison', (root) => {
-    const element = createCatalogElement<AeliqoComparisonElement>('aeliqo-comparison', root, AeliqoComparisonElement);
+    const element = createCatalogElement<VarendoComparisonElement>(
+      'varendo-comparison',
+      root,
+      VarendoComparisonElement,
+    );
     element.compareSet = [
       { key: 'ada', label: 'Ada' },
       { key: 'grace', label: 'Grace' },
@@ -288,7 +292,7 @@ export const compoundExamples: readonly CatalogExampleDefinition[] = [
     element.scope = catalogScope;
   }),
   mount('breakdown', (root) => {
-    const element = createCatalogElement<AeliqoBreakdownElement>('aeliqo-breakdown', root, AeliqoBreakdownElement);
+    const element = createCatalogElement<VarendoBreakdownElement>('varendo-breakdown', root, VarendoBreakdownElement);
     element.groups = [
       { key: 'research', label: 'Research', value: 264, unit: 'records', recordCount: 2 },
       { key: 'product', label: 'Product', value: 96, unit: 'records', recordCount: 1 },
@@ -301,10 +305,10 @@ export const compoundExamples: readonly CatalogExampleDefinition[] = [
     element.scope = catalogScope;
   }),
   mount('investigation', (root) => {
-    const element = createCatalogElement<AeliqoInvestigationElement>(
-      'aeliqo-investigation',
+    const element = createCatalogElement<VarendoInvestigationElement>(
+      'varendo-investigation',
       root,
-      AeliqoInvestigationElement,
+      VarendoInvestigationElement,
     );
     element.entity = 'person';
     element.result = catalogRef;
@@ -317,10 +321,10 @@ export const compoundExamples: readonly CatalogExampleDefinition[] = [
     element.trendDatasets = [catalogVisualizationDataset];
   }),
   mount('search-results', (root) => {
-    const element = createCatalogElement<AeliqoSearchResultsElement>(
-      'aeliqo-search-results',
+    const element = createCatalogElement<VarendoSearchResultsElement>(
+      'varendo-search-results',
       root,
-      AeliqoSearchResultsElement,
+      VarendoSearchResultsElement,
     );
     element.query = 'research';
     element.queryRevision = 'query-2';
@@ -337,19 +341,19 @@ export const compoundExamples: readonly CatalogExampleDefinition[] = [
     element.detailFields = catalogColumns;
   }),
   mount('record-editor', (root) => {
-    const element = createCatalogElement<AeliqoRecordEditorElement>(
-      'aeliqo-record-editor',
+    const element = createCatalogElement<VarendoRecordEditorElement>(
+      'varendo-record-editor',
       root,
-      AeliqoRecordEditorElement,
+      VarendoRecordEditorElement,
     );
     element.entity = 'person';
     element.entityKey = 'string:3:ada';
     element.entityRevision = 'person-revision-1';
-    const name = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+    const name = document.createElement('varendo-text-field') as VarendoTextFieldElement;
     name.label = 'Name';
     name.name = 'name';
     name.value = 'Ada Lovelace';
-    const period = document.createElement('aeliqo-date-range') as AeliqoDateRangeElement;
+    const period = document.createElement('varendo-date-range') as VarendoDateRangeElement;
     period.label = 'Review period';
     period.name = 'period';
     period.start = '2026-09-01';
@@ -357,7 +361,7 @@ export const compoundExamples: readonly CatalogExampleDefinition[] = [
     element.append(name, period);
   }),
   mount('form-flow', (root) => {
-    const element = createCatalogElement<AeliqoFormFlowElement>('aeliqo-form-flow', root, AeliqoFormFlowElement);
+    const element = createCatalogElement<VarendoFormFlowElement>('varendo-form-flow', root, VarendoFormFlowElement);
     element.steps = [
       { id: 'identity', label: 'Identity', fieldNames: ['name'] },
       { id: 'review', label: 'Review', fieldNames: ['period'] },
@@ -366,7 +370,7 @@ export const compoundExamples: readonly CatalogExampleDefinition[] = [
     element.draft = { name: 'Ada Lovelace' };
     const identity = document.createElement('div');
     identity.slot = 'step-identity';
-    const name = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+    const name = document.createElement('varendo-text-field') as VarendoTextFieldElement;
     name.label = 'Name';
     name.name = 'name';
     name.value = 'Ada Lovelace';
@@ -377,10 +381,10 @@ export const compoundExamples: readonly CatalogExampleDefinition[] = [
     element.append(identity, review);
   }),
   mount('quality-panel', (root) => {
-    const element = createCatalogElement<AeliqoQualityPanelElement>(
-      'aeliqo-quality-panel',
+    const element = createCatalogElement<VarendoQualityPanelElement>(
+      'varendo-quality-panel',
       root,
-      AeliqoQualityPanelElement,
+      VarendoQualityPanelElement,
     );
     element.source = 'People registry';
     element.freshness = '2026-09-09 09:00 UTC';

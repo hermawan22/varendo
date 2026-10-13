@@ -2,49 +2,49 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import {
-  AELIQO_FOUNDATION_MANIFESTS,
-  AELIQO_FOUNDATION_REFS,
-  getAeliqoFoundationManifest,
+  VARENDO_FOUNDATION_MANIFESTS,
+  VARENDO_FOUNDATION_REFS,
+  getVarendoFoundationManifest,
 } from '../../packages/web/src/foundation/manifest.js';
 import { imageHref, initialsForName, safeResolvedHref } from '../../packages/web/src/foundation/base.js';
-import { AeliqoButtonElement } from '../../packages/web/src/foundation/button.js';
-import { AeliqoIconButtonElement } from '../../packages/web/src/foundation/icon-button.js';
-import { AeliqoLinkElement } from '../../packages/web/src/foundation/link.js';
-import { AeliqoTextElement } from '../../packages/web/src/foundation/text.js';
-import { AeliqoHeadingElement } from '../../packages/web/src/foundation/heading.js';
-import { AeliqoBadgeElement } from '../../packages/web/src/foundation/badge.js';
-import { AeliqoAvatarElement } from '../../packages/web/src/foundation/avatar.js';
-import { AeliqoSeparatorElement } from '../../packages/web/src/foundation/separator.js';
-import { AeliqoSurfaceElement } from '../../packages/web/src/foundation/surface.js';
-import { AeliqoStackElement } from '../../packages/web/src/foundation/stack.js';
-import { AeliqoGridElement } from '../../packages/web/src/foundation/grid.js';
-import { AeliqoSplitPaneElement } from '../../packages/web/src/foundation/split-pane.js';
-import { AeliqoScrollAreaElement } from '../../packages/web/src/foundation/scroll-area.js';
+import { VarendoButtonElement } from '../../packages/web/src/foundation/button.js';
+import { VarendoIconButtonElement } from '../../packages/web/src/foundation/icon-button.js';
+import { VarendoLinkElement } from '../../packages/web/src/foundation/link.js';
+import { VarendoTextElement } from '../../packages/web/src/foundation/text.js';
+import { VarendoHeadingElement } from '../../packages/web/src/foundation/heading.js';
+import { VarendoBadgeElement } from '../../packages/web/src/foundation/badge.js';
+import { VarendoAvatarElement } from '../../packages/web/src/foundation/avatar.js';
+import { VarendoSeparatorElement } from '../../packages/web/src/foundation/separator.js';
+import { VarendoSurfaceElement } from '../../packages/web/src/foundation/surface.js';
+import { VarendoStackElement } from '../../packages/web/src/foundation/stack.js';
+import { VarendoGridElement } from '../../packages/web/src/foundation/grid.js';
+import { VarendoSplitPaneElement } from '../../packages/web/src/foundation/split-pane.js';
+import { VarendoScrollAreaElement } from '../../packages/web/src/foundation/scroll-area.js';
 
 describe('foundation manifests', () => {
   it('exposes the complete bounded foundation set with stable refs', () => {
-    expect(AELIQO_FOUNDATION_MANIFESTS).toHaveLength(13);
-    expect(new Set(AELIQO_FOUNDATION_MANIFESTS.map((manifest) => manifest.ref.id)).size).toBe(13);
-    expect(AELIQO_FOUNDATION_MANIFESTS.map((manifest) => manifest.tagName)).toEqual([
-      'aeliqo-button',
-      'aeliqo-icon-button',
-      'aeliqo-link',
-      'aeliqo-text',
-      'aeliqo-heading',
-      'aeliqo-badge',
-      'aeliqo-avatar',
-      'aeliqo-separator',
-      'aeliqo-surface',
-      'aeliqo-stack',
-      'aeliqo-grid',
-      'aeliqo-split-pane',
-      'aeliqo-scroll-area',
+    expect(VARENDO_FOUNDATION_MANIFESTS).toHaveLength(13);
+    expect(new Set(VARENDO_FOUNDATION_MANIFESTS.map((manifest) => manifest.ref.id)).size).toBe(13);
+    expect(VARENDO_FOUNDATION_MANIFESTS.map((manifest) => manifest.tagName)).toEqual([
+      'varendo-button',
+      'varendo-icon-button',
+      'varendo-link',
+      'varendo-text',
+      'varendo-heading',
+      'varendo-badge',
+      'varendo-avatar',
+      'varendo-separator',
+      'varendo-surface',
+      'varendo-stack',
+      'varendo-grid',
+      'varendo-split-pane',
+      'varendo-scroll-area',
     ]);
-    expect(getAeliqoFoundationManifest(AELIQO_FOUNDATION_REFS.button.id)?.role).toBe('action');
+    expect(getVarendoFoundationManifest(VARENDO_FOUNDATION_REFS.button.id)?.role).toBe('action');
   });
 
   it('requires host registered references and rejects arbitrary executable or routing fields', () => {
-    const button = getAeliqoFoundationManifest(AELIQO_FOUNDATION_REFS.button.id)!;
+    const button = getVarendoFoundationManifest(VARENDO_FOUNDATION_REFS.button.id)!;
     expect(button.resolveConfig({ actionRef: 'action.save', contentRef: 'copy.save', type: 'submit' })).toMatchObject({
       ok: true,
     });
@@ -61,26 +61,26 @@ describe('foundation manifests', () => {
     ])
       expect(button.resolveConfig(value)).toMatchObject({ ok: false });
 
-    const link = getAeliqoFoundationManifest(AELIQO_FOUNDATION_REFS.link.id)!;
+    const link = getVarendoFoundationManifest(VARENDO_FOUNDATION_REFS.link.id)!;
     expect(
       link.resolveConfig({ routeRef: 'route.employee', contentRef: 'copy.employee', target: '_blank' }),
     ).toMatchObject({ ok: true });
     expect(
       link.resolveConfig({ routeRef: 'route.employee', contentRef: 'copy.employee', href: 'https://evil.invalid' }),
     ).toMatchObject({ ok: false });
-    const text = getAeliqoFoundationManifest(AELIQO_FOUNDATION_REFS.text.id)!;
+    const text = getVarendoFoundationManifest(VARENDO_FOUNDATION_REFS.text.id)!;
     expect(text.resolveConfig({ contentRef: 'copy.title', as: 'p', muted: false })).toMatchObject({ ok: true });
     expect(text.resolveConfig({ contentRef: 'copy.title', as: 'script' })).toMatchObject({ ok: false });
   });
 
   it('validates typed values and preserves immutable bounded config', () => {
-    const split = getAeliqoFoundationManifest(AELIQO_FOUNDATION_REFS.splitPane.id)!;
+    const split = getVarendoFoundationManifest(VARENDO_FOUNDATION_REFS.splitPane.id)!;
     expect(split.resolveConfig({ orientation: 'horizontal', min: 20, max: 80, step: 5 })).toMatchObject({ ok: true });
     expect(split.resolveConfig({ position: Number.NaN })).toMatchObject({ ok: false });
     expect(split.resolveConfig({ step: 0 })).toMatchObject({ ok: false });
     expect(split.resolveConfig({ min: 80, max: 20 })).toMatchObject({ ok: false });
     expect(split.resolveConfig({ position: 10, min: 20 })).toMatchObject({ ok: false });
-    const grid = getAeliqoFoundationManifest(AELIQO_FOUNDATION_REFS.grid.id)!;
+    const grid = getVarendoFoundationManifest(VARENDO_FOUNDATION_REFS.grid.id)!;
     const accepted = grid.resolveConfig({ columns: 3, gap: 16, minItem: 'medium' });
     expect(accepted.ok).toBe(true);
     if (accepted.ok) {
@@ -94,20 +94,20 @@ describe('foundation helpers and import boundary', () => {
   it('can be imported in a server process without window or document', () => {
     expect(globalThis.window).toBeUndefined();
     expect(globalThis.document).toBeUndefined();
-    expect(AeliqoButtonElement.formAssociated).toBe(true);
+    expect(VarendoButtonElement.formAssociated).toBe(true);
     expect([
-      AeliqoIconButtonElement,
-      AeliqoLinkElement,
-      AeliqoTextElement,
-      AeliqoHeadingElement,
-      AeliqoBadgeElement,
-      AeliqoAvatarElement,
-      AeliqoSeparatorElement,
-      AeliqoSurfaceElement,
-      AeliqoStackElement,
-      AeliqoGridElement,
-      AeliqoSplitPaneElement,
-      AeliqoScrollAreaElement,
+      VarendoIconButtonElement,
+      VarendoLinkElement,
+      VarendoTextElement,
+      VarendoHeadingElement,
+      VarendoBadgeElement,
+      VarendoAvatarElement,
+      VarendoSeparatorElement,
+      VarendoSurfaceElement,
+      VarendoStackElement,
+      VarendoGridElement,
+      VarendoSplitPaneElement,
+      VarendoScrollAreaElement,
     ]).toHaveLength(12);
   });
 

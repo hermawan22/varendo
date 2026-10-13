@@ -1,103 +1,103 @@
 import React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import {
-  AeliqoButtonElement,
-  AeliqoIconButtonElement,
-  AeliqoLinkElement,
-  AeliqoTextElement,
-  AeliqoHeadingElement,
-  AeliqoBadgeElement,
-  AeliqoAvatarElement,
-  AeliqoSeparatorElement,
-  AeliqoSurfaceElement,
-  AeliqoStackElement,
-  AeliqoGridElement,
-  AeliqoSplitPaneElement,
-  AeliqoScrollAreaElement,
-  type AeliqoActionEvent,
-  type AeliqoLinkEvent,
-  type AeliqoSplitChangeEvent,
+  VarendoButtonElement,
+  VarendoIconButtonElement,
+  VarendoLinkElement,
+  VarendoTextElement,
+  VarendoHeadingElement,
+  VarendoBadgeElement,
+  VarendoAvatarElement,
+  VarendoSeparatorElement,
+  VarendoSurfaceElement,
+  VarendoStackElement,
+  VarendoGridElement,
+  VarendoSplitPaneElement,
+  VarendoScrollAreaElement,
+  type VarendoActionEvent,
+  type VarendoLinkEvent,
+  type VarendoSplitChangeEvent,
 } from '@varendo/web/foundation';
 
-export const AeliqoButton = createComponent({
+export const VarendoButton = createComponent({
   react: React,
-  tagName: 'aeliqo-button',
-  elementClass: AeliqoButtonElement,
-  events: { onAeliqoAction: 'aeliqo-action' as EventName<AeliqoActionEvent> },
-  displayName: 'AeliqoButton',
+  tagName: 'varendo-button',
+  elementClass: VarendoButtonElement,
+  events: { onVarendoAction: 'varendo-action' as EventName<VarendoActionEvent> },
+  displayName: 'VarendoButton',
 });
-export const AeliqoIconButton = createComponent({
+export const VarendoIconButton = createComponent({
   react: React,
-  tagName: 'aeliqo-icon-button',
-  elementClass: AeliqoIconButtonElement,
-  events: { onAeliqoAction: 'aeliqo-action' as EventName<AeliqoActionEvent> },
-  displayName: 'AeliqoIconButton',
+  tagName: 'varendo-icon-button',
+  elementClass: VarendoIconButtonElement,
+  events: { onVarendoAction: 'varendo-action' as EventName<VarendoActionEvent> },
+  displayName: 'VarendoIconButton',
 });
-export const AeliqoLink = createComponent({
+export const VarendoLink = createComponent({
   react: React,
-  tagName: 'aeliqo-link',
-  elementClass: AeliqoLinkElement,
-  events: { onAeliqoLink: 'aeliqo-link' as EventName<AeliqoLinkEvent> },
-  displayName: 'AeliqoLink',
+  tagName: 'varendo-link',
+  elementClass: VarendoLinkElement,
+  events: { onVarendoLink: 'varendo-link' as EventName<VarendoLinkEvent> },
+  displayName: 'VarendoLink',
 });
-export const AeliqoText = createComponent({
+export const VarendoText = createComponent({
   react: React,
-  tagName: 'aeliqo-text',
-  elementClass: AeliqoTextElement,
-  displayName: 'AeliqoText',
+  tagName: 'varendo-text',
+  elementClass: VarendoTextElement,
+  displayName: 'VarendoText',
 });
-export const AeliqoHeading = createComponent({
+export const VarendoHeading = createComponent({
   react: React,
-  tagName: 'aeliqo-heading',
-  elementClass: AeliqoHeadingElement,
-  displayName: 'AeliqoHeading',
+  tagName: 'varendo-heading',
+  elementClass: VarendoHeadingElement,
+  displayName: 'VarendoHeading',
 });
-export const AeliqoBadge = createComponent({
+export const VarendoBadge = createComponent({
   react: React,
-  tagName: 'aeliqo-badge',
-  elementClass: AeliqoBadgeElement,
-  displayName: 'AeliqoBadge',
+  tagName: 'varendo-badge',
+  elementClass: VarendoBadgeElement,
+  displayName: 'VarendoBadge',
 });
-export const AeliqoAvatar = createComponent({
+export const VarendoAvatar = createComponent({
   react: React,
-  tagName: 'aeliqo-avatar',
-  elementClass: AeliqoAvatarElement,
-  displayName: 'AeliqoAvatar',
+  tagName: 'varendo-avatar',
+  elementClass: VarendoAvatarElement,
+  displayName: 'VarendoAvatar',
 });
-export const AeliqoSeparator = createComponent({
+export const VarendoSeparator = createComponent({
   react: React,
-  tagName: 'aeliqo-separator',
-  elementClass: AeliqoSeparatorElement,
-  displayName: 'AeliqoSeparator',
+  tagName: 'varendo-separator',
+  elementClass: VarendoSeparatorElement,
+  displayName: 'VarendoSeparator',
 });
-export const AeliqoSurface = createComponent({
+export const VarendoSurface = createComponent({
   react: React,
-  tagName: 'aeliqo-surface',
-  elementClass: AeliqoSurfaceElement,
-  displayName: 'AeliqoSurface',
+  tagName: 'varendo-surface',
+  elementClass: VarendoSurfaceElement,
+  displayName: 'VarendoSurface',
 });
-export const AeliqoStack = createComponent({
+export const VarendoStack = createComponent({
   react: React,
-  tagName: 'aeliqo-stack',
-  elementClass: AeliqoStackElement,
-  displayName: 'AeliqoStack',
+  tagName: 'varendo-stack',
+  elementClass: VarendoStackElement,
+  displayName: 'VarendoStack',
 });
-export const AeliqoGrid = createComponent({
+export const VarendoGrid = createComponent({
   react: React,
-  tagName: 'aeliqo-grid',
-  elementClass: AeliqoGridElement,
-  displayName: 'AeliqoGrid',
+  tagName: 'varendo-grid',
+  elementClass: VarendoGridElement,
+  displayName: 'VarendoGrid',
 });
-export const AeliqoSplitPane = createComponent({
+export const VarendoSplitPane = createComponent({
   react: React,
-  tagName: 'aeliqo-split-pane',
-  elementClass: AeliqoSplitPaneElement,
-  events: { onAeliqoSplitChange: 'aeliqo-split-change' as EventName<AeliqoSplitChangeEvent> },
-  displayName: 'AeliqoSplitPane',
+  tagName: 'varendo-split-pane',
+  elementClass: VarendoSplitPaneElement,
+  events: { onVarendoSplitChange: 'varendo-split-change' as EventName<VarendoSplitChangeEvent> },
+  displayName: 'VarendoSplitPane',
 });
-export const AeliqoScrollArea = createComponent({
+export const VarendoScrollArea = createComponent({
   react: React,
-  tagName: 'aeliqo-scroll-area',
-  elementClass: AeliqoScrollAreaElement,
-  displayName: 'AeliqoScrollArea',
+  tagName: 'varendo-scroll-area',
+  elementClass: VarendoScrollAreaElement,
+  displayName: 'VarendoScrollArea',
 });

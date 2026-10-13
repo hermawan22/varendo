@@ -51,12 +51,12 @@ import {
 } from '@varendo/agent/capabilities';
 import { createAgentToolEndpoint, type AgentToolEndpoint, type AgentToolTransport } from '@varendo/agent/protocol';
 import {
-  AELIQO_CONFIG_SCHEMAS,
-  AELIQO_PRESENTATION_REFS,
-  createAeliqoPresentationRegistry,
-  type AeliqoRegionElement,
-  type AeliqoRegionResult,
-  type AeliqoSemanticInteractionRequest,
+  VARENDO_CONFIG_SCHEMAS,
+  VARENDO_PRESENTATION_REFS,
+  createVarendoPresentationRegistry,
+  type VarendoRegionElement,
+  type VarendoRegionResult,
+  type VarendoSemanticInteractionRequest,
 } from '@varendo/web/region';
 import type { RegionContent } from '@varendo/runtime/regions';
 
@@ -155,7 +155,7 @@ const experience: Experience = Object.freeze({
   revision: '1',
   mode: 'composable',
   agentAllowed: true,
-  allowedRepresentations: [AELIQO_PRESENTATION_REFS.stack.id, AELIQO_PRESENTATION_REFS.table.id],
+  allowedRepresentations: [VARENDO_PRESENTATION_REFS.stack.id, VARENDO_PRESENTATION_REFS.table.id],
   allowedPatterns: [],
   composition: { allowWithoutPreset: true, maxNodes: 4, maxExpansions: 8 },
   requiredOperations: [],
@@ -202,13 +202,13 @@ function resultRows(output: MaterializedTaskOutput): readonly DataRecord[] {
   return output.handle.snapshot().batches.flatMap((batch) => batch.rows) as readonly DataRecord[];
 }
 
-function resultFor(output: MaterializedTaskOutput): AeliqoRegionResult | undefined {
+function resultFor(output: MaterializedTaskOutput): VarendoRegionResult | undefined {
   const descriptor = output.handle.snapshot().descriptor;
   if (descriptor === undefined) return undefined;
   return { ref: descriptor.ref, rows: resultRows(output) };
 }
 
-function regionResults(outputs: readonly MaterializedTaskOutput[]): readonly AeliqoRegionResult[] {
+function regionResults(outputs: readonly MaterializedTaskOutput[]): readonly VarendoRegionResult[] {
   return Object.freeze(
     outputs.flatMap((output) => {
       const value = resultFor(output);
@@ -301,7 +301,7 @@ export interface UiDevelopmentHost {
   readonly evaluateTask: (input?: unknown) => Promise<Outcome<AgentCapabilityReceipt>>;
   readonly propose: (input: unknown) => Promise<Outcome<AgentCapabilityReceipt>>;
   readonly commit: (proposalId: string) => Promise<Outcome<AgentCapabilityReceipt>>;
-  readonly attach: (element: AeliqoRegionElement) => void;
+  readonly attach: (element: VarendoRegionElement) => void;
   readonly holdNextCommit: () => void;
   readonly waitForCommitAuthorization: () => Promise<void>;
   readonly releaseHeldCommit: () => void;
@@ -333,7 +333,7 @@ function presentationContext(
     current: { ...pins(snapshot.readSet), results: refs },
     environment,
     ...(state.presentation === undefined ? {} : { incumbent: state.presentation }),
-    rendererCapabilities: [AELIQO_PRESENTATION_REFS.stack, AELIQO_PRESENTATION_REFS.table],
+    rendererCapabilities: [VARENDO_PRESENTATION_REFS.stack, VARENDO_PRESENTATION_REFS.table],
   };
 }
 
@@ -374,16 +374,16 @@ function planForResult(
         {
           id: 'root',
           role: 'structure',
-          representation: AELIQO_PRESENTATION_REFS.stack,
-          config: { schema: AELIQO_CONFIG_SCHEMAS.stack, values: { gap: 8 } },
+          representation: VARENDO_PRESENTATION_REFS.stack,
+          config: { schema: VARENDO_CONFIG_SCHEMAS.stack, values: { gap: 8 } },
           children: ['items'],
         },
         {
           id: 'items',
           role: 'table',
-          representation: AELIQO_PRESENTATION_REFS.table,
+          representation: VARENDO_PRESENTATION_REFS.table,
           result: descriptor.ref,
-          config: { schema: AELIQO_CONFIG_SCHEMAS.table, values: { selection: 'multiple' } },
+          config: { schema: VARENDO_CONFIG_SCHEMAS.table, values: { selection: 'multiple' } },
           children: [],
         },
       ],
@@ -393,7 +393,7 @@ function planForResult(
         snapshot.state?.presentation?.nodes.map((node) => ({
           fromNode: node.id,
           toNode: node.id,
-          mapping: { id: 'aeliqo.state.identity', revision: '1' },
+          mapping: { id: 'varendo.state.identity', revision: '1' },
         })) ?? [],
       diagnostics: [],
     }),
@@ -437,7 +437,7 @@ export function createUiDevelopmentHost(transport: AgentToolTransport = 'manual'
   const proposals = new Map<string, ProposalRecord>();
   const observations: UiDevelopmentObservation[] = [];
   let region: RegionHandle;
-  let element: AeliqoRegionElement | undefined;
+  let element: VarendoRegionElement | undefined;
   let activePresentation: ValidatedPresentation | undefined;
   let interaction: InteractionController | undefined;
   let interactionGraph: ReturnType<typeof createInteractionGraph> | undefined;
@@ -457,7 +457,7 @@ export function createUiDevelopmentHost(transport: AgentToolTransport = 'manual'
   let commitWaitTimer: ReturnType<typeof setTimeout> | undefined;
   const maxProposals = 16;
 
-  const presentationRegistryResult = createAeliqoPresentationRegistry({
+  const presentationRegistryResult = createVarendoPresentationRegistry({
     resolveEntity: (result) => (result.ref.outputId === 'main' ? 'items' : undefined),
   });
   if (!presentationRegistryResult.ok)
@@ -1131,7 +1131,7 @@ export function createUiDevelopmentHost(transport: AgentToolTransport = 'manual'
     | {
         readonly presentation: ValidatedPresentation | undefined;
         readonly interaction: InteractionState | undefined;
-        readonly results: readonly AeliqoRegionResult[];
+        readonly results: readonly VarendoRegionResult[];
       }
     | undefined;
   const renderer: PresentationRenderer = createCallbackPresentationRenderer({
@@ -1273,7 +1273,7 @@ export function createUiDevelopmentHost(transport: AgentToolTransport = 'manual'
     attach: (attached) => {
       element = attached;
       element.results = regionResults(outputs);
-      element.onSemanticInteraction = (request: AeliqoSemanticInteractionRequest): void => {
+      element.onSemanticInteraction = (request: VarendoSemanticInteractionRequest): void => {
         const controller = interaction;
         if (controller === undefined) return;
         const snapshot = region.snapshot();
@@ -1365,4 +1365,4 @@ export function createUiDevelopmentHost(transport: AgentToolTransport = 'manual'
   return host;
 }
 
-export type { AeliqoRegionElement };
+export type { VarendoRegionElement };

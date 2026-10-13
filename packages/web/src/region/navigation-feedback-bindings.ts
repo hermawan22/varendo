@@ -1,14 +1,14 @@
 import { parseWireValue, type Outcome } from '@varendo/core';
 import type {
-  AeliqoBreadcrumbBinding,
-  AeliqoMenuBinding,
-  AeliqoNavigationFeedbackAction,
-  AeliqoNavigationFeedbackBindings,
-  AeliqoNavigationFeedbackContent,
-  AeliqoNavigationFeedbackRoute,
-  AeliqoPaginationBinding,
-  AeliqoTabsBinding,
-  AeliqoTreeBinding,
+  VarendoBreadcrumbBinding,
+  VarendoMenuBinding,
+  VarendoNavigationFeedbackAction,
+  VarendoNavigationFeedbackBindings,
+  VarendoNavigationFeedbackContent,
+  VarendoNavigationFeedbackRoute,
+  VarendoPaginationBinding,
+  VarendoTabsBinding,
+  VarendoTreeBinding,
 } from './navigation-feedback-types.js';
 import { bounded, exactKeys, fail, freeze, record } from './navigation-feedback-support.js';
 import { normalizeActions, normalizeContents, normalizeRoutes } from './navigation-feedback-normalize-basic.js';
@@ -19,25 +19,25 @@ import { normalizeFeedback } from './navigation-feedback-normalize-feedback.js';
 
 interface PrimaryBindings {
   readonly revision: string;
-  readonly contents: readonly AeliqoNavigationFeedbackContent[];
-  readonly routes: readonly AeliqoNavigationFeedbackRoute[];
-  readonly actions: readonly AeliqoNavigationFeedbackAction[];
-  readonly contentIndex: Map<string, AeliqoNavigationFeedbackContent>;
-  readonly routeIndex: Map<string, AeliqoNavigationFeedbackRoute>;
-  readonly actionIndex: Map<string, AeliqoNavigationFeedbackAction>;
+  readonly contents: readonly VarendoNavigationFeedbackContent[];
+  readonly routes: readonly VarendoNavigationFeedbackRoute[];
+  readonly actions: readonly VarendoNavigationFeedbackAction[];
+  readonly contentIndex: Map<string, VarendoNavigationFeedbackContent>;
+  readonly routeIndex: Map<string, VarendoNavigationFeedbackRoute>;
+  readonly actionIndex: Map<string, VarendoNavigationFeedbackAction>;
 }
 
 interface NavigationBindings {
-  readonly breadcrumbs: readonly AeliqoBreadcrumbBinding[];
-  readonly menus: readonly AeliqoMenuBinding[];
-  readonly pagination: readonly AeliqoPaginationBinding[];
-  readonly tabs: readonly AeliqoTabsBinding[];
-  readonly trees: readonly AeliqoTreeBinding[];
+  readonly breadcrumbs: readonly VarendoBreadcrumbBinding[];
+  readonly menus: readonly VarendoMenuBinding[];
+  readonly pagination: readonly VarendoPaginationBinding[];
+  readonly tabs: readonly VarendoTabsBinding[];
+  readonly trees: readonly VarendoTreeBinding[];
 }
 
 export function copyBindings(
-  input: AeliqoNavigationFeedbackBindings | undefined,
-): Outcome<AeliqoNavigationFeedbackBindings> {
+  input: VarendoNavigationFeedbackBindings | undefined,
+): Outcome<VarendoNavigationFeedbackBindings> {
   if (input === undefined) return { ok: true, value: { revision: 'unconfigured' } };
   const source = copiedInput(input);
   if (!source.ok) return source;
@@ -64,7 +64,7 @@ export function copyBindings(
   };
 }
 
-function copiedInput(input: AeliqoNavigationFeedbackBindings): Outcome<Record<string, unknown>> {
+function copiedInput(input: VarendoNavigationFeedbackBindings): Outcome<Record<string, unknown>> {
   const parsed = parseWireValue(input);
   if (!parsed.ok) return fail('bindings', 'Navigation and feedback bindings must be bounded JSON data.');
   let copied: unknown;

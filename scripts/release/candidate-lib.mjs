@@ -195,7 +195,7 @@ export function assertExportTargets(manifest, paths, packageName) {
 export function candidateManifest({ sourceRevision, packages, version = RELEASE_VERSION }) {
   assertPublishOrder(packages);
   return {
-    schema: 'aeliqo.release-candidate.v1',
+    schema: 'varendo.release-candidate.v1',
     sourceRevision,
     version,
     publishOrder: packages.map((item) => item.name),
@@ -339,8 +339,8 @@ export function cyclonedxSbom({
       licenses: [{ license: { id: 'Apache-2.0' } }],
       hashes: [{ alg: 'SHA-256', content: item.sha256 }],
       properties: [
-        { name: 'aeliqo:tarball', value: item.file },
-        { name: 'aeliqo:source-revision', value: sourceRevision },
+        { name: 'varendo:tarball', value: item.file },
+        { name: 'varendo:source-revision', value: sourceRevision },
       ],
     }));
   const external = [...externalComponents]
@@ -361,9 +361,9 @@ export function cyclonedxSbom({
     metadata: {
       component: {
         type: 'application',
-        name: 'aeliqo-release-candidate',
+        name: 'varendo-release-candidate',
         version,
-        properties: [{ name: 'aeliqo:source-revision', value: sourceRevision }],
+        properties: [{ name: 'varendo:source-revision', value: sourceRevision }],
       },
     },
     components: [...internalComponents, ...external],

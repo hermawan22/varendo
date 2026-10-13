@@ -18,7 +18,7 @@ import type {
   McpHttpClientOptions,
   McpStdioClientOptions,
 } from './types.js';
-import { AELIQO_MCP_PROTOCOL_REVISION, AELIQO_MCP_TOOL_META } from './types.js';
+import { VARENDO_MCP_PROTOCOL_REVISION, VARENDO_MCP_TOOL_META } from './types.js';
 import {
   ADAPTER_VERSION,
   DEFAULT_SERVER_NAME,
@@ -142,7 +142,7 @@ async function invokeCall(state: McpClientState, call: CallContext): Promise<Out
     {
       name,
       arguments: input,
-      _meta: { [AELIQO_MCP_TOOL_META]: { version: ADAPTER_VERSION, requestId: options.requestId } },
+      _meta: { [VARENDO_MCP_TOOL_META]: { version: ADAPTER_VERSION, requestId: options.requestId } },
     },
     callRequestOptions(options.signal),
   );
@@ -198,7 +198,7 @@ function clientOptions(
 ): ClientOptions {
   return {
     ...(options.clientOptions ?? {}),
-    versionNegotiation: { mode: { pin: AELIQO_MCP_PROTOCOL_REVISION } },
+    versionNegotiation: { mode: { pin: VARENDO_MCP_PROTOCOL_REVISION } },
   };
 }
 

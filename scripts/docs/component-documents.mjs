@@ -101,10 +101,10 @@ function assertComponentDirectives(body, componentId) {
   if (/\b(?:TODO|TBD|placeholder|not declared)\b/iu.test(body))
     throw new Error(`Remove placeholder text from ${componentId} documentation`);
   for (const token of COMPONENT_DIRECTIVES) {
-    if (!body.includes(`{{aeliqo:${token}}}`))
+    if (!body.includes(`{{varendo:${token}}}`))
       throw new Error(`Missing generated ${token} directive in ${componentId} documentation`);
   }
-  if (body.match(/\{\{aeliqo:example\}\}/gu)?.length !== 1)
+  if (body.match(/\{\{varendo:example\}\}/gu)?.length !== 1)
     throw new Error(`Component documentation must contain one live example: ${componentId}`);
 }
 
@@ -179,40 +179,40 @@ function eventsDocumentation(component, values) {
 function componentDocumentationBody(component, example, metadata, api, source) {
   const replacements = new Map();
   const componentMarkdown = source
-    .replace('{{aeliqo:fixture}}', escapeMarkdown(example.fixture))
+    .replace('{{varendo:fixture}}', escapeMarkdown(example.fixture))
     .replace(
-      '{{aeliqo:properties}}',
+      '{{varendo:properties}}',
       `${escapeMarkdown(example.propsNotes)}\n\n${propertiesTable(metadata.properties)}`,
     )
-    .replace('{{aeliqo:events}}', eventsDocumentation(component, example.events))
-    .replace('{{aeliqo:states}}', markdownList(example.states, 'No non-default state is shown in this fixture.'))
-    .replace('{{aeliqo:outcome}}', `Expected result: ${escapeMarkdown(example.expectedOutcome)}`)
+    .replace('{{varendo:events}}', eventsDocumentation(component, example.events))
+    .replace('{{varendo:states}}', markdownList(example.states, 'No non-default state is shown in this fixture.'))
+    .replace('{{varendo:outcome}}', `Expected result: ${escapeMarkdown(example.expectedOutcome)}`)
     .replace(
-      '{{aeliqo:keyboard}}',
+      '{{varendo:keyboard}}',
       markdownList(example.keyboard, 'The component does not add a keyboard interaction.'),
     )
     .replace(
-      '{{aeliqo:semantics}}',
+      '{{varendo:semantics}}',
       markdownList(
         metadata.semantics,
         'The component class does not set a native role or ARIA attribute; inspect its rendered children and host labels.',
       ),
     )
     .replace(
-      '{{aeliqo:style-hooks}}',
+      '{{varendo:style-hooks}}',
       [
         `- Shadow parts: ${metadata.parts.length ? metadata.parts.map((part) => `\`${escapeMarkdown(part)}\``).join(', ') : 'none exposed by this class lineage.'}`,
         `- Varendo design tokens referenced: ${metadata.tokens.length ? metadata.tokens.map((token) => `\`${escapeMarkdown(token)}\``).join(', ') : 'none referenced directly by this class lineage.'}`,
       ].join('\n'),
     );
   const performance = metadata.bounds.length ? `## Performance limits\n\n${markdownList(metadata.bounds, '')}\n\n` : '';
-  const withPerformance = componentMarkdown.replace('{{aeliqo:performance}}', performance);
-  const liveExampleToken = `AELIQO_LIVE_EXAMPLE_${component.id}_CONTENT`;
-  const declarationToken = `AELIQO_TYPESCRIPT_DECLARATION_${component.id}_CONTENT`;
+  const withPerformance = componentMarkdown.replace('{{varendo:performance}}', performance);
+  const liveExampleToken = `VARENDO_LIVE_EXAMPLE_${component.id}_CONTENT`;
+  const declarationToken = `VARENDO_TYPESCRIPT_DECLARATION_${component.id}_CONTENT`;
   const expanded = withPerformance
-    .replace('{{aeliqo:example}}', liveExampleToken)
-    .replace('{{aeliqo:declaration}}', declarationToken);
-  if (/\{\{aeliqo:/u.test(expanded)) throw new Error(`Unresolved documentation directive in ${component.id}`);
+    .replace('{{varendo:example}}', liveExampleToken)
+    .replace('{{varendo:declaration}}', declarationToken);
+  if (/\{\{varendo:/u.test(expanded)) throw new Error(`Unresolved documentation directive in ${component.id}`);
   const rendered = String(marked.parse(expanded, { gfm: true, async: false }));
   const declaration = `<details class="component-declaration"><summary>View generated declaration</summary><div class="code-scroll" role="region" aria-label="${escape(component.name)} TypeScript declaration"><pre tabindex="0"><code>${escape(api)}</code></pre></div></details>`;
   replacements.set(`<p>${liveExampleToken}</p>`, exampleMarkup(example));

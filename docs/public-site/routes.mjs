@@ -3,7 +3,7 @@ const route = (id, path, group, sourcePath) =>
 
 export const DOC_ROUTES = Object.freeze([
   route('home', '/', 'Get started', '/docs/'),
-  route('what-is', '/start/what-is-aeliqo/', 'Get started'),
+  route('what-is', '/start/what-is-varendo/', 'Get started'),
   route('quickstart', '/start/', 'Get started', '/docs/getting-started/'),
   route('registered-app', '/start/registered-app/', 'Get started'),
   route('existing-app', '/start/existing-app/', 'Get started'),
@@ -55,6 +55,7 @@ export const DOC_ROUTES = Object.freeze([
   route('migration-0-6', '/ship/migration-0.6/', 'Releases'),
   route('support-matrix', '/ship/support-matrix/', 'Releases'),
   route('migration-varendo', '/ship/migration-varendo/', 'Releases'),
+  route('migration-varendo-0-2', '/ship/migration-varendo-0.2/', 'Releases'),
   route('release-notes', '/ship/release-notes/', 'Releases'),
 
   route('examples', '/examples/', 'Examples'),
@@ -319,6 +320,7 @@ export const DOC_NAVIGATION = Object.freeze([
       'migration-0-5',
       'migration-varendo',
       'migration-0-6',
+      'migration-varendo-0-2',
       'release-notes',
     ]),
     navSubgroup('Project & community', ['contribute', 'about', 'support', 'security', 'license', 'privacy']),

@@ -24,13 +24,13 @@ function evidence(overrides = {}) {
 }
 
 test('release accepts only passing same-source quality evidence', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-quality-evidence-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-quality-evidence-'));
   const path = join(directory, 'ci.json');
   try {
     await writeFile(path, JSON.stringify(evidence()));
     const result = await execute(process.execPath, [script], {
       cwd: root,
-      env: { ...process.env, GITHUB_SHA: revision, AELIQO_CI_EVIDENCE_PATH: path },
+      env: { ...process.env, GITHUB_SHA: revision, VARENDO_CI_EVIDENCE_PATH: path },
     });
     assert.match(result.stdout, /"commands":8/u);
 
@@ -38,7 +38,7 @@ test('release accepts only passing same-source quality evidence', async () => {
     await assert.rejects(
       execute(process.execPath, [script], {
         cwd: root,
-        env: { ...process.env, GITHUB_SHA: revision, AELIQO_CI_EVIDENCE_PATH: path },
+        env: { ...process.env, GITHUB_SHA: revision, VARENDO_CI_EVIDENCE_PATH: path },
       }),
       /exact release source revision/u,
     );
@@ -50,7 +50,7 @@ test('release accepts only passing same-source quality evidence', async () => {
     await assert.rejects(
       execute(process.execPath, [script], {
         cwd: root,
-        env: { ...process.env, GITHUB_SHA: revision, AELIQO_CI_EVIDENCE_PATH: path },
+        env: { ...process.env, GITHUB_SHA: revision, VARENDO_CI_EVIDENCE_PATH: path },
       }),
       /missing the performance boundary/u,
     );

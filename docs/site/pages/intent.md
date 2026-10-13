@@ -24,7 +24,7 @@ description: 'A small, validated request that application code and agents can bo
 }
 ```
 
-<p>Your code passes the same object to <code>app.render({ intent })</code>. An agent sends it through <code>aeliqo_render</code>. Both paths run identical validation.</p>
+<p>Your code passes the same object to <code>app.render({ intent })</code>. An agent sends it through <code>varendo_render</code>. Both paths run identical validation.</p>
 <h2>Stay inside the envelope</h2><p>Intent may include resource, fields, filters, sort, page, identities, registered measures, period, and <code>preferredView</code>. It never includes principal, grants, credentials, executable code, SQL, HTML, endpoint URLs, or module paths.</p>
 <h2>Register a custom intent</h2><p>Register a namespaced version, runtime input schema, capability list, and pure synchronous compiler. The produced Task passes the same schema, catalog, Region, and authority validation as a standard intent.</p>
 <aside class="doc-callout" data-tone="warning"><strong>Valid does not mean correctly interpreted</strong><p>A model can choose the wrong but schema-valid filter or period. Keep material choices visible and return <code>needs-input</code> when ambiguity changes the outcome.</p></aside>

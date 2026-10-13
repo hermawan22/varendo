@@ -10,10 +10,10 @@ test.beforeEach(async ({ page }) => {
     const flow = document.querySelector('#flow')!;
     const events: FlowDraftEvent[] = [];
     (window as unknown as { __flowDraftEvents: FlowDraftEvent[] }).__flowDraftEvents = events;
-    flow.addEventListener('aeliqo-form-flow-step', (event) => {
+    flow.addEventListener('varendo-form-flow-step', (event) => {
       events.push({ kind: 'step', draft: (event as CustomEvent<{ draft: Record<string, unknown> }>).detail.draft });
     });
-    flow.addEventListener('aeliqo-form-flow-commit', (event) => {
+    flow.addEventListener('varendo-form-flow-commit', (event) => {
       events.push({ kind: 'commit', draft: (event as CustomEvent<{ draft: Record<string, unknown> }>).detail.draft });
     });
   });
@@ -26,7 +26,7 @@ test('replaces a seeded scalar with the edited control while retaining repeated 
     element.draft = { draftOnly: 'old', displayName: 'Ada Lovelace' };
     await element.updateComplete;
   });
-  await flow.locator('aeliqo-text-field').locator('input').fill('Ada flow draft');
+  await flow.locator('varendo-text-field').locator('input').fill('Ada flow draft');
   await flow.getByRole('button', { name: 'Next', exact: true }).click();
 
   await expect
@@ -55,7 +55,7 @@ test('keeps an unmounted step until its replacement draft revokes it', async ({ 
     element.draft = { draftOnly: 'old', displayName: 'Ada Lovelace' };
     await element.updateComplete;
   });
-  await flow.locator('aeliqo-text-field').locator('input').fill('Ada first');
+  await flow.locator('varendo-text-field').locator('input').fill('Ada first');
   await flow.getByRole('button', { name: 'Next', exact: true }).click();
   await page.evaluate(async () => {
     const element = document.querySelector('#flow') as any;
@@ -116,7 +116,7 @@ test('clears unchecked and empty multiple controls instead of retaining seeded v
     element.draft = { displayName: 'Ada Lovelace', consent: 'yes', choices: ['red', 'blue'] };
     await element.updateComplete;
   });
-  await flow.locator('aeliqo-text-field').locator('input').fill('Ada');
+  await flow.locator('varendo-text-field').locator('input').fill('Ada');
   await flow.getByRole('button', { name: 'Next', exact: true }).click();
   await flow.locator('input[type="checkbox"][name="consent"]').uncheck();
   await flow.locator('select[name="choices"]').selectOption([]);

@@ -1,52 +1,52 @@
 import React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import {
-  AeliqoTabsElement,
-  AeliqoBreadcrumbElement,
-  AeliqoPaginationElement,
-  AeliqoMenuElement,
-  AeliqoTreeNavElement,
+  VarendoTabsElement,
+  VarendoBreadcrumbElement,
+  VarendoPaginationElement,
+  VarendoMenuElement,
+  VarendoTreeNavElement,
 } from '@varendo/web/navigation';
 type UserEvent<T> = CustomEvent<Readonly<T & { source: 'user' }>>;
-export const AeliqoTabs = createComponent({
+export const VarendoTabs = createComponent({
   react: React,
-  tagName: 'aeliqo-tabs',
-  elementClass: AeliqoTabsElement,
-  events: { onSelectionChange: 'aeliqo-tabs-change' as EventName<UserEvent<{ id: string; previousId: string }>> },
-  displayName: 'AeliqoTabs',
+  tagName: 'varendo-tabs',
+  elementClass: VarendoTabsElement,
+  events: { onSelectionChange: 'varendo-tabs-change' as EventName<UserEvent<{ id: string; previousId: string }>> },
+  displayName: 'VarendoTabs',
 });
-export const AeliqoBreadcrumb = createComponent({
+export const VarendoBreadcrumb = createComponent({
   react: React,
-  tagName: 'aeliqo-breadcrumb',
-  elementClass: AeliqoBreadcrumbElement,
-  events: { onNavigate: 'aeliqo-navigation' as EventName<UserEvent<{ id: string; href?: string }>> },
-  displayName: 'AeliqoBreadcrumb',
+  tagName: 'varendo-breadcrumb',
+  elementClass: VarendoBreadcrumbElement,
+  events: { onNavigate: 'varendo-navigation' as EventName<UserEvent<{ id: string; href?: string }>> },
+  displayName: 'VarendoBreadcrumb',
 });
-export const AeliqoPagination = createComponent({
+export const VarendoPagination = createComponent({
   react: React,
-  tagName: 'aeliqo-pagination',
-  elementClass: AeliqoPaginationElement,
+  tagName: 'varendo-pagination',
+  elementClass: VarendoPaginationElement,
   events: {
-    onPageChange: 'aeliqo-page-change' as EventName<
+    onPageChange: 'varendo-page-change' as EventName<
       UserEvent<{ page: number; previousPage: number; direction: 'previous' | 'next' }>
     >,
   },
-  displayName: 'AeliqoPagination',
+  displayName: 'VarendoPagination',
 });
-export const AeliqoMenu = createComponent({
+export const VarendoMenu = createComponent({
   react: React,
-  tagName: 'aeliqo-menu',
-  elementClass: AeliqoMenuElement,
-  events: { onAction: 'aeliqo-menu-action' as EventName<UserEvent<{ id: string }>> },
-  displayName: 'AeliqoMenu',
+  tagName: 'varendo-menu',
+  elementClass: VarendoMenuElement,
+  events: { onAction: 'varendo-menu-action' as EventName<UserEvent<{ id: string }>> },
+  displayName: 'VarendoMenu',
 });
-export const AeliqoTreeNav = createComponent({
+export const VarendoTreeNav = createComponent({
   react: React,
-  tagName: 'aeliqo-tree-nav',
-  elementClass: AeliqoTreeNavElement,
+  tagName: 'varendo-tree-nav',
+  elementClass: VarendoTreeNavElement,
   events: {
-    onSelectionChange: 'aeliqo-tree-nav-select' as EventName<UserEvent<{ id: string; previousId: string }>>,
-    onExpand: 'aeliqo-tree-nav-expand' as EventName<UserEvent<{ id: string; expanded: boolean }>>,
+    onSelectionChange: 'varendo-tree-nav-select' as EventName<UserEvent<{ id: string; previousId: string }>>,
+    onExpand: 'varendo-tree-nav-expand' as EventName<UserEvent<{ id: string; expanded: boolean }>>,
   },
-  displayName: 'AeliqoTreeNav',
+  displayName: 'VarendoTreeNav',
 });

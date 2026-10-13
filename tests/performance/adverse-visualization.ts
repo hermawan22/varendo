@@ -1,8 +1,8 @@
-import { registerAeliqoElements } from '@varendo/web';
+import { registerVarendoElements } from '@varendo/web';
 import type { Result, ResultRef, VisualizationSpec } from '@varendo/core';
 import type { VisualizationBindingContext } from '@varendo/core/visualization';
 
-registerAeliqoElements();
+registerVarendoElements();
 
 const ROW_COUNT = 1_000;
 const BAR_WIDTH = 3_600;
@@ -143,7 +143,7 @@ function mountVisualization(
   data: readonly Record<string, string | number | null>[],
   width: number,
 ): VisualizationHost {
-  const element = document.createElement(`aeliqo-${tag}`) as VisualizationHost;
+  const element = document.createElement(`varendo-${tag}`) as VisualizationHost;
   Object.assign(element, {
     label,
     visualization,

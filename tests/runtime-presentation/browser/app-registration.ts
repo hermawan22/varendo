@@ -2,7 +2,7 @@ import { defineResource, type Intent } from '@varendo/core';
 import { createLocalDataService } from '@varendo/runtime/data';
 import { z } from 'zod';
 import { html } from 'lit';
-import { createAeliqoApp } from '../../../packages/web/src/app/app.js';
+import { createVarendoApp } from '../../../packages/web/src/app/app.js';
 import { defineView } from '../../../packages/web/src/recipes/index.js';
 
 const people = defineResource({
@@ -50,13 +50,13 @@ const view = defineView({
     }),
   },
   render: ({ result }) =>
-    html`<aeliqo-comparison
+    html`<varendo-comparison
       .compareKeys=${['ada', 'sam']}
       .metrics=${[{ id: 'names', label: 'Names', values: Object.fromEntries(result?.rows.map((row) => [String(row.id), row.name]) ?? []) }]}
-    ></aeliqo-comparison>`,
+    ></varendo-comparison>`,
 });
 let authorized = true;
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [{ resource: people, data }],
   views: [view],
   authority: {

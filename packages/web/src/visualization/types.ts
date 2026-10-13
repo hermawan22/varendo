@@ -16,9 +16,9 @@ export interface VisualizationInputs {
   readonly height: number;
   readonly maxMarks: number;
 }
-export interface AeliqoVisualizationSelectionDetail {
+export interface VarendoVisualizationSelectionDetail {
   readonly source: 'user';
   readonly identity: string;
   readonly result: ResultRef;
 }
-export type AeliqoVisualizationSelectionEvent = CustomEvent<AeliqoVisualizationSelectionDetail>;
+export type VarendoVisualizationSelectionEvent = CustomEvent<VarendoVisualizationSelectionDetail>;

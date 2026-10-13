@@ -1,5 +1,5 @@
-import { AeliqoTextFieldElement } from '@varendo/web/inputs';
-import { AeliqoTableElement } from '@varendo/web/table';
+import { VarendoTextFieldElement } from '@varendo/web/inputs';
+import { VarendoTableElement } from '@varendo/web/table';
 import {
   LARGE_TRANSFERRED_ROW_COUNT,
   MEDIUM_ROW_COUNT,
@@ -16,7 +16,7 @@ import {
 
 declare global {
   interface Window {
-    aeliqoPerformance?: {
+    varendoPerformance?: {
       smallStandalone: (options?: { timed?: boolean }) => Promise<unknown>;
       mediumViews: (options?: { timed?: boolean }) => Promise<unknown>;
       targetedReducer: (options?: { timed?: boolean }) => Promise<unknown>;
@@ -34,17 +34,17 @@ const root: HTMLElement =
     throw new Error('Performance fixture root is missing.');
   })();
 
-if (!customElements.get('aeliqo-text-field')) customElements.define('aeliqo-text-field', AeliqoTextFieldElement);
-if (!customElements.get('aeliqo-table')) customElements.define('aeliqo-table', AeliqoTableElement);
+if (!customElements.get('varendo-text-field')) customElements.define('varendo-text-field', VarendoTextFieldElement);
+if (!customElements.get('varendo-table')) customElements.define('varendo-table', VarendoTableElement);
 
-type TestTable = AeliqoTableElement & { readonly updateComplete: Promise<unknown> };
+type TestTable = VarendoTableElement & { readonly updateComplete: Promise<unknown> };
 
 function resetFixture(): void {
   root.replaceChildren();
 }
 
 function table(rows: readonly Record<string, string | number>[], virtualized = false, totalRows?: number): TestTable {
-  const element = document.createElement('aeliqo-table') as TestTable;
+  const element = document.createElement('varendo-table') as TestTable;
   element.caption = 'Performance records';
   element.columns = [
     { key: 'id', label: 'ID' },
@@ -61,7 +61,7 @@ function table(rows: readonly Record<string, string | number>[], virtualized = f
   return element;
 }
 
-async function settle(element: TestTable | AeliqoTextFieldElement): Promise<void> {
+async function settle(element: TestTable | VarendoTextFieldElement): Promise<void> {
   await element.updateComplete;
 }
 
@@ -72,7 +72,7 @@ async function smallOnce(): Promise<{
 }> {
   resetFixture();
   const rows = makeRows(SMALL_ROW_COUNT);
-  const control = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+  const control = document.createElement('varendo-text-field') as VarendoTextFieldElement;
   control.label = 'Standalone value';
   control.value = 'ready';
   const dataTable = table(rows);
@@ -153,7 +153,7 @@ async function measured(label: string, once: () => Promise<unknown>, timed: bool
 
 async function boundedGeometry(sourceUrl: string): Promise<unknown> {
   const result = await largeOnce(sourceUrl);
-  const dataTable = root.querySelector('aeliqo-table') as TestTable | null;
+  const dataTable = root.querySelector('varendo-table') as TestTable | null;
   const bodyRows = dataTable?.shadowRoot?.querySelectorAll('tbody tr') ?? [];
   const rects = [...bodyRows].map((row) => row.getBoundingClientRect());
   return {
@@ -216,7 +216,7 @@ async function mountDispose(measure = false): Promise<unknown> {
   };
   try {
     for (let cycle = 0; cycle < 100; cycle += 1) {
-      const field = document.createElement('aeliqo-text-field') as AeliqoTextFieldElement;
+      const field = document.createElement('varendo-text-field') as VarendoTextFieldElement;
       field.label = `Cycle ${cycle + 1}`;
       field.value = String(cycle);
       root.append(field);
@@ -292,7 +292,7 @@ async function runAll(options: { timed?: boolean; sourceUrl?: string } = {}): Pr
   };
 }
 
-window.aeliqoPerformance = {
+window.varendoPerformance = {
   smallStandalone: (options = {}) => measured('small-standalone', smallOnce, options.timed === true),
   mediumViews: (options = {}) =>
     measured('medium-planner-and-views', () => mediumOnce(options.timed === true), options.timed === true),

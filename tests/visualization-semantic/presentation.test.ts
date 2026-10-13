@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
-import type { AeliqoPresentationRegistryOptions } from '../../packages/web/src/region/registry.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import type { VarendoPresentationRegistryOptions } from '../../packages/web/src/region/registry.js';
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
 import type { PresentationPlan } from '../../packages/core/src/contracts/index.js';
 import type { PresentationContext, ValidatedPresentation } from '../../packages/core/src/presentation/index.js';
 import { visualizationContext, visualizationPlan, visualizationRegistryOptions } from './fixtures.mjs';
 
 function checked(readOnly = false): ValidatedPresentation {
-  const options = visualizationRegistryOptions(readOnly) as AeliqoPresentationRegistryOptions;
-  const registry = createAeliqoPresentationRegistry(options);
+  const options = visualizationRegistryOptions(readOnly) as VarendoPresentationRegistryOptions;
+  const registry = createVarendoPresentationRegistry(options);
   if (!registry.ok) throw new Error(JSON.stringify(registry.diagnostics));
   const result = validatePresentationPlan(
     visualizationPlan() as PresentationPlan,
@@ -70,8 +70,8 @@ describe('canonical semantic visualization presentation', () => {
 });
 
 it('cannot claim required matrix fields that its selected columns omit', () => {
-  const registry = createAeliqoPresentationRegistry(
-    visualizationRegistryOptions() as AeliqoPresentationRegistryOptions,
+  const registry = createVarendoPresentationRegistry(
+    visualizationRegistryOptions() as VarendoPresentationRegistryOptions,
   );
   if (!registry.ok) throw Error('registry');
   const context = visualizationContext() as PresentationContext;

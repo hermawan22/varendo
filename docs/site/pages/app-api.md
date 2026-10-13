@@ -7,18 +7,18 @@ description: "Lifecycle, ownership, outcomes, and extension points for the Varen
 ---
 
 <p class="lead">Create one app, mount Regions, and send intents. Every call returns a typed receipt with a stable outcome.</p>
-<aeliqo-release-status></aeliqo-release-status>
+<varendo-release-status></varendo-release-status>
 
 Import the application facade from `@varendo/web/app`. This entry point uses
 `@varendo/runtime`; component-only consumers can import the web package root.
 Use matching package versions for all application dependencies.
 
-<h2>createAeliqoApp</h2>
+<h2>createVarendoApp</h2>
 
 **Signature**
 
 ```ts
-createAeliqoApp(options: AeliqoAppOptions): AeliqoApp
+createVarendoApp(options: VarendoAppOptions): VarendoApp
 ```
 
 <p><strong>Required:</strong> a resources array with at least one resource/data binding, plus an authority adapter. <strong>Optional:</strong> a runtime ID, custom intents, an action port, a result store and its options, and region/render limits. You can also pass recipes, views, presentation patterns, state mappings, a form-state adapter, and an action-event callback. Standard recipes are used when no recipes are supplied.</p>
@@ -27,7 +27,7 @@ createAeliqoApp(options: AeliqoAppOptions): AeliqoApp
 **Signature**
 
 ```ts
-app.mount({target, regionId, resourceId}): Outcome<AeliqoRegionElement>
+app.mount({target, regionId, resourceId}): Outcome<VarendoRegionElement>
 ```
 
 <p>Creates one Region and begins container observation. Region IDs are unique within the app. Mount does not fetch data until <code>render</code>.</p>
@@ -61,7 +61,7 @@ app.dispose(): void
 
 <p>Unmount cancels and releases one Region. Dispose is idempotent and releases every Region, listener, pending render, Result handle, and owned observer. Calls after disposal fail closed.</p>
 <h2>Receipts</h2><p><code>renderer-ready</code>, <code>needs-input</code>, <code>denied</code>, <code>cancelled</code>, <code>unsupported</code>, and <code>failed</code> are distinct. A failed presentation leaves the previous authorized task, results, and UI in place. Candidate data is published only after the root renderer succeeds. Revocation clears inaccessible content. The receipt includes bounded diagnostics; it does not claim the rejected candidate committed.</p>
-<h2>Source declarations</h2><aeliqo-source data-label="AeliqoApp types" data-path="packages/web/src/app/types.ts"></aeliqo-source>
+<h2>Source declarations</h2><varendo-source data-label="VarendoApp types" data-path="packages/web/src/app/types.ts"></varendo-source>
 <nav class="doc-next" aria-label="Continue reading"><p>Continue reading</p><a href="/reference/intent-schema/"><span>Intent schema</span><small>Build valid render inputs.</small><b aria-hidden="true">→</b></a><a href="/reference/diagnostics/"><span>Diagnostics</span><small>Handle failure and recovery consistently.</small><b aria-hidden="true">→</b></a></nav>
 
 ## Layout registration
@@ -85,7 +85,7 @@ container and media changes. Use it to update a view label or diagnostics panel.
 reuses the current results; it does not request data or call a model.
 
 ```ts
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources,
   authority,
   onPresentation(receipt) {

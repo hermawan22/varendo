@@ -18,7 +18,7 @@ function atPath(value: unknown, path: readonly (string | number)[]): unknown {
 function optionText(values: readonly unknown[]): string {
   const shown = values.slice(0, MAX_HINT_VALUES).map((value) => JSON.stringify(value) ?? String(value));
   const suffix =
-    values.length > shown.length ? `, and ${values.length - shown.length} more; inspect aeliqo_context` : '';
+    values.length > shown.length ? `, and ${values.length - shown.length} more; inspect varendo_context` : '';
   return shown.length === 0 ? 'none declared' : `${shown.join(', ')}${suffix}`;
 }
 

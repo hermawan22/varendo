@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
 import { testPort } from '../shared/port.mjs';
-const port = await testPort('AELIQO_COMPONENT_A11Y_PORT');
+const port = await testPort('VARENDO_COMPONENT_A11Y_PORT');
 export default defineConfig({
   testDir: '.',
   testMatch: ['browser.spec.ts', 'visual.spec.ts'],

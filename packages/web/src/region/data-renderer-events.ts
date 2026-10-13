@@ -1,14 +1,14 @@
 import type { InteractionPayload, ResultRef } from '@varendo/core';
 import type {
-  AeliqoFilterChangeDetail,
-  AeliqoFilterPredicate,
-  AeliqoPageRequest,
-  AeliqoSortState,
-  AeliqoTableWindowDetail,
+  VarendoFilterChangeDetail,
+  VarendoFilterPredicate,
+  VarendoPageRequest,
+  VarendoSortState,
+  VarendoTableWindowDetail,
 } from '../data/types.js';
-import type { AeliqoDataResolvedNode } from './data-registry.js';
+import type { VarendoDataResolvedNode } from './data-registry.js';
 import { allowedKeys } from './data-registry-common.js';
-import type { AeliqoDataRenderContext } from './data-renderer-types.js';
+import type { VarendoDataRenderContext } from './data-renderer-types.js';
 import {
   eventDetail,
   eventType,
@@ -24,10 +24,10 @@ import {
 import { hasMore, validKeys, validScopeDetail, validatePredicate } from './data-renderer-state.js';
 
 const SELECTION_EVENT_TYPES = new Set([
-  'aeliqo-record-list-selection',
-  'aeliqo-card-selection',
-  'aeliqo-table-selection',
-  'aeliqo-selection-clear',
+  'varendo-record-list-selection',
+  'varendo-card-selection',
+  'varendo-table-selection',
+  'varendo-selection-clear',
 ]);
 
 interface SelectionEventDetail {
@@ -36,7 +36,11 @@ interface SelectionEventDetail {
   readonly keys: string[];
 }
 
-export function dispatchSelection(node: AeliqoDataResolvedNode, event: Event, context: AeliqoDataRenderContext): void {
+export function dispatchSelection(
+  node: VarendoDataResolvedNode,
+  event: Event,
+  context: VarendoDataRenderContext,
+): void {
   if (!isSelectionEvent(event)) return;
   const selection = selectionPort(node, true);
   if (selection === undefined) return;
@@ -55,9 +59,9 @@ function isSelectionEvent(event: Event): boolean {
 }
 
 function selectionEventDetail(
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   event: Event,
-  context: AeliqoDataRenderContext,
+  context: VarendoDataRenderContext,
 ): SelectionEventDetail | undefined {
   const detail = rawSelectionDetail(event);
   if (detail === undefined || !validScopeDetail(detail.scope, node)) return undefined;
@@ -79,7 +83,7 @@ function rawSelectionDetail(event: Event): Record<string, unknown> | undefined {
 
 function clearSelectionDetail(
   detail: Record<string, unknown>,
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
 ): SelectionEventDetail | undefined {
   if ((detail.keys as string[]).length !== 0) return undefined;
   const hasResult = Object.hasOwn(detail, 'result');
@@ -89,8 +93,8 @@ function clearSelectionDetail(
 
 function idsSelectionDetail(
   detail: Record<string, unknown>,
-  node: AeliqoDataResolvedNode,
-  context: AeliqoDataRenderContext,
+  node: VarendoDataResolvedNode,
+  context: VarendoDataRenderContext,
 ): SelectionEventDetail | undefined {
   const result = resultRef(detail.result);
   const keys = detail.keys as string[];
@@ -99,7 +103,7 @@ function idsSelectionDetail(
   return { mode: 'ids', entity: detail.entity as string, keys };
 }
 
-function emitClearSelection(node: AeliqoDataResolvedNode, portId: string, context: AeliqoDataRenderContext): void {
+function emitClearSelection(node: VarendoDataResolvedNode, portId: string, context: VarendoDataRenderContext): void {
   hostOutput(context)?.({
     kind: 'selection',
     nodeId: node.id,
@@ -109,10 +113,10 @@ function emitClearSelection(node: AeliqoDataResolvedNode, portId: string, contex
 }
 
 function emitIdsSelection(
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   portId: string,
   detail: SelectionEventDetail,
-  context: AeliqoDataRenderContext,
+  context: VarendoDataRenderContext,
 ): void {
   hostOutput(context)?.({
     kind: 'selection',
@@ -130,8 +134,8 @@ function emitIdsSelection(
   });
 }
 
-export function dispatchFilter(node: AeliqoDataResolvedNode, event: Event, context: AeliqoDataRenderContext): void {
-  if (eventType(event) !== 'aeliqo-filter-change' || !port(node, 'filter', 'filter')) return;
+export function dispatchFilter(node: VarendoDataResolvedNode, event: Event, context: VarendoDataRenderContext): void {
+  if (eventType(event) !== 'varendo-filter-change' || !port(node, 'filter', 'filter')) return;
   const detail = filterChangeDetail(event);
   if (detail === undefined || !validFilterDetail(detail, node)) return;
   const predicates: Extract<InteractionPayload, { readonly kind: 'filter' }>['predicates'] = filterPredicates(detail);
@@ -143,12 +147,12 @@ export function dispatchFilter(node: AeliqoDataResolvedNode, event: Event, conte
   });
 }
 
-function filterChangeDetail(event: Event): AeliqoFilterChangeDetail | undefined {
+function filterChangeDetail(event: Event): VarendoFilterChangeDetail | undefined {
   return exactRecord(eventDetail(event), ['predicate', 'inherited', 'scopeLabel', 'applied'], ['applied']) as
-    AeliqoFilterChangeDetail | undefined;
+    VarendoFilterChangeDetail | undefined;
 }
 
-function validFilterDetail(detail: AeliqoFilterChangeDetail, node: AeliqoDataResolvedNode): boolean {
+function validFilterDetail(detail: VarendoFilterChangeDetail, node: VarendoDataResolvedNode): boolean {
   if (detail.applied !== true) return false;
   if (Object.hasOwn(detail, 'scopeLabel') && detail.scopeLabel !== undefined && typeof detail.scopeLabel !== 'string')
     return false;
@@ -157,17 +161,17 @@ function validFilterDetail(detail: AeliqoFilterChangeDetail, node: AeliqoDataRes
 }
 
 function filterPredicates(
-  detail: AeliqoFilterChangeDetail,
+  detail: VarendoFilterChangeDetail,
 ): Extract<InteractionPayload, { readonly kind: 'filter' }>['predicates'] {
   if (detail.predicate !== undefined && detail.inherited !== undefined) {
     return [{ op: 'and', predicates: [detail.inherited, detail.predicate] }];
   }
   const predicate = detail.predicate ?? detail.inherited;
-  return predicate === undefined ? [] : [predicate as AeliqoFilterPredicate];
+  return predicate === undefined ? [] : [predicate as VarendoFilterPredicate];
 }
 
-export function dispatchPage(node: AeliqoDataResolvedNode, event: Event, context: AeliqoDataRenderContext): void {
-  if (eventType(event) !== 'aeliqo-table-page' || !port(node, 'page', 'page')) return;
+export function dispatchPage(node: VarendoDataResolvedNode, event: Event, context: VarendoDataRenderContext): void {
+  if (eventType(event) !== 'varendo-table-page' || !port(node, 'page', 'page')) return;
   const request = pageRequest(event, node);
   if (request === undefined) return;
   hostOutput(context)?.({
@@ -178,7 +182,7 @@ export function dispatchPage(node: AeliqoDataResolvedNode, event: Event, context
   });
 }
 
-function pageRequest(event: Event, node: AeliqoDataResolvedNode): AeliqoPageRequest | undefined {
+function pageRequest(event: Event, node: VarendoDataResolvedNode): VarendoPageRequest | undefined {
   const detail = exactRecord(eventDetail(event), ['page', 'pageSize', 'result'], ['page', 'pageSize']);
   if (detail === undefined || !validPageValues(detail)) return undefined;
   if (
@@ -199,8 +203,8 @@ function validPageValues(detail: Record<string, unknown>): boolean {
   return Number.isSafeInteger(detail.pageSize) && (detail.pageSize as number) >= 1;
 }
 
-export function dispatchSort(node: AeliqoDataResolvedNode, event: Event, context: AeliqoDataRenderContext): void {
-  if (eventType(event) !== 'aeliqo-table-sort' || !supportsSorting(node)) return;
+export function dispatchSort(node: VarendoDataResolvedNode, event: Event, context: VarendoDataRenderContext): void {
+  if (eventType(event) !== 'varendo-table-sort' || !supportsSorting(node)) return;
   const detail = exactRecord(eventDetail(event), ['sort'], ['sort']);
   if (detail === undefined || !validSortValue(detail.sort, node)) return;
   hostOutput(context)?.({
@@ -211,11 +215,11 @@ export function dispatchSort(node: AeliqoDataResolvedNode, event: Event, context
   });
 }
 
-function supportsSorting(node: AeliqoDataResolvedNode): boolean {
+function supportsSorting(node: VarendoDataResolvedNode): boolean {
   return node.component === 'table' && node.columns.some((column) => column.sortable === true);
 }
 
-function validSortValue(value: unknown, node: AeliqoDataResolvedNode): boolean {
+function validSortValue(value: unknown, node: VarendoDataResolvedNode): boolean {
   if (value === undefined) return true;
   const sort = record(value);
   if (sort === undefined || !onlySortKeys(sort)) return false;
@@ -227,25 +231,25 @@ function onlySortKeys(sort: Record<string, unknown>): boolean {
   return allowedKeys(sort, ['field', 'direction']);
 }
 
-function sortRequest(value: unknown): AeliqoSortState | undefined {
+function sortRequest(value: unknown): VarendoSortState | undefined {
   if (value === undefined) return undefined;
   const sort = record(value);
   if (sort === undefined || typeof sort.field !== 'string') return undefined;
   return { field: sort.field, direction: sort.direction as 'asc' | 'desc' };
 }
 
-export function dispatchWindow(node: AeliqoDataResolvedNode, event: Event, context: AeliqoDataRenderContext): void {
-  if (eventType(event) !== 'aeliqo-table-window' || !supportsWindow(node)) return;
+export function dispatchWindow(node: VarendoDataResolvedNode, event: Event, context: VarendoDataRenderContext): void {
+  if (eventType(event) !== 'varendo-table-window' || !supportsWindow(node)) return;
   const request = windowRequest(event, node);
   if (request === undefined) return;
   hostOutput(context)?.({ kind: 'window', nodeId: node.id, portId: 'window', request });
 }
 
-function supportsWindow(node: AeliqoDataResolvedNode): boolean {
+function supportsWindow(node: VarendoDataResolvedNode): boolean {
   return node.component === 'table' && node.config.values.virtualized === true && node.config.values.mode === 'grid';
 }
 
-function windowRequest(event: Event, node: AeliqoDataResolvedNode): AeliqoTableWindowDetail | undefined {
+function windowRequest(event: Event, node: VarendoDataResolvedNode): VarendoTableWindowDetail | undefined {
   const detail = exactRecord(
     eventDetail(event),
     ['start', 'count', 'overscan', 'row', 'column', 'reason', 'result'],
@@ -288,8 +292,8 @@ function positiveInteger(value: unknown): value is number {
   return Number.isSafeInteger(value) && (value as number) > 0;
 }
 
-export function dispatchLoadMore(node: AeliqoDataResolvedNode, event: Event, context: AeliqoDataRenderContext): void {
-  if (eventType(event) !== 'aeliqo-data-load-more' || node.component !== 'cardCollection' || !hasMore(node)) return;
+export function dispatchLoadMore(node: VarendoDataResolvedNode, event: Event, context: VarendoDataRenderContext): void {
+  if (eventType(event) !== 'varendo-data-load-more' || node.component !== 'cardCollection' || !hasMore(node)) return;
   const detail = exactRecord(eventDetail(event), ['requested'], ['requested']);
   if (detail?.requested !== true) return;
   hostOutput(context)?.({ kind: 'load-more', nodeId: node.id, portId: 'load-more' });

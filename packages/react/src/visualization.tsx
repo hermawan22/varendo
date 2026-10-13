@@ -1,101 +1,101 @@
 import React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import {
-  AeliqoMatrixElement,
-  AeliqoTimelineElement,
-  AeliqoCalendarGridElement,
-  type AeliqoVisualizationSelectionEvent,
+  VarendoMatrixElement,
+  VarendoTimelineElement,
+  VarendoCalendarGridElement,
+  type VarendoVisualizationSelectionEvent,
 } from '@varendo/web/visualization';
-export const AeliqoMatrix = createComponent({
+export const VarendoMatrix = createComponent({
   react: React,
-  tagName: 'aeliqo-matrix',
-  elementClass: AeliqoMatrixElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoMatrix',
+  tagName: 'varendo-matrix',
+  elementClass: VarendoMatrixElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoMatrix',
 });
-export const AeliqoTimeline = createComponent({
+export const VarendoTimeline = createComponent({
   react: React,
-  tagName: 'aeliqo-timeline',
-  elementClass: AeliqoTimelineElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoTimeline',
+  tagName: 'varendo-timeline',
+  elementClass: VarendoTimelineElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoTimeline',
 });
-export const AeliqoCalendarGrid = createComponent({
+export const VarendoCalendarGrid = createComponent({
   react: React,
-  tagName: 'aeliqo-calendar-grid',
-  elementClass: AeliqoCalendarGridElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoCalendarGrid',
+  tagName: 'varendo-calendar-grid',
+  elementClass: VarendoCalendarGridElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoCalendarGrid',
 });
 import {
-  AeliqoTrendElement,
-  AeliqoBarElement,
-  AeliqoAreaElement,
-  AeliqoScatterElement,
-  AeliqoHistogramElement,
-  AeliqoHeatmapElement,
+  VarendoTrendElement,
+  VarendoBarElement,
+  VarendoAreaElement,
+  VarendoScatterElement,
+  VarendoHistogramElement,
+  VarendoHeatmapElement,
 } from '@varendo/web/visualization';
-export const AeliqoTrend = createComponent({
+export const VarendoTrend = createComponent({
   react: React,
-  tagName: 'aeliqo-trend',
-  elementClass: AeliqoTrendElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoTrend',
+  tagName: 'varendo-trend',
+  elementClass: VarendoTrendElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoTrend',
 });
-export const AeliqoBar = createComponent({
+export const VarendoBar = createComponent({
   react: React,
-  tagName: 'aeliqo-bar',
-  elementClass: AeliqoBarElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoBar',
+  tagName: 'varendo-bar',
+  elementClass: VarendoBarElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoBar',
 });
-export const AeliqoArea = createComponent({
+export const VarendoArea = createComponent({
   react: React,
-  tagName: 'aeliqo-area',
-  elementClass: AeliqoAreaElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoArea',
+  tagName: 'varendo-area',
+  elementClass: VarendoAreaElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoArea',
 });
-export const AeliqoScatter = createComponent({
+export const VarendoScatter = createComponent({
   react: React,
-  tagName: 'aeliqo-scatter',
-  elementClass: AeliqoScatterElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoScatter',
+  tagName: 'varendo-scatter',
+  elementClass: VarendoScatterElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoScatter',
 });
-export const AeliqoHistogram = createComponent({
+export const VarendoHistogram = createComponent({
   react: React,
-  tagName: 'aeliqo-histogram',
-  elementClass: AeliqoHistogramElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoHistogram',
+  tagName: 'varendo-histogram',
+  elementClass: VarendoHistogramElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoHistogram',
 });
-export const AeliqoHeatmap = createComponent({
+export const VarendoHeatmap = createComponent({
   react: React,
-  tagName: 'aeliqo-heatmap',
-  elementClass: AeliqoHeatmapElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoHeatmap',
+  tagName: 'varendo-heatmap',
+  elementClass: VarendoHeatmapElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoHeatmap',
 });
-import { AeliqoTreeElement, AeliqoTreemapElement, AeliqoRelationshipElement } from '@varendo/web/visualization';
-export const AeliqoTree = createComponent({
+import { VarendoTreeElement, VarendoTreemapElement, VarendoRelationshipElement } from '@varendo/web/visualization';
+export const VarendoTree = createComponent({
   react: React,
-  tagName: 'aeliqo-tree',
-  elementClass: AeliqoTreeElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoTree',
+  tagName: 'varendo-tree',
+  elementClass: VarendoTreeElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoTree',
 });
-export const AeliqoTreemap = createComponent({
+export const VarendoTreemap = createComponent({
   react: React,
-  tagName: 'aeliqo-treemap',
-  elementClass: AeliqoTreemapElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoTreemap',
+  tagName: 'varendo-treemap',
+  elementClass: VarendoTreemapElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoTreemap',
 });
-export const AeliqoRelationship = createComponent({
+export const VarendoRelationship = createComponent({
   react: React,
-  tagName: 'aeliqo-relationship',
-  elementClass: AeliqoRelationshipElement,
-  events: { onSelectionChange: 'aeliqo-visualization-select' as EventName<AeliqoVisualizationSelectionEvent> },
-  displayName: 'AeliqoRelationship',
+  tagName: 'varendo-relationship',
+  elementClass: VarendoRelationshipElement,
+  events: { onSelectionChange: 'varendo-visualization-select' as EventName<VarendoVisualizationSelectionEvent> },
+  displayName: 'VarendoRelationship',
 });

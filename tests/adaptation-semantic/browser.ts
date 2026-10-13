@@ -5,12 +5,12 @@ import {
 } from '@varendo/core/presentation';
 import type { PresentationPlan } from '@varendo/core';
 import { createRegionStore } from '@varendo/runtime/regions';
-import { createAeliqoRegionAdaptation } from '@varendo/web/region/adaptation';
-import { createAeliqoPresentationRegistry } from '@varendo/web/region';
-import { registerAeliqoElements } from '@varendo/web/register';
-import type { AeliqoRegionElement } from '@varendo/web/region';
+import { createVarendoRegionAdaptation } from '@varendo/web/region/adaptation';
+import { createVarendoPresentationRegistry } from '@varendo/web/region';
+import { registerVarendoElements } from '@varendo/web/register';
+import type { VarendoRegionElement } from '@varendo/web/region';
 import { presentationTask, result, ref, experience } from '../contracts/fixtures.js';
-registerAeliqoElements();
+registerVarendoElements();
 const ok = <T>(value: T) => ({ ok: true as const, value });
 const unwrap = <T>(outcome: { ok: true; value: T } | { ok: false; diagnostics: unknown }): T => {
   if (!outcome.ok) throw Error(JSON.stringify(outcome.diagnostics));
@@ -34,7 +34,7 @@ const inputs = {
   ],
 };
 const base = unwrap(
-  createAeliqoPresentationRegistry({ inputs, foundation: { revision: 'copy-1' }, resolveEntity: () => 'employees' }),
+  createVarendoPresentationRegistry({ inputs, foundation: { revision: 'copy-1' }, resolveEntity: () => 'employees' }),
 );
 const names = ['foundation.stack', 'input.text-field', 'data.table'];
 const manifests = base.manifests
@@ -149,11 +149,11 @@ const target = (state: PresentationTargetEvidence['state'], surfaceId = region.i
 let targetEvidence = target('active');
 const container = document.querySelector('#mount')!;
 const shadow = container.attachShadow({ mode: 'open' });
-const element = document.createElement('aeliqo-region') as AeliqoRegionElement;
+const element = document.createElement('varendo-region') as VarendoRegionElement;
 shadow.append(element);
 element.results = [{ ref, rows: [{ 'employee.id': 'e-1' }] }];
 let reads = 0;
-const adaptation = createAeliqoRegionAdaptation({
+const adaptation = createVarendoRegionAdaptation({
   element,
   region,
   registry,
@@ -177,7 +177,7 @@ const adaptation = createAeliqoRegionAdaptation({
         input.snapshot.state?.presentation?.nodes.map((node) => ({
           fromNode: node.id,
           toNode: node.id,
-          mapping: { id: 'aeliqo.state.identity', revision: '1' },
+          mapping: { id: 'varendo.state.identity', revision: '1' },
         })) ?? [],
     };
     return {

@@ -14,7 +14,7 @@ type UiDependencies = {
   readonly resolvable: readonly ResultRefLike[];
 };
 type UiWindow = Window & {
-  aeliqoUiReady?: boolean;
+  varendoUiReady?: boolean;
   evaluateUiTask?: () => Promise<{ readonly state: 'data-ready' }>;
   proposeUiTask?: () => Promise<{
     readonly state: 'bound';
@@ -56,12 +56,12 @@ test.afterEach(({ page }) => {
 
 async function openFixture(page: Page): Promise<void> {
   await page.goto('/tests/agent-evaluation/ui-development/browser.html');
-  await expect.poll(() => page.evaluate(() => (window as UiWindow).aeliqoUiReady === true)).toBe(true);
+  await expect.poll(() => page.evaluate(() => (window as UiWindow).varendoUiReady === true)).toBe(true);
 }
 
 async function surfaceText(page: Page): Promise<string> {
   return page.evaluate(() => {
-    const region = document.querySelector('aeliqo-region') as HTMLElement | null;
+    const region = document.querySelector('varendo-region') as HTMLElement | null;
     if (region === null) throw new Error('The region element is missing.');
     const shadow = region.shadowRoot;
     if (shadow === null) throw new Error('The region shadow root is missing.');
@@ -132,11 +132,11 @@ async function completeUiTask(page: Page): Promise<void> {
 
 async function focusIsOnFirstCheckbox(page: Page): Promise<boolean> {
   return page.evaluate(() => {
-    const region = document.querySelector('aeliqo-region') as HTMLElement | null;
+    const region = document.querySelector('varendo-region') as HTMLElement | null;
     if (region === null) throw new Error('The region element is missing.');
     const regionShadow = region.shadowRoot;
     if (regionShadow === null) throw new Error('The region shadow root is missing.');
-    const table = regionShadow.querySelector('aeliqo-table[data-aeliqo-node-id="items"]') as HTMLElement | null;
+    const table = regionShadow.querySelector('varendo-table[data-varendo-node-id="items"]') as HTMLElement | null;
     if (table === null) throw new Error('The table element is missing.');
     const tableShadow = table.shadowRoot;
     if (tableShadow === null) throw new Error('The table shadow root is missing.');
@@ -160,16 +160,16 @@ test('keeps evaluation and proposal side effect free, then commits and accepts a
   const evaluated = await evaluateUiTask(page);
   expect(evaluated.state).toBe('data-ready');
   expect(await surfaceText(page)).toBe(initialSurface);
-  expect(await page.locator('aeliqo-region aeliqo-table[data-aeliqo-node-id="items"]').count()).toBe(0);
+  expect(await page.locator('varendo-region varendo-table[data-varendo-node-id="items"]').count()).toBe(0);
 
   const proposed = await proposeUiTask(page);
   expect(proposed.state).toBe('bound');
   expect(await surfaceText(page)).toBe(initialSurface);
-  expect(await page.locator('aeliqo-region aeliqo-table[data-aeliqo-node-id="items"]').count()).toBe(0);
+  expect(await page.locator('varendo-region varendo-table[data-varendo-node-id="items"]').count()).toBe(0);
 
   const committed = await commitUiProposal(page, proposed.proposalId);
   expect(committed.state).toBe('renderer-ready');
-  const table = page.locator('aeliqo-region aeliqo-table[data-aeliqo-node-id="items"]');
+  const table = page.locator('varendo-region varendo-table[data-varendo-node-id="items"]');
   await expect(table).toBeVisible();
   await expect(table.locator('tbody tr')).toHaveCount(2);
   const firstCheckbox = table.locator('tbody input[type="checkbox"]').first();
@@ -181,7 +181,7 @@ test('keeps evaluation and proposal side effect free, then commits and accepts a
 test('keeps the committed rows, selection, and focus when a malformed proposal is rejected', async ({ page }) => {
   await openFixture(page);
   await completeUiTask(page);
-  const table = page.locator('aeliqo-region aeliqo-table[data-aeliqo-node-id="items"]');
+  const table = page.locator('varendo-region varendo-table[data-varendo-node-id="items"]');
   const firstCheckbox = table.locator('tbody input[type="checkbox"]').first();
   await firstCheckbox.check();
   await firstCheckbox.focus();
@@ -203,7 +203,7 @@ test('keeps the committed rows, selection, and focus when a malformed proposal i
 test('keeps the committed surface through reevaluation until the new proposal commits', async ({ page }) => {
   await openFixture(page);
   await completeUiTask(page);
-  const table = page.locator('aeliqo-region aeliqo-table[data-aeliqo-node-id="items"]');
+  const table = page.locator('varendo-region varendo-table[data-varendo-node-id="items"]');
   const firstCheckbox = table.locator('tbody input[type="checkbox"]').first();
   await firstCheckbox.check();
   await firstCheckbox.focus();
@@ -264,7 +264,7 @@ test('does not commit a proposal after a real user selection advances the region
     if (typeof prepare !== 'function') throw new Error('The held proposal API is missing.');
     await prepare();
   });
-  const table = page.locator('aeliqo-region aeliqo-table[data-aeliqo-node-id="items"]');
+  const table = page.locator('varendo-region varendo-table[data-varendo-node-id="items"]');
   const beforeRevision = (await snapshot(page)).regionRevision;
   await table.locator('tbody input[type="checkbox"]').first().check();
   await expect.poll(() => snapshot(page).then((value) => value.regionRevision)).not.toBe(beforeRevision);
@@ -280,7 +280,7 @@ test('does not commit a proposal after a real user selection advances the region
 test('revocation clears an existing surface and late held work cannot restore it', async ({ page }) => {
   await openFixture(page);
   await completeUiTask(page);
-  const table = page.locator('aeliqo-region aeliqo-table[data-aeliqo-node-id="items"]');
+  const table = page.locator('varendo-region varendo-table[data-varendo-node-id="items"]');
   const firstCheckbox = table.locator('tbody input[type="checkbox"]').first();
   await firstCheckbox.check();
   await firstCheckbox.focus();
@@ -321,7 +321,7 @@ test('revocation clears an existing surface and late held work cannot restore it
 test('disposes an active committed surface directly', async ({ page }) => {
   await openFixture(page);
   await completeUiTask(page);
-  const table = page.locator('aeliqo-region aeliqo-table[data-aeliqo-node-id="items"]');
+  const table = page.locator('varendo-region varendo-table[data-varendo-node-id="items"]');
   await expect(table).toBeVisible();
 
   await page.evaluate(() => {

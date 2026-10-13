@@ -32,12 +32,12 @@ test('all internal public peer dependencies pin the current release version', as
 
 test('the web custom-element compatibility marker matches release metadata', async () => {
   const source = await readFile(resolve(root, 'packages/web/src/version.ts'), 'utf8');
-  const match = /AELIQO_WEB_VERSION\s*=\s*['"]([^'"]+)['"]/u.exec(source);
+  const match = /VARENDO_WEB_VERSION\s*=\s*['"]([^'"]+)['"]/u.exec(source);
   assert.equal(match?.[1], RELEASE_VERSION);
 });
 
 test('the agent protocol identity matches release metadata', async () => {
   const source = await readFile(resolve(root, 'packages/agent/src/version.ts'), 'utf8');
-  const match = /AELIQO_AGENT_VERSION\s*=\s*['"]([^'"]+)['"]/u.exec(source);
+  const match = /VARENDO_AGENT_VERSION\s*=\s*['"]([^'"]+)['"]/u.exec(source);
   assert.equal(match?.[1], RELEASE_VERSION);
 });

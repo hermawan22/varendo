@@ -1,5 +1,5 @@
 /**
- * DECLARATION-ONLY DESIGN CONTRACT, NOT AELIQO IMPLEMENTATION.
+ * DECLARATION-ONLY DESIGN CONTRACT, NOT VARENDO IMPLEMENTATION.
  *
  * T01 uses these declarations to typecheck complete consumers before product
  * exports are changed. There are no runtime values, effects, network calls, or
@@ -9,12 +9,12 @@ import type { ComponentType, ReactElement, ReactNode } from 'react';
 import type { Intent, Outcome, VersionRef } from '../../packages/core/src/index.js';
 import type { ActionPort } from '../../packages/runtime/src/actions/index.js';
 import type { DataService, ResultEvent } from '../../packages/runtime/src/data/index.js';
-import type { AeliqoApp } from '../../packages/web/src/app/index.js';
+import type { VarendoApp } from '../../packages/web/src/app/index.js';
 
-export type { AeliqoApp, Intent };
+export type { VarendoApp, Intent };
 
 export type SurfaceRevision = string;
-export type SurfaceContractVersion = 'aeliqo.surface/1';
+export type SurfaceContractVersion = 'varendo.surface/1';
 
 export interface SurfaceAddress {
   readonly runtimeId: string;
@@ -327,7 +327,7 @@ export interface CreateCapabilitySurfaceInput<I, S> {
   readonly ownership?: SurfaceOwnership<I, S>;
 }
 
-export interface AeliqoRuntime {
+export interface VarendoRuntime {
   createScope(input: CreateScopeInput): ScopeController;
   createSurface<Schema extends RuntimeObjectSchema<object>, S>(
     input: CreateDataSurfaceInput<Schema, S>,
@@ -340,7 +340,7 @@ export interface RuntimeOptions {
   readonly runtimeId?: string;
 }
 
-export declare function createAeliqoRuntime(options?: RuntimeOptions): AeliqoRuntime;
+export declare function createVarendoRuntime(options?: RuntimeOptions): VarendoRuntime;
 
 export interface DataBrowseIntent {
   readonly kind: 'browse';
@@ -429,7 +429,7 @@ export declare function defineReactViews<I, S>(
 ): ReactViewBinding<I, S>;
 
 export interface RuntimeProviderProps {
-  readonly runtime: AeliqoRuntime;
+  readonly runtime: VarendoRuntime;
   readonly children: ReactNode;
   readonly mode?: 'runtime';
 }
@@ -437,21 +437,21 @@ export interface RuntimeProviderProps {
 export interface LegacyProviderProps {
   readonly mode: 'legacy-app';
   /** The compatibility branch consumes the actual existing 0.4 application contract. */
-  readonly app: AeliqoApp;
+  readonly app: VarendoApp;
   readonly children: ReactNode;
 }
 
-export type AeliqoProviderProps = RuntimeProviderProps | LegacyProviderProps;
+export type VarendoProviderProps = RuntimeProviderProps | LegacyProviderProps;
 
-export declare function AeliqoProvider(props: AeliqoProviderProps): ReactElement;
+export declare function VarendoProvider(props: VarendoProviderProps): ReactElement;
 
-export interface AeliqoScopeProps {
+export interface VarendoScopeProps {
   readonly scope: ScopeController;
   readonly children: ReactNode;
 }
 
-export declare function AeliqoScope(props: AeliqoScopeProps): ReactElement;
-export declare function useAeliqoScope(): ScopeController;
+export declare function VarendoScope(props: VarendoScopeProps): ReactElement;
+export declare function useVarendoScope(): ScopeController;
 
 export interface AgentClient {
   readonly kind: 'host-agent-client';

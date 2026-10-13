@@ -1,8 +1,8 @@
 # Cartesian visualization family
 
 The web package exposes six owned Lit elements for the `VisualizationSpec@1`
-Cartesian families: `aeliqo-trend`, `aeliqo-bar`, `aeliqo-area`,
-`aeliqo-scatter`, `aeliqo-histogram` and `aeliqo-heatmap`.
+Cartesian families: `varendo-trend`, `varendo-bar`, `varendo-area`,
+`varendo-scatter`, `varendo-histogram` and `varendo-heatmap`.
 
 Each element accepts an authorized `visualization` specification, its binding
 `context`, and exact loaded `datasets`. The element performs only the pure
@@ -14,7 +14,7 @@ Every surface keeps the exact loaded data in a native table below the graphic.
 Scope, coverage, periods, filters, precision and histogram observation limits
 come from the Result descriptor. A geometry or budget failure retains that
 table as the data-only alternative. Selection emits the composed
-`aeliqo-visualization-select` event with the stable row identity and exact
+`varendo-visualization-select` event with the stable row identity and exact
 `ResultRef`; the host may reflect the accepted selection through
 `selected-identity` and `selectedResult`.
 

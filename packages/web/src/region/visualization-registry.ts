@@ -24,12 +24,12 @@ import type {
 import { materializeVisualizationRows } from '../visualization/materialization.js';
 import { allowedKeys } from './data-registry-common.js';
 import type { VisualizationDataset } from '../visualization/types.js';
-import { renderAeliqoVisualizationPresentationNode } from './visualization-renderer.js';
+import { renderVarendoVisualizationPresentationNode } from './visualization-renderer.js';
 import { nothing, type TemplateResult } from 'lit';
 import { canonicalValue as canonical, freezeValue as freeze, resultRefKey as refKey } from './registry-value.js';
 
 /** The twelve semantic visualization representations shipped by the web host. */
-export const AELIQO_VISUALIZATION_REFS = Object.freeze({
+export const VARENDO_VISUALIZATION_REFS = Object.freeze({
   trend: { id: 'visualization.trend', revision: '1' },
   bar: { id: 'visualization.bar', revision: '1' },
   area: { id: 'visualization.area', revision: '1' },
@@ -44,7 +44,7 @@ export const AELIQO_VISUALIZATION_REFS = Object.freeze({
   relationship: { id: 'visualization.relationship', revision: '1' },
 } satisfies Record<VisualizationSpec['view'], VersionRef>);
 
-export const AELIQO_VISUALIZATION_CONFIG_SCHEMAS = Object.freeze({
+export const VARENDO_VISUALIZATION_CONFIG_SCHEMAS = Object.freeze({
   trend: { id: 'visualization.trend.config', revision: '1' },
   bar: { id: 'visualization.bar.config', revision: '1' },
   area: { id: 'visualization.area.config', revision: '1' },
@@ -59,18 +59,18 @@ export const AELIQO_VISUALIZATION_CONFIG_SCHEMAS = Object.freeze({
   relationship: { id: 'visualization.relationship.config', revision: '1' },
 } satisfies Record<VisualizationSpec['view'], VersionRef>);
 
-export const AELIQO_VISUALIZATION_PRESENTATION_OPERATIONS = Object.freeze({
+export const VARENDO_VISUALIZATION_PRESENTATION_OPERATIONS = Object.freeze({
   read: { id: 'data.read', revision: '1' },
   selection: { id: 'interaction.selection', revision: '1' },
   analyze: { id: 'data.analyze', revision: '1' },
 } satisfies Record<'read' | 'selection' | 'analyze', VersionRef>);
 
-export type AeliqoAuthorizedVisualizationBindings =
-  | readonly AeliqoVisualizationBinding[]
-  | ReadonlyMap<string, AeliqoVisualizationBinding>
-  | Readonly<Record<string, AeliqoVisualizationBinding>>;
+export type VarendoAuthorizedVisualizationBindings =
+  | readonly VarendoVisualizationBinding[]
+  | ReadonlyMap<string, VarendoVisualizationBinding>
+  | Readonly<Record<string, VarendoVisualizationBinding>>;
 
-export interface AeliqoVisualizationBinding {
+export interface VarendoVisualizationBinding {
   /** The primary Result descriptor used by the presentation node. */
   readonly result: Result;
   /** All exact descriptors and host-owned catalog meaning declarations needed by the spec. */
@@ -79,13 +79,13 @@ export interface AeliqoVisualizationBinding {
   readonly datasets: readonly VisualizationDataset[];
 }
 
-export interface AeliqoVisualizationRegistryOptions {
+export interface VarendoVisualizationRegistryOptions {
   /** Trusted application binding for the entity represented by a Result. */
   readonly resolveEntity?: (result: Result) => string | undefined;
   readonly maxDatasets?: number;
 }
 
-export interface AeliqoVisualizationPresentationRenderContext {
+export interface VarendoVisualizationPresentationRenderContext {
   readonly onSemanticInteraction?: (
     nodeId: string,
     portId: string,
@@ -94,13 +94,13 @@ export interface AeliqoVisualizationPresentationRenderContext {
   readonly interaction?: InteractionState;
 }
 
-export interface AeliqoVisualizationPresentationRegistry {
+export interface VarendoVisualizationPresentationRegistry {
   readonly manifests: readonly PresentationManifest[];
-  readonly bindingFor: (ref: ResultRef) => Outcome<AeliqoVisualizationBinding>;
+  readonly bindingFor: (ref: ResultRef) => Outcome<VarendoVisualizationBinding>;
   readonly render: (
     node: ValidatedPresentation['nodes'][number],
-    binding: AeliqoVisualizationBinding,
-    context?: AeliqoVisualizationPresentationRenderContext,
+    binding: VarendoVisualizationBinding,
+    context?: VarendoVisualizationPresentationRenderContext,
   ) => TemplateResult | typeof nothing;
 }
 
@@ -141,8 +141,8 @@ function sameResult(left: Result | undefined, right: Result): boolean {
 }
 
 function entriesFor(
-  input: AeliqoAuthorizedVisualizationBindings,
-): readonly (readonly [string, AeliqoVisualizationBinding])[] {
+  input: VarendoAuthorizedVisualizationBindings,
+): readonly (readonly [string, VarendoVisualizationBinding])[] {
   if (input instanceof Map) return [...input.entries()];
   if (Array.isArray(input)) return input.map((binding) => [refKey(binding.result.ref), binding] as const);
   return Object.entries(input);
@@ -236,7 +236,7 @@ function snapshotContext(context: VisualizationBindingContext): Outcome<Visualiz
   };
 }
 
-function datasetLimit(options: AeliqoVisualizationRegistryOptions): Outcome<number> {
+function datasetLimit(options: VarendoVisualizationRegistryOptions): Outcome<number> {
   const limit = options.maxDatasets;
   if (limit === undefined) return { ok: true, value: MAX_DATASETS };
   if (!Number.isSafeInteger(limit) || limit < 1 || limit > MAX_DATASETS)
@@ -251,9 +251,9 @@ function datasetsAuthorized(datasets: readonly VisualizationDataset[], context: 
 
 function snapshotEntry(
   suppliedKey: string,
-  binding: AeliqoVisualizationBinding,
+  binding: VarendoVisualizationBinding,
   maxDatasets: number,
-): Outcome<readonly [string, AeliqoVisualizationBinding]> {
+): Outcome<readonly [string, VarendoVisualizationBinding]> {
   if (binding === null || typeof binding !== 'object')
     return fail('binding', 'A visualization binding must be an object.');
   const parsedResult = parseResult(binding.result);
@@ -275,15 +275,15 @@ function snapshotEntry(
 }
 
 function snapshotBindings(
-  input: AeliqoAuthorizedVisualizationBindings,
-  options: AeliqoVisualizationRegistryOptions,
-): Outcome<ReadonlyMap<string, AeliqoVisualizationBinding>> {
+  input: VarendoAuthorizedVisualizationBindings,
+  options: VarendoVisualizationRegistryOptions,
+): Outcome<ReadonlyMap<string, VarendoVisualizationBinding>> {
   try {
     const limit = datasetLimit(options);
     if (!limit.ok) return limit;
     const entries = entriesFor(input);
     if (entries.length > 128) return fail('binding', 'The authorized visualization binding table is too large.');
-    const map = new Map<string, AeliqoVisualizationBinding>();
+    const map = new Map<string, VarendoVisualizationBinding>();
     for (const [suppliedKey, binding] of entries) {
       const snapshot = snapshotEntry(suppliedKey, binding, limit.value);
       if (!snapshot.ok) return snapshot;
@@ -314,8 +314,8 @@ function visualizationSpec(view: VisualizationView, values: PresentationValues):
 
 function resultBinding(
   result: Result,
-  bindings: ReadonlyMap<string, AeliqoVisualizationBinding>,
-): Outcome<AeliqoVisualizationBinding> {
+  bindings: ReadonlyMap<string, VarendoVisualizationBinding>,
+): Outcome<VarendoVisualizationBinding> {
   const binding = bindings.get(refKey(result.ref));
   if (binding === undefined || !sameResult(binding.result, result))
     return fail('stale', 'The authorized visualization Result descriptor is stale or unavailable.');
@@ -325,7 +325,7 @@ function resultBinding(
 function boundVisualization(
   spec: VisualizationSpec,
   result: Result,
-  binding: AeliqoVisualizationBinding,
+  binding: VarendoVisualizationBinding,
 ): Outcome<BoundVisualization> {
   const bound = bindVisualizationSpec(spec, binding.context);
   if (!bound.ok) return bound;
@@ -344,7 +344,7 @@ function boundVisualization(
 }
 
 function trustedEntity(
-  resolver: AeliqoVisualizationRegistryOptions['resolveEntity'],
+  resolver: VarendoVisualizationRegistryOptions['resolveEntity'],
   result: Result,
 ): Outcome<string | undefined> {
   if (resolver === undefined) return { ok: true, value: undefined };
@@ -377,9 +377,9 @@ function resolvedConfig(
             grain: [...result.rowGrain],
           },
         ];
-  const operations = [AELIQO_VISUALIZATION_PRESENTATION_OPERATIONS.read];
-  if (owner !== undefined) operations.push(AELIQO_VISUALIZATION_PRESENTATION_OPERATIONS.selection);
-  if (spec.view === 'bar') operations.push(AELIQO_VISUALIZATION_PRESENTATION_OPERATIONS.analyze);
+  const operations = [VARENDO_VISUALIZATION_PRESENTATION_OPERATIONS.read];
+  if (owner !== undefined) operations.push(VARENDO_VISUALIZATION_PRESENTATION_OPERATIONS.selection);
+  if (spec.view === 'bar') operations.push(VARENDO_VISUALIZATION_PRESENTATION_OPERATIONS.analyze);
   const fields = spec.view === 'matrix' ? [...spec.columns] : result.fields.map((field) => field.id);
   return freeze({ values: { visualization: spec }, fields, ports, operations });
 }
@@ -388,8 +388,8 @@ function configFor(
   view: VisualizationView,
   values: PresentationValues,
   result: Result | undefined,
-  bindings: ReadonlyMap<string, AeliqoVisualizationBinding>,
-  options: AeliqoVisualizationRegistryOptions,
+  bindings: ReadonlyMap<string, VarendoVisualizationBinding>,
+  options: VarendoVisualizationRegistryOptions,
 ): Outcome<ResolvedPresentationConfig> {
   if (result === undefined) return fail('binding', 'A visualization representation requires an authorized Result.');
   const spec = visualizationSpec(view, values);
@@ -405,17 +405,17 @@ function configFor(
 
 function buildManifest(
   view: VisualizationView,
-  bindings: ReadonlyMap<string, AeliqoVisualizationBinding>,
-  options: AeliqoVisualizationRegistryOptions,
+  bindings: ReadonlyMap<string, VarendoVisualizationBinding>,
+  options: VarendoVisualizationRegistryOptions,
 ): PresentationManifest {
   return freeze({
-    ref: AELIQO_VISUALIZATION_REFS[view],
-    configSchema: AELIQO_VISUALIZATION_CONFIG_SCHEMAS[view],
+    ref: VARENDO_VISUALIZATION_REFS[view],
+    configSchema: VARENDO_VISUALIZATION_CONFIG_SCHEMAS[view],
     roles: ['view', 'visualization'],
     operations: [
-      AELIQO_VISUALIZATION_PRESENTATION_OPERATIONS.read,
-      AELIQO_VISUALIZATION_PRESENTATION_OPERATIONS.selection,
-      ...(view === 'bar' ? [AELIQO_VISUALIZATION_PRESENTATION_OPERATIONS.analyze] : []),
+      VARENDO_VISUALIZATION_PRESENTATION_OPERATIONS.read,
+      VARENDO_VISUALIZATION_PRESENTATION_OPERATIONS.selection,
+      ...(view === 'bar' ? [VARENDO_VISUALIZATION_PRESENTATION_OPERATIONS.analyze] : []),
     ],
     result: 'required',
     children: { min: 0, max: 0 },
@@ -425,24 +425,24 @@ function buildManifest(
   });
 }
 
-export function createAeliqoVisualizationPresentationManifests(
-  input: AeliqoAuthorizedVisualizationBindings,
-  options: AeliqoVisualizationRegistryOptions = {},
+export function createVarendoVisualizationPresentationManifests(
+  input: VarendoAuthorizedVisualizationBindings,
+  options: VarendoVisualizationRegistryOptions = {},
 ): Outcome<readonly PresentationManifest[]> {
   const bindings = snapshotBindings(input, options);
   if (!bindings.ok) return bindings;
   return { ok: true, value: freeze(VIEWS.map((view) => buildManifest(view, bindings.value, options))) };
 }
 
-export function createAeliqoVisualizationPresentationRegistry(
-  input: AeliqoAuthorizedVisualizationBindings,
-  options: AeliqoVisualizationRegistryOptions = {},
-): Outcome<AeliqoVisualizationPresentationRegistry> {
+export function createVarendoVisualizationPresentationRegistry(
+  input: VarendoAuthorizedVisualizationBindings,
+  options: VarendoVisualizationRegistryOptions = {},
+): Outcome<VarendoVisualizationPresentationRegistry> {
   const bindings = snapshotBindings(input, options);
   if (!bindings.ok) return bindings;
   const manifests = freeze(VIEWS.map((view) => buildManifest(view, bindings.value, options)));
-  const bindingFor = (ref: ResultRef): Outcome<AeliqoVisualizationBinding> => {
-    let binding: AeliqoVisualizationBinding | undefined;
+  const bindingFor = (ref: ResultRef): Outcome<VarendoVisualizationBinding> => {
+    let binding: VarendoVisualizationBinding | undefined;
     try {
       binding = bindings.value.get(refKey(ref));
     } catch {
@@ -454,9 +454,9 @@ export function createAeliqoVisualizationPresentationRegistry(
   };
   const render = (
     node: CoreNode,
-    binding: AeliqoVisualizationBinding,
-    context: AeliqoVisualizationPresentationRenderContext = {},
+    binding: VarendoVisualizationBinding,
+    context: VarendoVisualizationPresentationRenderContext = {},
   ): TemplateResult | typeof nothing =>
-    renderAeliqoVisualizationPresentationNode(node, binding, context, options, bindings.value);
+    renderVarendoVisualizationPresentationNode(node, binding, context, options, bindings.value);
   return { ok: true, value: freeze({ manifests, bindingFor, render }) };
 }

@@ -26,7 +26,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/plot-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-plot-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-plot-consumer-'));
 const consumerReal = await realpath(consumer);
 
 function run(argv, cwd, encoding = 'utf8') {
@@ -90,7 +90,7 @@ for (const name of packageNames) {
   assert.notEqual(manifest.private, true);
   await clearCompiledOutput(join(directory, 'dist'));
   run(['pnpm', 'build'], directory);
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));
@@ -234,16 +234,16 @@ import type {PlotSpec,
   PlotUnit,
   Result,
 } from '@varendo/core';
-import {AeliqoPlotElement,compilePlotComposition,type PlotDataset} from '@varendo/web/plot';
-import {AeliqoPlot} from '@varendo/react/plot';
+import {VarendoPlotElement,compilePlotComposition,type PlotDataset} from '@varendo/web/plot';
+import {VarendoPlot} from '@varendo/react/plot';
 const result:Result=${JSON.stringify(result)};
 const unit:PlotUnit=${JSON.stringify(unit)};
 const spec:PlotSpec=${JSON.stringify(spec)};
 const datasets:readonly PlotDataset[]=[{result:result.ref,rows:${JSON.stringify(rows)}}];
-const element=new AeliqoPlotElement();element.spec=spec;element.results=[result];element.datasets=datasets;
+const element=new VarendoPlotElement();element.spec=spec;element.results=[result];element.datasets=datasets;
 const component=<Varendo spec={spec} results={[result]} datasets={datasets} onSelectionChange={e=>{const digest:string=e.detail.result.scopeDigest;void digest;}}/>;
 void [component,compilePlotComposition(spec,[result],datasets,{width:400,height:240,maxRows:100,maxMarks:100})];
-`.replace('<Varendo spec', '<AeliqoPlot spec'),
+`.replace('<Varendo spec', '<VarendoPlot spec'),
 );
 await writeFile(
   join(consumer, 'tsconfig.json'),
@@ -265,19 +265,19 @@ run([join(consumer, 'node_modules/.bin/tsc'), '-p', 'tsconfig.json'], consumer);
 await writeFile(
   join(consumer, 'ssr.mjs'),
   `import '@varendo/react/ssr';
-import assert from 'node:assert/strict';import {createElement} from 'react';import {renderToString} from 'react-dom/server';import {AeliqoPlot} from '@varendo/react/plot';
+import assert from 'node:assert/strict';import {createElement} from 'react';import {renderToString} from 'react-dom/server';import {VarendoPlot} from '@varendo/react/plot';
 ${dataSource}
-const output=renderToString(createElement(AeliqoPlot,{spec,results:[result],datasets:[{result:result.ref,rows}]}));
+const output=renderToString(createElement(VarendoPlot,{spec,results:[result],datasets:[{result:result.ref,rows}]}));
 assert(output.includes('9007199254740993.001'));assert(output.includes('shadowrootmode="open"'));assert.equal((output.match(/<circle/g)||[]).length,2);
-const next=renderToString(createElement(AeliqoPlot));assert(!next.includes('9007199254740993'));assert(next.includes('No result is available'));
+const next=renderToString(createElement(VarendoPlot));assert(!next.includes('9007199254740993'));assert(next.includes('No result is available'));
 console.log('Installed React composition SSR exact values and request isolation passed.');`,
 );
 const ssr = run(['node', 'ssr.mjs'], consumer);
 await writeFile(
   join(consumer, 'browser.ts'),
-  `import {AeliqoPlotElement} from '@varendo/web/plot';
+  `import {VarendoPlotElement} from '@varendo/web/plot';
 ${dataSource}
-customElements.define('aeliqo-plot',AeliqoPlotElement);const plot=new AeliqoPlotElement();plot.label='Installed plot';plot.unit=unit;plot.result=result;plot.rows=rows;plot.width=400;plot.height=240;document.querySelector('main').append(plot);Object.assign(window,{plot,spec,result,rows});`,
+customElements.define('varendo-plot',VarendoPlotElement);const plot=new VarendoPlotElement();plot.label='Installed plot';plot.unit=unit;plot.result=result;plot.rows=rows;plot.width=400;plot.height=240;document.querySelector('main').append(plot);Object.assign(window,{plot,spec,result,rows});`,
 );
 await writeFile(
   join(consumer, 'index.html'),
@@ -308,8 +308,8 @@ try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   page.on('pageerror', (e) => failures.push(e.message));
   await page.goto(`http://127.0.0.1:${server.address().port}`);
-  await page.locator('aeliqo-plot table').waitFor();
-  assert.equal(await page.locator('aeliqo-plot circle').count(), 2);
+  await page.locator('varendo-plot table').waitFor();
+  assert.equal(await page.locator('varendo-plot circle').count(), 2);
   assert.equal(await page.getByRole('cell', { name: '9007199254740993.001', exact: true }).count(), 1);
   const points = await page
     .locator('circle')
@@ -330,7 +330,7 @@ try {
     p.spec = window.spec;
     p.results = [window.result];
     p.datasets = [{ result: window.result.ref, rows: window.rows }];
-    p.addEventListener('aeliqo-plot-select', (e) => {
+    p.addEventListener('varendo-plot-select', (e) => {
       p.selectedIdentity = e.detail.identity;
       p.selectedResult = e.detail.result;
     });
