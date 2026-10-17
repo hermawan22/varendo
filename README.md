@@ -148,4 +148,4 @@ and [TRADEMARKS.md](TRADEMARKS.md) for attribution and project-name guidance.
 
 ## Attribution and migration
 
-Varendo preserves the Apache-2.0 Aeliqo adaptive UI framework from [Arconath/aeliqo](https://github.com/Arconath/aeliqo), source `3b5328dc717de0bb6aad57e8f17a4b9aa5f89f79`. Original copyright notices, ADRs and release records remain attributed to their contributors. The original repository, published packages and production services are unchanged. See the [migration guide](docs/site/pages/migration-varendo.md) and [current status](docs/STATUS.md) for compatibility and release boundaries.
+Varendo preserves the Apache-2.0 Aeliqo adaptive UI framework from [Arconath/aeliqo](https://github.com/Arconath/aeliqo), source `3b5328dc717de0bb6aad57e8f17a4b9aa5f89f79`. Original copyright notices, ADRs and release records remain attributed to their contributors. The initial framework rename left the original repository, published packages and production services unchanged; subsequent retirement is recorded separately. See the [migration guide](docs/site/pages/migration-varendo.md) and [current status](docs/STATUS.md) for compatibility and release boundaries.

@@ -1,7 +1,7 @@
 # Aeliqo status
 
 Last updated: 2026-10-09. This is the single maintained status record. Release
-history lives in the [release notes](site/pages/release-notes.md) and on
+history lives in the [release notes](../site/pages/release-notes.md) and on
 [GitHub releases](https://github.com/Arconath/aeliqo/releases).
 
 ## Goal
@@ -181,18 +181,18 @@ compatible with 0.6.2.
    Chromium, Firefox and WebKit, with zero pixel differences and byte-identical
    repeated captures against approved source `6c31d36`. The fixture SHA is
    `99515fd220704b5ea51993d0090c802ec8ecf0e1b47f64a4c07d25fa8ce8ee79`;
-   the [visual reference review](testing/0.6.3-visual-reference.md) preserves the
+   the [visual reference review](../testing/0.6.3-visual-reference.md) preserves the
    approval evidence and review scope.
 4. **Planner timing policy — removal verified:** the owner permanently removed
    the absolute presentation-planner timing gate on 1 October, as recorded in
-   [ADR 014](adr/014-planner-timing-diagnostics.md). Configuration, policy
+   [ADR 014](../adr/014-planner-timing-diagnostics.md). Configuration, policy
    validation, browser assertions, paired-report acceptance and contributor
    guidance treat planner timings as diagnostic, with no replacement threshold.
    Existing reducer, mounted-row, relative comparison, provenance, functional
    and visual policies remain. The changed workload identity retired the earlier
    performance reference; the current reference is unapproved and comparison
    evidence remains advisory. No new performance baseline is required to release.
-   The earlier [performance reference review](testing/0.6.3-performance-reference.md)
+   The earlier [performance reference review](../testing/0.6.3-performance-reference.md)
    preserves its historical measurements and approval evidence.
 5. **Package publication — verified:**
    [RC run 36821306728](https://github.com/Arconath/aeliqo/actions/runs/36821306728)
@@ -482,11 +482,11 @@ regressions, required main qualification and complete recorded public acceptance
 
 ## Open items
 
-The [9 October launch audit](testing/2026-10-09-launch-audit.md) records the
+The [9 October launch audit](../testing/2026-10-09-launch-audit.md) records the
 original OAuth, form, validation, MCP action, input-admission, performance and
 contributor-flow findings. Its local matrix stopped on a controller-commit
 performance gate; an isolated repeat and the remaining commands passed.
-The [remediation record](testing/2026-10-09-remediation.md) tracks source
+The [remediation record](../testing/2026-10-09-remediation.md) tracks source
 corrections for all eleven findings and the revised site/docs/playground design.
 Clean local snapshot `21c427b063ac537e0b4bbfa84c6a8e5263b00338` passed the
 complete site gate and all 93 unchanged acceptance commands, 1,830 full visual
