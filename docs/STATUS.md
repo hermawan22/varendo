@@ -141,7 +141,8 @@ The maintainer authorized all five Varendo 0.1.0 npm packages after verified
 namespace authority on 12 October 2026. They are published from immutable source
 `53406eeab85103fd0b1159e765ee3996e2b4ab70`; stable run 38210717157 verified
 166 installed exports and source-bound provenance. The independent Aeliqo music
-application remains paused. Its original **US$1 total** AI-test cap and unresolved
+application's current state is tracked in [its STATUS](https://github.com/Arconath/aeliqo/blob/main/STATUS.md).
+Its original **US$1 total** AI-test cap and unresolved
 usage accounting remain in force; no further model call, reset or top-up is
 implied by framework delivery or retirement.
 
