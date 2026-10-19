@@ -1,16 +1,16 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
-import { AeliqoInputChangeEvent, AeliqoInputCommitEvent } from './events.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
+import { VarendoInputChangeEvent, VarendoInputCommitEvent } from './events.js';
 
-export interface AeliqoSliderValue {
+export interface VarendoSliderValue {
   readonly value: number;
   readonly unit: string;
 }
 
 /** Bounded range control with a keyboard-accessible text alternative. */
-export class AeliqoSliderElement extends AeliqoFieldElement<AeliqoSliderValue> {
+export class VarendoSliderElement extends VarendoFieldElement<VarendoSliderValue> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     value: { type: Number, reflect: true },
     defaultValue: { attribute: 'default-value', type: Number },
     min: { type: Number },
@@ -35,7 +35,7 @@ export class AeliqoSliderElement extends AeliqoFieldElement<AeliqoSliderValue> {
     this.syncNative();
   }
 
-  protected override isCurrentValidationValue(value: AeliqoSliderValue): boolean {
+  protected override isCurrentValidationValue(value: VarendoSliderValue): boolean {
     return value.value === this.value && value.unit === this.unit;
   }
 
@@ -109,15 +109,15 @@ export class AeliqoSliderElement extends AeliqoFieldElement<AeliqoSliderValue> {
   };
 
   private readonly handleCommit = (): void => {
-    this.dispatchEvent(new AeliqoInputCommitEvent({ source: 'user', value: { value: this.value, unit: this.unit } }));
+    this.dispatchEvent(new VarendoInputCommitEvent({ source: 'user', value: { value: this.value, unit: this.unit } }));
   };
 
   private applyUserValue(text: string): void {
     const next = Number(text);
     if (!Number.isFinite(next)) return;
     this.value = next;
-    const detail: AeliqoSliderValue = { value: next, unit: this.unit };
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value: detail }));
+    const detail: VarendoSliderValue = { value: next, unit: this.unit };
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value: detail }));
     void this.validateProposed(detail);
     this.syncNative();
   }
@@ -161,21 +161,21 @@ export class AeliqoSliderElement extends AeliqoFieldElement<AeliqoSliderValue> {
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       .slider-row {
         align-items: center;
         display: grid;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         grid-template-columns: minmax(0, 1fr) minmax(5rem, 7rem) auto;
         min-inline-size: 0;
       }
       input[type='range'] {
-        accent-color: var(--aeliqo-color-accent, #4338ca);
+        accent-color: var(--varendo-color-accent, #4338ca);
         min-inline-size: 0;
       }
       input[type='number'] {
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
       }
       @media (max-width: 30rem) {
         .slider-row {

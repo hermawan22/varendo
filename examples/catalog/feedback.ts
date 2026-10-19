@@ -1,28 +1,28 @@
 import {
-  AeliqoAlertElement,
-  AeliqoDialogElement,
-  AeliqoDrawerElement,
-  AeliqoEmptyStateElement,
-  AeliqoPopoverElement,
-  AeliqoProgressElement,
-  AeliqoSkeletonElement,
-  AeliqoToastElement,
-  AeliqoTooltipElement,
+  VarendoAlertElement,
+  VarendoDialogElement,
+  VarendoDrawerElement,
+  VarendoEmptyStateElement,
+  VarendoPopoverElement,
+  VarendoProgressElement,
+  VarendoSkeletonElement,
+  VarendoToastElement,
+  VarendoTooltipElement,
 } from '@varendo/web/feedback';
 import { cleanupCatalogRoot, createCatalogElement, createCatalogRoot } from './fixture.js';
 import { catalogMountSource, catalogSource } from './source.js';
 import type { CatalogExampleDefinition, CatalogExampleId, CatalogExampleMetadata } from './types.js';
 
 const sourceImports = `import {
-  AeliqoAlertElement,
-  AeliqoDialogElement,
-  AeliqoDrawerElement,
-  AeliqoEmptyStateElement,
-  AeliqoPopoverElement,
-  AeliqoProgressElement,
-  AeliqoSkeletonElement,
-  AeliqoToastElement,
-  AeliqoTooltipElement,
+  VarendoAlertElement,
+  VarendoDialogElement,
+  VarendoDrawerElement,
+  VarendoEmptyStateElement,
+  VarendoPopoverElement,
+  VarendoProgressElement,
+  VarendoSkeletonElement,
+  VarendoToastElement,
+  VarendoTooltipElement,
 } from "@varendo/web/feedback";`;
 
 type MetadataNotes = Pick<
@@ -46,7 +46,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The host controls open state and chooses modal behavior; the popover does not execute actions itself.',
     states: ['ready'],
     keyboard: ['Tab', 'Enter or Space', 'Escape', 'focus returns to trigger'],
-    events: ['aeliqo-popover-close'],
+    events: ['varendo-popover-close'],
     expectedOutcome: 'The bounded surface exposes a labelled dialog boundary and emits a close request when dismissed.',
   },
   dialog: {
@@ -56,7 +56,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'The host decides when to open and what the slotted action means; the dialog only owns focus and dismissal mechanics.',
     states: ['ready'],
     keyboard: ['Tab focus trap', 'Escape', 'Enter on slotted action', 'focus returns to trigger'],
-    events: ['aeliqo-dialog-close'],
+    events: ['varendo-dialog-close'],
     expectedOutcome: 'The modal announces its heading, traps focus while open, and emits a cancellable close request.',
   },
   drawer: {
@@ -66,7 +66,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Inline mode participates in layout; modal mode is chosen by the host when a separate focus boundary is needed.',
     states: ['ready'],
     keyboard: ['Tab', 'Escape where modal', 'focus returns to trigger'],
-    events: ['aeliqo-drawer-close'],
+    events: ['varendo-drawer-close'],
     expectedOutcome: 'The detail surface adapts to inline or overlay mode and emits a close request.',
   },
   toast: {
@@ -76,7 +76,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
       'Keep essential information outside transient notifications; duration zero makes this fixture reviewable.',
     states: ['ready'],
     keyboard: ['Tab to dismiss', 'Enter or Space', 'Escape where host handles it'],
-    events: ['aeliqo-toast-dismiss'],
+    events: ['varendo-toast-dismiss'],
     expectedOutcome: 'The status is announced as transient feedback and can be dismissed by the user.',
   },
   alert: {
@@ -85,7 +85,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The message remains visible; action and dismiss requests are handed to the host.',
     states: ['ready'],
     keyboard: ['Tab', 'Enter or Space on action', 'Escape where host handles it'],
-    events: ['aeliqo-alert-action', 'aeliqo-alert-dismiss'],
+    events: ['varendo-alert-action', 'varendo-alert-dismiss'],
     expectedOutcome: 'The warning is exposed as an alert with separately typed action and dismissal requests.',
   },
   progress: {
@@ -114,7 +114,7 @@ const componentNotes: Record<string, Partial<MetadataNotes>> = {
     propsNotes: 'The kind describes the honest empty condition; the action is a host request to change filters.',
     states: ['empty', 'loading', 'error'],
     keyboard: ['Tab', 'Enter', 'Space'],
-    events: ['aeliqo-empty-state-action'],
+    events: ['varendo-empty-state-action'],
     expectedOutcome: 'The absence of matching data is explicit and the host can receive a typed recovery request.',
   },
 };
@@ -136,11 +136,11 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
       'focus returns to the trigger',
     ],
     events: [
-      'aeliqo-dialog-close',
-      'aeliqo-drawer-close',
-      'aeliqo-popover-close',
-      'aeliqo-toast-dismiss',
-      'aeliqo-alert-action',
+      'varendo-dialog-close',
+      'varendo-drawer-close',
+      'varendo-popover-close',
+      'varendo-toast-dismiss',
+      'varendo-alert-action',
     ],
     expectedOutcome: 'The feedback state is visible and announced with an explicit recovery or dismissal boundary.',
     ...componentNotes[id],
@@ -155,20 +155,20 @@ const mount = (id: CatalogExampleId, fn: (root: HTMLElement) => void): CatalogEx
 
 export const feedbackExamples: readonly CatalogExampleDefinition[] = [
   mount('tooltip', (root) => {
-    const element = createCatalogElement<AeliqoTooltipElement>('aeliqo-tooltip', root, AeliqoTooltipElement);
+    const element = createCatalogElement<VarendoTooltipElement>('varendo-tooltip', root, VarendoTooltipElement);
     element.label = 'More information';
     element.content = 'Values are scoped to the current report.';
     element.open = true;
   }),
   mount('popover', (root) => {
-    const element = createCatalogElement<AeliqoPopoverElement>('aeliqo-popover', root, AeliqoPopoverElement);
+    const element = createCatalogElement<VarendoPopoverElement>('varendo-popover', root, VarendoPopoverElement);
     element.label = 'Report details';
     element.content = 'The report includes the authorized current scope.';
     element.open = true;
     element.modal = false;
   }),
   mount('dialog', (root) => {
-    const element = createCatalogElement<AeliqoDialogElement>('aeliqo-dialog', root, AeliqoDialogElement);
+    const element = createCatalogElement<VarendoDialogElement>('varendo-dialog', root, VarendoDialogElement);
     element.heading = 'Confirm archive';
     element.open = false;
     element.modal = true;
@@ -189,11 +189,11 @@ export const feedbackExamples: readonly CatalogExampleDefinition[] = [
     action.textContent = 'Archive report';
     action.addEventListener('click', () => void close());
     element.append(action);
-    element.addEventListener('aeliqo-dialog-close', () => void close());
+    element.addEventListener('varendo-dialog-close', () => void close());
     root.append(trigger);
   }),
   mount('drawer', (root) => {
-    const element = createCatalogElement<AeliqoDrawerElement>('aeliqo-drawer', root, AeliqoDrawerElement);
+    const element = createCatalogElement<VarendoDrawerElement>('varendo-drawer', root, VarendoDrawerElement);
     element.heading = 'Report details';
     element.mode = 'inline';
     element.side = 'end';
@@ -201,7 +201,7 @@ export const feedbackExamples: readonly CatalogExampleDefinition[] = [
     element.textContent = 'Inline detail content keeps the surrounding task visible.';
   }),
   mount('toast', (root) => {
-    const element = createCatalogElement<AeliqoToastElement>('aeliqo-toast', root, AeliqoToastElement);
+    const element = createCatalogElement<VarendoToastElement>('varendo-toast', root, VarendoToastElement);
     element.message = 'Report saved';
     element.tone = 'success';
     element.open = true;
@@ -209,7 +209,7 @@ export const feedbackExamples: readonly CatalogExampleDefinition[] = [
     element.dismissible = true;
   }),
   mount('alert', (root) => {
-    const element = createCatalogElement<AeliqoAlertElement>('aeliqo-alert', root, AeliqoAlertElement);
+    const element = createCatalogElement<VarendoAlertElement>('varendo-alert', root, VarendoAlertElement);
     element.heading = 'Review scope';
     element.message = 'This page contains the first authorized result window.';
     element.tone = 'warning';
@@ -218,20 +218,24 @@ export const feedbackExamples: readonly CatalogExampleDefinition[] = [
     element.open = true;
   }),
   mount('progress', (root) => {
-    const element = createCatalogElement<AeliqoProgressElement>('aeliqo-progress', root, AeliqoProgressElement);
+    const element = createCatalogElement<VarendoProgressElement>('varendo-progress', root, VarendoProgressElement);
     element.label = 'Loading report';
     element.value = 62;
     element.max = 100;
   }),
   mount('skeleton', (root) => {
-    const element = createCatalogElement<AeliqoSkeletonElement>('aeliqo-skeleton', root, AeliqoSkeletonElement);
+    const element = createCatalogElement<VarendoSkeletonElement>('varendo-skeleton', root, VarendoSkeletonElement);
     element.label = 'Loading report rows';
     element.lines = 3;
     element.variant = 'text';
     element.animated = false;
   }),
   mount('empty-state', (root) => {
-    const element = createCatalogElement<AeliqoEmptyStateElement>('aeliqo-empty-state', root, AeliqoEmptyStateElement);
+    const element = createCatalogElement<VarendoEmptyStateElement>(
+      'varendo-empty-state',
+      root,
+      VarendoEmptyStateElement,
+    );
     element.kind = 'no-matches';
     element.heading = 'No matching reports';
     element.message = 'Try a broader team or date filter.';

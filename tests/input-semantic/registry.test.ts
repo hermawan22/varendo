@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import {
   createInputPresentationManifests,
-  type AeliqoInputBinding,
-  type AeliqoInputBindings,
-  type AeliqoInputDraftBinding,
+  type VarendoInputBinding,
+  type VarendoInputBindings,
+  type VarendoInputDraftBinding,
 } from '../../packages/web/src/region/input-registry.js';
 import type { PresentationPlan, Result, SemanticType } from '../../packages/core/src/contracts/index.js';
 import type { PresentationContext } from '../../packages/core/src/presentation/index.js';
 import { validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
 import { freezePresentation } from '../../packages/core/src/presentation/registry.js';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
 import { environment, experience, presentationPlan, presentationTask, result } from '../contracts/fixtures.js';
 
 const textType: SemanticType = { value: 'text', nullable: false };
@@ -19,7 +19,7 @@ const numberType: SemanticType = {
   unit: { dimension: 'temperature', symbol: 'degC' },
 };
 const dateType: SemanticType = { value: 'date', nullable: false };
-const draft = (field: string, type: SemanticType = textType): AeliqoInputDraftBinding => ({
+const draft = (field: string, type: SemanticType = textType): VarendoInputDraftBinding => ({
   entity: 'records',
   key: 'record-1',
   field,
@@ -28,8 +28,8 @@ const draft = (field: string, type: SemanticType = textType): AeliqoInputDraftBi
 });
 const option = { value: 'open', label: 'Open' };
 
-function bindings(overrides: Partial<AeliqoInputBindings['inputs'][number]>[] = []): AeliqoInputBindings {
-  const base: AeliqoInputBinding[] = [
+function bindings(overrides: Partial<VarendoInputBindings['inputs'][number]>[] = []): VarendoInputBindings {
+  const base: VarendoInputBinding[] = [
     {
       id: 'title',
       ref: { id: 'input.text-field', revision: '1' },
@@ -70,13 +70,13 @@ function bindings(overrides: Partial<AeliqoInputBindings['inputs'][number]>[] = 
   ];
   return {
     revision: 'inputs-7',
-    inputs: base.map((entry, index) => ({ ...entry, ...(overrides[index] ?? {}) }) as AeliqoInputBinding),
+    inputs: base.map((entry, index) => ({ ...entry, ...(overrides[index] ?? {}) }) as VarendoInputBinding),
   };
 }
 
 describe('semantic input registry', () => {
   it('preserves frozen stack values while keeping mutable and frozen validation equivalent', () => {
-    const created = createAeliqoPresentationRegistry();
+    const created = createVarendoPresentationRegistry();
     expect(created.ok).toBe(true);
     if (!created.ok) return;
     const stack = created.value.manifests.find((manifest) => manifest.ref.id === 'layout.stack');
@@ -126,8 +126,8 @@ describe('semantic input registry', () => {
 
   it('shares the default nonselectable table resolution only within one registry', () => {
     const descriptor = freezePresentation(structuredClone(result)) as Result;
-    const firstRegistry = createAeliqoPresentationRegistry();
-    const secondRegistry = createAeliqoPresentationRegistry();
+    const firstRegistry = createVarendoPresentationRegistry();
+    const secondRegistry = createVarendoPresentationRegistry();
     expect(firstRegistry.ok).toBe(true);
     expect(secondRegistry.ok).toBe(true);
     if (!firstRegistry.ok || !secondRegistry.ok) return;
@@ -157,7 +157,7 @@ describe('semantic input registry', () => {
 
   it('does not cache selectable table resolution or skip trusted entity lookup', () => {
     let entityCalls = 0;
-    const created = createAeliqoPresentationRegistry({
+    const created = createVarendoPresentationRegistry({
       resolveEntity: () => {
         entityCalls++;
         return 'employees';

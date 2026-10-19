@@ -19,9 +19,9 @@ import type { StdioServerParameters } from '@modelcontextprotocol/client/stdio';
 import type { AgentToolEndpoint } from '../protocol/types.js';
 
 /** MCP revision used by Varendo's supported client and server adapters. */
-export const AELIQO_MCP_PROTOCOL_REVISION = '2026-07-28' as const;
+export const VARENDO_MCP_PROTOCOL_REVISION = '2026-07-28' as const;
 /** Metadata key used to carry host-authored binding data with an MCP tool. */
-export const AELIQO_MCP_TOOL_META = 'com.aeliqo/agent-tool' as const;
+export const VARENDO_MCP_TOOL_META = 'com.varendo/agent-tool' as const;
 
 export interface McpEndpointFactoryContext {
   readonly authInfo?: AuthInfo;

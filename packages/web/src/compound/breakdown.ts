@@ -1,3 +1,3 @@
-export { AeliqoBreakdownElement } from './elements.js';
+export { VarendoBreakdownElement } from './elements.js';
 export { breakdownPresentationRecipe } from './recipes.js';
-export type { AeliqoBreakdownGroup, AeliqoBreakdownGroupDetail, AeliqoBreakdownRecipeInput } from './types.js';
+export type { VarendoBreakdownGroup, VarendoBreakdownGroupDetail, VarendoBreakdownRecipeInput } from './types.js';

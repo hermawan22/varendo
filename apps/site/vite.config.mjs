@@ -57,8 +57,8 @@ export default defineConfig(async () => {
     publicDir: generatedPublic,
     define: {
       __VARENDO_SITE_BASE__: JSON.stringify(siteBase),
-      __AELIQO_RELEASE_VERSION__: JSON.stringify(RELEASE_VERSION),
-      __AELIQO_EXPORT_AVAILABLE__: JSON.stringify(process.env.AELIQO_EXPORT_VERIFIED_VERSION === RELEASE_VERSION),
+      __VARENDO_RELEASE_VERSION__: JSON.stringify(RELEASE_VERSION),
+      __VARENDO_EXPORT_AVAILABLE__: JSON.stringify(process.env.VARENDO_EXPORT_VERIFIED_VERSION === RELEASE_VERSION),
     },
     resolve: {
       dedupe: ['@varendo/agent', '@varendo/core', '@varendo/runtime', '@varendo/web'],
@@ -71,7 +71,7 @@ export default defineConfig(async () => {
     },
     plugins: [
       {
-        name: 'aeliqo-local-preview-links',
+        name: 'varendo-local-preview-links',
         apply: 'serve',
         transformIndexHtml(html, context) {
           // The route middleware resolves documentation aliases under /docs/.
@@ -87,7 +87,7 @@ export default defineConfig(async () => {
         },
       },
       {
-        name: 'aeliqo-static-routes',
+        name: 'varendo-static-routes',
         configResolved(config) {
           outputDirectory = config.build.outDir;
         },

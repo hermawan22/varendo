@@ -195,7 +195,7 @@ type SiteSample = {
 };
 
 type SiteReport = {
-  readonly schema: 'aeliqo.performance.site-page.v1';
+  readonly schema: 'varendo.performance.site-page.v1';
   readonly sourceCommit: string;
   readonly buildId: string;
   readonly mode: 'functional-observation';
@@ -352,7 +352,7 @@ const PERFORMANCE_INIT_SCRIPT = () => {
     },
     'layoutShift',
   );
-  Object.defineProperty(window, '__aeliqoSitePerformance', { value: state, configurable: true });
+  Object.defineProperty(window, '__varendoSitePerformance', { value: state, configurable: true });
 };
 
 function safeNumber(value: unknown): number | null {
@@ -368,7 +368,7 @@ function collectPerformance(page: Page): Promise<PerformanceObservation> {
         startTime: entry.startTime,
         duration: entry.duration,
       });
-      const state = (window as Window & { __aeliqoSitePerformance?: PerformanceState }).__aeliqoSitePerformance;
+      const state = (window as Window & { __varendoSitePerformance?: PerformanceState }).__varendoSitePerformance;
       const entries = performance.getEntriesByType('resource');
       const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
       const paints =
@@ -582,7 +582,7 @@ async function assertRouteReady(page: Page, route: (typeof ROUTES)[number]): Pro
     await expect(
       page.getByRole('heading', { name: 'Say what to show. Varendo picks the view that fits.', exact: true }),
     ).toBeVisible();
-    await expect(page.locator('#home-demo aeliqo-region')).toBeVisible();
+    await expect(page.locator('#home-demo varendo-region')).toBeVisible();
     await expect(page.locator('#demo-status')).toContainText('4 of 4');
     return {
       visible: 'hero heading + adaptive Region',
@@ -591,7 +591,7 @@ async function assertRouteReady(page: Page, route: (typeof ROUTES)[number]): Pro
   }
   if (route.id === 'component-docs') {
     await expect(page.getByRole('heading', { name: 'Table', exact: true })).toBeVisible();
-    await expect(page.locator('[data-component-preview] aeliqo-table')).toBeAttached();
+    await expect(page.locator('[data-component-preview] varendo-table')).toBeAttached();
     await expect(page.getByText(/Expected result:/)).toBeVisible();
     return {
       visible: 'Table heading + real table preview',
@@ -599,7 +599,7 @@ async function assertRouteReady(page: Page, route: (typeof ROUTES)[number]): Pro
     };
   }
   await expect(page.locator('#pg-receipt-state')).toHaveText('renderer-ready');
-  await expect(page.locator('#pg-region aeliqo-table')).toBeVisible();
+  await expect(page.locator('#pg-region varendo-table')).toBeVisible();
   return {
     visible: 'playground runtime receipt + rendered table',
     functional: 'guided task renders through the public app facade',
@@ -736,7 +736,7 @@ async function withContext(
 test('captures whole-site production page observations for home, docs, and playground', async ({
   browser,
 }, testInfo) => {
-  const extended = process.env.AELIQO_RUN_PERFORMANCE === '1';
+  const extended = process.env.VARENDO_RUN_PERFORMANCE === '1';
   const coldSampleCount = extended ? EXTENDED_COLD_SAMPLE_COUNT : DEFAULT_COLD_SAMPLE_COUNT;
   const warmSampleCount = extended ? EXTENDED_WARM_SAMPLE_COUNT : DEFAULT_WARM_SAMPLE_COUNT;
   const cold: SiteSample[] = [];
@@ -748,10 +748,10 @@ test('captures whole-site production page observations for home, docs, and playg
     cold.push(...(await withContext(browser, baseURL, route, coldSampleCount, true)));
     warm.push(...(await withContext(browser, baseURL, route, warmSampleCount, false)));
   }
-  const sourceCommit = process.env.AELIQO_SOURCE_COMMIT ?? 'unknown';
-  const buildId = process.env.AELIQO_SITE_BUILD_ID ?? 'unknown';
+  const sourceCommit = process.env.VARENDO_SOURCE_COMMIT ?? 'unknown';
+  const buildId = process.env.VARENDO_SITE_BUILD_ID ?? 'unknown';
   const report: SiteReport = {
-    schema: 'aeliqo.performance.site-page.v1',
+    schema: 'varendo.performance.site-page.v1',
     sourceCommit,
     buildId,
     mode: 'functional-observation',
@@ -774,7 +774,7 @@ test('captures whole-site production page observations for home, docs, and playg
       'Navigation, ResourceTiming, PaintTiming, largest-contentful-paint, and layout-shift values are browser observations. Missing APIs or entries are represented as null; no synthetic INP or input-to-paint metric is generated.',
       'The latest observed LCP candidate is retained as raw observer data; it is not presented as a final lifecycle or field LCP percentile. Layout-shift entries are retained individually; their values are not summed or labeled as Core Web Vitals CLS.',
       'ResourceTiming byte totals and CDP loadingFinished byte totals are separate observations. Cache evidence distinguishes zero-transfer ResourceTiming entries, disk-cache responses, service-worker responses, and matching 304 statuses; incomplete cache evidence remains incomplete.',
-      'The smoke plan uses one cold and one warm sample per route. A 10-cold/30-warm run is opt-in through AELIQO_RUN_PERFORMANCE=1. No timing threshold or performance pass budget is asserted.',
+      'The smoke plan uses one cold and one warm sample per route. A 10-cold/30-warm run is opt-in through VARENDO_RUN_PERFORMANCE=1. No timing threshold or performance pass budget is asserted.',
     ],
   };
   const output = testInfo.outputPath('site-page-performance-report.json');

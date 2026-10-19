@@ -7,25 +7,25 @@ description: 'Render server-safe output without DOM access at module evaluation 
 ---
 
 <p class="lead">Render real content on the server, then hydrate it in the browser. Keep browser registration and per-request state out of shared modules.</p>
-<h2>Setup steps</h2><ol class="doc-steps"><li><span>1</span><div><h3>Render on the server</h3><p>Call <code>renderAeliqo</code> from <code>@varendo/web/server</code> with a host-authored Lit template. Keep element registration in a client-only entry.</p></div></li><li><span>2</span><div><h3>Isolate each request</h3><p>Create authority and runtime state per request. Abort downstream work when the request ends.</p></div></li><li><span>3</span><div><h3>Hydrate in order</h3><p>Load Lit's hydrate support before importing <code>@varendo/web/app</code> or registering elements.</p></div></li><li><span>4</span><div><h3>Verify the result</h3><p>Check the HTML is useful without JavaScript and hydration adds no duplicates or resets.</p></div></li></ol>
+<h2>Setup steps</h2><ol class="doc-steps"><li><span>1</span><div><h3>Render on the server</h3><p>Call <code>renderVarendo</code> from <code>@varendo/web/server</code> with a host-authored Lit template. Keep element registration in a client-only entry.</p></div></li><li><span>2</span><div><h3>Isolate each request</h3><p>Create authority and runtime state per request. Abort downstream work when the request ends.</p></div></li><li><span>3</span><div><h3>Hydrate in order</h3><p>Load Lit's hydrate support before importing <code>@varendo/web/app</code> or registering elements.</p></div></li><li><span>4</span><div><h3>Verify the result</h3><p>Check the HTML is useful without JavaScript and hydration adds no duplicates or resets.</p></div></li></ol>
 <h2>Server boundary</h2><p>Use <code>@varendo/web/server</code> for server rendering and keep browser registration inside a client entry. Serialize initial data as separately escaped JSON, not interpolated HTML.</p>
 <p>Render authorized content for the current request before sending HTML. A
 placeholder that becomes useful only after a client effect is a client-rendered
 surface, not meaningful SSR. The server may render Varendo custom elements
-through <code>renderAeliqo</code>. A React local data surface also renders
+through <code>renderVarendo</code>. A React local data surface also renders
 read-only rows on the server when supplied valid initial data.</p>
 
 **server-entry.ts**
 
 ```ts
 import { html } from 'lit';
-import { renderAeliqo } from '@varendo/web/server';
+import { renderVarendo } from '@varendo/web/server';
 
 // Render a trusted host-authored element tree for this request's data.
-const markup = await renderAeliqo(html`<aeliqo-text-field label="Name"></aeliqo-text-field>`);
+const markup = await renderVarendo(html`<varendo-text-field label="Name"></varendo-text-field>`);
 ```
 
-`renderAeliqo` accepts a host-authored Lit `TemplateResult` and returns the
+`renderVarendo` accepts a host-authored Lit `TemplateResult` and returns the
 HTML string. Install `lit` alongside the matching Varendo packages; keep this
 import in a server-only module.
 
@@ -37,7 +37,7 @@ import in a server-only module.
 ```ts
 import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
 
-const { createAeliqoApp } = await import('@varendo/web/app');
+const { createVarendoApp } = await import('@varendo/web/app');
 // Now create the app, register elements, and mount Regions.
 ```
 

@@ -1,8 +1,8 @@
 import { css } from 'lit';
-import { aeliqoFoundationThemeStyles } from '../../foundation/base.js';
+import { varendoFoundationThemeStyles } from '../../foundation/base.js';
 
-export const aeliqoHierarchyStyles = [
-  ...aeliqoFoundationThemeStyles,
+export const varendoHierarchyStyles = [
+  ...varendoFoundationThemeStyles,
   css`
     :host {
       container-type: inline-size;
@@ -10,7 +10,7 @@ export const aeliqoHierarchyStyles = [
       min-inline-size: 0;
       inline-size: 100%;
       max-inline-size: 100%;
-      color: var(--aeliqo-color-text, #111827);
+      color: var(--varendo-color-text, #111827);
     }
     .sr-only {
       position: absolute;
@@ -41,8 +41,8 @@ export const aeliqoHierarchyStyles = [
       direction: ltr;
       overflow: auto;
       max-inline-size: 100%;
-      border: 1px solid var(--_aeliqo-border-subtle, var(--aeliqo-color-border, #cbd5e1));
-      border-radius: var(--aeliqo-radius-medium, 0.625rem);
+      border: 1px solid var(--_varendo-border-subtle, var(--varendo-color-border, #cbd5e1));
+      border-radius: var(--varendo-radius-medium, 0.625rem);
     }
     svg {
       overflow: visible;
@@ -58,7 +58,7 @@ export const aeliqoHierarchyStyles = [
       fill: #111827;
     }
     svg .treemap-label {
-      fill: var(--aeliqo-color-on-accent, #fff);
+      fill: var(--varendo-color-on-accent, #fff);
     }
     [part='node'],
     [part='edge'] {
@@ -66,15 +66,15 @@ export const aeliqoHierarchyStyles = [
     }
     [part='node']:focus-visible,
     [part='edge']:focus-visible {
-      outline: 3px solid var(--aeliqo-color-focus, #4338ca);
+      outline: 3px solid var(--varendo-color-focus, #4338ca);
       outline-offset: 2px;
     }
     [part='node'][aria-pressed='true'] {
-      stroke: var(--aeliqo-color-focus, #4338ca);
+      stroke: var(--varendo-color-focus, #4338ca);
       stroke-width: 3;
     }
     [part='edge'][aria-pressed='true'] {
-      stroke: var(--aeliqo-color-focus, #4338ca);
+      stroke: var(--varendo-color-focus, #4338ca);
       stroke-width: 3;
     }
     [part='data'] {
@@ -88,19 +88,19 @@ export const aeliqoHierarchyStyles = [
       gap: 0.5rem;
     }
     button {
-      background: var(--aeliqo-color-surface, #f8fafc);
-      border: var(--aeliqo-control-border-width, 0.0625rem) solid
-        var(--_aeliqo-border-subtle, var(--aeliqo-color-border, #64748b));
-      border-radius: var(--aeliqo-radius-small, 0.375rem);
-      color: var(--aeliqo-color-text, #111827);
+      background: var(--varendo-color-surface, #f8fafc);
+      border: var(--varendo-control-border-width, 0.0625rem) solid
+        var(--_varendo-border-subtle, var(--varendo-color-border, #64748b));
+      border-radius: var(--varendo-radius-small, 0.375rem);
+      color: var(--varendo-color-text, #111827);
       font: inherit;
       min-block-size: 2.75rem;
       min-inline-size: 2.75rem;
     }
     button:not(:disabled):hover {
-      background: var(--_aeliqo-accent-subtle, var(--aeliqo-color-surface, #f8fafc));
-      border-color: var(--aeliqo-color-accent, #4338ca);
-      color: var(--aeliqo-color-accent, #4338ca);
+      background: var(--_varendo-accent-subtle, var(--varendo-color-surface, #f8fafc));
+      border-color: var(--varendo-color-accent, #4338ca);
+      color: var(--varendo-color-accent, #4338ca);
     }
     table {
       border-collapse: collapse;
@@ -109,25 +109,25 @@ export const aeliqoHierarchyStyles = [
     th,
     td {
       text-align: start;
-      padding: var(--aeliqo-space-8, 0.5rem) var(--aeliqo-space-12, 0.75rem);
-      border-block-end: 1px solid var(--_aeliqo-border-subtle, var(--aeliqo-color-border, #cbd5e1));
+      padding: var(--varendo-space-8, 0.5rem) var(--varendo-space-12, 0.75rem);
+      border-block-end: 1px solid var(--_varendo-border-subtle, var(--varendo-color-border, #cbd5e1));
       vertical-align: top;
     }
     th {
-      background: var(--aeliqo-color-surface, #f8fafc);
-      font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+      background: var(--varendo-color-surface, #f8fafc);
+      font-weight: var(--varendo-typography-font-weight-semibold, 600);
     }
     tbody tr:not([aria-selected='true']):hover {
-      background: var(--_aeliqo-accent-subtle, var(--aeliqo-color-surface, #f8fafc));
+      background: var(--_varendo-accent-subtle, var(--varendo-color-surface, #f8fafc));
     }
     [aria-selected='true'] {
       background: var(
-        --_aeliqo-accent-selected,
-        color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 12%, transparent)
+        --_varendo-accent-selected,
+        color-mix(in srgb, var(--varendo-color-accent, #4338ca) 12%, transparent)
       );
     }
     [part='scope'] {
-      color: var(--aeliqo-color-muted, #4b5563);
+      color: var(--varendo-color-muted, #4b5563);
     }
     @container (max-width: 30rem) {
       [part='data'] {
@@ -157,7 +157,7 @@ export const aeliqoHierarchyStyles = [
         gap: 0.75rem;
       }
       tr {
-        border-block-end: 1px solid var(--_aeliqo-border-subtle, var(--aeliqo-color-border, #cbd5e1));
+        border-block-end: 1px solid var(--_varendo-border-subtle, var(--varendo-color-border, #cbd5e1));
         display: block;
         padding-block: 0.25rem;
       }

@@ -11,13 +11,13 @@ import {
   type PresentationNavigationState,
   type PresentationRenderer as RuntimePresentationRenderer,
 } from '@varendo/runtime/presentation';
-import type { AeliqoRegionElement } from './aeliqo-region.js';
+import type { VarendoRegionElement } from './varendo-region.js';
 import type { RegionHandle, RegionOutcome } from '@varendo/runtime/regions';
 
 const KNOWN = (value: number): { readonly state: 'known'; readonly value: number } => ({ state: 'known', value });
 const UNKNOWN = { state: 'unknown' } as const;
 
-export interface AeliqoEnvironmentMeasurementOptions {
+export interface VarendoEnvironmentMeasurementOptions {
   readonly locale?: string;
   readonly direction?: 'ltr' | 'rtl';
   readonly textScale?: number;
@@ -105,7 +105,7 @@ function textScaleValue(
 function localeValue(
   element: Element | undefined,
   windowObject: Window | undefined,
-  options: AeliqoEnvironmentMeasurementOptions,
+  options: VarendoEnvironmentMeasurementOptions,
 ): string {
   if (options.locale !== undefined) return boundedLocale(options.locale);
   const language = element?.ownerDocument?.documentElement.lang;
@@ -116,7 +116,7 @@ function localeValue(
 function measureSizes(
   element: Element | undefined,
   windowObject: Window | undefined,
-  options: AeliqoEnvironmentMeasurementOptions,
+  options: VarendoEnvironmentMeasurementOptions,
 ): Pick<PresentationEnvironment, 'inlineSize' | 'blockSize' | 'textScale' | 'direction' | 'locale'> {
   let sizes: Pick<PresentationEnvironment, 'inlineSize' | 'blockSize'> = {
     inlineSize: UNKNOWN,
@@ -164,9 +164,9 @@ function hoverFor(
  * Read only platform facts. The helper never infers that a coarse pointer has
  * no keyboard, and returns unknown sizes when no browser measurement exists.
  */
-export function measureAeliqoRegionEnvironment(
+export function measureVarendoRegionEnvironment(
   element: Element | undefined,
-  options: AeliqoEnvironmentMeasurementOptions = {},
+  options: VarendoEnvironmentMeasurementOptions = {},
 ): PresentationEnvironment {
   const windowObject = regionWindow(element);
   const sizes = measureSizes(element, windowObject, options);
@@ -182,8 +182,8 @@ export function measureAeliqoRegionEnvironment(
   };
 }
 
-export interface AeliqoRegionAdaptationOptions {
-  readonly element: AeliqoRegionElement;
+export interface VarendoRegionAdaptationOptions {
+  readonly element: VarendoRegionElement;
   readonly region: RegionHandle;
   readonly registry: Parameters<typeof createPresentationAdaptationController>[0]['registry'];
   readonly target?: Parameters<typeof createPresentationAdaptationController>[0]['target'];
@@ -204,7 +204,7 @@ export interface AeliqoRegionAdaptationOptions {
   readonly transitionBlocked?: () => boolean;
 }
 
-export interface AeliqoRegionAdaptation {
+export interface VarendoRegionAdaptation {
   readonly controller: PresentationAdaptationController;
   readonly request: (
     environment?: PresentationEnvironment,
@@ -253,7 +253,7 @@ function composedContains(container: Element, value: Element): boolean {
   return false;
 }
 
-function hasFocusedEditable(element: AeliqoRegionElement): boolean {
+function hasFocusedEditable(element: VarendoRegionElement): boolean {
   const active = element.ownerDocument === undefined ? undefined : deepestActive(element.ownerDocument);
   // Focus inside nested shadow trees is reported by document.activeElement as
   // the outermost host. Walk the composed tree from the deepest active node so
@@ -261,11 +261,11 @@ function hasFocusedEditable(element: AeliqoRegionElement): boolean {
   return active !== undefined && composedContains(element, active) && editableTarget(active);
 }
 
-function elementRenderer(element: AeliqoRegionElement): RuntimePresentationRenderer {
+function elementRenderer(element: VarendoRegionElement): RuntimePresentationRenderer {
   let previous:
     | {
-        readonly presentation: AeliqoRegionElement['presentation'];
-        readonly interaction: AeliqoRegionElement['interaction'];
+        readonly presentation: VarendoRegionElement['presentation'];
+        readonly interaction: VarendoRegionElement['interaction'];
       }
     | undefined;
   return createCallbackPresentationRenderer({
@@ -298,7 +298,7 @@ class RegionInteractionGuard {
   private readonly windowObject: Window | null | undefined;
 
   constructor(
-    private readonly element: AeliqoRegionElement,
+    private readonly element: VarendoRegionElement,
     private readonly transitionBlocked: (() => boolean) | undefined,
     private readonly onUnblocked: () => void,
   ) {
@@ -410,7 +410,7 @@ function addTransitionGuard(value: unknown, isBlocked: () => boolean): unknown {
 }
 
 function createGuardedReadContext(
-  options: AeliqoRegionAdaptationOptions,
+  options: VarendoRegionAdaptationOptions,
   isHostBlocked: () => boolean,
 ): PresentationAdaptationContextSource | undefined {
   if (options.readContext === undefined && options.transitionBlocked === undefined) return undefined;
@@ -424,7 +424,7 @@ function createGuardedReadContext(
 }
 
 function createAdaptationController(
-  options: AeliqoRegionAdaptationOptions,
+  options: VarendoRegionAdaptationOptions,
   renderer: RuntimePresentationRenderer,
   guard: RegionInteractionGuard,
   readContext: PresentationAdaptationContextSource | undefined,
@@ -461,8 +461,8 @@ function observeEnvironmentMedia(element: Element | undefined, onChange: () => v
 }
 
 /** Bind a measured region element to the runtime adaptation transaction. */
-export function createAeliqoRegionAdaptation(options: AeliqoRegionAdaptationOptions): AeliqoRegionAdaptation {
-  const measure = options.measure ?? (() => measureAeliqoRegionEnvironment(options.element));
+export function createVarendoRegionAdaptation(options: VarendoRegionAdaptationOptions): VarendoRegionAdaptation {
+  const measure = options.measure ?? (() => measureVarendoRegionEnvironment(options.element));
   const renderer = options.renderer ?? elementRenderer(options.element);
   let latestEnvironment: PresentationEnvironment | undefined;
   let latestRequestOptions: PresentationAdaptationRequestOptions | undefined;

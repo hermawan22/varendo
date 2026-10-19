@@ -325,7 +325,7 @@ function collectProperties(metadata, node, source) {
 function collectTemplateFacts(metadata, text, cssText) {
   for (const match of text.matchAll(/\bpart="([a-z][a-z0-9 -]*)"/g))
     for (const part of match[1].split(' ')) metadata.parts.add(part);
-  for (const match of cssText.matchAll(/var\((--aeliqo-[a-z0-9-]+)/g)) metadata.tokens.add(match[1]);
+  for (const match of cssText.matchAll(/var\((--varendo-[a-z0-9-]+)/g)) metadata.tokens.add(match[1]);
 }
 
 function collectSemantics(metadata, text) {

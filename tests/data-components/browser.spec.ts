@@ -13,7 +13,7 @@ test('native table preserves exact values, stable identity and scope', async ({ 
         () =>
           (
             window as unknown as { dataFixture: { events: { type: string; detail: { keys?: string[] } }[] } }
-          ).dataFixture.events.findLast((event) => event.type === 'aeliqo-table-selection')?.detail.keys,
+          ).dataFixture.events.findLast((event) => event.type === 'varendo-table-selection')?.detail.keys,
       ),
     )
     .toEqual(['string:1:a']);
@@ -71,7 +71,8 @@ test('malformed virtual windows remain bounded and keyboard requests reach the h
   await expect
     .poll(() =>
       page.evaluate(
-        () => (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-table-window')?.detail,
+        () =>
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-table-window')?.detail,
       ),
     )
     .toEqual({
@@ -129,7 +130,7 @@ test('filter typing is draft-only and Apply emits the typed predicate', async ({
     await page.evaluate(
       () =>
         (window as unknown as { dataFixture: { events: { type: string }[] } }).dataFixture.events.filter(
-          (event) => event.type === 'aeliqo-filter-change',
+          (event) => event.type === 'varendo-filter-change',
         ).length,
     ),
   ).toBe(0);
@@ -144,7 +145,7 @@ test('filter typing is draft-only and Apply emits the typed predicate', async ({
                 events: { type: string; detail: { predicate?: { op: string; field: string; value: string } } }[];
               };
             }
-          ).dataFixture.events.findLast((event) => event.type === 'aeliqo-filter-change')?.detail.predicate,
+          ).dataFixture.events.findLast((event) => event.type === 'varendo-filter-change')?.detail.predicate,
       ),
     )
     .toEqual({ op: 'compare', field: 'name', value: 'Ada', comparison: 'eq' });
@@ -159,7 +160,7 @@ test('filter conditions can be added and removed without committing a draft', as
     await page.evaluate(
       () =>
         (window as unknown as { dataFixture: { events: { type: string }[] } }).dataFixture.events.filter(
-          (event) => event.type === 'aeliqo-filter-change',
+          (event) => event.type === 'varendo-filter-change',
         ).length,
     ),
   ).toBe(0);
@@ -178,7 +179,7 @@ test('filter conditions can be added and removed without committing a draft', as
     await page.evaluate(
       () =>
         (window as unknown as { dataFixture: { events: { type: string }[] } }).dataFixture.events.filter(
-          (event) => event.type === 'aeliqo-filter-change',
+          (event) => event.type === 'varendo-filter-change',
         ).length,
     ),
   ).toBe(0);
@@ -188,13 +189,13 @@ test('filter conditions can be added and removed without committing a draft', as
     .poll(() =>
       page.evaluate(
         () =>
-          (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-filter-change')?.detail
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-filter-change')?.detail
             .predicate,
       ),
     )
     .toEqual({ op: 'compare', field: 'name', value: 'Ada', comparison: 'eq' });
   const beforeAutoApply = await page.evaluate(
-    () => (window as any).dataFixture.events.filter((event: any) => event.type === 'aeliqo-filter-change').length,
+    () => (window as any).dataFixture.events.filter((event: any) => event.type === 'varendo-filter-change').length,
   );
 
   await page.evaluate(async () => {
@@ -213,7 +214,7 @@ test('filter conditions can be added and removed without committing a draft', as
   await expect
     .poll(() =>
       page.evaluate(
-        () => (window as any).dataFixture.events.filter((event: any) => event.type === 'aeliqo-filter-change').length,
+        () => (window as any).dataFixture.events.filter((event: any) => event.type === 'varendo-filter-change').length,
       ),
     )
     .toBe(beforeAutoApply + 1);
@@ -221,7 +222,7 @@ test('filter conditions can be added and removed without committing a draft', as
     .poll(() =>
       page.evaluate(
         () =>
-          (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-filter-change')?.detail
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-filter-change')?.detail
             .predicate,
       ),
     )
@@ -283,7 +284,7 @@ test('compound predicates and multiple clauses remain visible and intact on Appl
     .poll(() =>
       page.evaluate(
         () =>
-          (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-filter-change')?.detail
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-filter-change')?.detail
             .predicate,
       ),
     )
@@ -366,7 +367,7 @@ test('membership values preserve commas and inherited predicates are visibly rea
     .poll(() =>
       page.evaluate(
         () =>
-          (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-filter-change')?.detail
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-filter-change')?.detail
             .predicate,
       ),
     )
@@ -407,7 +408,7 @@ test('text compare and membership values preserve whitespace and empty strings',
     .poll(() =>
       page.evaluate(
         () =>
-          (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-filter-change')?.detail
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-filter-change')?.detail
             .predicate,
       ),
     )
@@ -429,7 +430,7 @@ test('text compare and membership values preserve whitespace and empty strings',
     .poll(() =>
       page.evaluate(
         () =>
-          (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-filter-change')?.detail
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-filter-change')?.detail
             .predicate,
       ),
     )
@@ -455,7 +456,7 @@ test('nullable text membership preserves null separately from an empty string', 
     .poll(() =>
       page.evaluate(
         () =>
-          (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-filter-change')?.detail
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-filter-change')?.detail
             .predicate,
       ),
     )
@@ -516,7 +517,7 @@ test('qualified predicates never apply under a different builder entity', async 
     .poll(() =>
       page.evaluate(
         () =>
-          (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-filter-change')?.detail
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-filter-change')?.detail
             .predicate,
       ),
     )
@@ -539,7 +540,7 @@ test('qualified predicates never apply under a different builder entity', async 
     .poll(() =>
       page.evaluate(
         () =>
-          (window as any).dataFixture.events.findLast((event: any) => event.type === 'aeliqo-filter-change')?.detail
+          (window as any).dataFixture.events.findLast((event: any) => event.type === 'varendo-filter-change')?.detail
             .predicate,
       ),
     )

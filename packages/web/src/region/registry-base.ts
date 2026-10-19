@@ -6,23 +6,23 @@ import type {
   ResolvedPresentationConfig,
 } from '@varendo/core/presentation';
 import {
-  AELIQO_CONFIG_SCHEMAS,
-  AELIQO_OPERATION_REFS,
-  AELIQO_PRESENTATION_REFS,
-  type AeliqoPresentationRegistryOptions,
+  VARENDO_CONFIG_SCHEMAS,
+  VARENDO_OPERATION_REFS,
+  VARENDO_PRESENTATION_REFS,
+  type VarendoPresentationRegistryOptions,
 } from './registry-contracts.js';
 import { stackConfig } from './registry-config-common.js';
 import { tableConfig } from './registry-config-table.js';
 import { assessTrend, suggestTrend, trendConfig } from './registry-config-trend.js';
 import { filterConfig, suggestFilter, suggestTable } from './registry-config-filter.js';
 
-export function buildManifests(options: AeliqoPresentationRegistryOptions): readonly PresentationManifest[] {
+export function buildManifests(options: VarendoPresentationRegistryOptions): readonly PresentationManifest[] {
   const defaultTableConfigs = new WeakMap<Result, Outcome<ResolvedPresentationConfig>>();
   const resolveEntity = options.resolveEntity;
   const manifests: PresentationManifest[] = [
     {
-      ref: AELIQO_PRESENTATION_REFS.stack,
-      configSchema: AELIQO_CONFIG_SCHEMAS.stack,
+      ref: VARENDO_PRESENTATION_REFS.stack,
+      configSchema: VARENDO_CONFIG_SCHEMAS.stack,
       roles: ['structure'],
       operations: [],
       result: 'none',
@@ -33,8 +33,8 @@ export function buildManifests(options: AeliqoPresentationRegistryOptions): read
       suggestConfig: (): Outcome<PresentationValues> => ({ ok: true, value: {} }),
     },
     {
-      ref: AELIQO_PRESENTATION_REFS.table,
-      configSchema: AELIQO_CONFIG_SCHEMAS.table,
+      ref: VARENDO_PRESENTATION_REFS.table,
+      configSchema: VARENDO_CONFIG_SCHEMAS.table,
       roles: ['table'],
       operations: tableOperations(),
       result: 'required',
@@ -46,10 +46,10 @@ export function buildManifests(options: AeliqoPresentationRegistryOptions): read
       assess: (_config, _result, environment) => assessTable(environment),
     },
     {
-      ref: AELIQO_PRESENTATION_REFS.trend,
-      configSchema: AELIQO_CONFIG_SCHEMAS.trend,
+      ref: VARENDO_PRESENTATION_REFS.trend,
+      configSchema: VARENDO_CONFIG_SCHEMAS.trend,
       roles: ['trend', 'chart'],
-      operations: [AELIQO_OPERATION_REFS.read, AELIQO_OPERATION_REFS.compare, AELIQO_OPERATION_REFS.analyze],
+      operations: [VARENDO_OPERATION_REFS.read, VARENDO_OPERATION_REFS.compare, VARENDO_OPERATION_REFS.analyze],
       result: 'required',
       children: { min: 0, max: 0 },
       visibility: 'leaf',
@@ -59,10 +59,10 @@ export function buildManifests(options: AeliqoPresentationRegistryOptions): read
       suggestConfig: suggestTrend,
     },
     {
-      ref: AELIQO_PRESENTATION_REFS.filter,
-      configSchema: AELIQO_CONFIG_SCHEMAS.filter,
+      ref: VARENDO_PRESENTATION_REFS.filter,
+      configSchema: VARENDO_CONFIG_SCHEMAS.filter,
       roles: ['filter'],
-      operations: [AELIQO_OPERATION_REFS.filter],
+      operations: [VARENDO_OPERATION_REFS.filter],
       result: 'required',
       children: { min: 0, max: 0 },
       visibility: 'leaf',
@@ -89,9 +89,9 @@ function assessTable(environment: PresentationEnvironment) {
 
 function tableOperations(): readonly VersionRef[] {
   return [
-    AELIQO_OPERATION_REFS.read,
-    AELIQO_OPERATION_REFS.compare,
-    AELIQO_OPERATION_REFS.analyze,
-    AELIQO_OPERATION_REFS.selection,
+    VARENDO_OPERATION_REFS.read,
+    VARENDO_OPERATION_REFS.compare,
+    VARENDO_OPERATION_REFS.analyze,
+    VARENDO_OPERATION_REFS.selection,
   ];
 }

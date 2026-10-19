@@ -16,7 +16,7 @@ for (const spec of specs) {
   const result = spawnSync(
     'pnpm',
     ['exec', 'playwright', 'test', '--config', 'tests/visual/playwright.config.mjs', `tests/visual/${spec}`],
-    { stdio: 'inherit', env: { ...process.env, AELIQO_VISUAL_BATCH: batch } },
+    { stdio: 'inherit', env: { ...process.env, VARENDO_VISUAL_BATCH: batch } },
   );
   if (result.error !== undefined) {
     console.error(result.error.message);

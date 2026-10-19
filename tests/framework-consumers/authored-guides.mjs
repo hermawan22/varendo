@@ -12,7 +12,7 @@ export async function stageAuthoredGuides(root, consumer, run) {
     ['tsx', 'ts', 'ts'],
   );
   const tutorial = await readFile(join(root, 'docs/site/pages/registered-app.md'), 'utf8');
-  const paths = [...tutorial.matchAll(/<aeliqo-source data-label="([^"]+)" data-path="([^"]+)"/gu)];
+  const paths = [...tutorial.matchAll(/<varendo-source data-label="([^"]+)" data-path="([^"]+)"/gu)];
   const entrypoints = [];
   for (const [index, host] of ['react', 'vanilla', 'vue'].entries()) {
     const dir = join(consumer, 'guides', host);
@@ -58,7 +58,7 @@ export async function stageAuthoredGuides(root, consumer, run) {
 export async function verifyAuthoredGuides(page, origin, runDirectory) {
   for (const host of ['react', 'vanilla', 'vue']) {
     await page.goto(`${origin}/guides/${host}/index.html`);
-    const region = page.locator('aeliqo-region');
+    const region = page.locator('varendo-region');
     await expect(region).toContainText('Ada Chen');
     await expect(region).toContainText('Sam Rivera');
     if (host === 'react') {

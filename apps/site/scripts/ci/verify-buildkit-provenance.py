@@ -143,8 +143,8 @@ def verify_graph(client, index_digest, source, sdk_revision, sdk_version, builde
     expected_labels = {
         "org.opencontainers.image.revision": source,
         "org.opencontainers.image.source": "https://github.com/hermawan22/varendo",
-        "com.aeliqo.sdk.revision": sdk_revision,
-        "com.aeliqo.sdk.version": sdk_version,
+        "com.varendo.sdk.revision": sdk_revision,
+        "com.varendo.sdk.version": sdk_version,
     }
     for key, expected in expected_labels.items():
         require(labels.get(key) == expected, f"image config label differs: {key}")
@@ -186,8 +186,8 @@ def verify_graph(client, index_digest, source, sdk_revision, sdk_version, builde
         "build-arg:SDK_VERSION": sdk_version,
         "label:org.opencontainers.image.revision": source,
         "label:org.opencontainers.image.source": "https://github.com/hermawan22/varendo",
-        "label:com.aeliqo.sdk.revision": sdk_revision,
-        "label:com.aeliqo.sdk.version": sdk_version,
+        "label:com.varendo.sdk.revision": sdk_revision,
+        "label:com.varendo.sdk.version": sdk_version,
     }
     for key, expected in expected_args.items():
         require(args.get(key) == expected, f"provenance argument differs: {key}")

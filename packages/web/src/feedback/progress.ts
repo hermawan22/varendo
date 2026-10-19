@@ -1,12 +1,12 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
-import { aeliqoFeedbackStyles } from './shared.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
+import { varendoFeedbackStyles } from './shared.js';
 
-export class AeliqoProgressElement extends AeliqoFoundationElement {
+export class VarendoProgressElement extends VarendoFoundationElement {
   static readonly properties = { value: { type: Number }, max: { type: Number }, label: { type: String } };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
-    ...aeliqoFeedbackStyles,
+    ...varendoFoundationThemeStyles,
+    ...varendoFeedbackStyles,
     css`
       :host {
         display: block;
@@ -14,29 +14,29 @@ export class AeliqoProgressElement extends AeliqoFoundationElement {
       }
       [part='label'] {
         display: block;
-        margin-block-end: var(--aeliqo-space-4, 0.25rem);
+        margin-block-end: var(--varendo-space-4, 0.25rem);
       }
       progress,
       [role='progressbar'] {
-        accent-color: var(--aeliqo-color-accent, #4338ca);
+        accent-color: var(--varendo-color-accent, #4338ca);
         block-size: 0.75rem;
         inline-size: 100%;
       }
       [role='progressbar'] {
-        background: var(--aeliqo-color-border, #64748b);
+        background: var(--varendo-color-border, #64748b);
         border-radius: 999px;
         overflow: hidden;
       }
       [role='progressbar']::before {
-        animation: aeliqo-progress-indeterminate 1.4s ease-in-out infinite;
-        background: var(--aeliqo-color-accent, #4338ca);
+        animation: varendo-progress-indeterminate 1.4s ease-in-out infinite;
+        background: var(--varendo-color-accent, #4338ca);
         block-size: 100%;
         content: '';
         display: block;
         inline-size: 100%;
         transform: translateX(-100%);
       }
-      @keyframes aeliqo-progress-indeterminate {
+      @keyframes varendo-progress-indeterminate {
         to {
           transform: translateX(100%);
         }

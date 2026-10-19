@@ -116,13 +116,13 @@ function nearestRank(values: readonly number[], fraction: number): number | null
 async function openFixture(page: Page): Promise<void> {
   await page.goto('/tests/performance/perceived-input.html', { waitUntil: 'load' });
   await page.waitForFunction(
-    () => (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput?.ready === true,
+    () => (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput?.ready === true,
   );
 }
 
 async function api(page: Page): Promise<PerceivedInputApi> {
   return page.evaluate(() => {
-    const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+    const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
     if (value?.ready !== true) throw new Error('Perceived input API is unavailable.');
     return value;
   });
@@ -155,7 +155,7 @@ async function captureInteractions(
     for (let index = 0; index < count; index += 1) {
       const key = String(index % 10);
       const reset = await page.evaluate(() => {
-        const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+        const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
         if (value?.ready !== true) throw new Error('Perceived input API is unavailable.');
         return value.resetFixture();
       });
@@ -165,7 +165,7 @@ async function captureInteractions(
       const beforeRevision = String(reset.revision);
       await input.focus();
       await page.evaluate(() => {
-        const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+        const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
         if (value?.ready !== true) throw new Error('Perceived input API is unavailable.');
         const interaction = value.beginInteraction();
         if (interaction.queryBefore !== '') throw new Error(`Expected reset input, got ${interaction.queryBefore}`);
@@ -177,7 +177,7 @@ async function captureInteractions(
       const expectedRowIds = expectedRowsForQuery(key);
       await expect(table.locator('tbody tr')).toHaveCount(expectedRowIds.length, { timeout: 5_000 });
       await page.waitForFunction(() => {
-        const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+        const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
         return value?.visibleUpdateReady() === true;
       });
       // PerformanceObserver delivery is asynchronous; one task lets the browser
@@ -185,7 +185,7 @@ async function captureInteractions(
       await page.evaluate(() => new Promise<void>((resolve) => setTimeout(resolve, 0)));
       interactionActive = false;
       const capture = await page.evaluate(() => {
-        const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+        const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
         if (value?.ready !== true) throw new Error('Perceived input API is unavailable.');
         return value.completeInteraction();
       });
@@ -211,7 +211,7 @@ async function captureCalibration(
   const output = page.locator('#visible-result');
   const table = page.locator('#records');
   const reset = await page.evaluate(() => {
-    const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+    const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
     if (value?.ready !== true) throw new Error('Perceived input API is unavailable.');
     return value.resetFixture();
   });
@@ -220,7 +220,7 @@ async function captureCalibration(
   await expect(table.locator('tbody tr')).toHaveCount(100);
   await input.focus();
   const calibrationStart = await page.evaluate(() => {
-    const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+    const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
     if (value?.ready !== true) throw new Error('Perceived input API is unavailable.');
     const interaction = value.beginInteraction();
     if (interaction.queryBefore !== '') throw new Error(`Expected reset input, got ${interaction.queryBefore}`);
@@ -233,7 +233,7 @@ async function captureCalibration(
   await expect.poll(() => output.getAttribute('data-visible-revision')).not.toBe(String(reset.revision));
   await expect(table.locator('tbody tr')).toHaveCount(expectedRowsForQuery('0').length, { timeout: 5_000 });
   await page.waitForFunction(() => {
-    const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+    const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
     return value?.visibleUpdateReady() === true;
   });
   // PerformanceObserver delivery is asynchronous; poll the fixture's observer count instead of guessing a delivery delay.
@@ -241,7 +241,7 @@ async function captureCalibration(
     .poll(
       () =>
         page.evaluate(() => {
-          const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+          const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
           return value?.eventTimingEntryCount() ?? 0;
         }),
       { timeout: 5_000 },
@@ -250,7 +250,7 @@ async function captureCalibration(
   const requestedHandlerMs = calibrationStart.requestedHandlerMs;
   await page.evaluate(() => new Promise<void>((resolve) => setTimeout(resolve, 0)));
   const interaction = await page.evaluate(() => {
-    const value = (window as Window & { aeliqoPerceivedInput?: PerceivedInputApi }).aeliqoPerceivedInput;
+    const value = (window as Window & { varendoPerceivedInput?: PerceivedInputApi }).varendoPerceivedInput;
     if (value?.ready !== true) throw new Error('Perceived input API is unavailable.');
     return value.completeInteraction();
   });
@@ -298,9 +298,9 @@ function summarize(interactions: readonly InteractionCapture[]): {
 test('measures trusted keyboard to visible DOM update on direct input and local 100-row table', async ({
   page,
 }, testInfo) => {
-  const extended = process.env.AELIQO_RUN_PERFORMANCE === '1';
+  const extended = process.env.VARENDO_RUN_PERFORMANCE === '1';
   const interactionCount = extended ? 30 : 2;
-  const sourceCommit = process.env.AELIQO_SOURCE_COMMIT ?? 'unknown';
+  const sourceCommit = process.env.VARENDO_SOURCE_COMMIT ?? 'unknown';
   await openFixture(page);
   const fixtureApi = await api(page);
   expect(fixtureApi.fixture).toMatchObject({ rowCount: 100, directInput: true, tableRows: 100 });
@@ -313,7 +313,7 @@ test('measures trusted keyboard to visible DOM update on direct input and local 
   expect(moduleGraph.entryModules[0]).toContain('perceived-input.html');
   expect(moduleGraph.forbiddenModules).toEqual([]);
   const report: PerceivedInputReport = {
-    schema: 'aeliqo.performance.perceived-input.v1',
+    schema: 'varendo.performance.perceived-input.v1',
     sourceCommit,
     mode: extended ? 'extended-observation' : 'functional-smoke',
     environment: await page.evaluate(() => ({
@@ -372,7 +372,7 @@ test('measures trusted keyboard to visible DOM update on direct input and local 
 test('calibrates exact Event Timing association with a deliberate trusted keyboard handler', async ({
   page,
 }, testInfo) => {
-  const sourceCommit = process.env.AELIQO_SOURCE_COMMIT ?? 'unknown';
+  const sourceCommit = process.env.VARENDO_SOURCE_COMMIT ?? 'unknown';
   await openFixture(page);
   const fixtureApi = await api(page);
   expect(fixtureApi.fixture.eventTimingObserverAvailable).toBe(true);
@@ -381,7 +381,7 @@ test('calibrates exact Event Timing association with a deliberate trusted keyboa
     (entry) => entry.name === 'keydown' && entry.startTime === calibration.interaction.keydownEventTimestampMs,
   );
   const report = {
-    schema: 'aeliqo.performance.perceived-input.calibration.v1',
+    schema: 'varendo.performance.perceived-input.calibration.v1',
     sourceCommit,
     fixture: fixtureApi.fixture,
     requestedHandlerMs: calibration.requestedHandlerMs,

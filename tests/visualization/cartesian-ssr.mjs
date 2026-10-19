@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { html } from 'lit';
-import { renderAeliqo } from '../../packages/web/dist/server.js';
+import { renderVarendo } from '../../packages/web/dist/server.js';
 import { defineCartesianElements } from '../../packages/web/dist/visualization/cartesian/index.js';
 
 // The public root registration is integrated later by the orchestrator. This
@@ -13,78 +13,78 @@ const templateFor = (tag) => {
   const props = { spec: specs[tag], context: contextFor(tag), datasets: [{ result: ref, rows: rowsFor(tag) }] };
   switch (tag) {
     case 'trend':
-      return html`<aeliqo-trend
+      return html`<varendo-trend
         .visualization=${props.spec}
         .context=${props.context}
         .datasets=${props.datasets}
         label="SSR trend"
-      ></aeliqo-trend>`;
+      ></varendo-trend>`;
     case 'bar':
-      return html`<aeliqo-bar
+      return html`<varendo-bar
         .visualization=${props.spec}
         .context=${props.context}
         .datasets=${props.datasets}
         label="SSR bar"
-      ></aeliqo-bar>`;
+      ></varendo-bar>`;
     case 'area':
-      return html`<aeliqo-area
+      return html`<varendo-area
         .visualization=${props.spec}
         .context=${props.context}
         .datasets=${props.datasets}
         label="SSR area"
-      ></aeliqo-area>`;
+      ></varendo-area>`;
     case 'scatter':
-      return html`<aeliqo-scatter
+      return html`<varendo-scatter
         .visualization=${props.spec}
         .context=${props.context}
         .datasets=${props.datasets}
         label="SSR scatter"
-      ></aeliqo-scatter>`;
+      ></varendo-scatter>`;
     case 'histogram':
-      return html`<aeliqo-histogram
+      return html`<varendo-histogram
         .visualization=${props.spec}
         .context=${props.context}
         .datasets=${props.datasets}
         label="SSR histogram"
-      ></aeliqo-histogram>`;
+      ></varendo-histogram>`;
     case 'heatmap':
-      return html`<aeliqo-heatmap
+      return html`<varendo-heatmap
         .visualization=${props.spec}
         .context=${props.context}
         .datasets=${props.datasets}
         label="SSR heatmap"
-      ></aeliqo-heatmap>`;
+      ></varendo-heatmap>`;
   }
 };
 
 for (const tag of tags) {
-  const output = await renderAeliqo(templateFor(tag));
-  assert.match(output, new RegExp(`<aeliqo-${tag}`));
+  const output = await renderVarendo(templateFor(tag));
+  assert.match(output, new RegExp(`<varendo-${tag}`));
   assert.match(output, /<table/);
   assert.match(output, /<svg/);
   assert.doesNotMatch(output, /(?:NaN|Infinity|undefined)/);
   assert.match(output, /2025-01-01|A|I/);
 }
 
-const heatmap = await renderAeliqo(
-  html`<aeliqo-heatmap
+const heatmap = await renderVarendo(
+  html`<varendo-heatmap
     .visualization=${specs.heatmap}
     .context=${contextFor('heatmap')}
     .datasets=${[{ result: ref, rows }]}
-  ></aeliqo-heatmap>`,
+  ></varendo-heatmap>`,
 );
 assert.match(heatmap, /part="color-key"/);
-const histogram = await renderAeliqo(
-  html`<aeliqo-histogram
+const histogram = await renderVarendo(
+  html`<varendo-histogram
     .visualization=${specs.histogram}
     .context=${contextFor('histogram')}
     .datasets=${[{ result: ref, rows }]}
-  ></aeliqo-histogram>`,
+  ></varendo-histogram>`,
 );
 assert.match(histogram, /executor-produced count bins/);
 assert.match(histogram, /Source observation coverage/);
 
-const empty = await renderAeliqo(html`<aeliqo-trend></aeliqo-trend>`);
+const empty = await renderVarendo(html`<varendo-trend></varendo-trend>`);
 assert.doesNotMatch(empty, /<table/);
 assert.match(empty, /No .*trend.*visualization is available/s);
 console.log('Cartesian SSR six-family marks, exact tables, color key, histogram scope and request isolation passed.');

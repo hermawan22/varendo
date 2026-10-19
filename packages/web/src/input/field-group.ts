@@ -1,9 +1,9 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFoundationElement } from '../foundation/base.js';
-import { aeliqoInputStyles } from './base.js';
+import { VarendoFoundationElement } from '../foundation/base.js';
+import { varendoInputStyles } from './base.js';
 
 /** Semantic grouping boundary for related controls and coordinated messages. */
-export class AeliqoFieldGroupElement extends AeliqoFoundationElement {
+export class VarendoFieldGroupElement extends VarendoFoundationElement {
   static readonly properties = {
     legend: { type: String },
     description: { type: String },
@@ -105,18 +105,18 @@ export class AeliqoFieldGroupElement extends AeliqoFoundationElement {
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       fieldset {
         border: 0;
         display: grid;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         margin: 0;
         min-inline-size: 0;
         padding: 0;
       }
       legend {
-        font-weight: var(--aeliqo-typography-font-weight-semibold, 600);
+        font-weight: var(--varendo-typography-font-weight-semibold, 600);
       }
     `,
   ];

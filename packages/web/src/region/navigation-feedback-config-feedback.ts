@@ -1,12 +1,12 @@
 import type { Outcome } from '@varendo/core';
 import type { PresentationNode, PresentationValues } from '@varendo/core/presentation';
 import type {
-  AeliqoFeedbackBinding,
-  AeliqoNavigationFeedbackAction,
-  AeliqoNavigationFeedbackBindings,
-  AeliqoNavigationFeedbackContent,
+  VarendoFeedbackBinding,
+  VarendoNavigationFeedbackAction,
+  VarendoNavigationFeedbackBindings,
+  VarendoNavigationFeedbackContent,
 } from './navigation-feedback-types.js';
-import { AELIQO_NAVIGATION_FEEDBACK_REFS } from './navigation-feedback-contracts.js';
+import { VARENDO_NAVIGATION_FEEDBACK_REFS } from './navigation-feedback-contracts.js';
 import { EMPTY_STATE_KINDS, FEEDBACK_TONES, SKELETON_VARIANTS, fail } from './navigation-feedback-support.js';
 import {
   actionValue,
@@ -18,18 +18,18 @@ import {
 } from './navigation-feedback-config-common.js';
 import { feedbackBase } from './navigation-feedback-config-navigation.js';
 
-type FeedbackKind = keyof typeof AELIQO_NAVIGATION_FEEDBACK_REFS;
+type FeedbackKind = keyof typeof VARENDO_NAVIGATION_FEEDBACK_REFS;
 type FeedbackContext = {
   readonly input: Record<string, unknown>;
-  readonly entry: AeliqoFeedbackBinding;
-  readonly contents: Map<string, AeliqoNavigationFeedbackContent>;
-  readonly actions: Map<string, AeliqoNavigationFeedbackAction>;
+  readonly entry: VarendoFeedbackBinding;
+  readonly contents: Map<string, VarendoNavigationFeedbackContent>;
+  readonly actions: Map<string, VarendoNavigationFeedbackAction>;
 };
 
 export function feedbackConfig(
   values: PresentationValues,
   kind: FeedbackKind,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
   node?: PresentationNode,
 ): Outcome<ResolvedPresentation> {
   switch (kind) {
@@ -54,14 +54,14 @@ export function feedbackConfig(
     default:
       return fail(
         'config',
-        `Unsupported feedback manifest ${String(AELIQO_NAVIGATION_FEEDBACK_REFS[kind]?.id ?? kind)}.`,
+        `Unsupported feedback manifest ${String(VARENDO_NAVIGATION_FEEDBACK_REFS[kind]?.id ?? kind)}.`,
       );
   }
 }
 
 function tooltipConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = feedbackBase(values, ['bindingRevision', 'bindingRef', 'open'], bindings);
   if (!checked.ok) return checked;
@@ -81,7 +81,7 @@ function tooltipConfig(
 
 function popoverConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = feedbackBase(values, ['bindingRevision', 'bindingRef', 'open', 'modal', 'closeOnOutside'], bindings);
   if (!checked.ok) return checked;
@@ -103,7 +103,7 @@ function popoverConfig(
 
 function dialogConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
   node?: PresentationNode,
 ): Outcome<ResolvedPresentation> {
   const checked = feedbackBase(values, ['bindingRevision', 'bindingRef', 'open', 'modal', 'closeOnEscape'], bindings);
@@ -126,7 +126,7 @@ function dialogConfig(
 
 function drawerConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
   node?: PresentationNode,
 ): Outcome<ResolvedPresentation> {
   const checked = feedbackBase(values, ['bindingRevision', 'bindingRef', 'open', 'mode', 'side'], bindings);
@@ -150,7 +150,7 @@ function drawerConfig(
 
 function toastConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = feedbackBase(
     values,
@@ -183,7 +183,7 @@ function toastConfigError(input: Record<string, unknown>): string | undefined {
 
 function alertConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = feedbackBase(values, ['bindingRevision', 'bindingRef', 'open', 'tone', 'dismissible'], bindings);
   if (!checked.ok) return checked;
@@ -204,11 +204,11 @@ function alertConfig(
 }
 
 function alertValues(
-  bindings: AeliqoNavigationFeedbackBindings,
-  entry: AeliqoFeedbackBinding,
+  bindings: VarendoNavigationFeedbackBindings,
+  entry: VarendoFeedbackBinding,
   input: Record<string, unknown>,
   texts: { readonly heading?: string; readonly message: string; readonly actionLabel?: string },
-  action: AeliqoNavigationFeedbackAction | undefined,
+  action: VarendoNavigationFeedbackAction | undefined,
   open: boolean,
   reachable: boolean,
 ): Record<string, unknown> {
@@ -245,7 +245,7 @@ function alertContent(context: FeedbackContext): Outcome<{
   };
 }
 
-function alertConfigError(input: Record<string, unknown>, entry: AeliqoFeedbackBinding): string | undefined {
+function alertConfigError(input: Record<string, unknown>, entry: VarendoFeedbackBinding): string | undefined {
   if (entry.actionLabelRef !== undefined && entry.actionRef === undefined)
     return 'An alert action label requires a registered action.';
   if (entry.actionRef !== undefined && entry.actionLabelRef === undefined)
@@ -259,7 +259,7 @@ function alertConfigError(input: Record<string, unknown>, entry: AeliqoFeedbackB
 function resolveFeedbackAction(
   context: FeedbackContext,
   label: string,
-): Outcome<AeliqoNavigationFeedbackAction | undefined> {
+): Outcome<VarendoNavigationFeedbackAction | undefined> {
   if (context.entry.actionRef === undefined) return { ok: true, value: undefined };
   const action = context.actions.get(context.entry.actionRef);
   if (action === undefined) return fail('binding', `${label} actionRef is not registered.`);
@@ -270,13 +270,13 @@ function actionPorts(reachable: boolean) {
   return reachable ? [navPort('action', 'action-request')] : [];
 }
 
-function actionOperations(action: AeliqoNavigationFeedbackAction | undefined, reachable: boolean) {
+function actionOperations(action: VarendoNavigationFeedbackAction | undefined, reachable: boolean) {
   return reachable && action !== undefined ? [action.action] : [];
 }
 
 function progressConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = feedbackBase(values, ['bindingRevision', 'bindingRef'], bindings);
   if (!checked.ok) return checked;
@@ -292,7 +292,7 @@ function progressConfig(
 
 function skeletonConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = feedbackBase(values, ['bindingRevision', 'bindingRef', 'lines', 'variant', 'animated'], bindings);
   if (!checked.ok) return checked;
@@ -320,7 +320,7 @@ function skeletonConfigError(input: Record<string, unknown>): string | undefined
 
 function emptyStateConfig(
   values: PresentationValues,
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<ResolvedPresentation> {
   const checked = feedbackBase(values, ['bindingRevision', 'bindingRef'], bindings);
   if (!checked.ok) return checked;
@@ -338,7 +338,7 @@ function emptyStateConfig(
   );
 }
 
-function emptyStateBindingError(entry: AeliqoFeedbackBinding): string | undefined {
+function emptyStateBindingError(entry: VarendoFeedbackBinding): string | undefined {
   if (entry.actionLabelRef !== undefined && entry.actionRef === undefined)
     return 'An empty-state action label requires a registered action.';
   if (entry.actionRef !== undefined && entry.actionLabelRef === undefined)
@@ -349,10 +349,10 @@ function emptyStateBindingError(entry: AeliqoFeedbackBinding): string | undefine
 }
 
 function emptyStateValues(
-  bindings: AeliqoNavigationFeedbackBindings,
-  entry: AeliqoFeedbackBinding,
+  bindings: VarendoNavigationFeedbackBindings,
+  entry: VarendoFeedbackBinding,
   texts: { readonly heading: string; readonly message: string; readonly actionLabel?: string },
-  action: AeliqoNavigationFeedbackAction | undefined,
+  action: VarendoNavigationFeedbackAction | undefined,
 ): Record<string, unknown> {
   return {
     ...baseValues(bindings, entry.id),

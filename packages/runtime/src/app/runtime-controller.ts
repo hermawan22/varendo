@@ -9,8 +9,8 @@ import type { CreateCapabilitySurfaceInput, CreateDataSurfaceInput } from '../su
 import { ScopeControllerImpl } from '../scopes/controller.js';
 import type { CreateScopeInput, ScopeController } from '../scopes/types.js';
 import type {
-  AeliqoRuntime,
-  AeliqoRuntimeOptions,
+  VarendoRuntime,
+  VarendoRuntimeOptions,
   AppAuthorityContext,
   RuntimeEffect,
   RuntimeMountInput,
@@ -37,10 +37,10 @@ interface PresentationTarget {
 }
 
 export class RuntimeController implements RuntimeRenderHost {
-  readonly intents: AeliqoRuntimeOptions['intents'];
+  readonly intents: VarendoRuntimeOptions['intents'];
   readonly regions: RegionStore;
   readonly evaluator: ReturnType<typeof createTaskEvaluator>;
-  private readonly options: AeliqoRuntimeOptions;
+  private readonly options: VarendoRuntimeOptions;
   private readonly resources: Map<string, RuntimeResourceBinding>;
   private readonly resultStore: ResultStore;
   private readonly trackedHandles: Set<ResultHandle>;
@@ -51,7 +51,7 @@ export class RuntimeController implements RuntimeRenderHost {
   private readonly scopes = new Set<ScopeController>();
   private disposed = false;
 
-  constructor(options: AeliqoRuntimeOptions) {
+  constructor(options: VarendoRuntimeOptions) {
     validateOptions(options);
     this.options = options;
     this.resources = indexResources(options.resources);
@@ -78,13 +78,13 @@ export class RuntimeController implements RuntimeRenderHost {
     });
   }
 
-  create(): AeliqoRuntime {
-    const runtime: AeliqoRuntime = {
+  create(): VarendoRuntime {
+    const runtime: VarendoRuntime = {
       ...(this.options.actionPort === undefined ? {} : { actionPort: this.options.actionPort }),
       createScope: (input) => this.createScope(input),
       createLocalSurfaceScope: (input) => this.surfaceFactory.createLocalScope(input),
       createSurface: ((input: CreateDataSurfaceInput<unknown> | CreateCapabilitySurfaceInput<unknown, unknown>) =>
-        this.surfaceFactory.create(input)) as AeliqoRuntime['createSurface'],
+        this.surfaceFactory.create(input)) as VarendoRuntime['createSurface'],
       mount: (input) => this.mount(input),
       render: (input, options) => this.render(input, options?.prepare),
       context: (regionId) => this.context(regionId),

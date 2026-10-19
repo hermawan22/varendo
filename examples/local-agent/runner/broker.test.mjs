@@ -15,8 +15,8 @@ test('bridges a bounded tool outcome to the matching pending call', async () => 
   const pending = broker.endpoint('mcp').discover();
   assert.equal(sent.operation, 'discover');
   assert.equal(sent.transport, 'mcp');
-  assert.equal(broker.acknowledge(sent.id, { ok: true, value: [{ name: 'aeliqo_context' }] }), true);
-  assert.deepEqual(await pending, { ok: true, value: [{ name: 'aeliqo_context' }] });
+  assert.equal(broker.acknowledge(sent.id, { ok: true, value: [{ name: 'varendo_context' }] }), true);
+  assert.deepEqual(await pending, { ok: true, value: [{ name: 'varendo_context' }] });
   broker.dispose();
 });
 

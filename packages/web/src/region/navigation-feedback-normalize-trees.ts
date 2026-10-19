@@ -1,10 +1,10 @@
 import type { Outcome } from '@varendo/core';
 import type {
-  AeliqoNavigationFeedbackAction,
-  AeliqoNavigationFeedbackContent,
-  AeliqoNavigationFeedbackRoute,
-  AeliqoTreeBinding,
-  AeliqoTreeBindingNode,
+  VarendoNavigationFeedbackAction,
+  VarendoNavigationFeedbackContent,
+  VarendoNavigationFeedbackRoute,
+  VarendoTreeBinding,
+  VarendoTreeBindingNode,
 } from './navigation-feedback-types.js';
 import {
   MAX_TREE_NODES,
@@ -19,9 +19,9 @@ import {
 } from './navigation-feedback-support.js';
 
 interface TreeNormalizationContext {
-  readonly contents: Map<string, AeliqoNavigationFeedbackContent>;
-  readonly routes: Map<string, AeliqoNavigationFeedbackRoute>;
-  readonly actions: Map<string, AeliqoNavigationFeedbackAction>;
+  readonly contents: Map<string, VarendoNavigationFeedbackContent>;
+  readonly routes: Map<string, VarendoNavigationFeedbackRoute>;
+  readonly actions: Map<string, VarendoNavigationFeedbackAction>;
   readonly ids: Set<string>;
   readonly ancestors: Set<object>;
   count: number;
@@ -29,14 +29,14 @@ interface TreeNormalizationContext {
 
 export function normalizeTrees(
   value: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
-): Outcome<readonly AeliqoTreeBinding[]> {
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
+): Outcome<readonly VarendoTreeBinding[]> {
   const source = boundedArray(value, 'trees');
   if (!source.ok) return source;
   const seen = new Set<string>();
-  const result: AeliqoTreeBinding[] = [];
+  const result: VarendoTreeBinding[] = [];
   for (const raw of source.value) {
     const tree = normalizeTree(raw, contents, routes, actions, seen);
     if (!tree.ok) return tree;
@@ -48,11 +48,11 @@ export function normalizeTrees(
 
 function normalizeTree(
   raw: unknown,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
-  routes: Map<string, AeliqoNavigationFeedbackRoute>,
-  actions: Map<string, AeliqoNavigationFeedbackAction>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
+  routes: Map<string, VarendoNavigationFeedbackRoute>,
+  actions: Map<string, VarendoNavigationFeedbackAction>,
   seen: ReadonlySet<string>,
-): Outcome<AeliqoTreeBinding> {
+): Outcome<VarendoTreeBinding> {
   const tree = record(raw);
   if (tree === undefined || !validTreeEntry(tree, contents, seen))
     return fail('bindings', 'Tree bindings require unique IDs, host labels and node arrays.');
@@ -71,7 +71,7 @@ function normalizeTree(
 
 function validTreeEntry(
   tree: Record<string, unknown> | undefined,
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   seen: ReadonlySet<string>,
 ): boolean {
   if (tree === undefined || !exactKeys(tree, ['id', 'labelRef', 'nodes'])) return false;
@@ -82,9 +82,9 @@ function validTreeEntry(
 function normalizeTreeNodes(
   source: readonly unknown[],
   context: TreeNormalizationContext,
-): Outcome<readonly AeliqoTreeBindingNode[]> {
+): Outcome<readonly VarendoTreeBindingNode[]> {
   if (source.length > MAX_TREE_NODES) return fail('bindings', 'A tree exceeds its bounded node limit.');
-  const nodes: AeliqoTreeBindingNode[] = [];
+  const nodes: VarendoTreeBindingNode[] = [];
   for (const raw of source) {
     const node = normalizeTreeNode(raw, context);
     if (!node.ok) return node;
@@ -93,7 +93,7 @@ function normalizeTreeNodes(
   return { ok: true, value: nodes };
 }
 
-function normalizeTreeNode(raw: unknown, context: TreeNormalizationContext): Outcome<AeliqoTreeBindingNode> {
+function normalizeTreeNode(raw: unknown, context: TreeNormalizationContext): Outcome<VarendoTreeBindingNode> {
   const node = record(raw);
   if (node === undefined || !validTreeNode(node, context))
     return fail('bindings', 'Tree nodes require unique IDs and host labels.');
@@ -134,15 +134,15 @@ function treeTargetError(node: Record<string, unknown>, context: TreeNormalizati
 function normalizeTreeChildren(
   children: unknown,
   context: TreeNormalizationContext,
-): Outcome<readonly AeliqoTreeBindingNode[] | undefined> {
+): Outcome<readonly VarendoTreeBindingNode[] | undefined> {
   if (children === undefined) return { ok: true, value: undefined };
   return normalizeTreeNodes(children as readonly unknown[], context);
 }
 
 function treeNodeValue(
   node: Record<string, unknown>,
-  children: readonly AeliqoTreeBindingNode[] | undefined,
-): AeliqoTreeBindingNode {
+  children: readonly VarendoTreeBindingNode[] | undefined,
+): VarendoTreeBindingNode {
   return {
     id: node.id as string,
     labelRef: node.labelRef as string,

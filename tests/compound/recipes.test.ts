@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import { validatePresentationPlan } from '@varendo/core/presentation';
 import type { PresentationContext } from '@varendo/core/presentation';
-import { createAeliqoPresentationRegistry } from '../../packages/web/src/region/registry.js';
+import { createVarendoPresentationRegistry } from '../../packages/web/src/region/registry.js';
 import {
   explorerPresentationRecipe,
   breakdownPresentationRecipe,
   qualityPanelPresentationRecipe,
   compoundRecipeHelpers,
 } from '../../packages/web/src/compound/recipes.js';
-import type { AeliqoCompoundRecipeInput } from '../../packages/web/src/compound/types.js';
+import type { VarendoCompoundRecipeInput } from '../../packages/web/src/compound/types.js';
 import { dataPresentationContext, dataPresentationPlan, registryOptions } from '../data-semantic/fixture.js';
 
-function fixture(ids: readonly string[]): AeliqoCompoundRecipeInput {
+function fixture(ids: readonly string[]): VarendoCompoundRecipeInput {
   const original = dataPresentationPlan();
   const base = dataPresentationContext();
   const stack = { id: 'layout.stack', revision: '1' };
@@ -32,7 +32,7 @@ function fixture(ids: readonly string[]): AeliqoCompoundRecipeInput {
     experience: { ...base.experience, allowedRepresentations: [...base.experience.allowedRepresentations, stack.id] },
     rendererCapabilities: [...base.rendererCapabilities, stack],
   };
-  const registry = createAeliqoPresentationRegistry(registryOptions);
+  const registry = createVarendoPresentationRegistry(registryOptions);
   if (!registry.ok) throw new Error('registry');
   return {
     id: 'compound',

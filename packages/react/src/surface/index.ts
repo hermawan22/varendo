@@ -1,10 +1,10 @@
 export { AdaptiveSurface, ViewSurface } from './render.js';
 export { useDataSurface, useSurface } from './controller.js';
 export { useSurfaceState } from './hooks.js';
-export { AeliqoScope, useAeliqoScope, useAeliqoScopeState } from './scope.js';
+export { VarendoScope, useVarendoScope, useVarendoScopeState } from './scope.js';
 export { defineReactViews } from './views.js';
 export type { AdaptiveSurfaceProps, LocalAdaptiveSurfaceProps, ViewSurfaceProps } from './render.js';
-export type { AeliqoScopeProps } from './scope.js';
+export type { VarendoScopeProps } from './scope.js';
 export type {
   ScopedCapabilitySurfaceOptions,
   ScopedDataSurfaceOptions,

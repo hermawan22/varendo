@@ -32,7 +32,7 @@ const packages = PUBLIC_PACKAGE_NAMES.map((name, index) => ({
   file: `varendo-${name.slice('@varendo/'.length)}-${rc2}.tgz`,
 }));
 const candidate = {
-  schema: 'aeliqo.release-candidate.v1',
+  schema: 'varendo.release-candidate.v1',
   sourceRevision,
   version: rc2,
   publishOrder: PUBLIC_PACKAGE_NAMES,
@@ -272,7 +272,7 @@ test('trusted publishing and dist-tag movement fail closed', () => {
 
 test('approved RC records bind source and all candidate integrities', () => {
   const publication = {
-    schema: 'aeliqo.npm-publication.v2',
+    schema: 'varendo.npm-publication.v2',
     sourceRevision,
     version: candidate.version,
     tag: 'next',
@@ -281,7 +281,7 @@ test('approved RC records bind source and all candidate integrities', () => {
     packages,
   };
   const consumer = {
-    schema: 'aeliqo.registry-consumer.v2',
+    schema: 'varendo.registry-consumer.v2',
     expectedSourceRevision: sourceRevision,
     provenanceVerified: true,
     version: candidate.version,
@@ -325,7 +325,7 @@ test('stable image export requires exact-source installed latest packages', () =
     })),
   };
   const publication = {
-    schema: 'aeliqo.npm-publication.v2',
+    schema: 'varendo.npm-publication.v2',
     sourceRevision,
     version: RELEASE_VERSION,
     tag: 'latest',
@@ -334,7 +334,7 @@ test('stable image export requires exact-source installed latest packages', () =
     packages: stableCandidate.packages.map((item) => ({ ...item, distTag: 'latest' })),
   };
   const consumer = {
-    schema: 'aeliqo.registry-consumer.v2',
+    schema: 'varendo.registry-consumer.v2',
     expectedSourceRevision: sourceRevision,
     provenanceVerified: true,
     version: RELEASE_VERSION,
@@ -425,13 +425,13 @@ test('package workflow serializes publication and binds quality plus approved RC
   assert.match(workflow, /test "\$ACTOR" = "hermawan22"/);
   assert.match(workflow, /branches\/main/);
   assert.match(workflow, /actions\/workflows\/quality\.yml\/runs/);
-  assert.match(workflow, /aeliqo-quality-evidence-\$GITHUB_SHA/);
+  assert.match(workflow, /varendo-quality-evidence-\$GITHUB_SHA/);
   assert.match(workflow, /artifacts\/quality-evidence\/artifacts\/product-ci\/ci\.json/);
   assert.match(workflow, /scripts\/release\/verify-quality-evidence\.mjs/);
   assert.match(workflow, /PUBLIC_PACKAGE_NAMES/);
   assert.match(workflow, /JSON\.stringify\(packageNames\) !== JSON\.stringify\(PUBLIC_PACKAGE_NAMES\)/);
   assert.doesNotMatch(workflow, /candidate\.packages\.length !== 6/);
-  assert.doesNotMatch(workflow, /AELIQO_CI_EVIDENCE_PATH=artifacts\/quality-evidence\/harness\/evidence\/ci\.json/);
+  assert.doesNotMatch(workflow, /VARENDO_CI_EVIDENCE_PATH=artifacts\/quality-evidence\/harness\/evidence\/ci\.json/);
   assert.match(workflow, /verify-approved-rc\.mjs/);
   assert.match(workflow, /\[ "\$RC_SOURCE_SHA" = "\$SOURCE_SHA" \]/);
   assert.match(workflow, /--require-provenance-source "\$RC_SOURCE_SHA"/);

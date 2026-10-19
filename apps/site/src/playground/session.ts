@@ -1,6 +1,6 @@
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { type Intent, type Outcome } from '@varendo/core';
-import { createAeliqoApp, type AeliqoAppActionEvent, type WebRenderReceipt } from '@varendo/web/app';
+import { createVarendoApp, type VarendoAppActionEvent, type WebRenderReceipt } from '@varendo/web/app';
 import { STANDARD_RECIPES } from '@varendo/web/recipes';
 import type { WebMcpEvidence } from '@varendo/agent/webmcp';
 import { customIntentRecipe, knowledgeArticleView, PLAYGROUND_INTENTS } from './scenarios.js';
@@ -17,7 +17,7 @@ const SCOPE = 'synthetic-local';
 export interface PlaygroundSession {
   readonly regionId: string;
   render(target: HTMLElement, intent: Intent, signal?: AbortSignal): Promise<WebRenderReceipt>;
-  context(): ReturnType<ReturnType<typeof createAeliqoApp>['runtime']['context']>;
+  context(): ReturnType<ReturnType<typeof createVarendoApp>['runtime']['context']>;
   connectWebMcp(
     onState?: (state: BrowserToolState) => void,
   ): Promise<Outcome<{ readonly registrations: number; readonly evidence: WebMcpEvidence }>>;
@@ -53,7 +53,7 @@ function createSessionApp(
       },
     }),
   };
-  return createAeliqoApp({
+  return createVarendoApp({
     resources: data.resources.map((resource) => ({ resource, data: data.services.get(resource.id)! })),
     authority,
     intents: PLAYGROUND_INTENTS,
@@ -70,8 +70,8 @@ function createSessionApp(
   });
 }
 
-type PlaygroundSessionActionHandler = (event: AeliqoAppActionEvent) => void | Promise<void>;
-type SessionApp = ReturnType<typeof createAeliqoApp>;
+type PlaygroundSessionActionHandler = (event: VarendoAppActionEvent) => void | Promise<void>;
+type SessionApp = ReturnType<typeof createVarendoApp>;
 
 function siteTheme(): 'light' | 'dark' {
   const applied = document.documentElement.dataset.theme;
@@ -93,7 +93,7 @@ function createSessionRenderer(app: SessionApp) {
           regionId: REGION_ID,
           diagnostics: mounted.diagnostics,
         };
-      mounted.value.setAttribute('data-aeliqo-theme', siteTheme());
+      mounted.value.setAttribute('data-varendo-theme', siteTheme());
       mountedResource = intent.resource;
       mountedTarget = target;
     }

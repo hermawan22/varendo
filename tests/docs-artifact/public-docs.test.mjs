@@ -32,7 +32,7 @@ test('public docs artifact binds exact source, packages, API metadata, and runna
     assert.match(page.body, /data-component-preview=/u, `Missing live preview for ${page.component}`);
     assert.match(page.body, /data-example-code=/u, `Missing complete source for ${page.component}`);
     assert.match(page.body, /@varendo\/web\//u, `Missing public web package import for ${page.component}`);
-    assert.match(page.body, /registerAeliqoElements\(\)/u, `Missing registration example for ${page.component}`);
+    assert.match(page.body, /registerVarendoElements\(\)/u, `Missing registration example for ${page.component}`);
     assert.match(page.body, /aria-label="Integration levels"/u, `Missing adoption levels for ${page.component}`);
     assert.match(page.body, /<strong>Standalone<\/strong>/u);
     assert.match(page.body, /<strong>Semantic binding<\/strong>/u);
@@ -51,7 +51,7 @@ test('public docs artifact binds exact source, packages, API metadata, and runna
   }
   assert.match(
     artifact.pages.find((page) => page.path === '/docs/components/foundation.button/').body,
-    /export declare class AeliqoButtonElement/u,
+    /export declare class VarendoButtonElement/u,
   );
   assert.match(
     artifact.pages.find((page) => page.path === '/docs/components/foundation.button/').body,
@@ -62,7 +62,7 @@ test('public docs artifact binds exact source, packages, API metadata, and runna
     assert.ok(page, `Missing ${scenario} example page`);
     assert.equal((page.body.match(/data-project-scenario=/gu) ?? []).length, 6);
     assert.match(page.body, /src\/main\.ts · compiled export source/u);
-    assert.match(page.body, /createAeliqoApp/u);
+    assert.match(page.body, /createVarendoApp/u);
   }
   const migration = artifact.pages.find((page) => page.path === '/docs/ship/migration-0.3/');
   assert.ok(migration, 'Missing migration page');
@@ -100,7 +100,7 @@ test('public docs artifact binds exact source, packages, API metadata, and runna
   }
 });
 
-test('the Varendo migration documents current package identities and retained API names', async () => {
+test('the Varendo migration documents current package identities and renamed API names', async () => {
   const { artifact } = await readVerifiedPublicDocs(manifestPath);
   const migration = artifact.pages.find((page) => page.path === '/docs/ship/migration-varendo/');
   assert.ok(migration, 'Missing Varendo migration page');
@@ -110,8 +110,9 @@ test('the Varendo migration documents current package identities and retained AP
     assert.ok(renderedText.includes(name.replace('@varendo/', '@aeliqo/')), `Missing old package mapping for ${name}`);
   }
   assert.match(migration.body, /@varendo\/web\/app/u);
+  assert.match(migration.body, /createVarendoApp/u);
+  assert.match(migration.body, /VarendoProvider/u);
   assert.match(migration.body, /createAeliqoApp/u);
-  assert.match(migration.body, /AeliqoProvider/u);
 });
 
 test('an external consumer can accept the verified public artifact without private site source', async () => {
@@ -146,7 +147,7 @@ test('the current docs artifact follows canonical release status and binds its m
 });
 
 test('verification rejects changed bytes, path traversal, and forged package identity', async () => {
-  const scratch = await mkdtemp(join(tmpdir(), 'aeliqo-public-docs-test-'));
+  const scratch = await mkdtemp(join(tmpdir(), 'varendo-public-docs-test-'));
   await cp(resolve(root, `artifacts/public-docs/${RELEASE_VERSION}`), scratch, { recursive: true });
   const copiedManifest = join(scratch, 'manifest.json');
   const manifest = JSON.parse(await readFile(copiedManifest, 'utf8'));
@@ -172,7 +173,7 @@ test('verification rejects changed bytes, path traversal, and forged package ide
 });
 
 test('verification rejects a changed executable catalog example', async () => {
-  const scratch = await mkdtemp(join(tmpdir(), 'aeliqo-public-example-test-'));
+  const scratch = await mkdtemp(join(tmpdir(), 'varendo-public-example-test-'));
   await cp(resolve(root, `artifacts/public-docs/${RELEASE_VERSION}`), scratch, { recursive: true });
   const copiedManifest = join(scratch, 'manifest.json');
   const indexPath = join(scratch, 'catalog-examples/index.ts');
@@ -181,7 +182,7 @@ test('verification rejects a changed executable catalog example', async () => {
 });
 
 test('producer can bind the docs artifact to one exact release-candidate package set', async () => {
-  const scratch = await mkdtemp(join(tmpdir(), 'aeliqo-public-docs-rc-test-'));
+  const scratch = await mkdtemp(join(tmpdir(), 'varendo-public-docs-rc-test-'));
   const { stdout } = await execFileAsync('git', ['rev-parse', 'HEAD'], { cwd: root });
   const revision = stdout.trim();
   await execFileAsync(
@@ -205,7 +206,7 @@ test('producer can bind the docs artifact to one exact release-candidate package
 });
 
 test('producer rejects a shaped source revision that is not a repository commit', async () => {
-  const scratch = await mkdtemp(join(tmpdir(), 'aeliqo-public-docs-forged-revision-'));
+  const scratch = await mkdtemp(join(tmpdir(), 'varendo-public-docs-forged-revision-'));
   await assert.rejects(
     execFileAsync(
       process.execPath,
@@ -225,7 +226,7 @@ test('producer rejects a shaped source revision that is not a repository commit'
 });
 
 test('producer rejects an existing repository commit that is not checked-out HEAD', async () => {
-  const scratch = await mkdtemp(join(tmpdir(), 'aeliqo-public-docs-stale-revision-'));
+  const scratch = await mkdtemp(join(tmpdir(), 'varendo-public-docs-stale-revision-'));
   const { stdout: tree } = await execFileAsync('git', ['rev-parse', 'HEAD^{tree}'], { cwd: root });
   const { stdout } = await execFileAsync('git', ['commit-tree', tree.trim(), '-m', 'stale docs producer test'], {
     cwd: root,
@@ -256,9 +257,9 @@ test('producer rejects an existing repository commit that is not checked-out HEA
 });
 
 test('verification rejects a catalog symlink that escapes the artifact directory', async () => {
-  const scratch = await mkdtemp(join(tmpdir(), 'aeliqo-public-docs-symlink-test-'));
+  const scratch = await mkdtemp(join(tmpdir(), 'varendo-public-docs-symlink-test-'));
   await cp(resolve(root, `artifacts/public-docs/${RELEASE_VERSION}`), scratch, { recursive: true });
-  const outside = join(scratch, '..', `aeliqo-outside-${process.pid}.ts`);
+  const outside = join(scratch, '..', `varendo-outside-${process.pid}.ts`);
   const indexPath = join(scratch, 'catalog-examples/index.ts');
   await writeFile(outside, await readFile(indexPath));
   await rm(indexPath);

@@ -1,94 +1,94 @@
 import React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import {
-  AeliqoMetricElement,
-  AeliqoDeltaElement,
-  AeliqoKeyValueElement,
-  AeliqoDetailElement,
-  AeliqoRecordListElement,
-  AeliqoCardCollectionElement,
-  AeliqoSelectionSummaryElement,
-  AeliqoFilterBuilderElement,
-  AeliqoTableElement,
-  type AeliqoDataSelectionEvent,
-  type AeliqoDataLoadMoreEvent,
-  type AeliqoFilterChangeEvent,
-  type AeliqoTableSortEvent,
-  type AeliqoTablePageEvent,
-  type AeliqoTableWindowEvent,
+  VarendoMetricElement,
+  VarendoDeltaElement,
+  VarendoKeyValueElement,
+  VarendoDetailElement,
+  VarendoRecordListElement,
+  VarendoCardCollectionElement,
+  VarendoSelectionSummaryElement,
+  VarendoFilterBuilderElement,
+  VarendoTableElement,
+  type VarendoDataSelectionEvent,
+  type VarendoDataLoadMoreEvent,
+  type VarendoFilterChangeEvent,
+  type VarendoTableSortEvent,
+  type VarendoTablePageEvent,
+  type VarendoTableWindowEvent,
 } from '@varendo/web/data';
-import type { AeliqoTableSelectionEvent } from '@varendo/web/events';
-export const AeliqoMetric = createComponent({
+import type { VarendoTableSelectionEvent } from '@varendo/web/events';
+export const VarendoMetric = createComponent({
   react: React,
-  tagName: 'aeliqo-metric',
-  elementClass: AeliqoMetricElement,
+  tagName: 'varendo-metric',
+  elementClass: VarendoMetricElement,
   events: {},
-  displayName: 'AeliqoMetric',
+  displayName: 'VarendoMetric',
 });
-export const AeliqoDelta = createComponent({
+export const VarendoDelta = createComponent({
   react: React,
-  tagName: 'aeliqo-delta',
-  elementClass: AeliqoDeltaElement,
+  tagName: 'varendo-delta',
+  elementClass: VarendoDeltaElement,
   events: {},
-  displayName: 'AeliqoDelta',
+  displayName: 'VarendoDelta',
 });
-export const AeliqoKeyValue = createComponent({
+export const VarendoKeyValue = createComponent({
   react: React,
-  tagName: 'aeliqo-key-value',
-  elementClass: AeliqoKeyValueElement,
+  tagName: 'varendo-key-value',
+  elementClass: VarendoKeyValueElement,
   events: {},
-  displayName: 'AeliqoKeyValue',
+  displayName: 'VarendoKeyValue',
 });
-export const AeliqoDetail = createComponent({
+export const VarendoDetail = createComponent({
   react: React,
-  tagName: 'aeliqo-detail',
-  elementClass: AeliqoDetailElement,
+  tagName: 'varendo-detail',
+  elementClass: VarendoDetailElement,
   events: {},
-  displayName: 'AeliqoDetail',
+  displayName: 'VarendoDetail',
 });
-export const AeliqoRecordList = createComponent({
+export const VarendoRecordList = createComponent({
   react: React,
-  tagName: 'aeliqo-record-list',
-  elementClass: AeliqoRecordListElement,
+  tagName: 'varendo-record-list',
+  elementClass: VarendoRecordListElement,
   events: {
-    onSelectionChange: 'aeliqo-record-list-selection' as EventName<AeliqoDataSelectionEvent>,
-    onLoadMore: 'aeliqo-data-load-more' as EventName<AeliqoDataLoadMoreEvent>,
+    onSelectionChange: 'varendo-record-list-selection' as EventName<VarendoDataSelectionEvent>,
+    onLoadMore: 'varendo-data-load-more' as EventName<VarendoDataLoadMoreEvent>,
   },
-  displayName: 'AeliqoRecordList',
+  displayName: 'VarendoRecordList',
 });
-export const AeliqoCardCollection = createComponent({
+export const VarendoCardCollection = createComponent({
   react: React,
-  tagName: 'aeliqo-card-collection',
-  elementClass: AeliqoCardCollectionElement,
+  tagName: 'varendo-card-collection',
+  elementClass: VarendoCardCollectionElement,
   events: {
-    onSelectionChange: 'aeliqo-card-selection' as EventName<AeliqoDataSelectionEvent>,
-    onLoadMore: 'aeliqo-data-load-more' as EventName<AeliqoDataLoadMoreEvent>,
+    onSelectionChange: 'varendo-card-selection' as EventName<VarendoDataSelectionEvent>,
+    onLoadMore: 'varendo-data-load-more' as EventName<VarendoDataLoadMoreEvent>,
   },
-  displayName: 'AeliqoCardCollection',
+  displayName: 'VarendoCardCollection',
 });
-export const AeliqoSelectionSummary = createComponent({
+export const VarendoSelectionSummary = createComponent({
   react: React,
-  tagName: 'aeliqo-selection-summary',
-  elementClass: AeliqoSelectionSummaryElement,
-  events: { onClear: 'aeliqo-selection-clear' as EventName<AeliqoDataSelectionEvent> },
-  displayName: 'AeliqoSelectionSummary',
+  tagName: 'varendo-selection-summary',
+  elementClass: VarendoSelectionSummaryElement,
+  events: { onClear: 'varendo-selection-clear' as EventName<VarendoDataSelectionEvent> },
+  displayName: 'VarendoSelectionSummary',
 });
-export const AeliqoFilterBuilder = createComponent({
+export const VarendoFilterBuilder = createComponent({
   react: React,
-  tagName: 'aeliqo-filter-builder',
-  elementClass: AeliqoFilterBuilderElement,
-  events: { onFilterChange: 'aeliqo-filter-change' as EventName<AeliqoFilterChangeEvent> },
-  displayName: 'AeliqoFilterBuilder',
+  tagName: 'varendo-filter-builder',
+  elementClass: VarendoFilterBuilderElement,
+  events: { onFilterChange: 'varendo-filter-change' as EventName<VarendoFilterChangeEvent> },
+  displayName: 'VarendoFilterBuilder',
 });
-export const AeliqoTable = createComponent({
+export const VarendoTable = createComponent({
   react: React,
-  tagName: 'aeliqo-table',
-  elementClass: AeliqoTableElement,
+  tagName: 'varendo-table',
+  elementClass: VarendoTableElement,
   events: {
-    onSelectionChange: 'aeliqo-table-selection' as EventName<AeliqoTableSelectionEvent>,
-    onSortChange: 'aeliqo-table-sort' as EventName<AeliqoTableSortEvent>,
-    onPageChange: 'aeliqo-table-page' as EventName<AeliqoTablePageEvent>,
-    onWindowChange: 'aeliqo-table-window' as EventName<AeliqoTableWindowEvent>,
+    onSelectionChange: 'varendo-table-selection' as EventName<VarendoTableSelectionEvent>,
+    onSortChange: 'varendo-table-sort' as EventName<VarendoTableSortEvent>,
+    onPageChange: 'varendo-table-page' as EventName<VarendoTablePageEvent>,
+    onWindowChange: 'varendo-table-window' as EventName<VarendoTableWindowEvent>,
   },
-  displayName: 'AeliqoTable',
+  displayName: 'VarendoTable',
 });

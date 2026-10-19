@@ -19,7 +19,7 @@ const root = resolve(import.meta.dirname, '../..');
 const output = join(root, 'artifacts/protocol-consumers');
 await mkdir(output, { recursive: true });
 const runDirectory = await mkdtemp(join(output, 'run-'));
-const consumer = await mkdtemp(join(tmpdir(), 'aeliqo-protocol-consumer-'));
+const consumer = await mkdtemp(join(tmpdir(), 'varendo-protocol-consumer-'));
 const consumerReal = await realpath(consumer);
 
 function run(argv, cwd, encoding = 'utf8', env = process.env) {
@@ -60,7 +60,7 @@ const packages = [];
 for (const name of ['core', 'runtime', 'agent']) {
   const directory = join(root, 'packages', name);
   const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   run(['pnpm', 'pack', '--out', tarball], directory);
   const bytes = await readFile(tarball);
   const packed = JSON.parse(run(['tar', '-xOf', tarball, 'package/package.json'], root));

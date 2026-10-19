@@ -4,7 +4,7 @@ import { createTaskEvaluator } from '../evaluation/task.js';
 import type { MaterializedTaskOutput, TaskEvaluation } from '../evaluation/types.js';
 import type { RegionHandle, RegionOutcome, RegionSnapshot, RegionStore } from '../regions/types.js';
 import type {
-  AeliqoRuntimeOptions,
+  VarendoRuntimeOptions,
   AppAuthorityContext,
   RuntimeCommittedReceipt,
   RuntimeRenderInput,
@@ -23,7 +23,7 @@ import { readSourceRevisionPin } from '../data/local/source-pin.js';
 export interface RuntimeRenderHost {
   readonly regions: RegionStore;
   readonly evaluator: ReturnType<typeof createTaskEvaluator>;
-  readonly intents: AeliqoRuntimeOptions['intents'];
+  readonly intents: VarendoRuntimeOptions['intents'];
   getSlot(regionId: string): MountedRegion | undefined;
   getResource(slot: MountedRegion): RuntimeResourceBinding | undefined;
   preparePrincipal(slot: MountedRegion, signal: AbortSignal): Outcome<AppAuthorityContext>;

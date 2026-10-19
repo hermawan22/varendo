@@ -2,9 +2,9 @@ import React, { createContext, useCallback, useContext, useEffect, type PropsWit
 import type { ScopeController, ScopeSnapshot } from '@varendo/runtime/scopes';
 import { useStoreSelector } from './hooks.js';
 
-const AeliqoScopeContext = createContext<ScopeController | undefined>(undefined);
+const VarendoScopeContext = createContext<ScopeController | undefined>(undefined);
 
-export interface AeliqoScopeProps extends PropsWithChildren {
+export interface VarendoScopeProps extends PropsWithChildren {
   /** An application-owned scope. This component attaches it but never disposes it. */
   readonly scope: ScopeController;
 }
@@ -16,7 +16,7 @@ function inactiveMessage(status: ScopeSnapshot['status']): string {
 }
 
 /** Makes one host-created scope available to React descendants. */
-export function AeliqoScope({ scope, children }: AeliqoScopeProps): React.JSX.Element {
+export function VarendoScope({ scope, children }: VarendoScopeProps): React.JSX.Element {
   useEffect(() => scope.attach(), [scope]);
   const subscribe = useCallback((listener: () => void) => scope.subscribe(listener), [scope]);
   const snapshot = useCallback(() => scope.getSnapshot(), [scope]);
@@ -25,26 +25,26 @@ export function AeliqoScope({ scope, children }: AeliqoScopeProps): React.JSX.El
     return <p role="status">{inactiveMessage(state.status)}</p>;
   }
   return (
-    <AeliqoScopeContext.Provider value={scope}>
+    <VarendoScopeContext.Provider value={scope}>
       <React.Fragment key={`${state.scopeInstanceId}:${state.activationEpoch}`}>{children}</React.Fragment>
-    </AeliqoScopeContext.Provider>
+    </VarendoScopeContext.Provider>
   );
 }
 
-export function useAeliqoScope(): ScopeController {
-  const scope = useContext(AeliqoScopeContext);
-  if (scope === undefined) throw new Error('Varendo surface hooks require an AeliqoScope.');
+export function useVarendoScope(): ScopeController {
+  const scope = useContext(VarendoScopeContext);
+  if (scope === undefined) throw new Error('Varendo surface hooks require an VarendoScope.');
   return scope;
 }
 
 /** Internal boundary check for providerless local helpers. */
-export function useOptionalAeliqoScope(): ScopeController | undefined {
-  return useContext(AeliqoScopeContext);
+export function useOptionalVarendoScope(): ScopeController | undefined {
+  return useContext(VarendoScopeContext);
 }
 
 /** Subscribes to an immutable host-owned scope snapshot with a narrow selector. */
-export function useAeliqoScopeState<T>(selector: (snapshot: ScopeSnapshot) => T): T {
-  const scope = useAeliqoScope();
+export function useVarendoScopeState<T>(selector: (snapshot: ScopeSnapshot) => T): T {
+  const scope = useVarendoScope();
   const subscribe = useCallback((listener: () => void) => scope.subscribe(listener), [scope]);
   const snapshot = useCallback(() => scope.getSnapshot(), [scope]);
   return useStoreSelector(subscribe, snapshot, selector);

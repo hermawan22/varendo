@@ -1,8 +1,8 @@
 import type { InteractionPayload, InteractionState, ResultRef } from '@varendo/core';
 import { materializedDataStatus } from '../data/shared.js';
-import type { AeliqoDataStatus } from '../data/types.js';
-import type { AeliqoDataResolvedNode } from './data-registry.js';
-import type { AeliqoDataHostRequestHandler, AeliqoDataRenderContext } from './data-renderer-types.js';
+import type { VarendoDataStatus } from '../data/types.js';
+import type { VarendoDataResolvedNode } from './data-registry.js';
+import type { VarendoDataHostRequestHandler, VarendoDataRenderContext } from './data-renderer-types.js';
 import { resultRefKey as refKey } from './registry-value.js';
 
 const RESULT_REF_KEYS = ['id', 'revision', 'sourceLineage', 'outputId', 'queryDigest', 'scopeDigest'] as const;
@@ -91,11 +91,11 @@ export function sameRef(left: ResultRef | undefined, right: ResultRef): boolean 
   }
 }
 
-export function statusFor(node: AeliqoDataResolvedNode): AeliqoDataStatus {
+export function statusFor(node: VarendoDataResolvedNode): VarendoDataStatus {
   return materializedDataStatus(node.result);
 }
 
-export function selectionPort(node: AeliqoDataResolvedNode, output = false) {
+export function selectionPort(node: VarendoDataResolvedNode, output = false) {
   try {
     return node.config.ports.find(
       (candidate) =>
@@ -108,7 +108,7 @@ export function selectionPort(node: AeliqoDataResolvedNode, output = false) {
   }
 }
 
-export function port(node: AeliqoDataResolvedNode, id: string, payload: InteractionPayload['kind']): boolean {
+export function port(node: VarendoDataResolvedNode, id: string, payload: InteractionPayload['kind']): boolean {
   try {
     return node.config.ports.some(
       (candidate) =>
@@ -123,7 +123,7 @@ export function port(node: AeliqoDataResolvedNode, id: string, payload: Interact
 
 /** Typed host requests have no core payload/port.  Their availability comes
  * from the validated component capability and an installed host callback. */
-export function hostOutput(context: AeliqoDataRenderContext): AeliqoDataHostRequestHandler | undefined {
+export function hostOutput(context: VarendoDataRenderContext): VarendoDataHostRequestHandler | undefined {
   try {
     return typeof context.onRequest === 'function' ? context.onRequest : undefined;
   } catch {
@@ -132,7 +132,7 @@ export function hostOutput(context: AeliqoDataRenderContext): AeliqoDataHostRequ
 }
 
 export function interactionPayload(
-  node: AeliqoDataResolvedNode,
+  node: VarendoDataResolvedNode,
   interaction: InteractionState | undefined,
   kind: 'selection' | 'filter',
   portId: string,

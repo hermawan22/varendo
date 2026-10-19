@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import { chromium } from '@playwright/test';
 
 test('real pixel comparator fails changed pixels, emits diff, and never updates reviewed image', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-pixel-test-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-pixel-test-'));
   const baseline = join(directory, 'baseline');
   const candidate = join(directory, 'candidate');
   await mkdir(join(baseline, 'nested'), { recursive: true });
@@ -21,9 +21,9 @@ test('real pixel comparator fails changed pixels, emits diff, and never updates 
     const args = ['exec', 'playwright', 'test', '--config', 'tests/visual/regression.compare.playwright.config.mjs'];
     const env = {
       ...process.env,
-      AELIQO_VISUAL_BASELINE: baseline,
-      AELIQO_VISUAL_CANDIDATE: candidate,
-      AELIQO_VISUAL_DIFF: join(directory, 'diff'),
+      VARENDO_VISUAL_BASELINE: baseline,
+      VARENDO_VISUAL_CANDIDATE: candidate,
+      VARENDO_VISUAL_DIFF: join(directory, 'diff'),
     };
     const matching = spawnSync('pnpm', args, { env, encoding: 'utf8' });
     assert.equal(matching.status, 0, matching.stdout + matching.stderr);

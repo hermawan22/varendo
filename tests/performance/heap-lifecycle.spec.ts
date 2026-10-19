@@ -70,8 +70,8 @@ type RuntimeCleanupSummary = Pick<RuntimeCleanup, 'cycles' | 'resources' | 'boun
 
 declare global {
   interface Window {
-    __aeliqoHeapLifecycle: HeapLifecyclePageApi | undefined;
-    __aeliqoHeapPositiveControl: { readonly strings: readonly string[]; readonly bytes: Uint8Array } | undefined;
+    __varendoHeapLifecycle: HeapLifecyclePageApi | undefined;
+    __varendoHeapPositiveControl: { readonly strings: readonly string[]; readonly bytes: Uint8Array } | undefined;
   }
 }
 
@@ -106,7 +106,7 @@ function byteDelta(left: number | null, right: number | null): number | null {
 async function openFixture(page: Page): Promise<void> {
   await page.goto(FIXTURE_PATH, { waitUntil: 'load' });
   await page.waitForFunction(
-    () => (window as Window & { aeliqoPerformance?: { ready: boolean } }).aeliqoPerformance?.ready === true,
+    () => (window as Window & { varendoPerformance?: { ready: boolean } }).varendoPerformance?.ready === true,
   );
 }
 
@@ -126,7 +126,7 @@ async function warmup(
       readonly runtimeCleanup: RuntimeCleanupSummary | null;
       readonly remainingChildren: number;
     }> => {
-      const api = (window as unknown as { aeliqoPerformance?: PerformanceApi }).aeliqoPerformance;
+      const api = (window as unknown as { varendoPerformance?: PerformanceApi }).varendoPerformance;
       if (api?.ready !== true) throw new Error('Performance workload API is unavailable.');
       const smallFixture = await api.smallStandalone();
       const runtimeCleanup = includeRuntimeProbe
@@ -152,7 +152,7 @@ async function installLifecycleTracker(page: Page): Promise<void> {
   await page.evaluate(() => {
     const root = document.querySelector<HTMLElement>('#fixture');
     if (root === null) throw new Error('Performance fixture root is missing.');
-    if (window.__aeliqoHeapLifecycle !== undefined) throw new Error('Heap lifecycle tracker is already installed.');
+    if (window.__varendoHeapLifecycle !== undefined) throw new Error('Heap lifecycle tracker is already installed.');
 
     const originalAdd = EventTarget.prototype.addEventListener;
     const originalRemove = EventTarget.prototype.removeEventListener;
@@ -208,13 +208,13 @@ async function installLifecycleTracker(page: Page): Promise<void> {
     };
 
     const domCounters = (): DomCounters => {
-      const components = root.querySelectorAll('aeliqo-text-field, aeliqo-table');
+      const components = root.querySelectorAll('varendo-text-field, varendo-table');
       return {
         rootChildren: root.children.length,
         componentCount: components.length,
-        inputCount: root.querySelectorAll('aeliqo-text-field').length,
-        tableCount: root.querySelectorAll('aeliqo-table').length,
-        documentComponentCount: document.querySelectorAll('aeliqo-text-field, aeliqo-table').length,
+        inputCount: root.querySelectorAll('varendo-text-field').length,
+        tableCount: root.querySelectorAll('varendo-table').length,
+        documentComponentCount: document.querySelectorAll('varendo-text-field, varendo-table').length,
       };
     };
 
@@ -230,12 +230,12 @@ async function installLifecycleTracker(page: Page): Promise<void> {
       let peakRenderedRows = 0;
       const disposalChecks: DomCounters[] = [];
       for (let cycle = 0; cycle < cycles; cycle += 1) {
-        const input = document.createElement('aeliqo-text-field') as HTMLElement & {
+        const input = document.createElement('varendo-text-field') as HTMLElement & {
           label: string;
           value: string;
           updateComplete: Promise<unknown>;
         };
-        const table = document.createElement('aeliqo-table') as HTMLElement & {
+        const table = document.createElement('varendo-table') as HTMLElement & {
           caption: string;
           columns: readonly { key: string; label: string }[];
           identity: readonly string[];
@@ -257,7 +257,7 @@ async function installLifecycleTracker(page: Page): Promise<void> {
         await Promise.all([input.updateComplete, table.updateComplete]);
         peakComponentCount = Math.max(
           peakComponentCount,
-          root.querySelectorAll('aeliqo-text-field, aeliqo-table').length,
+          root.querySelectorAll('varendo-text-field, varendo-table').length,
         );
         peakRenderedRows = Math.max(peakRenderedRows, table.shadowRoot?.querySelectorAll('tbody tr').length ?? 0);
         input.remove();
@@ -306,17 +306,17 @@ async function installLifecycleTracker(page: Page): Promise<void> {
       trackedTargets.clear();
       EventTarget.prototype.addEventListener = originalAdd;
       EventTarget.prototype.removeEventListener = originalRemove;
-      window.__aeliqoHeapLifecycle = undefined;
+      window.__varendoHeapLifecycle = undefined;
       return snapshot;
     };
 
-    window.__aeliqoHeapLifecycle = { runBatch, snapshotListeners, stop };
+    window.__varendoHeapLifecycle = { runBatch, snapshotListeners, stop };
   });
 }
 
 test('captures bounded component lifecycle heap evidence', async ({ page, browser }, testInfo) => {
   await openFixture(page);
-  const full = process.env.AELIQO_RUN_HEAP_LIFECYCLE === '1';
+  const full = process.env.VARENDO_RUN_HEAP_LIFECYCLE === '1';
   const batchCount = full ? FULL_BATCH_COUNT : DEFAULT_BATCH_COUNT;
   const warmupReport = await warmup(page, full);
   await installLifecycleTracker(page);
@@ -331,7 +331,7 @@ test('captures bounded component lifecycle heap evidence', async ({ page, browse
     label: string,
   ): Promise<{ readonly sample: HeapSample; readonly listeners: ListenerCounters | null }> => {
     await collectGarbage();
-    const listeners = await page.evaluate(() => window.__aeliqoHeapLifecycle?.snapshotListeners() ?? null);
+    const listeners = await page.evaluate(() => window.__varendoHeapLifecycle?.snapshotListeners() ?? null);
     const usage = parseHeapUsage(await client.send('Runtime.getHeapUsage'));
     return { sample: { ...usage, label, footprintBytes: heapFootprint(usage) }, listeners };
   };
@@ -356,7 +356,7 @@ test('captures bounded component lifecycle heap evidence', async ({ page, browse
     for (let batch = 1; batch <= batchCount; batch += 1) {
       const observation = await page.evaluate(
         async ({ cycles, batch: batchNumber }) => {
-          const tracker = window.__aeliqoHeapLifecycle;
+          const tracker = window.__varendoHeapLifecycle;
           if (tracker === undefined) throw new Error('Heap lifecycle tracker is unavailable.');
           return tracker.runBatch(cycles, batchNumber);
         },
@@ -373,12 +373,12 @@ test('captures bounded component lifecycle heap evidence', async ({ page, browse
       const strings = Array.from({ length: 131_072 }, (_, index) => `${index}:${'x'.repeat(64)}`);
       const bytes = new Uint8Array(8 * 1024 * 1024);
       bytes.fill(17);
-      window.__aeliqoHeapPositiveControl = { strings, bytes };
+      window.__varendoHeapPositiveControl = { strings, bytes };
       return { stringCount: strings.length, byteLength: bytes.byteLength };
     });
     const positiveControlHeld = (await readUsage('positive-control-held-after-gc')).sample;
     await page.evaluate(() => {
-      window.__aeliqoHeapPositiveControl = undefined;
+      window.__varendoHeapPositiveControl = undefined;
     });
     const positiveControlReleased = (await readUsage('positive-control-released-after-gc')).sample;
     await page.evaluate(() => document.querySelector<HTMLElement>('#fixture')?.replaceChildren());
@@ -386,14 +386,14 @@ test('captures bounded component lifecycle heap evidence', async ({ page, browse
       const root = document.querySelector<HTMLElement>('#fixture');
       return {
         rootChildren: root?.children.length ?? 0,
-        documentComponentCount: document.querySelectorAll('aeliqo-text-field, aeliqo-table').length,
+        documentComponentCount: document.querySelectorAll('varendo-text-field, varendo-table').length,
       };
     });
-    const finalListeners = await page.evaluate(() => window.__aeliqoHeapLifecycle?.stop() ?? null);
+    const finalListeners = await page.evaluate(() => window.__varendoHeapLifecycle?.stop() ?? null);
     const lastBatch = batchReports.at(-1);
     const report = {
-      schema: 'aeliqo.performance.heap-lifecycle.v1',
-      sourceCommit: process.env.AELIQO_SOURCE_COMMIT ?? 'unknown',
+      schema: 'varendo.performance.heap-lifecycle.v1',
+      sourceCommit: process.env.VARENDO_SOURCE_COMMIT ?? 'unknown',
       mode: full ? 'full-100-cycle' : 'functional-10-cycle',
       environment: {
         node: process.version,
@@ -408,7 +408,7 @@ test('captures bounded component lifecycle heap evidence', async ({ page, browse
         measuredCycles: batchCount * BATCH_SIZE,
         warmup: full
           ? 'The exported smallStandalone workload and mountDispose runtime cleanup probe run before the measured batches; their work is excluded from measured heap samples.'
-          : 'The exported smallStandalone workload runs before the measured batch; the full mountDispose runtime cleanup probe is opt-in with AELIQO_RUN_HEAP_LIFECYCLE=1.',
+          : 'The exported smallStandalone workload runs before the measured batch; the full mountDispose runtime cleanup probe is opt-in with VARENDO_RUN_HEAP_LIFECYCLE=1.',
         heapUsage: 'Chromium CDP Runtime.getHeapUsage',
         collection:
           'Chromium CDP HeapProfiler.collectGarbage requested before every heap sample; dead listener WeakRefs are pruned synchronously after collection and before Runtime.getHeapUsage.',

@@ -1,15 +1,15 @@
 import { html, css } from 'lit';
 import type { Result } from '@varendo/core';
 import type { VisualizationBindingContext, VisualizationSpec } from '@varendo/core/visualization';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../../foundation/base.js';
-import type { AeliqoVisualizationSelectionDetail, VisualizationDataset, VisualizationInputs } from '../types.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../../foundation/base.js';
+import type { VarendoVisualizationSelectionDetail, VisualizationDataset, VisualizationInputs } from '../types.js';
 import { compileTemporalVisualization } from './geometry.js';
 import type { TemporalGeometry } from './geometry.js';
 import { renderTemporalGeometry } from './render.js';
-import { AELIQO_WEB_VERSION } from '../../version.js';
+import { VARENDO_WEB_VERSION } from '../../version.js';
 export { compileTemporalVisualization } from './geometry.js';
 export type { TemporalGeometry, TimelineMark, CalendarDay } from './geometry.js';
-class AeliqoTemporalElement extends AeliqoFoundationElement implements VisualizationInputs {
+class VarendoTemporalElement extends VarendoFoundationElement implements VisualizationInputs {
   static readonly shadowRootOptions: ShadowRootInit = { mode: 'open', delegatesFocus: false };
   static readonly properties = {
     selectedIdentity: { type: String, attribute: 'selected-identity' },
@@ -24,14 +24,14 @@ class AeliqoTemporalElement extends AeliqoFoundationElement implements Visualiza
     page: { state: true },
   };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         container-type: inline-size;
         display: block;
         min-inline-size: 0;
         inline-size: 100%;
-        color: var(--aeliqo-color-text, #111827);
+        color: var(--varendo-color-text, #111827);
         max-inline-size: 100%;
       }
       figure {
@@ -59,7 +59,7 @@ class AeliqoTemporalElement extends AeliqoFoundationElement implements Visualiza
       td {
         text-align: start;
         padding: 0.5rem;
-        border-block-end: 1px solid var(--aeliqo-color-border, #64748b);
+        border-block-end: 1px solid var(--varendo-color-border, #64748b);
         overflow-wrap: anywhere;
       }
       [part='data'],
@@ -71,17 +71,17 @@ class AeliqoTemporalElement extends AeliqoFoundationElement implements Visualiza
       [part='viewport'] {
         direction: ltr;
       }
-      :host(aeliqo-timeline) [part='viewport'] {
+      :host(varendo-timeline) [part='viewport'] {
         /* Reserve text-scaled space without changing interval or tick coordinates. */
         padding-block: 1em;
       }
-      :host(aeliqo-timeline) svg {
+      :host(varendo-timeline) svg {
         overflow: visible;
       }
       button {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: var(--aeliqo-control-border-width, 0.0625rem) solid var(--aeliqo-color-border, #64748b);
-        color: var(--aeliqo-color-text, #111827);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: var(--varendo-control-border-width, 0.0625rem) solid var(--varendo-color-border, #64748b);
+        color: var(--varendo-color-text, #111827);
         font: inherit;
         white-space: nowrap;
         overflow-wrap: normal;
@@ -96,7 +96,7 @@ class AeliqoTemporalElement extends AeliqoFoundationElement implements Visualiza
       }
       svg {
         display: block;
-        color: var(--aeliqo-color-accent, #4338ca);
+        color: var(--varendo-color-accent, #4338ca);
         max-inline-size: none;
         block-size: auto;
       }
@@ -110,7 +110,7 @@ class AeliqoTemporalElement extends AeliqoFoundationElement implements Visualiza
         min-inline-size: 40rem;
       }
       .day {
-        border: 1px solid var(--aeliqo-color-border, #64748b);
+        border: 1px solid var(--varendo-color-border, #64748b);
         padding: 0.5rem;
         min-block-size: 5rem;
       }
@@ -123,7 +123,7 @@ class AeliqoTemporalElement extends AeliqoFoundationElement implements Visualiza
         font-size: 1rem;
       }
       button:focus-visible {
-        outline: 3px solid var(--aeliqo-color-focus, #4338ca);
+        outline: 3px solid var(--varendo-color-focus, #4338ca);
       }
       @container (max-width: 30rem) {
         svg text {
@@ -166,7 +166,7 @@ class AeliqoTemporalElement extends AeliqoFoundationElement implements Visualiza
           gap: 0.75rem;
         }
         :is(.timeline, .calendar-grid) tr {
-          border-block-end: 1px solid var(--aeliqo-color-border, #64748b);
+          border-block-end: 1px solid var(--varendo-color-border, #64748b);
           display: block;
           padding-block: 0.25rem;
         }
@@ -270,7 +270,7 @@ class AeliqoTemporalElement extends AeliqoFoundationElement implements Visualiza
 
   private select(identity: string, result: Result['ref']): void {
     if (!this.selectionEnabled) return;
-    const event = new CustomEvent<AeliqoVisualizationSelectionDetail>('aeliqo-visualization-select', {
+    const event = new CustomEvent<VarendoVisualizationSelectionDetail>('varendo-visualization-select', {
       bubbles: true,
       composed: true,
       cancelable: true,
@@ -279,13 +279,13 @@ class AeliqoTemporalElement extends AeliqoFoundationElement implements Visualiza
     if (this.dispatchEvent(event)) this.selectedIdentity = identity;
   }
 }
-export class AeliqoMatrixElement extends AeliqoTemporalElement {
+export class VarendoMatrixElement extends VarendoTemporalElement {
   protected override readonly view = 'matrix' as const;
 }
-export class AeliqoTimelineElement extends AeliqoTemporalElement {
+export class VarendoTimelineElement extends VarendoTemporalElement {
   protected override readonly view = 'timeline' as const;
 }
-export class AeliqoCalendarGridElement extends AeliqoTemporalElement {
+export class VarendoCalendarGridElement extends VarendoTemporalElement {
   protected override readonly view = 'calendar-grid' as const;
 }
 
@@ -294,13 +294,13 @@ export function defineTemporalElements(registry?: CustomElementRegistry): void {
   const target = registry ?? globalThis.customElements;
   if (target === undefined) throw new Error('Temporal visualization elements require a CustomElementRegistry.');
   for (const [tag, element] of [
-    ['aeliqo-matrix', AeliqoMatrixElement],
-    ['aeliqo-timeline', AeliqoTimelineElement],
-    ['aeliqo-calendar-grid', AeliqoCalendarGridElement],
+    ['varendo-matrix', VarendoMatrixElement],
+    ['varendo-timeline', VarendoTimelineElement],
+    ['varendo-calendar-grid', VarendoCalendarGridElement],
   ] as const) {
     const current = target.get(tag);
     if (current === undefined) target.define(tag, element);
-    else if (current !== element && (current as typeof element).aeliqoVersion !== AELIQO_WEB_VERSION)
+    else if (current !== element && (current as typeof element).varendoVersion !== VARENDO_WEB_VERSION)
       throw new Error(`Cannot register ${tag}: an incompatible custom element is already defined.`);
   }
 }

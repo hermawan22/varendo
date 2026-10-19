@@ -1,84 +1,84 @@
 import React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import {
-  AeliqoDialogElement,
-  AeliqoDrawerElement,
-  AeliqoPopoverElement,
-  AeliqoTooltipElement,
-  AeliqoAlertElement,
-  AeliqoToastElement,
-  AeliqoProgressElement,
-  AeliqoSkeletonElement,
-  AeliqoEmptyStateElement,
+  VarendoDialogElement,
+  VarendoDrawerElement,
+  VarendoPopoverElement,
+  VarendoTooltipElement,
+  VarendoAlertElement,
+  VarendoToastElement,
+  VarendoProgressElement,
+  VarendoSkeletonElement,
+  VarendoEmptyStateElement,
 } from '@varendo/web/feedback';
 type UserEvent<T> = CustomEvent<Readonly<T & { source: 'user' }>>;
-export const AeliqoDialog = createComponent({
+export const VarendoDialog = createComponent({
   react: React,
-  tagName: 'aeliqo-dialog',
-  elementClass: AeliqoDialogElement,
-  events: { onClose: 'aeliqo-dialog-close' as EventName<UserEvent<{}>> },
-  displayName: 'AeliqoDialog',
+  tagName: 'varendo-dialog',
+  elementClass: VarendoDialogElement,
+  events: { onClose: 'varendo-dialog-close' as EventName<UserEvent<{}>> },
+  displayName: 'VarendoDialog',
 });
-export const AeliqoDrawer = createComponent({
+export const VarendoDrawer = createComponent({
   react: React,
-  tagName: 'aeliqo-drawer',
-  elementClass: AeliqoDrawerElement,
-  events: { onClose: 'aeliqo-drawer-close' as EventName<UserEvent<{}>> },
-  displayName: 'AeliqoDrawer',
+  tagName: 'varendo-drawer',
+  elementClass: VarendoDrawerElement,
+  events: { onClose: 'varendo-drawer-close' as EventName<UserEvent<{}>> },
+  displayName: 'VarendoDrawer',
 });
-export const AeliqoPopover = createComponent({
+export const VarendoPopover = createComponent({
   react: React,
-  tagName: 'aeliqo-popover',
-  elementClass: AeliqoPopoverElement,
-  events: { onClose: 'aeliqo-popover-close' as EventName<UserEvent<{}>> },
-  displayName: 'AeliqoPopover',
+  tagName: 'varendo-popover',
+  elementClass: VarendoPopoverElement,
+  events: { onClose: 'varendo-popover-close' as EventName<UserEvent<{}>> },
+  displayName: 'VarendoPopover',
 });
-export const AeliqoTooltip = createComponent({
+export const VarendoTooltip = createComponent({
   react: React,
-  tagName: 'aeliqo-tooltip',
-  elementClass: AeliqoTooltipElement,
+  tagName: 'varendo-tooltip',
+  elementClass: VarendoTooltipElement,
   events: {},
-  displayName: 'AeliqoTooltip',
+  displayName: 'VarendoTooltip',
 });
-export const AeliqoAlert = createComponent({
+export const VarendoAlert = createComponent({
   react: React,
-  tagName: 'aeliqo-alert',
-  elementClass: AeliqoAlertElement,
+  tagName: 'varendo-alert',
+  elementClass: VarendoAlertElement,
   events: {
-    onDismiss: 'aeliqo-alert-dismiss' as EventName<UserEvent<{}>>,
-    onAction: 'aeliqo-alert-action' as EventName<UserEvent<{}>>,
+    onDismiss: 'varendo-alert-dismiss' as EventName<UserEvent<{}>>,
+    onAction: 'varendo-alert-action' as EventName<UserEvent<{}>>,
   },
-  displayName: 'AeliqoAlert',
+  displayName: 'VarendoAlert',
 });
-export const AeliqoToast = createComponent({
+export const VarendoToast = createComponent({
   react: React,
-  tagName: 'aeliqo-toast',
-  elementClass: AeliqoToastElement,
-  events: { onDismiss: 'aeliqo-toast-dismiss' as EventName<UserEvent<{}>> },
-  displayName: 'AeliqoToast',
+  tagName: 'varendo-toast',
+  elementClass: VarendoToastElement,
+  events: { onDismiss: 'varendo-toast-dismiss' as EventName<UserEvent<{}>> },
+  displayName: 'VarendoToast',
 });
-export const AeliqoProgress = createComponent({
+export const VarendoProgress = createComponent({
   react: React,
-  tagName: 'aeliqo-progress',
-  elementClass: AeliqoProgressElement,
+  tagName: 'varendo-progress',
+  elementClass: VarendoProgressElement,
   events: {},
-  displayName: 'AeliqoProgress',
+  displayName: 'VarendoProgress',
 });
-export const AeliqoSkeleton = createComponent({
+export const VarendoSkeleton = createComponent({
   react: React,
-  tagName: 'aeliqo-skeleton',
-  elementClass: AeliqoSkeletonElement,
+  tagName: 'varendo-skeleton',
+  elementClass: VarendoSkeletonElement,
   events: {},
-  displayName: 'AeliqoSkeleton',
+  displayName: 'VarendoSkeleton',
 });
-export const AeliqoEmptyState = createComponent({
+export const VarendoEmptyState = createComponent({
   react: React,
-  tagName: 'aeliqo-empty-state',
-  elementClass: AeliqoEmptyStateElement,
+  tagName: 'varendo-empty-state',
+  elementClass: VarendoEmptyStateElement,
   events: {
-    onAction: 'aeliqo-empty-state-action' as EventName<
-      UserEvent<{ kind: import('@varendo/web/feedback').AeliqoEmptyStateKind }>
+    onAction: 'varendo-empty-state-action' as EventName<
+      UserEvent<{ kind: import('@varendo/web/feedback').VarendoEmptyStateKind }>
     >,
   },
-  displayName: 'AeliqoEmptyState',
+  displayName: 'VarendoEmptyState',
 });

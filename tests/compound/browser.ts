@@ -1,8 +1,8 @@
-import { registerAeliqoElements } from '../../packages/web/src/index.js';
+import { registerVarendoElements } from '../../packages/web/src/index.js';
 import { defineCompoundElements } from '../../packages/web/src/compound/index.js';
 import type { ResultRef, VisualizationSpec } from '../../packages/core/src/index.js';
 
-registerAeliqoElements();
+registerVarendoElements();
 defineCompoundElements();
 
 const ref: ResultRef = {
@@ -55,37 +55,37 @@ const trendResult = {
 };
 const fixture = document.querySelector<HTMLElement>('#fixture')!;
 const events: { readonly type: string; readonly detail: unknown }[] = [];
-fixture.addEventListener('aeliqo-explorer-filter', (event) =>
+fixture.addEventListener('varendo-explorer-filter', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-explorer-selection', (event) =>
+fixture.addEventListener('varendo-explorer-selection', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-comparison-set', (event) =>
+fixture.addEventListener('varendo-comparison-set', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-breakdown-group', (event) =>
+fixture.addEventListener('varendo-breakdown-group', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-search-results-selection', (event) =>
+fixture.addEventListener('varendo-search-results-selection', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-record-editor-save', (event) =>
+fixture.addEventListener('varendo-record-editor-save', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-record-editor-cancel', (event) =>
+fixture.addEventListener('varendo-record-editor-cancel', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
-fixture.addEventListener('aeliqo-form-flow-step', (event) => {
+fixture.addEventListener('varendo-form-flow-step', (event) => {
   const detail = (event as CustomEvent).detail as { to: string };
   events.push({ type: event.type, detail });
   flow.activeStep = detail.to;
 });
-fixture.addEventListener('aeliqo-form-flow-commit', (event) =>
+fixture.addEventListener('varendo-form-flow-commit', (event) =>
   events.push({ type: event.type, detail: (event as CustomEvent).detail }),
 );
 
-const explorer = document.createElement('aeliqo-explorer') as any;
+const explorer = document.createElement('varendo-explorer') as any;
 explorer.id = 'explorer';
 Object.assign(explorer, {
   fields,
@@ -100,7 +100,7 @@ Object.assign(explorer, {
 });
 fixture.append(explorer);
 
-const comparison = document.createElement('aeliqo-comparison') as any;
+const comparison = document.createElement('varendo-comparison') as any;
 comparison.id = 'comparison';
 Object.assign(comparison, {
   compareSet: [
@@ -129,7 +129,7 @@ Object.assign(comparison, {
 });
 fixture.append(comparison);
 
-const breakdown = document.createElement('aeliqo-breakdown') as any;
+const breakdown = document.createElement('varendo-breakdown') as any;
 breakdown.id = 'breakdown';
 Object.assign(breakdown, {
   groups: [{ key: 'north', label: 'North', value: { decimal: '0.25' }, displayValue: '25%', recordCount: 1 }],
@@ -142,7 +142,7 @@ Object.assign(breakdown, {
 });
 fixture.append(breakdown);
 
-const investigation = document.createElement('aeliqo-investigation') as any;
+const investigation = document.createElement('varendo-investigation') as any;
 investigation.id = 'investigation';
 Object.assign(investigation, {
   entity: 'person',
@@ -154,7 +154,7 @@ Object.assign(investigation, {
 });
 fixture.append(investigation);
 
-const search = document.createElement('aeliqo-search-results') as any;
+const search = document.createElement('varendo-search-results') as any;
 search.id = 'search';
 Object.assign(search, {
   query: 'Ada',
@@ -169,12 +169,12 @@ Object.assign(search, {
 });
 fixture.append(search);
 
-const editor = document.createElement('aeliqo-record-editor') as any;
+const editor = document.createElement('varendo-record-editor') as any;
 editor.id = 'editor';
 Object.assign(editor, { entity: 'person', entityKey: 'a', entityRevision: 'rev-1' });
-const editorField = document.createElement('aeliqo-text-field') as any;
+const editorField = document.createElement('varendo-text-field') as any;
 Object.assign(editorField, { name: 'name', label: 'Name', required: true, value: 'Ada' });
-const editorRange = document.createElement('aeliqo-date-range') as any;
+const editorRange = document.createElement('varendo-date-range') as any;
 Object.assign(editorRange, { name: 'period', label: 'Period', start: '2026-09-01', end: '2026-09-08' });
 for (const [name, value] of [
   ['tags', 'first'],
@@ -198,7 +198,7 @@ editor.append(editorField, editorRange);
 fixture.append(editor);
 editorRange.requestUpdate();
 
-const flow = document.createElement('aeliqo-form-flow') as any;
+const flow = document.createElement('varendo-form-flow') as any;
 flow.id = 'flow';
 Object.assign(flow, {
   steps: [
@@ -210,7 +210,7 @@ Object.assign(flow, {
 flow.draft = { draftOnly: 'old' };
 const one = document.createElement('div');
 one.slot = 'step-one';
-const oneField = document.createElement('aeliqo-text-field') as any;
+const oneField = document.createElement('varendo-text-field') as any;
 Object.assign(oneField, { name: 'displayName', label: 'Display name', required: true });
 one.append(oneField);
 const two = document.createElement('div');
@@ -267,14 +267,14 @@ for (const value of ['red', 'blue']) {
   tags.append(option);
 }
 two.append(tags);
-const flowRange = document.createElement('aeliqo-date-range') as any;
+const flowRange = document.createElement('varendo-date-range') as any;
 Object.assign(flowRange, { name: 'window', label: 'Window', start: '2026-09-02', end: '2026-09-09' });
 two.append(flowRange);
 flow.append(one, two);
 fixture.append(flow);
 flowRange.requestUpdate();
 
-const quality = document.createElement('aeliqo-quality-panel') as any;
+const quality = document.createElement('varendo-quality-panel') as any;
 quality.id = 'quality';
 Object.assign(quality, {
   source: 'CRM',

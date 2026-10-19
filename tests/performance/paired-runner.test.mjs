@@ -55,7 +55,7 @@ function blob(text) {
   return createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex');
 }
 test('archive provenance hashes actual bytes and rejects edited, missing, or escaping source', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'aeliqo-perf-source-'));
+  const root = await mkdtemp(join(tmpdir(), 'varendo-perf-source-'));
   const entry = { path: 'source.txt', mode: '100644', oid: blob('source') };
   const manifest = { sourceSHA: 'a'.repeat(40), entries: [entry] };
   await writeFile(join(root, entry.path), 'source');
@@ -66,7 +66,7 @@ test('archive provenance hashes actual bytes and rejects edited, missing, or esc
   await assert.rejects(verifyArchive(root, { ...manifest, entries: [{ ...entry, path: '../escape.txt' }] }));
 });
 test('archive environment alone is not source proof and guard rechecks tree bytes', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'aeliqo-perf-guard-'));
+  const root = await mkdtemp(join(tmpdir(), 'varendo-perf-guard-'));
   await mkdir(join(root, 'artifacts'));
   await writeFile(join(root, 'source.txt'), 'source');
   const manifestPath = join(root, 'artifacts/source.json');
@@ -79,13 +79,13 @@ test('archive environment alone is not source proof and guard rechecks tree byte
   );
   await assert.rejects(
     createSourceGuard(root, {
-      AELIQO_SOURCE_COMMIT: 'a'.repeat(40),
-      AELIQO_SOURCE_ARCHIVE_MANIFEST: join(root, 'absent.json'),
+      VARENDO_SOURCE_COMMIT: 'a'.repeat(40),
+      VARENDO_SOURCE_ARCHIVE_MANIFEST: join(root, 'absent.json'),
     }),
   );
   const guard = await createSourceGuard(root, {
-    AELIQO_SOURCE_COMMIT: 'a'.repeat(40),
-    AELIQO_SOURCE_ARCHIVE_MANIFEST: manifestPath,
+    VARENDO_SOURCE_COMMIT: 'a'.repeat(40),
+    VARENDO_SOURCE_ARCHIVE_MANIFEST: manifestPath,
   });
   assert.equal(await guard.current(), true);
   await writeFile(join(root, 'source.txt'), 'altered');
@@ -149,8 +149,8 @@ test('planner timing is diagnostic while remaining budgets and exact source repo
 
 test('paired config preserves each workload and removes only the orchestrator-owned platform build', async () => {
   const { pairedConfig } = await import('../../scripts/performance/config.mjs');
-  const before = process.env.AELIQO_PERFORMANCE_PAIR_OUTPUT;
-  process.env.AELIQO_PERFORMANCE_PAIR_OUTPUT = '/tmp/aeliqo-paired-config';
+  const before = process.env.VARENDO_PERFORMANCE_PAIR_OUTPUT;
+  process.env.VARENDO_PERFORMANCE_PAIR_OUTPUT = '/tmp/varendo-paired-config';
   try {
     const base = {
       testMatch: 'workload.spec.ts',
@@ -164,15 +164,15 @@ test('paired config preserves each workload and removes only the orchestrator-ow
     assert.equal(config.retries, 0);
     assert.throws(() => pairedConfig({ ...base, webServer: { command: 'different' } }, 'layout'));
   } finally {
-    if (before === undefined) delete process.env.AELIQO_PERFORMANCE_PAIR_OUTPUT;
-    else process.env.AELIQO_PERFORMANCE_PAIR_OUTPUT = before;
+    if (before === undefined) delete process.env.VARENDO_PERFORMANCE_PAIR_OUTPUT;
+    else process.env.VARENDO_PERFORMANCE_PAIR_OUTPUT = before;
   }
 });
 
 test('real gate fails closed while budget is unapproved and never rewrites approval metadata', async () => {
   const { spawnSync } = await import('node:child_process');
   const { readFile } = await import('node:fs/promises');
-  const root = await mkdtemp(join(tmpdir(), 'aeliqo-perf-unapproved-'));
+  const root = await mkdtemp(join(tmpdir(), 'varendo-perf-unapproved-'));
   await mkdir(join(root, 'scripts/performance'), { recursive: true });
   const path = join(root, 'scripts/performance/budget.json');
   const before = JSON.stringify({ status: 'unapproved' });

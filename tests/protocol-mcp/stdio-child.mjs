@@ -42,8 +42,8 @@ const endpoint = () => ({
 
 createMcpStdioServer({
   createEndpoint: () => endpoint(),
-  name: 'aeliqo-stdio-fixture',
+  name: 'varendo-stdio-fixture',
   version: '0.0.0-test',
   maxBufferSize:
-    process.env.AELIQO_MCP_MAX_BUFFER === undefined ? undefined : Number(process.env.AELIQO_MCP_MAX_BUFFER),
+    process.env.VARENDO_MCP_MAX_BUFFER === undefined ? undefined : Number(process.env.VARENDO_MCP_MAX_BUFFER),
 });

@@ -67,7 +67,7 @@ test('quality policy accepts automatic main and pull-request checks plus an exac
 test('quality dispatch rejects a wrong actor and a fork', () => {
   assert.notEqual(runPolicy({ ACTOR: 'someone-else' }).status, 0);
   assert.notEqual(runPolicy({ TRIGGERING_ACTOR: 'someone-else' }).status, 0);
-  assert.notEqual(runPolicy({ REPOSITORY: 'someone/aeliqo' }).status, 0);
+  assert.notEqual(runPolicy({ REPOSITORY: 'someone/varendo' }).status, 0);
 });
 
 test('quality dispatch rejects wrong and malformed candidate SHAs', () => {
@@ -88,7 +88,7 @@ test('quality dispatch retains the workflow trust and release boundaries', () =>
     workflow,
     /- name: Run required functional, security, browser, and package checks\n\s+if: needs\.scope\.outputs\.mode == 'full'\n\s+run: python3 scripts\/quality\.py --merge 4/,
   );
-  assert.match(workflow, /name: aeliqo-quality-evidence-\$\{\{ env\.SOURCE_SHA \}\}/);
+  assert.match(workflow, /name: varendo-quality-evidence-\$\{\{ env\.SOURCE_SHA \}\}/);
   assert.match(workflow, /artifacts\/product-ci/);
   assert.match(workflow, /artifacts\/performance-bundles/);
   assert.ok(
@@ -130,9 +130,9 @@ test('image publication preserves same-source quality evidence after checkout', 
   assert.match(imageWorkflow, /verify-approved-stable\.mjs/);
   assert.match(imageWorkflow, /registry-consumer\.mjs --version "\$RELEASE_VERSION"/);
   assert.match(imageWorkflow, /verify-export-registry\.mjs/);
-  assert.match(imageWorkflow, /AELIQO_EXPORT_VERIFIED_VERSION=\$RELEASE_VERSION/);
-  assert.match(imageScript, /test "\$AELIQO_EXPORT_VERIFIED_VERSION" = "\$release_version"/);
-  assert.match(imageScript, /--build-arg "AELIQO_EXPORT_VERIFIED_VERSION=\$AELIQO_EXPORT_VERIFIED_VERSION"/);
+  assert.match(imageWorkflow, /VARENDO_EXPORT_VERIFIED_VERSION=\$RELEASE_VERSION/);
+  assert.match(imageScript, /test "\$VARENDO_EXPORT_VERIFIED_VERSION" = "\$release_version"/);
+  assert.match(imageScript, /--build-arg "VARENDO_EXPORT_VERIFIED_VERSION=\$VARENDO_EXPORT_VERIFIED_VERSION"/);
   assert.match(imageScript, /export-consumer\.json/);
   assert.match(releaseWorkflow, /-f event=push -f status=success/);
 });

@@ -1,6 +1,6 @@
 {
   "name": "@varendo/web",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hermawan22/varendo.git",
@@ -42,12 +42,12 @@
       "import": "./dist/server.js"
     },
     "./table": {
-      "types": "./dist/elements/aeliqo-table.d.ts",
-      "import": "./dist/elements/aeliqo-table.js"
+      "types": "./dist/elements/varendo-table.d.ts",
+      "import": "./dist/elements/varendo-table.js"
     },
     "./chart": {
-      "types": "./dist/elements/aeliqo-chart.d.ts",
-      "import": "./dist/elements/aeliqo-chart.js"
+      "types": "./dist/elements/varendo-chart.d.ts",
+      "import": "./dist/elements/varendo-chart.js"
     },
     "./styles": {
       "types": "./dist/styles/index.d.ts",
@@ -416,7 +416,7 @@
     "@varendo/runtime": "workspace:*"
   },
   "peerDependencies": {
-    "@varendo/runtime": "0.1.0"
+    "@varendo/runtime": "0.2.0"
   },
   "peerDependenciesMeta": {
     "@varendo/runtime": {

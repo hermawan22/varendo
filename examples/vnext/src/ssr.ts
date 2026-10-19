@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { renderAeliqo } from '@varendo/web/server';
+import { renderVarendo } from '@varendo/web/server';
 
 type Direction = 'ltr' | 'rtl';
 type Theme = 'light' | 'dark';
@@ -53,8 +53,8 @@ export async function renderSsrPeoplePage(request: SsrPeopleRequest): Promise<st
   const snapshot = createPublicPeopleSnapshot(request.principal);
   const direction = directionFor(request.direction);
   const theme = themeFor(request.theme);
-  const table = await renderAeliqo(html`
-    <aeliqo-table caption="People visible to this request" .columns=${columns} .rows=${snapshot.rows}></aeliqo-table>
+  const table = await renderVarendo(html`
+    <varendo-table caption="People visible to this request" .columns=${columns} .rows=${snapshot.rows}></varendo-table>
   `);
   const publicState = JSON.stringify({ columns, rows: snapshot.rows }).replaceAll('<', '\\u003c');
 

@@ -1,20 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import { html } from 'lit';
-import { renderAeliqo } from '../../packages/web/src/server.js';
-import { AeliqoAlertElement } from '../../packages/web/src/feedback/alert.js';
-import { AeliqoDialogElement } from '../../packages/web/src/feedback/dialog.js';
-import { AeliqoDrawerElement } from '../../packages/web/src/feedback/drawer.js';
-import { AeliqoEmptyStateElement } from '../../packages/web/src/feedback/empty-state.js';
-import { AeliqoPopoverElement } from '../../packages/web/src/feedback/popover.js';
-import { AeliqoProgressElement } from '../../packages/web/src/feedback/progress.js';
-import { AeliqoSkeletonElement } from '../../packages/web/src/feedback/skeleton.js';
-import { AeliqoToastElement } from '../../packages/web/src/feedback/toast.js';
-import { AeliqoTooltipElement } from '../../packages/web/src/feedback/tooltip.js';
-import { AeliqoBreadcrumbElement } from '../../packages/web/src/navigation/breadcrumb.js';
-import { AeliqoMenuElement } from '../../packages/web/src/navigation/menu.js';
-import { AeliqoPaginationElement } from '../../packages/web/src/navigation/pagination.js';
-import { AeliqoTabsElement } from '../../packages/web/src/navigation/tabs.js';
-import { AeliqoTreeNavElement } from '../../packages/web/src/navigation/tree-nav.js';
+import { renderVarendo } from '../../packages/web/src/server.js';
+import { VarendoAlertElement } from '../../packages/web/src/feedback/alert.js';
+import { VarendoDialogElement } from '../../packages/web/src/feedback/dialog.js';
+import { VarendoDrawerElement } from '../../packages/web/src/feedback/drawer.js';
+import { VarendoEmptyStateElement } from '../../packages/web/src/feedback/empty-state.js';
+import { VarendoPopoverElement } from '../../packages/web/src/feedback/popover.js';
+import { VarendoProgressElement } from '../../packages/web/src/feedback/progress.js';
+import { VarendoSkeletonElement } from '../../packages/web/src/feedback/skeleton.js';
+import { VarendoToastElement } from '../../packages/web/src/feedback/toast.js';
+import { VarendoTooltipElement } from '../../packages/web/src/feedback/tooltip.js';
+import { VarendoBreadcrumbElement } from '../../packages/web/src/navigation/breadcrumb.js';
+import { VarendoMenuElement } from '../../packages/web/src/navigation/menu.js';
+import { VarendoPaginationElement } from '../../packages/web/src/navigation/pagination.js';
+import { VarendoTabsElement } from '../../packages/web/src/navigation/tabs.js';
+import { VarendoTreeNavElement } from '../../packages/web/src/navigation/tree-nav.js';
 import { createPresentationRegistry, validatePresentationPlan } from '../../packages/core/src/presentation/index.js';
 import {
   navigationFeedbackPresentationContext,
@@ -23,20 +23,20 @@ import {
 } from './fixtures.js';
 
 const registrations: readonly [string, CustomElementConstructor][] = [
-  ['aeliqo-alert', AeliqoAlertElement],
-  ['aeliqo-dialog', AeliqoDialogElement],
-  ['aeliqo-drawer', AeliqoDrawerElement],
-  ['aeliqo-empty-state', AeliqoEmptyStateElement],
-  ['aeliqo-popover', AeliqoPopoverElement],
-  ['aeliqo-progress', AeliqoProgressElement],
-  ['aeliqo-skeleton', AeliqoSkeletonElement],
-  ['aeliqo-toast', AeliqoToastElement],
-  ['aeliqo-tooltip', AeliqoTooltipElement],
-  ['aeliqo-breadcrumb', AeliqoBreadcrumbElement],
-  ['aeliqo-menu', AeliqoMenuElement],
-  ['aeliqo-pagination', AeliqoPaginationElement],
-  ['aeliqo-tabs', AeliqoTabsElement],
-  ['aeliqo-tree-nav', AeliqoTreeNavElement],
+  ['varendo-alert', VarendoAlertElement],
+  ['varendo-dialog', VarendoDialogElement],
+  ['varendo-drawer', VarendoDrawerElement],
+  ['varendo-empty-state', VarendoEmptyStateElement],
+  ['varendo-popover', VarendoPopoverElement],
+  ['varendo-progress', VarendoProgressElement],
+  ['varendo-skeleton', VarendoSkeletonElement],
+  ['varendo-toast', VarendoToastElement],
+  ['varendo-tooltip', VarendoTooltipElement],
+  ['varendo-breadcrumb', VarendoBreadcrumbElement],
+  ['varendo-menu', VarendoMenuElement],
+  ['varendo-pagination', VarendoPaginationElement],
+  ['varendo-tabs', VarendoTabsElement],
+  ['varendo-tree-nav', VarendoTreeNavElement],
 ];
 
 function checkedPresentation(value = navigationFeedbackPresentationPlan()) {
@@ -65,18 +65,18 @@ describe('navigation and feedback region SSR', () => {
     };
     const second = checkedPresentation(secondPlan);
     const [firstMarkup, secondMarkup] = await Promise.all([
-      renderAeliqo(html`<aeliqo-region .presentation=${first}></aeliqo-region>`),
-      renderAeliqo(html`<aeliqo-region .presentation=${second}></aeliqo-region>`),
+      renderVarendo(html`<varendo-region .presentation=${first}></varendo-region>`),
+      renderVarendo(html`<varendo-region .presentation=${second}></varendo-region>`),
     ]);
-    expect(firstMarkup).toContain('aeliqo-breadcrumb');
+    expect(firstMarkup).toContain('varendo-breadcrumb');
     expect(firstMarkup).toContain('Home');
-    expect(secondMarkup).toContain('aeliqo-menu');
+    expect(secondMarkup).toContain('varendo-menu');
     expect(secondMarkup).toContain('Actions');
     expect(firstMarkup).toMatch(/aria-selected="true"[^>]*aria-controls="[^"]*breadcrumb/);
     expect(secondMarkup).toMatch(/aria-selected="true"[^>]*aria-controls="[^"]*menu/);
     expect(firstMarkup).toContain('shadowrootmode="open"');
     expect(secondMarkup).toContain('shadowrootmode="open"');
-    expect(firstMarkup).toContain('aeliqo-dialog');
-    expect(secondMarkup).toContain('aeliqo-dialog');
+    expect(firstMarkup).toContain('varendo-dialog');
+    expect(secondMarkup).toContain('varendo-dialog');
   });
 });

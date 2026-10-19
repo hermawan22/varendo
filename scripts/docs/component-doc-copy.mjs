@@ -187,222 +187,222 @@ export function propertyDescription(property) {
 }
 
 const EVENT_COPY = Object.freeze({
-  'aeliqo-action': [
+  'varendo-action': [
     '`{source, action, type}`',
     'After a user activates the button or link.',
     'Authorize the action, perform the effect, and update pending or navigation state.',
   ],
-  'aeliqo-alert-action': [
+  'varendo-alert-action': [
     'The configured alert action identifier.',
     'After the user activates the alert action.',
     'Authorize and perform the action, then update or dismiss the alert.',
   ],
-  'aeliqo-alert-dismiss': [
+  'varendo-alert-dismiss': [
     'Dismissal context for the current alert.',
     'After the user requests dismissal.',
     'Remove or retain the alert according to application policy.',
   ],
-  'aeliqo-breakdown-group': [
+  'varendo-breakdown-group': [
     'The selected stable group key.',
     'After the user selects a breakdown row.',
     'Validate the group against the current result and update the controlled selection.',
   ],
-  'aeliqo-card-selection': [
+  'varendo-card-selection': [
     'Stable selected identity keys plus result lineage.',
     'After card selection changes.',
     'Validate scope and identity, then update `selectedKeys`.',
   ],
-  'aeliqo-combobox-query': [
+  'varendo-combobox-query': [
     '`{source, query}`',
     'While the user edits the combobox query.',
     'Cancel obsolete loads, fetch authorized bounded options, and update `options`.',
   ],
-  'aeliqo-comparison-set': [
+  'varendo-comparison-set': [
     'The proposed bounded comparison identity set.',
     'After the user changes compared records.',
     'Validate compatible identities and update the controlled comparison set.',
   ],
-  'aeliqo-data-load-more': [
+  'varendo-data-load-more': [
     '`{requested: true}`',
     'After the user requests the next bounded card page.',
     'Fetch the next authorized page and update rows, `hasMore`, and `loadingMore`.',
   ],
-  'aeliqo-data-selection': [
+  'varendo-data-selection': [
     'Stable selected identity keys and lineage.',
     'After a child data surface changes selection.',
     'Validate identity and scope before updating host selection state.',
   ],
-  'aeliqo-dialog-close': [
+  'varendo-dialog-close': [
     'The close reason supplied by the dialog.',
     'After Escape, a close control, or an allowed dismissal.',
     'Set `open` to false and restore focus to the opener.',
   ],
-  'aeliqo-drawer-close': [
+  'varendo-drawer-close': [
     'The close reason supplied by the drawer.',
     'After Escape or a close control.',
     'Set `open` to false and restore focus to the opener.',
   ],
-  'aeliqo-empty-state-action': [
+  'varendo-empty-state-action': [
     'The configured recovery action.',
     'After the user activates the empty-state action.',
     'Run the registered recovery path and update the surrounding data state.',
   ],
-  'aeliqo-explorer-filter': [
+  'varendo-explorer-filter': [
     'The proposed validated predicate.',
     'After the explorer filter is applied.',
     'Evaluate the predicate in the host and replace rows/result evidence.',
   ],
-  'aeliqo-explorer-selection': [
+  'varendo-explorer-selection': [
     'The selected stable identity key.',
     'After explorer selection changes.',
     'Load authorized detail evidence and update controlled selection.',
   ],
-  'aeliqo-file-change': [
+  'varendo-file-change': [
     '`{source, files}` with file metadata only.',
     'After the native picker selection changes.',
     'Validate metadata, obtain file content from the trusted host path, and own any upload.',
   ],
-  'aeliqo-filter-change': [
+  'varendo-filter-change': [
     'The typed predicate and filter state.',
     'After Apply, or after a valid change when auto-apply is enabled.',
     'Validate and evaluate the predicate, then update rows and Result evidence.',
   ],
-  'aeliqo-form-flow-commit': [
+  'varendo-form-flow-commit': [
     'The current draft, validation evidence, and step context.',
     'After the user commits the final valid step.',
     'Authorize and execute the registered action; report pending, success, or failure.',
   ],
-  'aeliqo-form-flow-step': [
+  'varendo-form-flow-step': [
     'The proposed next step ID and current draft.',
     'After Back or Next is activated.',
     'Validate the draft and update `activeStep` if the transition is accepted.',
   ],
-  'aeliqo-form-reset': [
+  'varendo-form-reset': [
     'No detail payload.',
     'After the user requests a form reset.',
     'Restore the application-owned initial draft and validation state.',
   ],
-  'aeliqo-form-submit': [
+  'varendo-form-submit': [
     '`{source, submitter}`',
     'After a valid native submit request.',
     'Authorize the command, execute it through the action boundary, and update pending state.',
   ],
-  'aeliqo-input-change': [
+  'varendo-input-change': [
     '`{source, value, composing?}`',
     'Whenever the user proposes a draft value change.',
     'Validate or store the draft and reassign controlled `value` or `checked` state.',
   ],
-  'aeliqo-input-commit': [
+  'varendo-input-commit': [
     '`{source, value}`',
     'After explicit commit, blur, or Enter where the control supports it.',
     'Accept or reject the committed value and update authoritative form state.',
   ],
-  'aeliqo-link': [
+  'varendo-link': [
     '`{source, target, modified?}`',
     'Before component-managed navigation.',
     'Apply routing and authorization while preserving browser modifier behavior.',
   ],
-  'aeliqo-menu-action': [
+  'varendo-menu-action': [
     'The selected enabled menu item ID.',
     'After Enter, Space, or pointer activation.',
     'Authorize the command, perform it, and close or update the menu.',
   ],
-  'aeliqo-navigation': [
+  'varendo-navigation': [
     'The approved destination and navigation context.',
     'After a navigation item is activated.',
     'Route through the application and preserve browser history semantics.',
   ],
-  'aeliqo-page-change': [
+  'varendo-page-change': [
     'The requested one-based page.',
     'After previous, next, or a page control is activated.',
     'Load the authorized page and update controlled `page` and content.',
   ],
-  'aeliqo-popover-close': [
+  'varendo-popover-close': [
     'The close reason.',
     'After Escape or an allowed outside interaction.',
     'Set `open` to false and restore focus when appropriate.',
   ],
-  'aeliqo-record-editor-cancel': [
+  'varendo-record-editor-cancel': [
     'The entity key, revision, and current draft context.',
     'After the user cancels editing.',
     'Keep or discard the draft by application policy and restore focus.',
   ],
-  'aeliqo-record-editor-save': [
+  'varendo-record-editor-save': [
     'The entity key, revision, action reference, and validated draft.',
     'After the user requests save from a valid editor.',
     'Recheck revision and authority, execute the action, and report the outcome.',
   ],
-  'aeliqo-record-list-selection': [
+  'varendo-record-list-selection': [
     'Stable selected identity keys plus result lineage.',
     'After record-list selection changes.',
     'Validate scope and update controlled `selectedKeys`.',
   ],
-  'aeliqo-search': [
+  'varendo-search': [
     '`{source, query}`',
     'After an explicit search commit or valid debounced input.',
     'Execute a bounded authorized search and update result revision and rows.',
   ],
-  'aeliqo-search-results-selection': [
+  'varendo-search-results-selection': [
     'The selected stable result identity.',
     'After a search result is selected.',
     'Load authorized detail evidence and update `selectedKey`.',
   ],
-  'aeliqo-selection-clear': [
+  'varendo-selection-clear': [
     'The current selection scope and an empty proposed selection.',
     'After the clear-selection action.',
     'Clear application selection state without changing the underlying result.',
   ],
-  'aeliqo-split-change': [
+  'varendo-split-change': [
     '`{source, orientation, position}`',
     'While the user moves the separator.',
     'Clamp and persist the accepted position, then update controlled `position`.',
   ],
-  'aeliqo-table-page': [
+  'varendo-table-page': [
     'The requested page and page size.',
     'After table paging controls are activated.',
     'Fetch or select that page, then update rows, Result evidence, and `page`.',
   ],
-  'aeliqo-table-selection': [
+  'varendo-table-selection': [
     'Stable selected identity keys plus result lineage.',
     'After table selection changes.',
     'Validate scope and update controlled `selectedKeys`.',
   ],
-  'aeliqo-table-sort': [
+  'varendo-table-sort': [
     'The requested column and direction.',
     'After a sortable column header is activated.',
     'Apply sorting in the data owner, then update rows and controlled `sort`.',
   ],
-  'aeliqo-table-window': [
+  'varendo-table-window': [
     'The requested virtual start and count.',
     'When scrolling requires another virtual row window.',
     'Load the bounded window and update rows, `virtualStart`, and `virtualCount`.',
   ],
-  'aeliqo-tabs-change': [
+  'varendo-tabs-change': [
     'The proposed stable tab ID.',
     'After activation according to automatic or manual mode.',
     'Load any required panel data and update controlled `value`.',
   ],
-  'aeliqo-toast-dismiss': [
+  'varendo-toast-dismiss': [
     'The dismissal reason for the current toast.',
     'After timeout or user dismissal.',
     'Remove the toast from application state.',
   ],
-  'aeliqo-tree-nav-expand': [
+  'varendo-tree-nav-expand': [
     'The node ID and proposed expanded state.',
     'After a branch toggle.',
     'Update controlled `expandedIds` while preserving valid selection.',
   ],
-  'aeliqo-tree-nav-select': [
+  'varendo-tree-nav-select': [
     'The selected enabled node ID.',
     'After keyboard or pointer selection.',
     'Route or update controlled `selectedId`.',
   ],
-  'aeliqo-validation': [
+  'varendo-validation': [
     '`{source, state, message}`',
     'When validation enters pending, valid, or invalid state.',
     'Merge the result with application validation and display authoritative errors.',
   ],
-  'aeliqo-visualization-select': [
+  'varendo-visualization-select': [
     'Selected mark identity plus Result lineage.',
     'After a selectable mark is activated.',
     'Validate lineage and update controlled visualization or linked-detail selection.',
@@ -429,7 +429,7 @@ const EVENT_PATTERN_RULES = Object.freeze([
 ]);
 
 function defaultEventCopy(name) {
-  const label = words(name.replace(/^aeliqo-/u, ''));
+  const label = words(name.replace(/^varendo-/u, ''));
   const rule = EVENT_PATTERN_RULES.find(([predicate]) => predicate(name));
   if (rule) return rule[1](label);
   return [
@@ -440,11 +440,11 @@ function defaultEventCopy(name) {
 }
 
 export function documentedEvents(values) {
-  const names = [...new Set(values.flatMap((value) => value.match(/aeliqo-[a-z0-9-]+/gu) ?? []))];
+  const names = [...new Set(values.flatMap((value) => value.match(/varendo-[a-z0-9-]+/gu) ?? []))];
   return names.map((name) => ({ name, copy: EVENT_COPY[name] ?? defaultEventCopy(name) }));
 }
 
 export function listenerExample(component, event) {
-  const tag = `aeliqo-${component.id.slice(component.id.indexOf('.') + 1)}`;
+  const tag = `varendo-${component.id.slice(component.id.indexOf('.') + 1)}`;
   return `const element = document.querySelector('${tag}');\n\nelement?.addEventListener('${event.name}', (event) => {\n  const proposal = (event as CustomEvent<unknown>).detail;\n  // Validate the proposal, update host state, then assign controlled properties.\n  applyProposal(proposal);\n});`;
 }

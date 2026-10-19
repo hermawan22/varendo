@@ -32,7 +32,7 @@ const authority = {
             scopeDigest: session.scopeDigest,
             policyRevision: session.policyRevision,
             experienceRevision: 'web-1',
-            grants: session.aeliqoGrants,
+            grants: session.varendoGrants,
             readContext: { principal: session.principalKey },
           },
         }
@@ -46,7 +46,7 @@ const authority = {
 Wire it into the app:
 
 ```ts
-const app = createAeliqoApp({ resources, authority });
+const app = createVarendoApp({ resources, authority });
 ```
 
 ## 2. Deny cleanly

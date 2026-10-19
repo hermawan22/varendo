@@ -23,12 +23,12 @@ test('themes inherit, legacy overrides survive, and direct inputs keep native st
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await designRoot.evaluate((element) => {
     const style = (element as HTMLElement).style;
-    style.setProperty('--aeliqo-input-color', 'rgb(160, 200, 240)');
-    style.setProperty('--aeliqo-input-background', 'rgb(12, 34, 56)');
-    style.setProperty('--aeliqo-input-border', 'rgb(200, 120, 80)');
-    style.setProperty('--aeliqo-input-focus', 'rgb(250, 210, 70)');
-    style.setProperty('--aeliqo-input-description', 'rgb(120, 220, 180)');
-    style.setProperty('--aeliqo-input-error', 'rgb(255, 130, 140)');
+    style.setProperty('--varendo-input-color', 'rgb(160, 200, 240)');
+    style.setProperty('--varendo-input-background', 'rgb(12, 34, 56)');
+    style.setProperty('--varendo-input-border', 'rgb(200, 120, 80)');
+    style.setProperty('--varendo-input-focus', 'rgb(250, 210, 70)');
+    style.setProperty('--varendo-input-description', 'rgb(120, 220, 180)');
+    style.setProperty('--varendo-input-error', 'rgb(255, 130, 140)');
   });
   await expect(input).toHaveCSS('color', 'rgb(160, 200, 240)');
   await expect(input).toHaveCSS('background-color', 'rgb(12, 34, 56)');
@@ -47,14 +47,14 @@ test('themes inherit, legacy overrides survive, and direct inputs keep native st
       'input-description',
       'input-error',
     ])
-      style.removeProperty(`--aeliqo-${key}`);
+      style.removeProperty(`--varendo-${key}`);
   });
   await designRoot.evaluate((element) => {
     const style = (element as HTMLElement).style;
-    style.setProperty('--aeliqo-focus-width', '4px');
-    style.setProperty('--aeliqo-focus-offset', '5px');
-    style.setProperty('--aeliqo-control-border-width', '2px');
-    style.setProperty('--aeliqo-control-inline-padding', '18px');
+    style.setProperty('--varendo-focus-width', '4px');
+    style.setProperty('--varendo-focus-offset', '5px');
+    style.setProperty('--varendo-control-border-width', '2px');
+    style.setProperty('--varendo-control-inline-padding', '18px');
   });
   await input.focus();
   await expect(input).toHaveCSS('outline-width', '4px');
@@ -63,7 +63,7 @@ test('themes inherit, legacy overrides survive, and direct inputs keep native st
   await expect(input).toHaveCSS('padding-inline-start', '18px');
   await page.locator('#design-root').evaluate((element) => {
     for (const key of ['focus-width', 'focus-offset', 'control-border-width', 'control-inline-padding'])
-      (element as HTMLElement).style.removeProperty(`--aeliqo-${key}`);
+      (element as HTMLElement).style.removeProperty(`--varendo-${key}`);
   });
   await page.locator('#theme').selectOption('light');
   await input.focus();
@@ -98,7 +98,7 @@ test('narrow RTL, text scaling and forced colors preserve content access', async
   await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
   await page.locator('#team input').focus();
   await expect(page.locator('#team input')).toHaveCSS('outline-style', 'solid');
-  await expect(page.locator('#team')).toHaveCSS('--aeliqo-motion-duration-fast', '0ms');
+  await expect(page.locator('#team')).toHaveCSS('--varendo-motion-duration-fast', '0ms');
   await page.screenshot({ path: info.outputPath('forced-colors-320.png'), fullPage: true });
 });
 

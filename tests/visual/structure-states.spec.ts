@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { REVIEW_VARIANTS, reviewColorScheme, reviewViewport, type ReviewVariant } from './review-variants.js';
 
 type ReviewWindow = Window & {
-  aeliqoReviewReady?: boolean;
+  varendoReviewReady?: boolean;
   structureStateEvents?: readonly { type: string; detail: Record<string, unknown> }[];
 };
 
@@ -23,26 +23,26 @@ async function openCatalog(page: Page, info: TestInfo, id: string, variant: Revi
   await page.setViewportSize(reviewViewport(variant));
   await page.emulateMedia({ colorScheme: reviewColorScheme(variant), reducedMotion: 'reduce' });
   await page.goto(`/tests/visual/index.html?component=${id}&variant=${variant}`);
-  await page.waitForFunction(() => Boolean((window as ReviewWindow).aeliqoReviewReady));
-  const host = page.locator(`#fixture aeliqo-${id}`).first();
+  await page.waitForFunction(() => Boolean((window as ReviewWindow).varendoReviewReady));
+  const host = page.locator(`#fixture varendo-${id}`).first();
   await expect(host).toBeAttached();
   await page.evaluate(() => {
     const events: { type: string; detail: Record<string, unknown> }[] = [];
     for (const type of [
-      'aeliqo-action',
-      'aeliqo-navigation',
-      'aeliqo-tabs-change',
-      'aeliqo-menu-action',
-      'aeliqo-page-change',
-      'aeliqo-tree-nav-select',
-      'aeliqo-tree-nav-expand',
-      'aeliqo-popover-close',
-      'aeliqo-dialog-close',
-      'aeliqo-drawer-close',
-      'aeliqo-toast-dismiss',
-      'aeliqo-alert-dismiss',
-      'aeliqo-alert-action',
-      'aeliqo-empty-state-action',
+      'varendo-action',
+      'varendo-navigation',
+      'varendo-tabs-change',
+      'varendo-menu-action',
+      'varendo-page-change',
+      'varendo-tree-nav-select',
+      'varendo-tree-nav-expand',
+      'varendo-popover-close',
+      'varendo-dialog-close',
+      'varendo-drawer-close',
+      'varendo-toast-dismiss',
+      'varendo-alert-dismiss',
+      'varendo-alert-action',
+      'varendo-empty-state-action',
     ]) {
       document.addEventListener(type, (event) =>
         events.push({ type, detail: (event as CustomEvent).detail as Record<string, unknown> }),
@@ -102,7 +102,7 @@ for (const variant of REVIEW_VARIANTS) {
         await setHostProperty(session.host, 'disabled', true);
         await expect(session.host.locator('button')).toBeDisabled();
         await session.host.locator('button').dispatchEvent('click');
-        expect((await events(page)).filter((event) => event.type === 'aeliqo-action')).toHaveLength(0);
+        expect((await events(page)).filter((event) => event.type === 'varendo-action')).toHaveLength(0);
 
         await setHostProperty(session.host, 'disabled', false);
         await setHostProperty(session.host, 'pending', true);
@@ -110,7 +110,7 @@ for (const variant of REVIEW_VARIANTS) {
         await expect(session.host.locator('button')).toHaveAttribute('aria-busy', 'true');
         await expect(session.host.locator('[part="pending"]')).toBeVisible();
         await session.host.locator('button').dispatchEvent('click');
-        expect((await events(page)).filter((event) => event.type === 'aeliqo-action')).toHaveLength(0);
+        expect((await events(page)).filter((event) => event.type === 'varendo-action')).toHaveLength(0);
         await capture(session, page, info, `${id}-busy`);
       });
     }
@@ -129,14 +129,14 @@ for (const variant of REVIEW_VARIANTS) {
       await expect(breadcrumb.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
       await expect(breadcrumb.locator('[aria-current="page"]')).toHaveText('Weekly report');
       await breadcrumb.evaluate((element) =>
-        element.addEventListener('aeliqo-navigation', (event) => event.preventDefault()),
+        element.addEventListener('varendo-navigation', (event) => event.preventDefault()),
       );
       const before = page.url();
       await breadcrumb.getByRole('link', { name: 'Home' }).click();
       expect(page.url()).toBe(before);
       expect(await events(page)).toContainEqual(
         expect.objectContaining({
-          type: 'aeliqo-navigation',
+          type: 'varendo-navigation',
           detail: expect.objectContaining({ id: 'home', source: 'user' }),
         }),
       );
@@ -152,7 +152,7 @@ for (const variant of REVIEW_VARIANTS) {
       await expect(splitter).toHaveAttribute('tabindex', '-1');
       await splitter.dispatchEvent('keydown', { key: 'ArrowRight' });
       await expect(splitter).toHaveAttribute('aria-valuenow', before ?? '42');
-      expect((await events(page)).filter((event) => event.type === 'aeliqo-action')).toHaveLength(0);
+      expect((await events(page)).filter((event) => event.type === 'varendo-action')).toHaveLength(0);
       await capture(session, page, info, 'split-pane-disabled');
     });
 
@@ -163,7 +163,7 @@ for (const variant of REVIEW_VARIANTS) {
       await tabs.getByRole('tab', { name: 'Details' }).click();
       expect(await events(page)).toContainEqual(
         expect.objectContaining({
-          type: 'aeliqo-tabs-change',
+          type: 'varendo-tabs-change',
           detail: expect.objectContaining({ id: 'details', previousId: 'overview', source: 'user' }),
         }),
       );
@@ -176,7 +176,7 @@ for (const variant of REVIEW_VARIANTS) {
       await expect(history).toBeDisabled();
       await history.dispatchEvent('click');
       expect(
-        (await events(page)).filter((event) => event.type === 'aeliqo-tabs-change' && event.detail.id === 'history'),
+        (await events(page)).filter((event) => event.type === 'varendo-tabs-change' && event.detail.id === 'history'),
       ).toHaveLength(0);
       await capture(session, page, info, 'tabs-selected');
     });
@@ -195,7 +195,7 @@ for (const variant of REVIEW_VARIANTS) {
       await expect(menu.getByRole('menuitem', { name: 'Archive' })).toBeFocused();
       await disabled.dispatchEvent('click');
       await expect(menu.getByRole('menu')).toBeVisible();
-      expect((await events(page)).filter((event) => event.type === 'aeliqo-menu-action')).toHaveLength(0);
+      expect((await events(page)).filter((event) => event.type === 'varendo-menu-action')).toHaveLength(0);
       await menu.getByRole('menuitem', { name: 'Archive' }).press('Escape');
       await expect(menu.getByRole('menu')).toBeHidden();
       await expect(trigger).toBeFocused();
@@ -214,13 +214,13 @@ for (const variant of REVIEW_VARIANTS) {
       await expect(next).toBeDisabled();
       await next.dispatchEvent('click');
       await expect(pagination.locator('[part="status"]')).toHaveText('Page 2 of 4');
-      expect((await events(page)).filter((event) => event.type === 'aeliqo-page-change')).toHaveLength(0);
+      expect((await events(page)).filter((event) => event.type === 'varendo-page-change')).toHaveLength(0);
       await setHostProperty(pagination, 'pending', false);
       await next.click();
       await expect(pagination.locator('[part="status"]')).toHaveText('Page 3 of 4');
       expect(await events(page)).toContainEqual(
         expect.objectContaining({
-          type: 'aeliqo-page-change',
+          type: 'varendo-page-change',
           detail: expect.objectContaining({ page: 3, previousPage: 2, direction: 'next', source: 'user' }),
         }),
       );
@@ -247,12 +247,12 @@ for (const variant of REVIEW_VARIANTS) {
       await expect(tree.getByRole('treeitem', { name: 'Weekly' })).toHaveAttribute('aria-selected', 'true');
       await expect(settings).toHaveAttribute('aria-disabled', 'true');
       await settings.dispatchEvent('click');
-      expect((await events(page)).filter((event) => event.type === 'aeliqo-tree-nav-select')).toHaveLength(0);
+      expect((await events(page)).filter((event) => event.type === 'varendo-tree-nav-select')).toHaveLength(0);
       await tree.getByRole('treeitem', { name: 'Monthly' }).click();
       await expect(tree.getByRole('treeitem', { name: 'Monthly' })).toHaveAttribute('aria-selected', 'true');
       expect(await events(page)).toContainEqual(
         expect.objectContaining({
-          type: 'aeliqo-tree-nav-select',
+          type: 'varendo-tree-nav-select',
           detail: expect.objectContaining({ id: 'monthly', previousId: 'weekly', source: 'user' }),
         }),
       );
@@ -363,7 +363,7 @@ for (const variant of REVIEW_VARIANTS) {
       await toast.getByRole('button', { name: 'Dismiss' }).click();
       await expect(toast.locator('[role="alert"]')).toBeHidden();
       expect(await events(page)).toContainEqual(
-        expect.objectContaining({ type: 'aeliqo-toast-dismiss', detail: expect.objectContaining({ source: 'user' }) }),
+        expect.objectContaining({ type: 'varendo-toast-dismiss', detail: expect.objectContaining({ source: 'user' }) }),
       );
       await capture(session, page, info, 'toast-danger-dismiss');
     });
@@ -374,7 +374,7 @@ for (const variant of REVIEW_VARIANTS) {
       await expect(alert.locator('[role="alert"]')).toBeVisible();
       await alert.getByRole('button', { name: 'Inspect' }).click();
       expect(await events(page)).toContainEqual(
-        expect.objectContaining({ type: 'aeliqo-alert-action', detail: expect.objectContaining({ source: 'user' }) }),
+        expect.objectContaining({ type: 'varendo-alert-action', detail: expect.objectContaining({ source: 'user' }) }),
       );
       await alert.getByRole('button', { name: 'Dismiss' }).click();
       await expect(alert.locator('[role="alert"]')).toBeHidden();
@@ -403,7 +403,7 @@ for (const variant of REVIEW_VARIANTS) {
       await empty.getByRole('button', { name: 'Clear filters' }).click();
       expect(await events(page)).toContainEqual(
         expect.objectContaining({
-          type: 'aeliqo-empty-state-action',
+          type: 'varendo-empty-state-action',
           detail: expect.objectContaining({ kind: 'no-matches', source: 'user' }),
         }),
       );

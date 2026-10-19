@@ -16,8 +16,11 @@ cannot supply HTML, executable code, permissions, or an unregistered view.
 
 ## Quick start
 
-All five `@varendo` packages are published at **0.1.0**. The stable release passed
-installed registry consumers and source-bound provenance verification. See the
+This checkout prepares **0.2.0**, a breaking release that renames the remaining
+former-name identifiers to Varendo. It is not yet published; the registry install
+below works only after an approved release. The published **0.1.0** packages still
+use the former identifiers; see the
+[0.1 to 0.2 migration guide](docs/site/pages/migration-varendo-0.2.md). See the
 [package guide](https://hermawan22.github.io/varendo/reference/packages/) for installation
 and the [release record](docs/STATUS.md) for acceptance evidence.
 For the React example below, use React 19.2 or a newer 19.x release and install matching
@@ -25,10 +28,10 @@ Varendo package versions:
 
 ```sh
 npm install --save-exact \
-  @varendo/core@0.1.0 \
-  @varendo/runtime@0.1.0 \
-  @varendo/web@0.1.0 \
-  @varendo/react@0.1.0
+  @varendo/core@0.2.0 \
+  @varendo/runtime@0.2.0 \
+  @varendo/web@0.2.0 \
+  @varendo/react@0.2.0
 ```
 
 The [React quickstart](https://hermawan22.github.io/varendo/start/) registers one local People
@@ -62,14 +65,14 @@ The common application entry points are:
 
 ```ts
 import { defineResource } from '@varendo/core';
-import { createAeliqoRuntime } from '@varendo/runtime';
-import { registerAeliqoElements } from '@varendo/web';
-import { createAeliqoApp } from '@varendo/web/app';
-import { AeliqoProvider, AeliqoRegion } from '@varendo/react';
+import { createVarendoRuntime } from '@varendo/runtime';
+import { registerVarendoElements } from '@varendo/web';
+import { createVarendoApp } from '@varendo/web/app';
+import { VarendoProvider, VarendoRegion } from '@varendo/react';
 import { createAppToolEndpoint } from '@varendo/agent';
 ```
 
-The optional agent entry point additionally requires `@varendo/agent@0.1.0`.
+The optional agent entry point additionally requires `@varendo/agent@0.2.0`.
 Each package root contains its primary API. Component families, query planning,
 transport adapters, and other advanced APIs use explicit package subpaths.
 
@@ -148,4 +151,4 @@ and [TRADEMARKS.md](TRADEMARKS.md) for attribution and project-name guidance.
 
 ## Attribution and migration
 
-Varendo preserves the Apache-2.0 Aeliqo adaptive UI framework from [Arconath/aeliqo](https://github.com/Arconath/aeliqo), source `3b5328dc717de0bb6aad57e8f17a4b9aa5f89f79`. Original copyright notices, ADRs and release records remain attributed to their contributors. The initial framework rename left the original repository, published packages and production services unchanged; subsequent retirement is recorded separately. See the [migration guide](docs/site/pages/migration-varendo.md) and [current status](docs/STATUS.md) for compatibility and release boundaries.
+Varendo, formerly Aeliqo, preserves the Apache-2.0 adaptive UI framework from [Arconath/aeliqo](https://github.com/Arconath/aeliqo), source `3b5328dc717de0bb6aad57e8f17a4b9aa5f89f79`. Original copyright notices, ADRs and release records remain attributed to their contributors. The initial framework rename left the original repository, published packages and production services unchanged; subsequent retirement is recorded separately. See the [migration guide](docs/site/pages/migration-varendo.md) and [current status](docs/STATUS.md) for compatibility and release boundaries.

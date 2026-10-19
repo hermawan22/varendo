@@ -1,22 +1,22 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { dataStatusMessage, displaysStatusSection, scopeText } from '../data/shared.js';
-import type { AeliqoDataScope, AeliqoDataStatus, AeliqoSortState } from '../data/types.js';
+import type { VarendoDataScope, VarendoDataStatus, VarendoSortState } from '../data/types.js';
 
 export function sortDescription(
   active: boolean,
-  direction: AeliqoSortState['direction'] | undefined,
+  direction: VarendoSortState['direction'] | undefined,
   sortable: boolean,
 ) {
   if (!active) return sortable ? 'none' : nothing;
   return direction === 'asc' ? 'ascending' : 'descending';
 }
 
-export function sortIndicator(active: boolean, direction: AeliqoSortState['direction'] | undefined): string {
+export function sortIndicator(active: boolean, direction: VarendoSortState['direction'] | undefined): string {
   if (!active) return '';
   return direction === 'asc' ? ' ↑' : ' ↓';
 }
 
-export function tableStatusSection(status: AeliqoDataStatus, message: string): TemplateResult | typeof nothing {
+export function tableStatusSection(status: VarendoDataStatus, message: string): TemplateResult | typeof nothing {
   if (!displaysStatusSection(status)) return nothing;
   const role = status === 'loading' ? 'status' : 'alert';
   return html`<p part="status" class=${status} role=${role}>${dataStatusMessage(status, message)}</p>`;
@@ -24,7 +24,7 @@ export function tableStatusSection(status: AeliqoDataStatus, message: string): T
 
 /** Inputs for the scope summary rendered below the table. */
 export interface TableScopeView {
-  readonly scope: AeliqoDataScope | undefined;
+  readonly scope: VarendoDataScope | undefined;
   readonly totalRows: number | undefined;
   readonly rowCount: number;
   readonly loadedRows: number;

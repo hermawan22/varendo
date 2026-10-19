@@ -32,7 +32,7 @@ describe('playground project export', () => {
       });
       expect(manifest.scripts).toEqual({ dev: 'vite', build: 'tsc --noEmit && vite build' });
       const source = files.map((file) => file.content).join('\n');
-      expect(source).toContain('createAeliqoApp');
+      expect(source).toContain('createVarendoApp');
       expect(files.find((file) => file.path === 'README.md')?.content).toContain(
         `Install requires the pinned ${releaseVersion} packages to be published to npm`,
       );

@@ -116,12 +116,15 @@ run is not a completed release; retain its receipts and inspect the failure
 before resuming the same immutable candidate. After successful stable registry
 verification, update status and public release claims through a reviewed change.
 
-## Preserve compatibility and retire legacy artifacts separately
+## Preserve provenance and retire legacy artifacts separately
 
-Preserve Apache-2.0 license text, NOTICE attribution, historical release records
-and compatible runtime identifiers described in the
-[migration guide](site/pages/migration-varendo.md). Publishing Varendo does not
-authorize rewriting historical provenance or changing serialized contracts.
+Preserve Apache-2.0 license text, NOTICE attribution and historical release
+records. Varendo 0.2.0 deliberately renames the former Aeliqo runtime identifiers
+without aliases, as described in the
+[0.1 to 0.2 migration guide](site/pages/migration-varendo-0.2.md); it is
+prepared but unpublished, and its publication needs the owner's approval through
+the same RC and stable procedure above. Publishing Varendo does not authorize
+rewriting historical provenance or changing serialized contracts.
 
 Legacy `@aeliqo/*` deletion is subject to npm policy, including package age,
 dependents, download limits and maintainer constraints. Do not claim those

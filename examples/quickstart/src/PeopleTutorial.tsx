@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Intent } from '@varendo/core';
-import { AeliqoProvider, AeliqoRegion } from '@varendo/react/app';
-import { AeliqoForm, AeliqoSelect, AeliqoTextField } from '@varendo/react/inputs';
+import { VarendoProvider, VarendoRegion } from '@varendo/react/app';
+import { VarendoForm, VarendoSelect, VarendoTextField } from '@varendo/react/inputs';
 import type { createTutorialApp } from './app.js';
 
 type TutorialApp = ReturnType<typeof createTutorialApp>;
@@ -49,7 +49,7 @@ export function PeopleTutorial({ app }: PeopleTutorialProps) {
   const intent = INTENTS[view];
 
   return (
-    <AeliqoProvider app={app}>
+    <VarendoProvider app={app}>
       <nav aria-label="People views">
         <button type="button" onClick={() => setView('table')}>
           All employees
@@ -62,7 +62,7 @@ export function PeopleTutorial({ app }: PeopleTutorialProps) {
         </button>
       </nav>
 
-      <AeliqoRegion
+      <VarendoRegion
         key={intent.resource}
         regionId="people-main"
         resourceId={intent.resource}
@@ -72,21 +72,21 @@ export function PeopleTutorial({ app }: PeopleTutorialProps) {
         }}
       />
 
-      <AeliqoForm
+      <VarendoForm
         label="Add employee draft"
         onSubmit={(event) => {
           event.preventDefault();
           setFormStatus(`Review ${name || 'unnamed employee'} for ${team} before executing an action.`);
         }}
       >
-        <AeliqoTextField
+        <VarendoTextField
           label="Name"
           name="name"
           value={name}
           required
           onValueChange={(event) => setName(event.detail.value)}
         />
-        <AeliqoSelect
+        <VarendoSelect
           label="Team"
           name="team"
           value={team}
@@ -97,8 +97,8 @@ export function PeopleTutorial({ app }: PeopleTutorialProps) {
           onValueChange={(event) => setTeam(event.detail.value)}
         />
         <button type="submit">Review employee</button>
-      </AeliqoForm>
+      </VarendoForm>
       <p role="status">{formStatus}</p>
-    </AeliqoProvider>
+    </VarendoProvider>
   );
 }

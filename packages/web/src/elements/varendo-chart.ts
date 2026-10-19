@@ -1,7 +1,7 @@
-import { aeliqoChartStyles } from './aeliqo-chart-styles.js';
+import { varendoChartStyles } from './varendo-chart-styles.js';
 import {
-  alignAeliqoChartSeries,
-  buildAeliqoChartGeometry,
+  alignVarendoChartSeries,
+  buildVarendoChartGeometry,
   CHART_HEIGHT,
   CHART_WIDTH,
   PLOT_HEIGHT,
@@ -10,14 +10,18 @@ import {
   PLOT_TOP,
   xAxisTicks,
   yAxisTicks,
-  type AeliqoChartGeometry,
-} from './aeliqo-chart-geometry.js';
+  type VarendoChartGeometry,
+} from './varendo-chart-geometry.js';
 import { html, LitElement, nothing, svg } from 'lit';
-import type { AeliqoChartPoint, AeliqoChartSeries } from '../types.js';
-import { AELIQO_WEB_VERSION } from '../version.js';
+import type { VarendoChartPoint, VarendoChartSeries } from '../types.js';
+import { VARENDO_WEB_VERSION } from '../version.js';
 
-export { alignAeliqoChartSeries, buildAeliqoChartDomain, buildAeliqoChartGeometry } from './aeliqo-chart-geometry.js';
-export type { AeliqoChartGeometry } from './aeliqo-chart-geometry.js';
+export {
+  alignVarendoChartSeries,
+  buildVarendoChartDomain,
+  buildVarendoChartGeometry,
+} from './varendo-chart-geometry.js';
+export type { VarendoChartGeometry } from './varendo-chart-geometry.js';
 
 const chartCopy = {
   en: {
@@ -46,8 +50,8 @@ const chartCopy = {
   },
 } as const;
 
-export class AeliqoChartElement extends LitElement {
-  static readonly aeliqoVersion = AELIQO_WEB_VERSION;
+export class VarendoChartElement extends LitElement {
+  static readonly varendoVersion = VARENDO_WEB_VERSION;
   static readonly properties = {
     title: { type: String },
     summary: { type: String },
@@ -62,8 +66,8 @@ export class AeliqoChartElement extends LitElement {
   summary = '';
   unit = '';
   scope = '';
-  points: readonly AeliqoChartPoint[] = [];
-  series: readonly AeliqoChartSeries[] = [];
+  points: readonly VarendoChartPoint[] = [];
+  series: readonly VarendoChartSeries[] = [];
   private chartWidth = CHART_WIDTH;
   private sizeObserver?: ResizeObserver;
 
@@ -101,7 +105,7 @@ export class AeliqoChartElement extends LitElement {
 
   protected override render() {
     const series = this.resolvedSeries();
-    const aligned = alignAeliqoChartSeries(series);
+    const aligned = alignVarendoChartSeries(series);
     const hasInvalidPoints = series.some((item) =>
       item.points.some((point) => point.value !== null && !Number.isFinite(point.value)),
     );
@@ -118,7 +122,7 @@ export class AeliqoChartElement extends LitElement {
     `;
   }
 
-  private accessibleName(series: readonly AeliqoChartSeries[], hasInvalidPoints: boolean, hasGaps: boolean): string {
+  private accessibleName(series: readonly VarendoChartSeries[], hasInvalidPoints: boolean, hasGaps: boolean): string {
     const copy = this.copy;
     const parts = [this.displayTitle, this.summary];
     if (this.scope) parts.push(`${copy.scope}: ${this.scope}.`);
@@ -144,7 +148,7 @@ export class AeliqoChartElement extends LitElement {
     `;
   }
 
-  private renderLegend(series: readonly AeliqoChartSeries[]) {
+  private renderLegend(series: readonly VarendoChartSeries[]) {
     if (series.length === 0) return nothing;
     return html`<ul part="legend" aria-label=${this.copy.series}>
       ${series.map(
@@ -157,7 +161,7 @@ export class AeliqoChartElement extends LitElement {
     </ul>`;
   }
 
-  private renderDataTable(series: readonly AeliqoChartSeries[], aligned: readonly AeliqoChartSeries[]) {
+  private renderDataTable(series: readonly VarendoChartSeries[], aligned: readonly VarendoChartSeries[]) {
     return html`<details part="data">
       <summary>${this.copy.dataTable}</summary>
       <table>
@@ -183,12 +187,12 @@ export class AeliqoChartElement extends LitElement {
     </details>`;
   }
 
-  private resolvedSeries(): readonly AeliqoChartSeries[] {
+  private resolvedSeries(): readonly VarendoChartSeries[] {
     if (this.series.length > 0) return this.series;
     return [{ id: 'value', label: this.copy.value, ...(this.unit ? { unit: this.unit } : {}), points: this.points }];
   }
 
-  private tableLabels(series: readonly AeliqoChartSeries[]): readonly string[] {
+  private tableLabels(series: readonly VarendoChartSeries[]): readonly string[] {
     const length = Math.max(0, ...series.map((item) => item.points.length));
     return Array.from(
       { length },
@@ -203,11 +207,11 @@ export class AeliqoChartElement extends LitElement {
     return value === null || value === undefined || !Number.isFinite(value) ? '—' : String(value);
   }
 
-  private getGeometry(series: readonly AeliqoChartSeries[], width: number): AeliqoChartGeometry {
-    return buildAeliqoChartGeometry(series, width);
+  private getGeometry(series: readonly VarendoChartSeries[], width: number): VarendoChartGeometry {
+    return buildVarendoChartGeometry(series, width);
   }
 
-  private renderPlot(geometry: AeliqoChartGeometry, accessibleName: string, series: readonly AeliqoChartSeries[]) {
+  private renderPlot(geometry: VarendoChartGeometry, accessibleName: string, series: readonly VarendoChartSeries[]) {
     const xTicks = xAxisTicks(series, this.chartWidth);
     const yTicks = yAxisTicks(series);
     return svg`
@@ -242,5 +246,5 @@ export class AeliqoChartElement extends LitElement {
     return `series-${index} color-${index % 4} style-${style}`;
   }
 
-  static readonly styles = aeliqoChartStyles;
+  static readonly styles = varendoChartStyles;
 }

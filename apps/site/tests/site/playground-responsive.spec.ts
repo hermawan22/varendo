@@ -6,7 +6,7 @@ test('a new request clears the previous ready receipt while its view family is l
   await page.goto('/playground/');
   const receipt = page.locator('#pg-receipt-state');
   await expect(receipt).toHaveText('renderer-ready');
-  await expect(page.locator('#pg-region aeliqo-table')).toContainText('Ada Chen');
+  await expect(page.locator('#pg-region varendo-table')).toContainText('Ada Chen');
   let hold!: (route: Route) => void;
   const loading = new Promise<Route>((resolve) => {
     hold = resolve;
@@ -23,12 +23,12 @@ test('a new request clears the previous ready receipt while its view family is l
     await expect(receipt).toHaveText('checking');
     await expect(page.locator('#pg-journey-result')).toHaveText('Checking…');
     await expect(page.locator('#pg-journey-view')).toHaveText('Waiting');
-    await expect(page.locator('#pg-region aeliqo-card-collection')).toHaveCount(0);
+    await expect(page.locator('#pg-region varendo-card-collection')).toHaveCount(0);
   } finally {
     await route.continue();
   }
   await expect(receipt).toHaveText('renderer-ready');
-  await expect(page.locator('#pg-region aeliqo-card-collection')).toBeVisible();
+  await expect(page.locator('#pg-region varendo-card-collection')).toBeVisible();
   await expect(page.locator('#pg-result-title')).toHaveText('Browse products');
   await expect(page.locator('#pg-error')).toBeHidden();
 });
@@ -202,21 +202,21 @@ test('guided intents render real adaptive views without a model', async ({ page 
   await page.goto('/playground/');
 
   await expect(page.locator('#pg-receipt-state')).toHaveText('renderer-ready');
-  await expect(page.locator('aeliqo-table')).toBeVisible();
+  await expect(page.locator('varendo-table')).toBeVisible();
   await expect(page.locator('#pg-status')).toContainText('is ready');
   await expect(page.locator('#pg-model-calls')).toHaveText('0');
   await page.getByRole('button', { name: 'Engineering only' }).click();
-  await expect(page.locator('aeliqo-table')).toContainText('Sam Rivera');
-  await expect(page.locator('aeliqo-table')).not.toContainText('Ada Chen');
+  await expect(page.locator('varendo-table')).toContainText('Sam Rivera');
+  await expect(page.locator('varendo-table')).not.toContainText('Ada Chen');
   await page.getByRole('button', { name: 'Browse people' }).click();
-  await expect(page.locator('aeliqo-table')).toContainText('Ada Chen');
+  await expect(page.locator('varendo-table')).toContainText('Ada Chen');
   await page.getByRole('button', { name: 'Monthly headcount' }).click();
   await expect(page.locator('#pg-result-definition')).toContainText('employees active at the end of each month');
   await expect(page.locator('#pg-result-definition')).toContainText('never summed across months');
-  await expect(page.locator('aeliqo-chart')).toBeVisible();
-  await expect(page.locator('aeliqo-chart svg')).toBeAttached();
-  await expect(page.locator('aeliqo-chart svg text.axis-x-tick')).toHaveCount(3);
-  await expect(page.locator('aeliqo-chart svg text.axis-y-tick')).toHaveCount(3);
+  await expect(page.locator('varendo-chart')).toBeVisible();
+  await expect(page.locator('varendo-chart svg')).toBeAttached();
+  await expect(page.locator('varendo-chart svg text.axis-x-tick')).toHaveCount(3);
+  await expect(page.locator('varendo-chart svg text.axis-y-tick')).toHaveCount(3);
   await expect(page.locator('#pg-model-calls')).toHaveText('0');
   expect(errors).toEqual([]);
 });
@@ -228,12 +228,12 @@ test('guided demos remain legible at mobile, tablet, and desktop widths', async 
     await openTaskRail(page);
     await page.locator('[data-journey="attendance"]').click();
     await expect(page.locator('#pg-receipt-state')).toHaveText('renderer-ready');
-    await expect(page.locator('#pg-region aeliqo-chart')).toBeVisible();
+    await expect(page.locator('#pg-region varendo-chart')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await openTaskRail(page);
     await page.locator('[data-journey="workspace"]').click();
     await expect(page.locator('#pg-receipt-state')).toHaveText('renderer-ready');
-    await expect(page.locator('#pg-region [data-aeliqo-node-id="breakdown"]')).toContainText('Ada');
+    await expect(page.locator('#pg-region [data-varendo-node-id="breakdown"]')).toContainText('Ada');
     await openTaskRail(page);
     await page.locator('[data-journey="page"]').click();
     await expect(page.getByRole('navigation', { name: 'Registered page navigation' })).toBeVisible();
@@ -246,7 +246,7 @@ test('a constant series keeps its mark on the labeled y-axis tick', async ({ pag
   await page.goto('/playground/');
   await expect(page.locator('#pg-receipt-state')).toHaveText('renderer-ready');
   const positions = await page.evaluate(async () => {
-    const chart = document.createElement('aeliqo-chart') as HTMLElement & {
+    const chart = document.createElement('varendo-chart') as HTMLElement & {
       points: readonly { label: string; value: number }[];
       title: string;
       updateComplete: Promise<unknown>;
@@ -273,7 +273,7 @@ test('trend axis labels stay inside the chart on narrow screens', async ({ page 
   await openTaskRail(page);
   await page.getByRole('button', { name: 'Monthly headcount' }).click();
 
-  const svg = page.locator('aeliqo-chart svg');
+  const svg = page.locator('varendo-chart svg');
   await expect(svg).toBeVisible();
   await expect(svg.locator('text.axis-x-tick')).toHaveCount(3);
   await expect(svg.locator('text.axis-y-tick')).toHaveCount(3);
@@ -300,7 +300,7 @@ test('trend geometry follows its container without stretching labels', async ({ 
   await page.goto('/playground/');
   await openTaskRail(page);
   await page.getByRole('button', { name: 'Monthly headcount' }).click();
-  const svg = page.locator('aeliqo-chart svg');
+  const svg = page.locator('varendo-chart svg');
   await expect(svg).toBeVisible();
 
   const narrow = await svg.evaluate((node) => {
@@ -327,17 +327,17 @@ test('container adaptation switches browse to cards but preserves comparisons', 
   await page.setViewportSize({ width: 360, height: 820 });
   await page.goto('/playground/');
   await expect(page.locator('#pg-receipt-state')).toHaveText('renderer-ready');
-  await expect(page.locator('aeliqo-card-collection')).toBeVisible();
-  await expect(page.locator('aeliqo-table')).toHaveCount(0);
+  await expect(page.locator('varendo-card-collection')).toBeVisible();
+  await expect(page.locator('varendo-table')).toHaveCount(0);
   await expect(page.locator('#pg-view-badge')).toHaveText('data.card-collection');
   await expect(page.locator('#pg-status')).toContainText('is ready');
   await openScenario(page, 'products');
-  await expect(page.locator('aeliqo-card-collection')).toContainText('Field notebook');
+  await expect(page.locator('varendo-card-collection')).toContainText('Field notebook');
   await openTaskRail(page);
   await page.getByRole('button', { name: 'Compare products' }).click();
-  await expect(page.locator('aeliqo-table')).toBeVisible();
-  await expect(page.locator('aeliqo-table')).toContainText('Desk lamp');
-  await expect(page.locator('aeliqo-table')).toContainText('Laptop stand');
+  await expect(page.locator('varendo-table')).toBeVisible();
+  await expect(page.locator('varendo-table')).toContainText('Desk lamp');
+  await expect(page.locator('varendo-table')).toContainText('Laptop stand');
   await expect(page.locator('#pg-model-calls')).toHaveText('0');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
@@ -348,7 +348,7 @@ test('schema-derived create form requires explicit confirmation before writing',
   await page.goto('/playground/');
   await openScenario(page, 'products');
   await page.getByRole('button', { name: 'Create product' }).click();
-  await expect(page.locator('aeliqo-form')).toBeVisible();
+  await expect(page.locator('varendo-form')).toBeVisible();
   await page.getByRole('textbox', { name: 'Product ID' }).fill('pr-5');
   await page.getByRole('textbox', { name: 'Name' }).fill('Travel ruler');
   await page.getByRole('textbox', { name: 'Category' }).fill('Stationery');
@@ -379,7 +379,7 @@ test('edit form loads trusted current state and keeps the draft after cancellati
   await page.goto('/playground/');
   await openScenario(page, 'support');
   await page.getByRole('button', { name: 'Edit ticket' }).click();
-  await expect(page.locator('aeliqo-form')).toBeVisible();
+  await expect(page.locator('varendo-form')).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Subject' })).toHaveValue('Invoice PDF is unavailable');
   await expect(page.getByRole('textbox', { name: 'Ticket ID' })).toHaveCount(0);
   await page.getByRole('textbox', { name: 'Status' }).fill('Pending');
@@ -395,7 +395,7 @@ test('consumer-defined intent and view work without modifying core', async ({ pa
   await page.getByRole('button', { name: 'Read article' }).click();
   await expect(page.locator('.knowledge-article')).toContainText('Rotate an API token safely');
   await page.getByRole('button', { name: 'Security topic' }).click();
-  await expect(page.locator('aeliqo-card-collection')).toContainText('Rotate an API token safely');
+  await expect(page.locator('varendo-card-collection')).toContainText('Rotate an API token safely');
   await expect(page.locator('#pg-receipt-state')).toHaveText('renderer-ready');
 });
 
@@ -432,6 +432,6 @@ test('mobile controls, disconnected agent state, and accessibility remain honest
   await expect(page.getByRole('dialog', { name: 'Inspector' })).toBeHidden();
   await expect(page.getByRole('button', { name: 'Inspect', exact: true })).toBeFocused();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  expect(requests.some((url) => url.includes('/api/aeliqo/'))).toBe(false);
+  expect(requests.some((url) => url.includes('/api/varendo/'))).toBe(false);
   expect(requests.every((url) => new URL(url).hostname === '127.0.0.1')).toBe(true);
 });

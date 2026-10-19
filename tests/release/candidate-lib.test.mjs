@@ -187,7 +187,7 @@ test('npm consumer override generation fails closed on ambiguous or exotic resol
 });
 
 test('failed temporary consumer work removes its allocated directory', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-consumer-cleanup-test-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-consumer-cleanup-test-'));
   await writeFile(join(directory, 'partial-package-lock.json'), '{}\n');
   await assert.rejects(
     removeDirectoryOnFailure(directory, async () => {

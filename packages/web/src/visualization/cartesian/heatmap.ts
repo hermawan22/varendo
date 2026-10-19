@@ -1,4 +1,4 @@
-import { AeliqoCartesianElement } from './base.js';
-export class AeliqoHeatmapElement extends AeliqoCartesianElement {
+import { VarendoCartesianElement } from './base.js';
+export class VarendoHeatmapElement extends VarendoCartesianElement {
   protected readonly expectedView = 'heatmap' as const;
 }

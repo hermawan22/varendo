@@ -3,8 +3,8 @@ import type { Intent, Outcome } from '@varendo/core';
 import { defineDataFeature, inferLocalDataShape } from '@varendo/core/features';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import type { DataFeatureDefinition, LocalDataShape, LocalDataShapeField } from '@varendo/core/features';
-import { createAeliqoRuntime } from '../app/runtime.js';
-import type { AeliqoRuntime } from '../app/types.js';
+import { createVarendoRuntime } from '../app/runtime.js';
+import type { VarendoRuntime } from '../app/types.js';
 import type { DataRecord, ResultEvent } from '../data/types.js';
 import { createLocalDataBinding } from './local-data.js';
 import type { LocalDataSurfaceBinding } from './local-data.js';
@@ -137,8 +137,8 @@ function createLocalRuntime(
   id: string,
   feature: DataFeatureDefinition,
   bindings: LocalDataSurfaceBinding<LocalBrowseState>,
-): AeliqoRuntime {
-  return createAeliqoRuntime({
+): VarendoRuntime {
+  return createVarendoRuntime({
     resources: [{ resource: feature.resource, data: bindings.service }],
     authority: {
       read: () => ({

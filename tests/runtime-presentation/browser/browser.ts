@@ -5,14 +5,14 @@ import {
   type PresentationStateMappingManifest,
 } from '../../../packages/core/src/presentation/index.js';
 import { createRegionStore, type RegionHandle } from '../../../packages/runtime/src/regions/index.js';
-import { createAeliqoRegionAdaptation } from '../../../packages/web/src/region/adaptation.js';
+import { createVarendoRegionAdaptation } from '../../../packages/web/src/region/adaptation.js';
 import { createCallbackPresentationRenderer } from '../../../packages/runtime/src/presentation/index.js';
-import { registerAeliqoElements } from '../../../packages/web/src/register.js';
+import { registerVarendoElements } from '../../../packages/web/src/register.js';
 import { presentationTask, ref, result } from '../../contracts/fixtures.js';
-import type { AeliqoRegionElement } from '../../../packages/web/src/region/aeliqo-region.js';
+import type { VarendoRegionElement } from '../../../packages/web/src/region/varendo-region.js';
 import type { PresentationAdaptationContext } from '../../../packages/runtime/src/presentation/index.js';
 
-registerAeliqoElements();
+registerVarendoElements();
 
 const env = (inlineSize: number): PresentationEnvironment => ({
   inlineSize: { state: 'known', value: inlineSize },
@@ -90,7 +90,7 @@ const store = createRegionStore({
 const created = store.create({ id: 'region-1', state: { task: presentationTask } });
 if (!created.ok) throw new Error(created.diagnostics[0]!.message);
 const region = created.value;
-const element = document.querySelector<AeliqoRegionElement>('#region')!;
+const element = document.querySelector<VarendoRegionElement>('#region')!;
 const editor = document.querySelector<HTMLInputElement>('#editor')!;
 element.shadowRoot?.append(editor);
 let contextReads = 0;
@@ -131,7 +131,7 @@ const renderer = createCallbackPresentationRenderer({
     });
   },
 });
-const adaptation = createAeliqoRegionAdaptation({
+const adaptation = createVarendoRegionAdaptation({
   element,
   region,
   registry: registryResult.value,
@@ -142,14 +142,14 @@ const adaptation = createAeliqoRegionAdaptation({
 });
 let latestWide: Awaited<ReturnType<typeof adaptation.request>> | undefined;
 let latestNarrow: Awaited<ReturnType<typeof adaptation.request>> | undefined;
-let observed: ReturnType<typeof createAeliqoRegionAdaptation> | undefined;
+let observed: ReturnType<typeof createVarendoRegionAdaptation> | undefined;
 Object.assign(window, {
   adaptation,
   region,
   editor,
   observeMedia: () => {
     observed?.disconnect();
-    observed = createAeliqoRegionAdaptation({
+    observed = createVarendoRegionAdaptation({
       element,
       region,
       registry: registryResult.value,

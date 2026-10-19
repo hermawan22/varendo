@@ -125,7 +125,7 @@ test('a J1 or J3 render cannot pass with a wrong scope or extra person', () => {
 });
 
 test('dry run records the exact corpus digest and makes no provider or browser call', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-live-journeys-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-live-journeys-'));
   const source = new URL('./j1-j3-corpus.json', import.meta.url);
   const bytes = await readFile(source);
   const corpus = join(directory, 'corpus.json');
@@ -145,7 +145,7 @@ test('dry run records the exact corpus digest and makes no provider or browser c
 });
 
 test('the committed example configuration cannot dispatch a paid model trial', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-live-journeys-template-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-live-journeys-template-'));
   const report = await runLiveJourneyEvaluation({
     corpusPath: new URL('./j1-j3-corpus.json', import.meta.url).pathname,
     configPath: new URL('./live-journey-config.example.json', import.meta.url).pathname,

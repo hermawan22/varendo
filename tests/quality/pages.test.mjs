@@ -45,6 +45,6 @@ test('Pages preparation scopes navigation, assets and redirects without doubling
   );
   const version = JSON.parse(await readFile(join(directory, 'version'), 'utf8'));
   assert.equal(version.product, 'varendo-docs');
-  assert.equal(version.version, '0.1.0');
+  assert.equal(version.version, '0.2.0');
   assert.match(version.sourceRevision, /^[a-f0-9]{40}$/u);
 });

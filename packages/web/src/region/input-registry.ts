@@ -1,26 +1,26 @@
 import type { Outcome, VersionRef } from '@varendo/core';
 import type { InteractionPort } from '@varendo/core/interaction';
 import type { PresentationManifest, PresentationValues, ResolvedPresentationConfig } from '@varendo/core/presentation';
-import { AELIQO_INPUT_REFS, type AeliqoInputId, type AeliqoInputRef } from '../input/manifest.js';
+import { VARENDO_INPUT_REFS, type VarendoInputId, type VarendoInputRef } from '../input/manifest.js';
 import { validateInputBinding } from './input-binding-validation.js';
-import type { AeliqoInputBinding, AeliqoInputBindings, AeliqoInputDraftBinding } from './input-registry-types.js';
+import type { VarendoInputBinding, VarendoInputBindings, VarendoInputDraftBinding } from './input-registry-types.js';
 import { boundedId, boundedText, clone, copyJson, exactKeys, fail, record } from './input-registry-support.js';
 
 export type {
-  AeliqoInputActionBinding,
-  AeliqoInputBinding,
-  AeliqoInputBindings,
-  AeliqoInputDraftBinding,
-  AeliqoInputFileBinding,
+  VarendoInputActionBinding,
+  VarendoInputBinding,
+  VarendoInputBindings,
+  VarendoInputDraftBinding,
+  VarendoInputFileBinding,
 } from './input-registry-types.js';
 
 const CONFIG_SCHEMAS = Object.freeze(
   Object.fromEntries(
-    Object.values(AELIQO_INPUT_REFS).map((ref) => [ref.id, { id: `${ref.id}.config`, revision: '1' }]),
+    Object.values(VARENDO_INPUT_REFS).map((ref) => [ref.id, { id: `${ref.id}.config`, revision: '1' }]),
   ),
-) as Record<AeliqoInputId, VersionRef>;
+) as Record<VarendoInputId, VersionRef>;
 
-function copyBindings(input: AeliqoInputBindings | undefined): Outcome<AeliqoInputBindings> {
+function copyBindings(input: VarendoInputBindings | undefined): Outcome<VarendoInputBindings> {
   if (input === undefined) return { ok: true, value: { revision: 'unconfigured', inputs: [] } };
   const copied = copyJson(input);
   const value = record(copied);
@@ -32,12 +32,12 @@ function copyBindings(input: AeliqoInputBindings | undefined): Outcome<AeliqoInp
   )
     return fail('binding', 'Input bindings require a bounded revision and input list.');
   const ids = new Set<string>();
-  const entries: AeliqoInputBinding[] = [];
+  const entries: VarendoInputBinding[] = [];
   for (const item of value.inputs) {
     const candidate = record(item);
     if (candidate === undefined || ids.has(String(candidate.id)))
       return fail('binding', 'Input binding identifiers must be unique.');
-    const checked = validateInputBinding(candidate as unknown as AeliqoInputBinding);
+    const checked = validateInputBinding(candidate as unknown as VarendoInputBinding);
     if (!checked.ok) return checked;
     ids.add(checked.value.id);
     entries.push(checked.value);
@@ -45,7 +45,7 @@ function copyBindings(input: AeliqoInputBindings | undefined): Outcome<AeliqoInp
   return { ok: true, value: clone({ revision: value.revision, inputs: entries }) };
 }
 
-function bindingValues(binding: AeliqoInputBinding): Outcome<PresentationValues> {
+function bindingValues(binding: VarendoInputBinding): Outcome<PresentationValues> {
   const config = record(binding.config)!;
   const output: Record<string, unknown> = { ...config, bindingRef: binding.id };
   if (binding.draft !== undefined) Object.assign(output, binding.draft);
@@ -58,11 +58,11 @@ function bindingValues(binding: AeliqoInputBinding): Outcome<PresentationValues>
   return { ok: true, value: output as PresentationValues };
 }
 
-function draftPort(binding: AeliqoInputDraftBinding, id = 'draft'): InteractionPort {
+function draftPort(binding: VarendoInputDraftBinding, id = 'draft'): InteractionPort {
   return { id, direction: 'output', payload: 'draft', entity: binding.entity, type: binding.type };
 }
 
-function portsFor(binding: AeliqoInputBinding): readonly InteractionPort[] {
+function portsFor(binding: VarendoInputBinding): readonly InteractionPort[] {
   if (binding.range !== undefined)
     return [draftPort(binding.range.start, 'start'), draftPort(binding.range.end, 'end')];
   if (binding.draft !== undefined) return [draftPort(binding.draft)];
@@ -74,8 +74,8 @@ function portsFor(binding: AeliqoInputBinding): readonly InteractionPort[] {
 
 function resolveConfig(
   values: PresentationValues,
-  entries: readonly AeliqoInputBinding[],
-  bindings: AeliqoInputBindings,
+  entries: readonly VarendoInputBinding[],
+  bindings: VarendoInputBindings,
 ): Outcome<ResolvedPresentationConfig> {
   const candidate = record(values);
   if (
@@ -106,7 +106,7 @@ function resolveConfig(
   };
 }
 
-function buildManifest(ref: AeliqoInputRef, bindings: AeliqoInputBindings): PresentationManifest {
+function buildManifest(ref: VarendoInputRef, bindings: VarendoInputBindings): PresentationManifest {
   const entries = bindings.inputs.filter((entry) => entry.ref.id === ref.id);
   const operations = entries.flatMap((entry) => {
     if (ref.id !== 'input.form' || entry.action === undefined) return [];
@@ -129,14 +129,14 @@ function buildManifest(ref: AeliqoInputRef, bindings: AeliqoInputBindings): Pres
 
 /** Build the registered semantic input manifests from an immutable host binding table. */
 export function createInputPresentationManifests(
-  input?: AeliqoInputBindings,
+  input?: VarendoInputBindings,
 ): Outcome<readonly PresentationManifest[]> {
   const copied = copyBindings(input);
   if (!copied.ok) return copied;
   return {
     ok: true,
     value: Object.freeze(
-      Object.values(AELIQO_INPUT_REFS).map((ref) => Object.freeze(buildManifest(ref, copied.value))),
+      Object.values(VARENDO_INPUT_REFS).map((ref) => Object.freeze(buildManifest(ref, copied.value))),
     ),
   };
 }

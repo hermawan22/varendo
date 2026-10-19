@@ -1,5 +1,5 @@
 /** Build-time metadata for the input primitive family. No element imports. */
-export const AELIQO_INPUT_REFS = {
+export const VARENDO_INPUT_REFS = {
   textField: { id: 'input.text-field', revision: '1' },
   textArea: { id: 'input.text-area', revision: '1' },
   numberField: { id: 'input.number-field', revision: '1' },
@@ -17,32 +17,32 @@ export const AELIQO_INPUT_REFS = {
   form: { id: 'input.form', revision: '1' },
 } as const;
 
-export type AeliqoInputRef = (typeof AELIQO_INPUT_REFS)[keyof typeof AELIQO_INPUT_REFS];
-export type AeliqoInputId = AeliqoInputRef['id'];
+export type VarendoInputRef = (typeof VARENDO_INPUT_REFS)[keyof typeof VARENDO_INPUT_REFS];
+export type VarendoInputId = VarendoInputRef['id'];
 
-export interface AeliqoInputDiagnostic {
+export interface VarendoInputDiagnostic {
   readonly code: 'input.config' | 'input.reference';
   readonly message: string;
   readonly retryable: false;
 }
 
-export type AeliqoInputOutcome<T> =
+export type VarendoInputOutcome<T> =
   | { readonly ok: true; readonly value: T }
-  | { readonly ok: false; readonly diagnostics: readonly AeliqoInputDiagnostic[] };
+  | { readonly ok: false; readonly diagnostics: readonly VarendoInputDiagnostic[] };
 
-export interface AeliqoInputConfig {
-  readonly ref: AeliqoInputRef;
+export interface VarendoInputConfig {
+  readonly ref: VarendoInputRef;
   readonly values: Readonly<Record<string, unknown>>;
 }
 
-export interface AeliqoInputManifest {
-  readonly ref: AeliqoInputRef;
-  readonly tagName: `aeliqo-${string}`;
+export interface VarendoInputManifest {
+  readonly ref: VarendoInputRef;
+  readonly tagName: `varendo-${string}`;
   readonly role: 'input' | 'structure';
   readonly namedParts: readonly string[];
   readonly events: readonly string[];
   readonly configKeys: readonly string[];
-  readonly resolveConfig: (input: unknown) => AeliqoInputOutcome<AeliqoInputConfig>;
+  readonly resolveConfig: (input: unknown) => VarendoInputOutcome<VarendoInputConfig>;
 }
 
 function record(value: unknown): Record<string, unknown> | undefined {
@@ -51,7 +51,7 @@ function record(value: unknown): Record<string, unknown> | undefined {
     : undefined;
 }
 
-function fail(code: AeliqoInputDiagnostic['code'], message: string): AeliqoInputOutcome<never> {
+function fail(code: VarendoInputDiagnostic['code'], message: string): VarendoInputOutcome<never> {
   return { ok: false, diagnostics: [{ code, message, retryable: false }] };
 }
 
@@ -70,11 +70,11 @@ const enumField =
 type Validator = (value: unknown, values: Readonly<Record<string, unknown>>) => boolean;
 
 function validate(
-  ref: AeliqoInputRef,
+  ref: VarendoInputRef,
   keys: readonly string[],
   input: unknown,
   validators: Readonly<Record<string, Validator>> = {},
-): AeliqoInputOutcome<AeliqoInputConfig> {
+): VarendoInputOutcome<VarendoInputConfig> {
   const values = record(input);
   if (values === undefined) return fail('input.config', `${ref.id} configuration must be an object.`);
   if (Object.keys(values).some((key) => !keys.includes(key)))
@@ -88,14 +88,14 @@ function validate(
 }
 
 function manifest(
-  ref: AeliqoInputRef,
-  tagName: `aeliqo-${string}`,
-  role: AeliqoInputManifest['role'],
+  ref: VarendoInputRef,
+  tagName: `varendo-${string}`,
+  role: VarendoInputManifest['role'],
   namedParts: readonly string[],
   events: readonly string[],
   configKeys: readonly string[],
-  resolver: (input: unknown) => AeliqoInputOutcome<AeliqoInputConfig>,
-): AeliqoInputManifest {
+  resolver: (input: unknown) => VarendoInputOutcome<VarendoInputConfig>,
+): VarendoInputManifest {
   return { ref, tagName, role, namedParts, events, configKeys, resolveConfig: resolver };
 }
 
@@ -125,17 +125,17 @@ const numericValidators = {
   step: (value: unknown) => stringField(value, 128),
 };
 
-export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
+export const VARENDO_INPUT_MANIFESTS: readonly VarendoInputManifest[] = [
   manifest(
-    AELIQO_INPUT_REFS.textField,
-    'aeliqo-text-field',
+    VARENDO_INPUT_REFS.textField,
+    'varendo-text-field',
     'input',
     ['field', 'label', 'input', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     withCommon(['value', 'defaultValue', 'placeholder', 'autocomplete', 'inputType']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.textField,
+        VARENDO_INPUT_REFS.textField,
         withCommon(['value', 'defaultValue', 'placeholder', 'autocomplete', 'inputType']),
         input,
         merged({
@@ -161,15 +161,15 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.textArea,
-    'aeliqo-text-area',
+    VARENDO_INPUT_REFS.textArea,
+    'varendo-text-area',
     'input',
     ['field', 'label', 'input', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     withCommon(['value', 'defaultValue', 'rows']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.textArea,
+        VARENDO_INPUT_REFS.textArea,
         withCommon(['value', 'defaultValue', 'rows']),
         input,
         merged({
@@ -180,30 +180,30 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.numberField,
-    'aeliqo-number-field',
+    VARENDO_INPUT_REFS.numberField,
+    'varendo-number-field',
     'input',
     ['field', 'label', 'input', 'unit', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     withCommon(['value', 'defaultValue', 'min', 'max', 'step', 'unit']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.numberField,
+        VARENDO_INPUT_REFS.numberField,
         withCommon(['value', 'defaultValue', 'min', 'max', 'step', 'unit']),
         input,
         merged(numericValidators),
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.checkbox,
-    'aeliqo-checkbox',
+    VARENDO_INPUT_REFS.checkbox,
+    'varendo-checkbox',
     'input',
     ['field', 'label', 'input', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-validation'],
     withCommon(['checked', 'defaultChecked', 'indeterminate', 'value']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.checkbox,
+        VARENDO_INPUT_REFS.checkbox,
         withCommon(['checked', 'defaultChecked', 'indeterminate', 'value']),
         input,
         merged({
@@ -215,15 +215,15 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.radioGroup,
-    'aeliqo-radio-group',
+    VARENDO_INPUT_REFS.radioGroup,
+    'varendo-radio-group',
     'input',
     ['field', 'label', 'option', 'input', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-validation'],
     withCommon(['value', 'defaultValue', 'orientation']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.radioGroup,
+        VARENDO_INPUT_REFS.radioGroup,
         withCommon(['value', 'defaultValue', 'orientation']),
         input,
         merged({
@@ -234,45 +234,45 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.switch,
-    'aeliqo-switch',
+    VARENDO_INPUT_REFS.switch,
+    'varendo-switch',
     'input',
     ['field', 'label', 'input', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-validation'],
     withCommon(['checked', 'defaultChecked', 'value']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.switch,
+        VARENDO_INPUT_REFS.switch,
         withCommon(['checked', 'defaultChecked', 'value']),
         input,
         merged({ checked: booleanField, defaultChecked: booleanField, value: (value) => requiredString(value, 256) }),
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.select,
-    'aeliqo-select',
+    VARENDO_INPUT_REFS.select,
+    'varendo-select',
     'input',
     ['field', 'label', 'input', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-validation'],
     withCommon(['value', 'defaultValue', 'emptyLabel']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.select,
+        VARENDO_INPUT_REFS.select,
         withCommon(['value', 'defaultValue', 'emptyLabel']),
         input,
         merged(selectValidators),
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.combobox,
-    'aeliqo-combobox',
+    VARENDO_INPUT_REFS.combobox,
+    'varendo-combobox',
     'input',
     ['field', 'label', 'input', 'listbox', 'option', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-validation'],
     withCommon(['value', 'defaultValue', 'query', 'minQueryLength']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.combobox,
+        VARENDO_INPUT_REFS.combobox,
         withCommon(['value', 'defaultValue', 'query', 'minQueryLength']),
         input,
         merged({
@@ -284,15 +284,15 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.dateField,
-    'aeliqo-date-field',
+    VARENDO_INPUT_REFS.dateField,
+    'varendo-date-field',
     'input',
     ['field', 'label', 'input', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     withCommon(['value', 'defaultValue', 'min', 'max', 'calendar']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.dateField,
+        VARENDO_INPUT_REFS.dateField,
         withCommon(['value', 'defaultValue', 'min', 'max', 'calendar']),
         input,
         merged({
@@ -305,15 +305,15 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.dateRange,
-    'aeliqo-date-range',
+    VARENDO_INPUT_REFS.dateRange,
+    'varendo-date-range',
     'input',
     ['field', 'label', 'input', 'start-label', 'end-label', 'policy', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     withCommon(['start', 'end', 'boundary', 'timezone', 'calendar']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.dateRange,
+        VARENDO_INPUT_REFS.dateRange,
         withCommon(['start', 'end', 'boundary', 'timezone', 'calendar']),
         input,
         merged({
@@ -326,15 +326,15 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.slider,
-    'aeliqo-slider',
+    VARENDO_INPUT_REFS.slider,
+    'varendo-slider',
     'input',
     ['field', 'label', 'input', 'text-input', 'unit', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-input-commit', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-input-commit', 'varendo-validation'],
     withCommon(['value', 'defaultValue', 'min', 'max', 'step', 'unit']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.slider,
+        VARENDO_INPUT_REFS.slider,
         withCommon(['value', 'defaultValue', 'min', 'max', 'step', 'unit']),
         input,
         merged({
@@ -347,15 +347,15 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.searchField,
-    'aeliqo-search-field',
+    VARENDO_INPUT_REFS.searchField,
+    'varendo-search-field',
     'input',
     ['field', 'label', 'input', 'description', 'error'],
-    ['aeliqo-input-change', 'aeliqo-search', 'aeliqo-validation'],
+    ['varendo-input-change', 'varendo-search', 'varendo-validation'],
     withCommon(['value', 'defaultValue', 'queryOnInput', 'debounceMs']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.searchField,
+        VARENDO_INPUT_REFS.searchField,
         withCommon(['value', 'defaultValue', 'queryOnInput', 'debounceMs']),
         input,
         merged({
@@ -367,15 +367,15 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.fileInput,
-    'aeliqo-file-input',
+    VARENDO_INPUT_REFS.fileInput,
+    'varendo-file-input',
     'input',
     ['field', 'label', 'input', 'files', 'description', 'error'],
-    ['aeliqo-file-change', 'aeliqo-validation'],
+    ['varendo-file-change', 'varendo-validation'],
     withCommon(['accept', 'multiple', 'capture', 'maxFiles', 'maxBytes']),
     (input) =>
       validate(
-        AELIQO_INPUT_REFS.fileInput,
+        VARENDO_INPUT_REFS.fileInput,
         withCommon(['accept', 'multiple', 'capture', 'maxFiles', 'maxBytes']),
         input,
         merged({
@@ -388,14 +388,14 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       ),
   ),
   manifest(
-    AELIQO_INPUT_REFS.fieldGroup,
-    'aeliqo-field-group',
+    VARENDO_INPUT_REFS.fieldGroup,
+    'varendo-field-group',
     'structure',
     ['group', 'legend', 'description', 'error'],
     [],
     ['legend', 'description', 'error', 'disabled'],
     (input) =>
-      validate(AELIQO_INPUT_REFS.fieldGroup, ['legend', 'description', 'error', 'disabled'], input, {
+      validate(VARENDO_INPUT_REFS.fieldGroup, ['legend', 'description', 'error', 'disabled'], input, {
         legend: (value) => stringField(value, 512),
         description: (value) => stringField(value, 2048),
         error: (value) => stringField(value, 2048),
@@ -403,14 +403,14 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
       }),
   ),
   manifest(
-    AELIQO_INPUT_REFS.form,
-    'aeliqo-form',
+    VARENDO_INPUT_REFS.form,
+    'varendo-form',
     'structure',
     ['form', 'error-summary', 'submit'],
-    ['aeliqo-form-submit', 'aeliqo-form-reset'],
+    ['varendo-form-submit', 'varendo-form-reset'],
     ['label', 'noValidate', 'submitLabel'],
     (input) =>
-      validate(AELIQO_INPUT_REFS.form, ['label', 'noValidate', 'submitLabel'], input, {
+      validate(VARENDO_INPUT_REFS.form, ['label', 'noValidate', 'submitLabel'], input, {
         label: (value) => stringField(value, 512),
         noValidate: booleanField,
         submitLabel: (value) => stringField(value, 256),
@@ -418,6 +418,6 @@ export const AELIQO_INPUT_MANIFESTS: readonly AeliqoInputManifest[] = [
   ),
 ];
 
-export function getAeliqoInputManifest(id: AeliqoInputId): AeliqoInputManifest | undefined {
-  return AELIQO_INPUT_MANIFESTS.find((candidate) => candidate.ref.id === id);
+export function getVarendoInputManifest(id: VarendoInputId): VarendoInputManifest | undefined {
+  return VARENDO_INPUT_MANIFESTS.find((candidate) => candidate.ref.id === id);
 }

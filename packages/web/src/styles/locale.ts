@@ -1,21 +1,21 @@
-export type AeliqoDirection = 'ltr' | 'rtl';
+export type VarendoDirection = 'ltr' | 'rtl';
 
-export interface AeliqoLocaleContext {
+export interface VarendoLocaleContext {
   readonly locale: string;
-  readonly direction: AeliqoDirection;
+  readonly direction: VarendoDirection;
 }
 
-export interface AeliqoLocaleOptions {
+export interface VarendoLocaleOptions {
   /** Explicit host direction wins over platform locale inference. */
-  readonly direction?: AeliqoDirection;
+  readonly direction?: VarendoDirection;
 }
 
-type AeliqoTextInfo = { readonly direction?: string };
-type AeliqoLocaleWithTextInfo = Intl.Locale & {
-  readonly getTextInfo?: () => AeliqoTextInfo;
+type VarendoTextInfo = { readonly direction?: string };
+type VarendoLocaleWithTextInfo = Intl.Locale & {
+  readonly getTextInfo?: () => VarendoTextInfo;
 };
 
-function canonicalizeLocale(locale: string): AeliqoLocaleWithTextInfo {
+function canonicalizeLocale(locale: string): VarendoLocaleWithTextInfo {
   if (typeof locale !== 'string') {
     throw new TypeError('Varendo locale must be a BCP 47 language tag.');
   }
@@ -27,26 +27,26 @@ function canonicalizeLocale(locale: string): AeliqoLocaleWithTextInfo {
 
   try {
     // Intl.Locale both validates the language tag and returns its canonical form.
-    return new Intl.Locale(candidate) as AeliqoLocaleWithTextInfo;
+    return new Intl.Locale(candidate) as VarendoLocaleWithTextInfo;
   } catch {
     throw new RangeError(`Invalid Varendo BCP 47 locale: ${locale}`);
   }
 }
 
-function validateDirection(direction: AeliqoDirection): AeliqoDirection {
+function validateDirection(direction: VarendoDirection): VarendoDirection {
   if (direction !== 'ltr' && direction !== 'rtl') {
     throw new RangeError(`Invalid Varendo text direction: ${String(direction)}`);
   }
   return direction;
 }
 
-function inferDirection(locale: AeliqoLocaleWithTextInfo): AeliqoDirection {
+function inferDirection(locale: VarendoLocaleWithTextInfo): VarendoDirection {
   const getTextInfo = locale.getTextInfo;
   if (typeof getTextInfo !== 'function') {
     throw new RangeError('The platform cannot infer locale direction; provide options.direction explicitly.');
   }
 
-  let textInfo: AeliqoTextInfo;
+  let textInfo: VarendoTextInfo;
   try {
     textInfo = getTextInfo.call(locale);
   } catch {
@@ -62,14 +62,14 @@ function inferDirection(locale: AeliqoLocaleWithTextInfo): AeliqoDirection {
  * Resolve direction from an explicit host choice or the platform's BCP 47 text
  * metadata. The function deliberately does not guess from a short language list.
  */
-export function resolveAeliqoDirection(locale: string, direction?: AeliqoDirection): AeliqoDirection {
+export function resolveVarendoDirection(locale: string, direction?: VarendoDirection): VarendoDirection {
   const canonicalLocale = canonicalizeLocale(locale);
   if (direction !== undefined) return validateDirection(direction);
   return inferDirection(canonicalLocale);
 }
 
 /** Create immutable, canonical locale metadata for a component or application scope. */
-export function createAeliqoLocaleContext(locale = 'en-US', options: AeliqoLocaleOptions = {}): AeliqoLocaleContext {
+export function createVarendoLocaleContext(locale = 'en-US', options: VarendoLocaleOptions = {}): VarendoLocaleContext {
   const canonicalLocale = canonicalizeLocale(locale);
   const resolvedDirection =
     options.direction === undefined ? inferDirection(canonicalLocale) : validateDirection(options.direction);
@@ -80,9 +80,9 @@ export function createAeliqoLocaleContext(locale = 'en-US', options: AeliqoLocal
 }
 
 /** Attributes that may be reflected onto a host without mutating document state. */
-export function aeliqoLocaleAttributes(context: AeliqoLocaleContext): Readonly<{
+export function varendoLocaleAttributes(context: VarendoLocaleContext): Readonly<{
   lang: string;
-  dir: AeliqoDirection;
+  dir: VarendoDirection;
 }> {
   return { lang: context.locale, dir: context.direction };
 }

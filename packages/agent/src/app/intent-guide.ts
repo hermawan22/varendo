@@ -8,8 +8,8 @@ type JsonObject = Record<string, AgentJsonValue>;
  * Recommended system instructions for a model that drives Varendo tools. Hosts may append
  * product-specific guidance; the tool boundary enforces the rules either way.
  */
-export const AELIQO_AGENT_INSTRUCTIONS = [
-  'Call aeliqo_context first, then choose the resource whose label, fields, meanings, and views match the request.',
+export const VARENDO_AGENT_INSTRUCTIONS = [
+  'Call varendo_context first, then choose the resource whose label, fields, meanings, and views match the request.',
   'Start from the context examples and change only what the request needs: filter values, fields, measures, dimensions, or time grain.',
   'Use browse to list records, detail for one record, compare for two or more records, and analyze for totals, trends, and breakdowns.',
   'For analyze, use only measure ids from the resource meanings; add time for a trend or dimensions for a per-category breakdown.',

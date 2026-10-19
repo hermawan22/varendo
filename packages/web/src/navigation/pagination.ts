@@ -1,8 +1,8 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
-import { aeliqoNavigationStyles, emitAction } from './shared.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
+import { varendoNavigationStyles, emitAction } from './shared.js';
 
-export class AeliqoPaginationElement extends AeliqoFoundationElement {
+export class VarendoPaginationElement extends VarendoFoundationElement {
   static readonly properties = {
     page: { type: Number },
     pageCount: { type: Number, attribute: 'page-count' },
@@ -12,36 +12,36 @@ export class AeliqoPaginationElement extends AeliqoFoundationElement {
     pending: { type: Boolean, reflect: true },
   };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
-    aeliqoNavigationStyles,
+    ...varendoFoundationThemeStyles,
+    varendoNavigationStyles,
     css`
       :host {
         align-items: center;
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         justify-content: space-between;
       }
       nav {
         align-items: center;
         display: inline-flex;
-        gap: var(--aeliqo-space-4, 0.25rem);
+        gap: var(--varendo-space-4, 0.25rem);
       }
       button {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: 0.0625rem solid var(--aeliqo-color-border, #64748b);
-        border-radius: var(--aeliqo-radius-small, 0.375rem);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: 0.0625rem solid var(--varendo-color-border, #64748b);
+        border-radius: var(--varendo-radius-small, 0.375rem);
         cursor: pointer;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        min-inline-size: var(--aeliqo-control-min-target, 2.75rem);
-        padding-inline: var(--aeliqo-space-8, 0.5rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        min-inline-size: var(--varendo-control-min-target, 2.75rem);
+        padding-inline: var(--varendo-space-8, 0.5rem);
       }
       button:disabled {
         cursor: not-allowed;
         opacity: 0.55;
       }
       [part='status'] {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
       }
     `,
   ];
@@ -67,7 +67,7 @@ export class AeliqoPaginationElement extends AeliqoFoundationElement {
     const next = direction === 'next' ? page + 1 : Math.max(1, page - 1);
     const allowed = direction === 'next' ? this.hasNext : this.hasPrevious;
     if (this.pending || !allowed || (pageCount !== undefined && next > pageCount)) return;
-    if (!emitAction(this, 'aeliqo-page-change', { page: next, previousPage: page, direction })) return;
+    if (!emitAction(this, 'varendo-page-change', { page: next, previousPage: page, direction })) return;
     this.page = next;
   }
 

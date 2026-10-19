@@ -1,5 +1,5 @@
 import { scalarIdentity } from '@varendo/core';
-import type { AeliqoChartPoint, AeliqoChartSeries } from '../types.js';
+import type { VarendoChartPoint, VarendoChartSeries } from '../types.js';
 
 export const CHART_WIDTH = 640;
 export const CHART_HEIGHT = 180;
@@ -12,18 +12,18 @@ function plotWidth(width: number): number {
   return Math.max(1, width - PLOT_LEFT - PLOT_RIGHT);
 }
 
-export interface AeliqoChartGeometry {
+export interface VarendoChartGeometry {
   readonly segments: readonly { readonly seriesIndex: number; readonly points: string }[];
   readonly circles: readonly { readonly seriesIndex: number; readonly x: number; readonly y: number }[];
 }
 
-interface AeliqoChartDomainPoint {
+interface VarendoChartDomainPoint {
   readonly key: string;
   readonly x?: string | number;
   readonly label: string;
 }
 
-function hasExplicitX(series: readonly AeliqoChartSeries[]): boolean {
+function hasExplicitX(series: readonly VarendoChartSeries[]): boolean {
   return series.some((item) => item.points.some((point) => point.x !== undefined));
 }
 
@@ -34,7 +34,7 @@ function temporalX(value: string | number | undefined): number | undefined {
   return Number.isFinite(parsed) ? parsed : undefined;
 }
 
-function pointBaseKey(point: AeliqoChartPoint, index: number, explicitX: boolean): string {
+function pointBaseKey(point: VarendoChartPoint, index: number, explicitX: boolean): string {
   if (!explicitX || point.x === undefined) return `index:${index}`;
   if (typeof point.x === 'number') return `number:${point.x}`;
   // Date.parse only retains milliseconds; use the core instant identity so
@@ -82,7 +82,7 @@ function compareDate(left: string, right: string): number {
 }
 
 /** Return one bounded, ordered x domain shared by every rendered series. */
-export function buildAeliqoChartDomain(series: readonly AeliqoChartSeries[]): readonly AeliqoChartDomainPoint[] {
+export function buildVarendoChartDomain(series: readonly VarendoChartSeries[]): readonly VarendoChartDomainPoint[] {
   const explicitX = hasExplicitX(series);
   if (!explicitX) {
     const length = Math.max(0, ...series.map((item) => item.points.length));
@@ -92,7 +92,7 @@ export function buildAeliqoChartDomain(series: readonly AeliqoChartSeries[]): re
     }));
   }
 
-  const domain: AeliqoChartDomainPoint[] = [];
+  const domain: VarendoChartDomainPoint[] = [];
   const seen = new Set<string>();
   series.forEach((item) => {
     const occurrences = new Map<string, number>();
@@ -134,11 +134,11 @@ function compareTemporal(left: string, right: string): number {
 }
 
 /** Insert null points for dates absent from an individual grouped series. */
-export function alignAeliqoChartSeries(series: readonly AeliqoChartSeries[]): readonly AeliqoChartSeries[] {
+export function alignVarendoChartSeries(series: readonly VarendoChartSeries[]): readonly VarendoChartSeries[] {
   const explicitX = hasExplicitX(series);
-  const domain = buildAeliqoChartDomain(series);
+  const domain = buildVarendoChartDomain(series);
   return series.map((item) => {
-    const byKey = new Map<string, AeliqoChartPoint>();
+    const byKey = new Map<string, VarendoChartPoint>();
     const occurrences = new Map<string, number>();
     item.points.forEach((point, index) => {
       const baseKey = pointBaseKey(point, index, explicitX);
@@ -164,12 +164,12 @@ export function alignAeliqoChartSeries(series: readonly AeliqoChartSeries[]): re
   });
 }
 
-function numericCoordinates(domain: readonly AeliqoChartDomainPoint[]): number[] | undefined {
+function numericCoordinates(domain: readonly VarendoChartDomainPoint[]): number[] | undefined {
   const values = domain.map((entry) => (typeof entry.x === 'number' && Number.isFinite(entry.x) ? entry.x : undefined));
   return values.every((value) => value !== undefined) ? (values as number[]) : undefined;
 }
 
-function instantCoordinates(domain: readonly AeliqoChartDomainPoint[]): number[] | undefined {
+function instantCoordinates(domain: readonly VarendoChartDomainPoint[]): number[] | undefined {
   const instants = domain.map((entry) => (typeof entry.x === 'string' ? instantParts(entry.x) : undefined));
   if (instants.some((value) => value === undefined)) return undefined;
   const values = instants as NonNullable<(typeof instants)[number]>[];
@@ -181,7 +181,7 @@ function instantCoordinates(domain: readonly AeliqoChartDomainPoint[]): number[]
   return coordinates.every(Number.isFinite) ? coordinates : undefined;
 }
 
-function dateCoordinates(domain: readonly AeliqoChartDomainPoint[]): number[] | undefined {
+function dateCoordinates(domain: readonly VarendoChartDomainPoint[]): number[] | undefined {
   const values = domain.map((entry) => {
     if (typeof entry.x !== 'string' || dateIdentity(entry.x) === undefined) return undefined;
     return temporalX(entry.x);
@@ -189,7 +189,7 @@ function dateCoordinates(domain: readonly AeliqoChartDomainPoint[]): number[] | 
   return values.every((value) => value !== undefined) ? (values as number[]) : undefined;
 }
 
-function coordinateValues(domain: readonly AeliqoChartDomainPoint[]): number[] | undefined {
+function coordinateValues(domain: readonly VarendoChartDomainPoint[]): number[] | undefined {
   return numericCoordinates(domain) ?? instantCoordinates(domain) ?? dateCoordinates(domain);
 }
 
@@ -215,7 +215,7 @@ function scaledCoordinates(values: readonly number[], width: number): readonly n
   return values.map((value) => PLOT_LEFT + ((value / scale - scaledMin) / span) * plotWidth(width));
 }
 
-function xCoordinates(domain: readonly AeliqoChartDomainPoint[], width: number): readonly number[] {
+function xCoordinates(domain: readonly VarendoChartDomainPoint[], width: number): readonly number[] {
   if (domain.length === 0) return [];
   const values = coordinateValues(domain);
   if (values === undefined) return centeredCoordinates(domain.length, width);
@@ -242,8 +242,8 @@ function chartTickLabel(label: string): string {
   return label.length <= 10 ? label : `${label.slice(0, 8)}…`;
 }
 
-export function xAxisTicks(series: readonly AeliqoChartSeries[], width: number): ChartXAxisTick[] {
-  const domain = buildAeliqoChartDomain(series);
+export function xAxisTicks(series: readonly VarendoChartSeries[], width: number): ChartXAxisTick[] {
+  const domain = buildVarendoChartDomain(series);
   const positions = xCoordinates(domain, width);
   return visibleTickIndexes(domain.length).flatMap((index) => {
     const point = domain[index];
@@ -256,7 +256,7 @@ export function xAxisTicks(series: readonly AeliqoChartSeries[], width: number):
   });
 }
 
-function numericExtent(series: readonly AeliqoChartSeries[]): readonly [number, number] | undefined {
+function numericExtent(series: readonly VarendoChartSeries[]): readonly [number, number] | undefined {
   let minimum = Number.POSITIVE_INFINITY;
   let maximum = Number.NEGATIVE_INFINITY;
   for (const item of series) {
@@ -277,7 +277,7 @@ function yTickValues(minimum: number, maximum: number): number[] {
   return [minimum, middle, maximum];
 }
 
-export function yAxisTicks(series: readonly AeliqoChartSeries[]): ChartYAxisTick[] {
+export function yAxisTicks(series: readonly VarendoChartSeries[]): ChartYAxisTick[] {
   const extent = numericExtent(series);
   if (extent === undefined) return [];
   const [minimum, maximum] = extent;
@@ -296,11 +296,11 @@ export function yAxisTicks(series: readonly AeliqoChartSeries[]): ChartYAxisTick
 }
 
 /** Pure bounded geometry used by the SVG renderer and its verification tests. */
-export function buildAeliqoChartGeometry(
-  series: readonly AeliqoChartSeries[],
+export function buildVarendoChartGeometry(
+  series: readonly VarendoChartSeries[],
   width = CHART_WIDTH,
-): AeliqoChartGeometry {
-  const aligned = alignAeliqoChartSeries(series);
+): VarendoChartGeometry {
+  const aligned = alignVarendoChartSeries(series);
   const finite: number[] = [];
   for (const item of aligned) {
     for (const point of item.points) {
@@ -321,7 +321,7 @@ export function buildAeliqoChartGeometry(
   const span = max / scale - scaledMin || 1;
   const circles: { seriesIndex: number; x: number; y: number }[] = [];
   const segments: { seriesIndex: number; points: string }[] = [];
-  const domain = buildAeliqoChartDomain(series);
+  const domain = buildVarendoChartDomain(series);
   const x = xCoordinates(domain, width);
   aligned.forEach((item, seriesIndex) => {
     let current: string[] = [];

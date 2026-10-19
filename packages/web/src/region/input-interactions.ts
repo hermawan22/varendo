@@ -11,15 +11,15 @@ import {
 } from './input-interaction-values.js';
 import type { ValidatedPresentation } from '@varendo/core/presentation';
 import {
-  AeliqoFileChangeEvent,
-  AeliqoFormSubmitEvent,
-  AeliqoInputChangeEvent,
-  AeliqoInputCommitEvent,
-  AeliqoSearchEvent,
-  type AeliqoFileChangeDetail,
-  type AeliqoFormSubmitDetail,
-  type AeliqoInputChangeDetail,
-  type AeliqoInputCommitDetail,
+  VarendoFileChangeEvent,
+  VarendoFormSubmitEvent,
+  VarendoInputChangeEvent,
+  VarendoInputCommitEvent,
+  VarendoSearchEvent,
+  type VarendoFileChangeDetail,
+  type VarendoFormSubmitDetail,
+  type VarendoInputChangeDetail,
+  type VarendoInputCommitDetail,
 } from '../input/events.js';
 
 type Node = ValidatedPresentation['nodes'][number];
@@ -27,9 +27,9 @@ type DraftPayload = Extract<InteractionPayload, { readonly kind: 'draft' }>;
 type ActionPayload = Extract<InteractionPayload, { readonly kind: 'action-request' }>;
 type ExtensionPayload = Extract<InteractionPayload, { readonly kind: 'extension' }>;
 
-export type AeliqoInputEmit = (node: Node, portId: string, payload: InteractionPayload) => void;
+export type VarendoInputEmit = (node: Node, portId: string, payload: InteractionPayload) => void;
 
-export interface AeliqoInputInteraction {
+export interface VarendoInputInteraction {
   readonly portId: string;
   readonly payload: InteractionPayload;
 }
@@ -45,9 +45,9 @@ function eventBoundary(event: Event, constructor: Function, type: string): boole
   );
 }
 
-function changeDetail(event: Event): AeliqoInputChangeDetail<unknown> | undefined {
-  if (!eventBoundary(event, AeliqoInputChangeEvent, 'aeliqo-input-change')) return undefined;
-  const detail = (event as AeliqoInputChangeEvent<unknown>).detail;
+function changeDetail(event: Event): VarendoInputChangeDetail<unknown> | undefined {
+  if (!eventBoundary(event, VarendoInputChangeEvent, 'varendo-input-change')) return undefined;
+  const detail = (event as VarendoInputChangeEvent<unknown>).detail;
   if (
     record(detail) === undefined ||
     !exactKeys(detail as unknown as Record<string, unknown>, ['source', 'value', 'composing']) ||
@@ -58,9 +58,9 @@ function changeDetail(event: Event): AeliqoInputChangeDetail<unknown> | undefine
   return detail;
 }
 
-function commitDetail(event: Event): AeliqoInputCommitDetail<unknown> | undefined {
-  if (!eventBoundary(event, AeliqoInputCommitEvent, 'aeliqo-input-commit')) return undefined;
-  const detail = (event as AeliqoInputCommitEvent<unknown>).detail;
+function commitDetail(event: Event): VarendoInputCommitDetail<unknown> | undefined {
+  if (!eventBoundary(event, VarendoInputCommitEvent, 'varendo-input-commit')) return undefined;
+  const detail = (event as VarendoInputCommitEvent<unknown>).detail;
   if (
     record(detail) === undefined ||
     !exactKeys(detail as unknown as Record<string, unknown>, ['source', 'value']) ||
@@ -71,8 +71,8 @@ function commitDetail(event: Event): AeliqoInputCommitDetail<unknown> | undefine
 }
 
 function searchDetail(event: Event): string | undefined {
-  if (!eventBoundary(event, AeliqoSearchEvent, 'aeliqo-search')) return undefined;
-  const detail = (event as AeliqoSearchEvent).detail;
+  if (!eventBoundary(event, VarendoSearchEvent, 'varendo-search')) return undefined;
+  const detail = (event as VarendoSearchEvent).detail;
   if (
     record(detail) === undefined ||
     !exactKeys(detail as unknown as Record<string, unknown>, ['source', 'query']) ||
@@ -83,9 +83,9 @@ function searchDetail(event: Event): string | undefined {
   return detail.query;
 }
 
-function submitDetail(event: Event): AeliqoFormSubmitDetail | undefined {
-  if (!eventBoundary(event, AeliqoFormSubmitEvent, 'aeliqo-form-submit')) return undefined;
-  const detail = (event as AeliqoFormSubmitEvent).detail;
+function submitDetail(event: Event): VarendoFormSubmitDetail | undefined {
+  if (!eventBoundary(event, VarendoFormSubmitEvent, 'varendo-form-submit')) return undefined;
+  const detail = (event as VarendoFormSubmitEvent).detail;
   if (
     record(detail) === undefined ||
     !exactKeys(detail as unknown as Record<string, unknown>, ['source', 'submitter']) ||
@@ -104,9 +104,9 @@ function validFileMetadata(value: unknown): boolean {
   return typeof file.lastModified === 'number' && Number.isSafeInteger(file.lastModified) && file.lastModified >= 0;
 }
 
-function fileDetail(event: Event): AeliqoFileChangeDetail | undefined {
-  if (!eventBoundary(event, AeliqoFileChangeEvent, 'aeliqo-file-change')) return undefined;
-  const detail = (event as AeliqoFileChangeEvent).detail;
+function fileDetail(event: Event): VarendoFileChangeDetail | undefined {
+  if (!eventBoundary(event, VarendoFileChangeEvent, 'varendo-file-change')) return undefined;
+  const detail = (event as VarendoFileChangeEvent).detail;
   if (
     record(detail) === undefined ||
     !exactKeys(detail as unknown as Record<string, unknown>, ['source', 'files']) ||
@@ -212,7 +212,7 @@ function draftEventValue(ref: string, values: Record<string, unknown>, event: Ev
   return changeEventValue(event, ref === 'input.combobox');
 }
 
-function interactionForDraft(node: Node, event: Event): readonly AeliqoInputInteraction[] {
+function interactionForDraft(node: Node, event: Event): readonly VarendoInputInteraction[] {
   const values = node.config.values as Record<string, unknown>;
   const value = draftEventValue(node.manifest.id, values, event);
   if (value === undefined || !port(node, 'draft', 'draft')) return [];
@@ -251,7 +251,7 @@ function rangeInteractions(
   node: Node,
   candidate: Record<string, unknown>,
   bindings: readonly [Record<string, unknown>, Record<string, unknown>],
-): readonly AeliqoInputInteraction[] {
+): readonly VarendoInputInteraction[] {
   const startPayload = draftFrom(node, bindings[0], candidate.start, false, 'start');
   const endPayload = draftFrom(node, bindings[1], candidate.end, false, 'end');
   if (startPayload === undefined || endPayload === undefined) return [];
@@ -262,7 +262,7 @@ function rangeInteractions(
   ];
 }
 
-function interactionForRange(node: Node, event: Event): readonly AeliqoInputInteraction[] {
+function interactionForRange(node: Node, event: Event): readonly VarendoInputInteraction[] {
   const candidate = rangeDetail(event);
   if (candidate === undefined) return [];
   const values = node.config.values as Record<string, unknown>;
@@ -272,7 +272,7 @@ function interactionForRange(node: Node, event: Event): readonly AeliqoInputInte
   return rangeInteractions(node, candidate, bindings);
 }
 
-function interactionForForm(node: Node, event: Event): readonly AeliqoInputInteraction[] {
+function interactionForForm(node: Node, event: Event): readonly VarendoInputInteraction[] {
   if (submitDetail(event) === undefined || !port(node, 'submit', 'action-request')) return [];
   const values = node.config.values as Record<string, unknown>;
   const action = values.action;
@@ -294,7 +294,7 @@ function interactionForForm(node: Node, event: Event): readonly AeliqoInputInter
   return [{ portId: 'submit', payload }];
 }
 
-function interactionForFile(node: Node, event: Event): readonly AeliqoInputInteraction[] {
+function interactionForFile(node: Node, event: Event): readonly VarendoInputInteraction[] {
   const detail = fileDetail(event);
   const values = node.config.values as Record<string, unknown>;
   const schema = values.fileSchema;
@@ -314,7 +314,7 @@ function interactionForFile(node: Node, event: Event): readonly AeliqoInputInter
 }
 
 /** Validate a typed input event against the registered node binding. No model or host effect is invoked. */
-export function resolveInputInteraction(node: Node, event: Event): readonly AeliqoInputInteraction[] {
+export function resolveInputInteraction(node: Node, event: Event): readonly VarendoInputInteraction[] {
   switch (node.manifest.id) {
     case 'input.date-range':
       return interactionForRange(node, event);

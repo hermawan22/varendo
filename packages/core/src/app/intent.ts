@@ -132,7 +132,7 @@ function validateFilterValues(
         'intent.unknown-filter-value',
         `Filter value for ${predicate.field} is not in its registered closed domain.`,
         target,
-        ['Use the exact registered value returned by aeliqo_context.'],
+        ['Use the exact registered value returned by varendo_context.'],
       );
     }
   }

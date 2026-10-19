@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 
 const FLAG = '--enable-features=WebMCPTesting';
-const TOOL_NAME = 'aeliqo_native_adapter_probe';
+const TOOL_NAME = 'varendo_native_adapter_probe';
 const executablePath = process.env.WEBMCP_CHROME_PATH ?? chromium.executablePath();
 const measuredAt = new Date().toISOString();
 const repositoryRoot = resolve(process.cwd());
@@ -255,7 +255,7 @@ function closeServer(server) {
 }
 
 async function runMode(mode, args, url) {
-  const profile = await mkdtemp(join(tmpdir(), 'aeliqo-native-webmcp-'));
+  const profile = await mkdtemp(join(tmpdir(), 'varendo-native-webmcp-'));
   const observation = {
     mode,
     flags: [...args],

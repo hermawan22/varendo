@@ -6,11 +6,11 @@ registration, adaptive recipes, and the browser application facade.
 ## Component entry point
 
 ```ts
-import { registerAeliqoElements } from '@varendo/web';
-import { createAeliqoPresentationRegistry } from '@varendo/web/region';
+import { registerVarendoElements } from '@varendo/web';
+import { createVarendoPresentationRegistry } from '@varendo/web/region';
 
-registerAeliqoElements();
-const registry = createAeliqoPresentationRegistry();
+registerVarendoElements();
+const registry = createVarendoPresentationRegistry();
 ```
 
 The package root and component subpaths can be used without the runtime
@@ -18,12 +18,12 @@ package. Import the application facade separately when an application needs
 the default runtime and adaptive recipes:
 
 ```ts
-import { createAeliqoApp } from '@varendo/web/app';
+import { createVarendoApp } from '@varendo/web/app';
 
-const app = createAeliqoApp({ resources, authority });
+const app = createVarendoApp({ resources, authority });
 ```
 
-`createAeliqoApp` composes the runtime with registered renderers and standard
+`createVarendoApp` composes the runtime with registered renderers and standard
 recipes. It does not create authority or infer application permissions. The
 `@varendo/web/app` subpath requires the matching `@varendo/runtime` package.
 Registration is explicit so server module evaluation does not touch
@@ -36,7 +36,7 @@ presentation, then apply the latest environment. A loading or incompatible-versi
 failure returns `web.app.registration` and retains the previous valid result. Applications that
 use custom view callbacks load the full shared catalog when that view is
 selected, so callbacks can keep using compound elements and their children.
-Calling `registerAeliqoElements()` still registers the complete catalog eagerly;
+Calling `registerVarendoElements()` still registers the complete catalog eagerly;
 use it for direct custom-element usage.
 
 ## Adaptive recipe policy
@@ -72,7 +72,7 @@ const context: RecipeContext = {
 `allowedRepresentations` contains canonical renderer IDs such as `data.table`,
 not resource aliases such as `table`. `RecipePresentationPolicy` is also
 available from `@varendo/web/recipes`. The property is optional for direct recipe
-consumers; `createAeliqoApp` always supplies it for data tasks.
+consumers; `createVarendoApp` always supplies it for data tasks.
 
 When the preferred representation is a trend, the standard recipe binds only
 requested result fields. It prefers a field with the semantic `time` role and
@@ -98,7 +98,7 @@ Repeating a comparison evaluates a fresh result and transfers each existing
 child to its same registered identity. A custom recipe must likewise declare
 `stateTransfer` entries when it replaces result references or changes a layout.
 For unchanged node IDs, roles, and representations, use the registered
-`aeliqo.state.identity` mapping at revision `1`. Other transitions require an
+`varendo.state.identity` mapping at revision `1`. Other transitions require an
 appropriate registered mapping; omitting one rejects the update and keeps the
 previous valid presentation.
 
@@ -109,7 +109,7 @@ source-compatible candidate-authoring API; they are not a commit decision.
 
 ## Registered workspaces and pages
 
-Use `createAeliqoApp({ resources, authority, patterns, stateMappings, views })`
+Use `createVarendoApp({ resources, authority, patterns, stateMappings, views })`
 when a registered intent needs more than one result or a whole page layout.
 `patterns` uses `PresentationPatternManifest` and `stateMappings` uses
 `PresentationStateMappingManifest`, both exported by `@varendo/core/presentation`.
@@ -141,23 +141,23 @@ ownership and the registered attendance example.
 Import an individual element or family from its subpath. For example:
 
 ```ts
-import { AeliqoButtonElement } from '@varendo/web/button';
-import { AeliqoTextFieldElement } from '@varendo/web/text-field';
-import { AeliqoBarElement, AeliqoTrendElement } from '@varendo/web/visualization/cartesian';
+import { VarendoButtonElement } from '@varendo/web/button';
+import { VarendoTextFieldElement } from '@varendo/web/text-field';
+import { VarendoBarElement, VarendoTrendElement } from '@varendo/web/visualization/cartesian';
 ```
 
 Family exports include `foundation`, `inputs`, `navigation`, `feedback`, `data`,
 `plot`, `visualization`, and `compound`. Region registration and low-level
 rendering live under `@varendo/web/region`; server rendering lives under
 `@varendo/web/server`. Utility subpaths cover `@varendo/web/register`
-(`registerAeliqoElements`, `AELIQO_WEB_VERSION`), `@varendo/web/events` (typed
+(`registerVarendoElements`, `VARENDO_WEB_VERSION`), `@varendo/web/events` (typed
 selection events), `@varendo/web/styles` (theme styles and locale context),
 `@varendo/web/table` and `@varendo/web/chart` (element classes and stable row
 keys), `@varendo/web/region/adaptation` (region adaptation internals), and the
 `@varendo/web/foundation/manifest` and `@varendo/web/inputs/manifest` family
 manifests.
 
-`<aeliqo-chart>` is the low-level series chart. It renders a responsive SVG
+`<varendo-chart>` is the low-level series chart. It renders a responsive SVG
 with labeled axes and grid lines, plus a collapsible table with the exact
 values. Set `points` for one series or `series` for multiple series.
 The chart uses English labels by default. Set `lang="id"` or an Indonesian locale
@@ -165,14 +165,14 @@ such as `lang="id-ID"` for Indonesian chart controls and accessible labels;
 region trend charts use the validated presentation locale automatically.
 Application titles, series labels, and scope names remain host-authored.
 The scope annotation remains visible in either language. The catalog
-visualizations such as `<aeliqo-trend>` provide semantic views for
+visualizations such as `<varendo-trend>` provide semantic views for
 registered resources and meanings.
 
 ## Styling and browser behavior
 
-Plot and Cartesian marks use `--aeliqo-visualization-series1` through `series6`.
-Quantitative marks and their keys share `--aeliqo-visualization-quantitative-start`
-and `--aeliqo-visualization-quantitative-end`. Canvas repaints after component or
+Plot and Cartesian marks use `--varendo-visualization-series1` through `series6`.
+Quantitative marks and their keys share `--varendo-visualization-quantitative-start`
+and `--varendo-visualization-quantitative-end`. Canvas repaints after component or
 inherited theme changes and system color changes, using the same colors as SVG.
 
 Components use the library's public design tokens and exposed shadow parts.

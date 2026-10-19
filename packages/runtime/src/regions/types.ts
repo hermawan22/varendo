@@ -35,7 +35,7 @@ export interface RegionStageInput {
 
 /** Opaque: only the RegionHandle that staged this token can commit it. */
 export interface RegionCommitToken {
-  readonly __aeliqoRegionCommitToken: unique symbol;
+  readonly __varendoRegionCommitToken: unique symbol;
 }
 
 export interface RegionDataPublication {

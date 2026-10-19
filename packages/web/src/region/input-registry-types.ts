@@ -1,8 +1,8 @@
 import type { ReadonlyJsonValue, SemanticType, VersionRef } from '@varendo/core';
-import type { AeliqoInputRef } from '../input/manifest.js';
+import type { VarendoInputRef } from '../input/manifest.js';
 
 /** A host reviewed semantic target for one draft-producing control. */
-export interface AeliqoInputDraftBinding {
+export interface VarendoInputDraftBinding {
   readonly entity: string;
   readonly key: string;
   readonly field: string;
@@ -11,13 +11,13 @@ export interface AeliqoInputDraftBinding {
 }
 
 /** A host reviewed, immutable form action. Input values are static parameters; drafts stay host-owned. */
-export interface AeliqoInputActionBinding {
+export interface VarendoInputActionBinding {
   readonly action: VersionRef;
   readonly input: Readonly<Record<string, ReadonlyJsonValue>>;
 }
 
 /** A registered schema for metadata-only file selections. */
-export interface AeliqoInputFileBinding {
+export interface VarendoInputFileBinding {
   readonly schema: VersionRef;
 }
 
@@ -26,21 +26,21 @@ export interface AeliqoInputFileBinding {
  * `bindingRef` and `bindingRevision`; labels, options, semantic targets,
  * defaults and effects are copied from this reviewed table.
  */
-export interface AeliqoInputBinding {
+export interface VarendoInputBinding {
   readonly id: string;
-  readonly ref: AeliqoInputRef;
+  readonly ref: VarendoInputRef;
   readonly config: Readonly<Record<string, unknown>>;
-  readonly draft?: AeliqoInputDraftBinding;
+  readonly draft?: VarendoInputDraftBinding;
   readonly range?: {
-    readonly start: AeliqoInputDraftBinding;
-    readonly end: AeliqoInputDraftBinding;
+    readonly start: VarendoInputDraftBinding;
+    readonly end: VarendoInputDraftBinding;
   };
-  readonly action?: AeliqoInputActionBinding;
-  readonly file?: AeliqoInputFileBinding;
+  readonly action?: VarendoInputActionBinding;
+  readonly file?: VarendoInputFileBinding;
 }
 
 /** Immutable host bindings captured by an Experience revision. */
-export interface AeliqoInputBindings {
+export interface VarendoInputBindings {
   readonly revision: string;
-  readonly inputs: readonly AeliqoInputBinding[];
+  readonly inputs: readonly VarendoInputBinding[];
 }

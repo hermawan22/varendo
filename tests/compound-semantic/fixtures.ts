@@ -12,21 +12,21 @@ import type {
   PresentationValues,
 } from '../../packages/core/src/presentation/index.js';
 import {
-  AELIQO_CONFIG_SCHEMAS,
-  AELIQO_OPERATION_REFS,
-  AELIQO_PRESENTATION_REFS,
-  createAeliqoPresentationRegistry,
+  VARENDO_CONFIG_SCHEMAS,
+  VARENDO_OPERATION_REFS,
+  VARENDO_PRESENTATION_REFS,
+  createVarendoPresentationRegistry,
   createSelectionIdentityMapping,
 } from '../../packages/web/src/region/registry.js';
-import { AELIQO_DATA_REFS, type AeliqoDataBinding } from '../../packages/web/src/region/data-registry.js';
-import { AELIQO_INPUT_REFS } from '../../packages/web/src/input/manifest.js';
-import type { AeliqoInputBinding } from '../../packages/web/src/region/input-registry.js';
+import { VARENDO_DATA_REFS, type VarendoDataBinding } from '../../packages/web/src/region/data-registry.js';
+import { VARENDO_INPUT_REFS } from '../../packages/web/src/input/manifest.js';
+import type { VarendoInputBinding } from '../../packages/web/src/region/input-registry.js';
 import {
-  AELIQO_VISUALIZATION_CONFIG_SCHEMAS,
-  AELIQO_VISUALIZATION_REFS,
-  type AeliqoVisualizationBinding,
+  VARENDO_VISUALIZATION_CONFIG_SCHEMAS,
+  VARENDO_VISUALIZATION_REFS,
+  type VarendoVisualizationBinding,
 } from '../../packages/web/src/region/visualization-registry.js';
-import type { AeliqoCompoundRecipeInput } from '../../packages/web/src/compound/types.js';
+import type { VarendoCompoundRecipeInput } from '../../packages/web/src/compound/types.js';
 
 export const peopleRef: ResultRef = {
   id: 'compound-people',
@@ -141,12 +141,12 @@ export const matrixSpec: VisualizationSpec = {
   columns: ['id', 'name', 'amount'],
 };
 
-const dataBindings: readonly AeliqoDataBinding[] = [
+const dataBindings: readonly VarendoDataBinding[] = [
   { result: peopleResult, rows: peopleRows },
   { result: temporalResult, rows: temporalRows },
 ];
 
-const visualizationBindings: readonly AeliqoVisualizationBinding[] = [
+const visualizationBindings: readonly VarendoVisualizationBinding[] = [
   { result: peopleResult, context: { results: [peopleResult] }, datasets: [{ result: peopleRef, rows: peopleRows }] },
   {
     result: temporalResult,
@@ -156,16 +156,16 @@ const visualizationBindings: readonly AeliqoVisualizationBinding[] = [
 ];
 
 const textType = { value: 'text', nullable: false } as const;
-const searchBinding: AeliqoInputBinding = {
+const searchBinding: VarendoInputBinding = {
   id: 'people-search',
-  ref: AELIQO_INPUT_REFS.searchField,
+  ref: VARENDO_INPUT_REFS.searchField,
   config: { label: 'Search people', placeholder: 'Find a person' },
   draft: { entity: 'person', key: 'search', field: 'query', entityRevision: '1', type: textType },
 };
 export const saveAction = { id: 'person.save', revision: '1' } as const;
-const formBinding: AeliqoInputBinding = {
+const formBinding: VarendoInputBinding = {
   id: 'person-form',
-  ref: AELIQO_INPUT_REFS.form,
+  ref: VARENDO_INPUT_REFS.form,
   config: { label: 'Save person' },
   action: { action: saveAction, input: { source: 'compound-semantic' } },
 };
@@ -175,7 +175,7 @@ export const inputBindings = { revision: 'inputs-1', inputs: [searchBinding, for
 export const selectionMapping = createSelectionIdentityMapping('person', peopleResult.identity, peopleResult.rowGrain);
 
 export function registry() {
-  const made = createAeliqoPresentationRegistry(
+  const made = createVarendoPresentationRegistry(
     {
       data: dataBindings,
       inputs: inputBindings,
@@ -212,17 +212,17 @@ const environment = {
 };
 
 const allReps = [
-  AELIQO_PRESENTATION_REFS.stack,
-  AELIQO_DATA_REFS.metric,
-  AELIQO_DATA_REFS.detail,
-  AELIQO_DATA_REFS.recordList,
-  AELIQO_DATA_REFS.table,
-  AELIQO_DATA_REFS.filterBuilder,
-  AELIQO_VISUALIZATION_REFS.trend,
-  AELIQO_VISUALIZATION_REFS.timeline,
-  AELIQO_VISUALIZATION_REFS.matrix,
-  AELIQO_INPUT_REFS.searchField,
-  AELIQO_INPUT_REFS.form,
+  VARENDO_PRESENTATION_REFS.stack,
+  VARENDO_DATA_REFS.metric,
+  VARENDO_DATA_REFS.detail,
+  VARENDO_DATA_REFS.recordList,
+  VARENDO_DATA_REFS.table,
+  VARENDO_DATA_REFS.filterBuilder,
+  VARENDO_VISUALIZATION_REFS.trend,
+  VARENDO_VISUALIZATION_REFS.timeline,
+  VARENDO_VISUALIZATION_REFS.matrix,
+  VARENDO_INPUT_REFS.searchField,
+  VARENDO_INPUT_REFS.form,
 ];
 
 export function presentationContext(
@@ -273,7 +273,7 @@ export function presentationContext(
 export function formContext(): PresentationContext {
   const current = { ...preconditionBase, results: [] as readonly ResultRef[] };
   const needs = [{ id: 'save', operation: saveAction, fields: [], required: true }] as const;
-  const allowed = [AELIQO_PRESENTATION_REFS.stack, AELIQO_INPUT_REFS.form];
+  const allowed = [VARENDO_PRESENTATION_REFS.stack, VARENDO_INPUT_REFS.form];
   return {
     task: {
       version: '1',
@@ -359,7 +359,7 @@ export function recipeInput(
   context: PresentationContext,
   coverage: PresentationPlan['coverage'],
   links: PresentationPlan['links'] = [],
-): AeliqoCompoundRecipeInput {
+): VarendoCompoundRecipeInput {
   return {
     id,
     revision: '1',
@@ -374,7 +374,7 @@ export function recipeInput(
 export function readNeed(fields: readonly string[] = ['id', 'name', 'amount', 'department']) {
   return {
     id: 'read',
-    operation: AELIQO_OPERATION_REFS.read,
+    operation: VARENDO_OPERATION_REFS.read,
     fields: [...fields],
     outputId: peopleRef.outputId,
     required: true,
@@ -384,49 +384,49 @@ export function readNeed(fields: readonly string[] = ['id', 'name', 'amount', 'd
 export function temporalReadNeed() {
   return {
     id: 'read',
-    operation: AELIQO_OPERATION_REFS.read,
+    operation: VARENDO_OPERATION_REFS.read,
     fields: ['id', 'date', 'amount'],
     outputId: temporalRef.outputId,
     required: true,
   } as const;
 }
 
-export function explorerInput(): AeliqoCompoundRecipeInput {
+export function explorerInput(): VarendoCompoundRecipeInput {
   const needs = [
     readNeed(),
     {
       id: 'filter',
-      operation: AELIQO_OPERATION_REFS.filter,
+      operation: VARENDO_OPERATION_REFS.filter,
       fields: ['name'],
       outputId: peopleRef.outputId,
       required: true,
     },
     {
       id: 'selection',
-      operation: AELIQO_OPERATION_REFS.selection,
+      operation: VARENDO_OPERATION_REFS.selection,
       fields: ['id'],
       outputId: peopleRef.outputId,
       required: true,
     },
   ] as const;
   const context = presentationContext([peopleResult], needs, [
-    AELIQO_PRESENTATION_REFS.stack,
-    AELIQO_DATA_REFS.filterBuilder,
-    AELIQO_DATA_REFS.recordList,
-    AELIQO_DATA_REFS.detail,
-    AELIQO_DATA_REFS.table,
+    VARENDO_PRESENTATION_REFS.stack,
+    VARENDO_DATA_REFS.filterBuilder,
+    VARENDO_DATA_REFS.recordList,
+    VARENDO_DATA_REFS.detail,
+    VARENDO_DATA_REFS.table,
   ]);
   const parts = [
-    dataNode('filter', AELIQO_DATA_REFS.filterBuilder, 'filterBuilder', {
+    dataNode('filter', VARENDO_DATA_REFS.filterBuilder, 'filterBuilder', {
       field: 'name',
       outputId: peopleRef.outputId,
     }),
-    dataNode('record-list', AELIQO_DATA_REFS.recordList, 'recordList', { selection: 'single' }),
-    dataNode('detail', AELIQO_DATA_REFS.detail, 'detail', {
+    dataNode('record-list', VARENDO_DATA_REFS.recordList, 'recordList', { selection: 'single' }),
+    dataNode('detail', VARENDO_DATA_REFS.detail, 'detail', {
       fields: ['id', 'name', 'amount', 'department'],
       identityValues: { id: 'a' },
     }),
-    dataNode('table', AELIQO_DATA_REFS.table, 'table', { selection: 'single' }),
+    dataNode('table', VARENDO_DATA_REFS.table, 'table', { selection: 'single' }),
   ];
   const links: PresentationPlan['links'] = [
     {
@@ -438,13 +438,13 @@ export function explorerInput(): AeliqoCompoundRecipeInput {
     },
   ];
   const coverage: PresentationPlan['coverage'] = [
-    { needId: 'read', nodeIds: ['record-list', 'detail'], operations: [AELIQO_OPERATION_REFS.read] },
-    { needId: 'filter', nodeIds: ['filter'], operations: [AELIQO_OPERATION_REFS.filter] },
-    { needId: 'selection', nodeIds: ['record-list', 'table'], operations: [AELIQO_OPERATION_REFS.selection] },
+    { needId: 'read', nodeIds: ['record-list', 'detail'], operations: [VARENDO_OPERATION_REFS.read] },
+    { needId: 'filter', nodeIds: ['filter'], operations: [VARENDO_OPERATION_REFS.filter] },
+    { needId: 'selection', nodeIds: ['record-list', 'table'], operations: [VARENDO_OPERATION_REFS.selection] },
   ];
   return recipeInput('explorer', parts, context, coverage, links);
 }
 
-export const dataSchemas = AELIQO_CONFIG_SCHEMAS;
-export const visualizationSchemas = AELIQO_VISUALIZATION_CONFIG_SCHEMAS;
-export type { AeliqoCompoundRecipeInput };
+export const dataSchemas = VARENDO_CONFIG_SCHEMAS;
+export const visualizationSchemas = VARENDO_VISUALIZATION_CONFIG_SCHEMAS;
+export type { VarendoCompoundRecipeInput };

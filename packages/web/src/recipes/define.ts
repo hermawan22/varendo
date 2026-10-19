@@ -1,6 +1,6 @@
 import { createPresentationRegistry } from '@varendo/core/presentation';
 import type { RecipeDefinition, RecipeInput, RecipeIntent, ViewInput } from './types.js';
-import type { AeliqoViewDefinition } from '../region/types.js';
+import type { VarendoViewDefinition } from '../region/types.js';
 
 function validNamespacedId(id: string): boolean {
   return id.includes('.') && id.length <= 160 && !/[\s\u0000-\u001f\u007f]/u.test(id);
@@ -57,7 +57,7 @@ export function defineRecipe(input: RecipeInput): RecipeDefinition {
   });
 }
 
-export function defineView(input: ViewInput): AeliqoViewDefinition {
+export function defineView(input: ViewInput): VarendoViewDefinition {
   if (
     !validNamespacedId(input.ref.id) ||
     input.ref.id !== input.manifest.ref.id ||

@@ -16,7 +16,7 @@ try {
   if (extra.length > 0 || ![base, head].every((revision) => /^[a-f0-9]{40}$/iu.test(revision ?? ''))) {
     throw new Error('DCO requires the base and head full source SHAs.');
   }
-  const integrationHead = process.env.AELIQO_DCO_INTEGRATION_HEAD ?? '';
+  const integrationHead = process.env.VARENDO_DCO_INTEGRATION_HEAD ?? '';
   if (integrationHead !== '' && integrationHead !== head) {
     throw new Error('The DCO integration head must match the exact checked head SHA.');
   }

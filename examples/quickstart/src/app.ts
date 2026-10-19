@@ -1,6 +1,6 @@
 import { defineResource } from '@varendo/core';
 import { createLocalDataService, type AuthorizeRead, type DataRecord } from '@varendo/runtime/data';
-import { createAeliqoApp } from '@varendo/web/app';
+import { createVarendoApp } from '@varendo/web/app';
 import { z } from 'zod';
 
 export const people = defineResource({
@@ -82,7 +82,7 @@ export function createTutorialApp(records: readonly DataRecord[]) {
     sourceLimits: { rows: 1_000, bytes: 1_000_000 },
     authorize,
   });
-  return createAeliqoApp({
+  return createVarendoApp({
     resources: [
       { resource: people, data: peopleData },
       { resource: workforceHeadcount, data: headcountData },

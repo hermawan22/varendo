@@ -12,10 +12,10 @@ test('reduced motion overrides theme defaults and inherited motion tokens', asyn
   for (const colorScheme of ['light', 'dark'] as const) {
     for (const theme of ['light', 'dark', 'inherit', 'system']) {
       await host.evaluate((element, mode) => {
-        if (mode === 'system') element.removeAttribute('data-aeliqo-theme');
-        else element.setAttribute('data-aeliqo-theme', mode);
-        element.parentElement!.style.setProperty('--aeliqo-motion-duration-fast', '260ms');
-        element.parentElement!.style.setProperty('--aeliqo-motion-duration-standard', '360ms');
+        if (mode === 'system') element.removeAttribute('data-varendo-theme');
+        else element.setAttribute('data-varendo-theme', mode);
+        element.parentElement!.style.setProperty('--varendo-motion-duration-fast', '260ms');
+        element.parentElement!.style.setProperty('--varendo-motion-duration-standard', '360ms');
       }, theme);
       await page.emulateMedia({ colorScheme, reducedMotion: 'no-preference' });
       await expect(button, `${colorScheme}/${theme} default`).toHaveCSS(
@@ -23,9 +23,9 @@ test('reduced motion overrides theme defaults and inherited motion tokens', asyn
         theme === 'inherit' ? '0.26s' : '0.12s',
       );
       await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' });
-      await expect(host, `${colorScheme}/${theme} fast token`).toHaveCSS('--aeliqo-motion-duration-fast', '0ms');
+      await expect(host, `${colorScheme}/${theme} fast token`).toHaveCSS('--varendo-motion-duration-fast', '0ms');
       await expect(host, `${colorScheme}/${theme} standard token`).toHaveCSS(
-        '--aeliqo-motion-duration-standard',
+        '--varendo-motion-duration-standard',
         '0ms',
       );
       await expect(button, `${colorScheme}/${theme} computed motion`).toHaveCSS('transition-duration', '0s');
@@ -96,8 +96,8 @@ test('native select retains keyboard, form, read-only, invalid and forced-color 
   await host.evaluate((element) => {
     Object.assign(element, { readOnly: false, error: 'Choose another country' });
     const style = (element as HTMLElement).style;
-    style.setProperty('--aeliqo-focus-width', '4px');
-    style.setProperty('--aeliqo-focus-offset', '5px');
+    style.setProperty('--varendo-focus-width', '4px');
+    style.setProperty('--varendo-focus-offset', '5px');
   });
   await select.focus();
   await expect(select).toHaveAttribute('aria-invalid', 'true');
@@ -140,8 +140,8 @@ test('controls share text size and radius while focus tokens still customize but
   expect(new Set(sizes).size).toBe(1);
   for (const selector of ['#button', '#combo']) {
     await page.locator(selector).evaluate((element) => {
-      (element as HTMLElement).style.setProperty('--aeliqo-focus-width', '4px');
-      (element as HTMLElement).style.setProperty('--aeliqo-focus-offset', '5px');
+      (element as HTMLElement).style.setProperty('--varendo-focus-width', '4px');
+      (element as HTMLElement).style.setProperty('--varendo-focus-offset', '5px');
     });
     const control = page.locator(`${selector} ${selector === '#button' ? 'button' : 'input'}`);
     await control.focus();
@@ -156,7 +156,7 @@ test.describe('coarse pointer', () => {
     expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
     await page.locator('#fixture').evaluate((element) => {
       for (const child of element.querySelectorAll('*')) {
-        if (child.localName.startsWith('aeliqo-')) child.setAttribute('data-aeliqo-density', 'compact');
+        if (child.localName.startsWith('varendo-')) child.setAttribute('data-varendo-density', 'compact');
       }
     });
     await page.locator('#combo input').press('ArrowDown');
@@ -204,7 +204,7 @@ for (const theme of ['light', 'dark']) {
   test(`${theme} controls reflow at narrow viewports and text zoom`, async ({ page }, info) => {
     await page.locator('#fixture').evaluate((element, mode) => {
       for (const child of element.querySelectorAll('*')) {
-        if (child.localName.startsWith('aeliqo-')) child.setAttribute('data-aeliqo-theme', mode);
+        if (child.localName.startsWith('varendo-')) child.setAttribute('data-varendo-theme', mode);
       }
     }, theme);
     for (const width of [360, 768, 1440]) {

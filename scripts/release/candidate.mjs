@@ -236,7 +236,7 @@ async function buildAndPack(stagingRoot) {
 verifyToolchainAndSource();
 await prepareOutput();
 await clearGeneratedPackageOutputs();
-const stagingRoot = await mkdtemp(join(tmpdir(), 'aeliqo-release-pack-'));
+const stagingRoot = await mkdtemp(join(tmpdir(), 'varendo-release-pack-'));
 let consumerDirectory;
 try {
   const sourceScan = await scanReleaseSource();
@@ -244,7 +244,7 @@ try {
   const packages = await buildAndPack(stagingRoot);
   const artifactScan = scanTarballs(packages);
   const secretScan = {
-    schema: 'aeliqo.secret-scan.v1',
+    schema: 'varendo.secret-scan.v1',
     sourceRevision,
     rules: SECRET_PATTERNS.map(([rule]) => rule),
     scans: [sourceScan, artifactScan],
@@ -267,7 +267,7 @@ try {
     join(output, 'consumer.json'),
     JSON.stringify(
       {
-        schema: 'aeliqo.local-tarball-consumer.v1',
+        schema: 'varendo.local-tarball-consumer.v1',
         sourceRevision,
         version,
         install: {

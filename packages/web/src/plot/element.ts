@@ -1,7 +1,7 @@
 import { html, svg, css, nothing } from 'lit';
 import { resultCaption } from '../visualization/scope-caption.js';
 import type { PlotUnit, PlotSpec, Result, ResultRef, Outcome } from '@varendo/core';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
 import { compilePlotComposition, type PlotDataset, type CompiledPlot, type CompiledPlotNode } from './composition.js';
 import { compilePlotUnit } from './geometry.js';
 import type { PlotGeometry } from './geometry.js';
@@ -10,12 +10,12 @@ import { canvasPlotColor } from './palette.js';
 import { observePlotTheme } from './theme.js';
 import { svgPlotMarks, paintPlotCanvas, seriesColor, seriesSymbol } from './render.js';
 
-export interface AeliqoPlotSelectionDetail {
+export interface VarendoPlotSelectionDetail {
   readonly source: 'user';
   readonly identity: string;
   readonly result: ResultRef;
 }
-export type AeliqoPlotSelectionEvent = CustomEvent<AeliqoPlotSelectionDetail>;
+export type VarendoPlotSelectionEvent = CustomEvent<VarendoPlotSelectionDetail>;
 
 /** Direct plot surface: no runtime, query evaluator or model instance is constructed. */
 const tickText = (text: string): string => (text.length > 10 ? `${text.slice(0, 4)}…${text.slice(-4)}` : text);
@@ -44,7 +44,7 @@ function assertCoverageNever(coverage: never): never {
   throw new Error(`Unsupported result coverage: ${String(coverage)}`);
 }
 
-export class AeliqoPlotElement extends AeliqoFoundationElement {
+export class VarendoPlotElement extends VarendoFoundationElement {
   static readonly properties = {
     spec: { attribute: false },
     results: { attribute: false },
@@ -62,12 +62,12 @@ export class AeliqoPlotElement extends AeliqoFoundationElement {
     selectedResult: { attribute: false },
   };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: block;
         max-inline-size: 100%;
-        color: var(--aeliqo-color-text, #111827);
+        color: var(--varendo-color-text, #111827);
       }
       figure {
         margin: 0;
@@ -98,7 +98,7 @@ export class AeliqoPlotElement extends AeliqoFoundationElement {
       td {
         text-align: start;
         padding: 0.5rem;
-        border-block-end: 1px solid var(--aeliqo-color-border, #64748b);
+        border-block-end: 1px solid var(--varendo-color-border, #64748b);
       }
       [part='data'] {
         overflow: auto;
@@ -108,11 +108,11 @@ export class AeliqoPlotElement extends AeliqoFoundationElement {
         min-inline-size: 2.75rem;
       }
       button:focus-visible {
-        outline: 3px solid var(--aeliqo-color-focus, #4338ca);
+        outline: 3px solid var(--varendo-color-focus, #4338ca);
         outline-offset: 2px;
       }
       [aria-selected='true'] {
-        background: var(--aeliqo-color-surface, #f8fafc);
+        background: var(--varendo-color-surface, #f8fafc);
       }
       [part='concat-inline'] {
         display: flex;
@@ -262,7 +262,7 @@ export class AeliqoPlotElement extends AeliqoFoundationElement {
   }
   private select(identity: string, result: Result): void {
     this.dispatchEvent(
-      new CustomEvent('aeliqo-plot-select', {
+      new CustomEvent('varendo-plot-select', {
         bubbles: true,
         composed: true,
         cancelable: true,

@@ -2,7 +2,7 @@ import type { Intent, Outcome } from '@varendo/core';
 import { defineDataFeature } from '@varendo/core/features';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import {
-  createAeliqoRuntime,
+  createVarendoRuntime,
   type DataSurfaceBindings,
   type ExternalSurfaceSnapshot,
   type SurfaceProposal,
@@ -640,7 +640,7 @@ export async function createScopeFixture() {
     },
   };
   const source = sourceHarness();
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId,
     maxRegions: 2,
     resources: [{ resource: ordersFeature.resource, data: source.forScope('acme') }],
@@ -869,7 +869,7 @@ export async function createParallelScopeFixture() {
     services.set(key, service);
     return service;
   };
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId: `parallel-scope-runtime-${fixtureId}`,
     maxRegions: 4,
     resources: [{ resource: ordersFeature.resource, data: serviceFor(north) }],

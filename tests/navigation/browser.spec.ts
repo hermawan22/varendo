@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/tests/navigation/index.html');
   await expect
     .poll(() =>
-      page.evaluate(() => (window as typeof window & { aeliqoNavigationReady?: boolean }).aeliqoNavigationReady),
+      page.evaluate(() => (window as typeof window & { varendoNavigationReady?: boolean }).varendoNavigationReady),
     )
     .toBe(true);
 });
@@ -31,14 +31,14 @@ test('tabs preserve named panels and keyboard activation policy', async ({ page 
   await expect(overview).toBeFocused();
   await expect(details).toHaveAttribute('aria-selected', 'true');
   const beforeEnter = await page.evaluate(
-    () => (window as typeof window & { aeliqoNavigationEvents: CustomEvent[] }).aeliqoNavigationEvents.length,
+    () => (window as typeof window & { varendoNavigationEvents: CustomEvent[] }).varendoNavigationEvents.length,
   );
   await overview.press('Enter');
   await expect(overview).toHaveAttribute('aria-selected', 'true');
   await expect
     .poll(() =>
       page.evaluate(
-        () => (window as typeof window & { aeliqoNavigationEvents: CustomEvent[] }).aeliqoNavigationEvents.length,
+        () => (window as typeof window & { varendoNavigationEvents: CustomEvent[] }).varendoNavigationEvents.length,
       ),
     )
     .toBe(beforeEnter + 1);
@@ -72,7 +72,7 @@ test('breadcrumb and pagination retain approved navigation and page scope', asyn
   await expect
     .poll(() =>
       page.evaluate(() => {
-        const events = (window as typeof window & { aeliqoNavigationEvents: CustomEvent[] }).aeliqoNavigationEvents;
+        const events = (window as typeof window & { varendoNavigationEvents: CustomEvent[] }).varendoNavigationEvents;
         return events?.[events.length - 1]?.detail;
       }),
     )
@@ -86,7 +86,7 @@ test('breadcrumb and pagination retain approved navigation and page scope', asyn
   await expect
     .poll(() =>
       page.evaluate(() => {
-        const events = (window as typeof window & { aeliqoNavigationEvents: CustomEvent[] }).aeliqoNavigationEvents;
+        const events = (window as typeof window & { varendoNavigationEvents: CustomEvent[] }).varendoNavigationEvents;
         return events?.[events.length - 1]?.detail;
       }),
     )
@@ -121,8 +121,8 @@ test('menu returns focus and tree navigation keeps stable node identity', async 
     .poll(() =>
       page.evaluate(() => {
         const events = (
-          window as typeof window & { aeliqoNavigationEvents: CustomEvent[] }
-        ).aeliqoNavigationEvents.filter((event) => event.type === 'aeliqo-tree-nav-select');
+          window as typeof window & { varendoNavigationEvents: CustomEvent[] }
+        ).varendoNavigationEvents.filter((event) => event.type === 'varendo-tree-nav-select');
         return events?.[events.length - 1]?.detail;
       }),
     )

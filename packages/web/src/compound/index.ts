@@ -1,16 +1,16 @@
 export {
-  AeliqoExplorerElement,
-  AeliqoComparisonElement,
-  AeliqoBreakdownElement,
-  AeliqoInvestigationElement,
-  AeliqoSearchResultsElement,
-  AeliqoRecordEditorElement,
-  AeliqoFormFlowElement,
-  AeliqoQualityPanelElement,
+  VarendoExplorerElement,
+  VarendoComparisonElement,
+  VarendoBreakdownElement,
+  VarendoInvestigationElement,
+  VarendoSearchResultsElement,
+  VarendoRecordEditorElement,
+  VarendoFormFlowElement,
+  VarendoQualityPanelElement,
 } from './elements.js';
-export { COMPOUND_VERSION, AeliqoCompoundElement, compoundStyles, aeliqoCompoundThemeStyles } from './base.js';
+export { COMPOUND_VERSION, VarendoCompoundElement, compoundStyles, varendoCompoundThemeStyles } from './base.js';
 export {
-  AELIQO_COMPOUND_REFS,
+  VARENDO_COMPOUND_REFS,
   compoundRecipeHelpers,
   explorerPresentationRecipe,
   comparisonPresentationRecipe,
@@ -25,33 +25,33 @@ export type * from './types.js';
 
 import { COMPOUND_VERSION } from './base.js';
 import {
-  AeliqoBreakdownElement,
-  AeliqoComparisonElement,
-  AeliqoExplorerElement,
-  AeliqoFormFlowElement,
-  AeliqoInvestigationElement,
-  AeliqoQualityPanelElement,
-  AeliqoRecordEditorElement,
-  AeliqoSearchResultsElement,
+  VarendoBreakdownElement,
+  VarendoComparisonElement,
+  VarendoExplorerElement,
+  VarendoFormFlowElement,
+  VarendoInvestigationElement,
+  VarendoQualityPanelElement,
+  VarendoRecordEditorElement,
+  VarendoSearchResultsElement,
 } from './elements.js';
-export const AELIQO_COMPOUND_ELEMENTS = [
-  ['aeliqo-explorer', AeliqoExplorerElement],
-  ['aeliqo-comparison', AeliqoComparisonElement],
-  ['aeliqo-breakdown', AeliqoBreakdownElement],
-  ['aeliqo-investigation', AeliqoInvestigationElement],
-  ['aeliqo-search-results', AeliqoSearchResultsElement],
-  ['aeliqo-record-editor', AeliqoRecordEditorElement],
-  ['aeliqo-form-flow', AeliqoFormFlowElement],
-  ['aeliqo-quality-panel', AeliqoQualityPanelElement],
+export const VARENDO_COMPOUND_ELEMENTS = [
+  ['varendo-explorer', VarendoExplorerElement],
+  ['varendo-comparison', VarendoComparisonElement],
+  ['varendo-breakdown', VarendoBreakdownElement],
+  ['varendo-investigation', VarendoInvestigationElement],
+  ['varendo-search-results', VarendoSearchResultsElement],
+  ['varendo-record-editor', VarendoRecordEditorElement],
+  ['varendo-form-flow', VarendoFormFlowElement],
+  ['varendo-quality-panel', VarendoQualityPanelElement],
 ] as const;
 /** Explicitly register the compound family; importing the pure entry has no global side effect. */
 export function defineCompoundElements(registry?: CustomElementRegistry): void {
   const target = registry ?? globalThis.customElements;
   if (target === undefined) throw new Error('Varendo compound elements require a CustomElementRegistry.');
-  for (const [name, constructor] of AELIQO_COMPOUND_ELEMENTS) {
+  for (const [name, constructor] of VARENDO_COMPOUND_ELEMENTS) {
     const current = target.get(name);
     if (current === undefined) target.define(name, constructor);
-    else if (current !== constructor && (current as typeof constructor).aeliqoVersion !== COMPOUND_VERSION)
+    else if (current !== constructor && (current as typeof constructor).varendoVersion !== COMPOUND_VERSION)
       throw new Error(`Cannot register ${name}: an incompatible custom element is already defined.`);
   }
 }

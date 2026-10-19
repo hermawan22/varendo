@@ -1,23 +1,23 @@
 import { parseResult, parseWireValue, validateScalar, type Outcome, type Result } from '@varendo/core';
-import type { AeliqoDataRecord, AeliqoDataScope, AeliqoDataValue } from '../data/index.js';
-import type { AeliqoDataBinding, AeliqoDataRegistryOptions, AeliqoValidatedBinding } from './data-registry-types.js';
+import type { VarendoDataRecord, VarendoDataScope, VarendoDataValue } from '../data/index.js';
+import type { VarendoDataBinding, VarendoDataRegistryOptions, VarendoValidatedBinding } from './data-registry-types.js';
 import { columns } from './data-registry-columns.js';
 import { rowIdentity } from './data-registry-selection.js';
 import { boundedText, failure, fieldMap, isPlainRecord } from './data-registry-common.js';
 
 interface ParsedDataBinding {
   readonly result: Result;
-  readonly rows: readonly AeliqoDataRecord[];
-  readonly columns?: AeliqoDataBinding['columns'];
-  readonly scope?: AeliqoDataScope;
+  readonly rows: readonly VarendoDataRecord[];
+  readonly columns?: VarendoDataBinding['columns'];
+  readonly scope?: VarendoDataScope;
 }
 
 interface CanonicalScopeParts {
-  readonly value: AeliqoDataScope;
+  readonly value: VarendoDataScope;
   readonly populationDigest?: string;
 }
 
-type CanonicalScopeKind = NonNullable<AeliqoDataScope['kind']>;
+type CanonicalScopeKind = NonNullable<VarendoDataScope['kind']>;
 
 function coverageKind(result: Result): Outcome<CanonicalScopeKind> {
   switch (result.coverage.kind) {
@@ -45,7 +45,7 @@ function populationDigest(result: Result): Outcome<string | undefined> {
   return { ok: true, value: populationDigest };
 }
 
-function validateCanonicalCounts(result: Result, rows: readonly AeliqoDataRecord[]): Outcome<void> {
+function validateCanonicalCounts(result: Result, rows: readonly VarendoDataRecord[]): Outcome<void> {
   const population = result.counts.population;
   if (population.kind === 'exact' && population.value < rows.length) {
     return failure('count', 'The exact Result population count cannot be below loaded rows.');
@@ -56,7 +56,7 @@ function validateCanonicalCounts(result: Result, rows: readonly AeliqoDataRecord
   return { ok: true, value: undefined };
 }
 
-function canonicalScopeParts(result: Result, rows: readonly AeliqoDataRecord[]): Outcome<CanonicalScopeParts> {
+function canonicalScopeParts(result: Result, rows: readonly VarendoDataRecord[]): Outcome<CanonicalScopeParts> {
   const kind = coverageKind(result);
   if (!kind.ok) return kind;
   const digest = populationDigest(result);
@@ -65,7 +65,7 @@ function canonicalScopeParts(result: Result, rows: readonly AeliqoDataRecord[]):
   if (!count.ok) return count;
   const population = result.counts.population;
   const resolvedPopulationDigest = digest.value;
-  const value: AeliqoDataScope = {
+  const value: VarendoDataScope = {
     loaded: rows.length,
     ...(population.kind === 'exact' ? { populationTotal: population.value } : {}),
     ...(resolvedPopulationDigest === undefined ? {} : { populationDigest: resolvedPopulationDigest }),
@@ -80,11 +80,11 @@ function canonicalScopeParts(result: Result, rows: readonly AeliqoDataRecord[]):
   };
 }
 
-function validScopeShape(scope: unknown): scope is AeliqoDataScope & Record<string, unknown> {
+function validScopeShape(scope: unknown): scope is VarendoDataScope & Record<string, unknown> {
   return isPlainRecord(scope);
 }
 
-function validateScopeKeys(scope: AeliqoDataScope): Outcome<void> {
+function validateScopeKeys(scope: VarendoDataScope): Outcome<void> {
   const allowed = ['loaded', 'filteredTotal', 'populationTotal', 'populationDigest', 'kind', 'label'];
   if (Object.keys(scope).some((key) => !allowed.includes(key))) {
     return failure('scope', 'Scope contains an unknown property.');
@@ -92,21 +92,21 @@ function validateScopeKeys(scope: AeliqoDataScope): Outcome<void> {
   return { ok: true, value: undefined };
 }
 
-function validateLoadedCount(scope: AeliqoDataScope, rows: readonly AeliqoDataRecord[]): Outcome<void> {
+function validateLoadedCount(scope: VarendoDataScope, rows: readonly VarendoDataRecord[]): Outcome<void> {
   if (scope.loaded !== undefined && scope.loaded !== rows.length) {
     return failure('count', 'Scope.loaded must equal the supplied authorized row count.');
   }
   return { ok: true, value: undefined };
 }
 
-function validateLoadedSafeCount(scope: AeliqoDataScope): Outcome<void> {
+function validateLoadedSafeCount(scope: VarendoDataScope): Outcome<void> {
   if (scope.loaded !== undefined && (!Number.isSafeInteger(scope.loaded) || scope.loaded < 0)) {
     return failure('count', 'Scope.loaded must be a safe nonnegative count.');
   }
   return { ok: true, value: undefined };
 }
 
-function validatePopulationTotalMatch(scope: AeliqoDataScope, result: Result): Outcome<void> {
+function validatePopulationTotalMatch(scope: VarendoDataScope, result: Result): Outcome<void> {
   if (
     scope.populationTotal !== undefined &&
     (result.counts.population.kind !== 'exact' || scope.populationTotal !== result.counts.population.value)
@@ -116,7 +116,7 @@ function validatePopulationTotalMatch(scope: AeliqoDataScope, result: Result): O
   return { ok: true, value: undefined };
 }
 
-function validatePopulationTotalSafeCount(scope: AeliqoDataScope): Outcome<void> {
+function validatePopulationTotalSafeCount(scope: VarendoDataScope): Outcome<void> {
   if (
     scope.populationTotal !== undefined &&
     (!Number.isSafeInteger(scope.populationTotal) || scope.populationTotal < 0)
@@ -127,9 +127,9 @@ function validatePopulationTotalSafeCount(scope: AeliqoDataScope): Outcome<void>
 }
 
 function validateFilteredTotal(
-  scope: AeliqoDataScope,
+  scope: VarendoDataScope,
   result: Result,
-  rows: readonly AeliqoDataRecord[],
+  rows: readonly VarendoDataRecord[],
 ): Outcome<void> {
   if (
     scope.filteredTotal !== undefined &&
@@ -142,21 +142,21 @@ function validateFilteredTotal(
   return { ok: true, value: undefined };
 }
 
-function validateScopeDigest(scope: AeliqoDataScope, populationDigest: string | undefined): Outcome<void> {
+function validateScopeDigest(scope: VarendoDataScope, populationDigest: string | undefined): Outcome<void> {
   if (scope.populationDigest !== undefined && populationDigest !== scope.populationDigest) {
     return failure('scope', 'Scope.populationDigest must match the Result population digest.');
   }
   return { ok: true, value: undefined };
 }
 
-function validateScopeKind(scope: AeliqoDataScope, canonical: AeliqoDataScope): Outcome<void> {
+function validateScopeKind(scope: VarendoDataScope, canonical: VarendoDataScope): Outcome<void> {
   if (scope.kind !== undefined && scope.kind !== canonical.kind) {
     return failure('scope', 'Scope.kind must match the Result coverage state.');
   }
   return { ok: true, value: undefined };
 }
 
-function validateScopeLabel(scope: AeliqoDataScope): Outcome<void> {
+function validateScopeLabel(scope: VarendoDataScope): Outcome<void> {
   if (scope.label !== undefined && !boundedText(scope.label, 'scope.label').ok) {
     return failure('scope', 'Scope.label must be bounded text.');
   }
@@ -164,9 +164,9 @@ function validateScopeLabel(scope: AeliqoDataScope): Outcome<void> {
 }
 
 function validateScopeValues(
-  scope: AeliqoDataScope,
+  scope: VarendoDataScope,
   result: Result,
-  rows: readonly AeliqoDataRecord[],
+  rows: readonly VarendoDataRecord[],
   canonical: CanonicalScopeParts,
 ): Outcome<void> {
   const keys = validateScopeKeys(scope);
@@ -193,9 +193,9 @@ function validateScopeValues(
 function validateProvidedScope(
   scope: unknown,
   result: Result,
-  rows: readonly AeliqoDataRecord[],
+  rows: readonly VarendoDataRecord[],
   canonical: CanonicalScopeParts,
-): Outcome<AeliqoDataScope> {
+): Outcome<VarendoDataScope> {
   if (!validScopeShape(scope)) return failure('scope', 'Scope must be a plain object.');
   const checked = validateScopeValues(scope, result, rows, canonical);
   if (!checked.ok) return checked;
@@ -212,9 +212,9 @@ function validateProvidedScope(
 
 function validateScope(
   result: Result,
-  rows: readonly AeliqoDataRecord[],
-  scope: AeliqoDataScope | undefined,
-): Outcome<AeliqoDataScope> {
+  rows: readonly VarendoDataRecord[],
+  scope: VarendoDataScope | undefined,
+): Outcome<VarendoDataScope> {
   try {
     const canonical = canonicalScopeParts(result, rows);
     if (!canonical.ok) return canonical;
@@ -228,7 +228,7 @@ function validateScope(
 function normalizeFieldValue(
   row: Readonly<Record<string, unknown>>,
   field: Result['fields'][number],
-): Outcome<AeliqoDataValue | undefined> {
+): Outcome<VarendoDataValue | undefined> {
   const value = row[field.id];
   if (value === undefined) {
     if (!field.type.nullable) {
@@ -247,13 +247,13 @@ function normalizeRow(
   row: unknown,
   result: Result,
   fields: ReadonlyMap<string, Result['fields'][number]>,
-): Outcome<AeliqoDataRecord> {
+): Outcome<VarendoDataRecord> {
   if (!isPlainRecord(row)) return failure('row', 'Authorized rows must be plain records.');
   try {
     for (const key of Object.keys(row)) {
       if (!fields.has(key)) return failure('field', `Authorized row contains undeclared field ${key}.`);
     }
-    const normalized: Record<string, AeliqoDataValue> = {};
+    const normalized: Record<string, VarendoDataValue> = {};
     for (const field of result.fields) {
       const checked = normalizeFieldValue(row, field);
       if (!checked.ok) return checked;
@@ -265,10 +265,10 @@ function normalizeRow(
   }
 }
 
-function normalizeRows(rows: readonly AeliqoDataRecord[], result: Result): Outcome<readonly AeliqoDataRecord[]> {
+function normalizeRows(rows: readonly VarendoDataRecord[], result: Result): Outcome<readonly VarendoDataRecord[]> {
   const fields = fieldMap(result);
   const identities = new Set<string>();
-  const normalizedRows: AeliqoDataRecord[] = [];
+  const normalizedRows: VarendoDataRecord[] = [];
   for (const row of rows) {
     const normalized = normalizeRow(row, result, fields);
     if (!normalized.ok) return normalized;
@@ -283,12 +283,12 @@ function normalizeRows(rows: readonly AeliqoDataRecord[], result: Result): Outco
   return { ok: true, value: normalizedRows };
 }
 
-function parseBinding(binding: AeliqoDataBinding): Outcome<ParsedDataBinding> {
+function parseBinding(binding: VarendoDataBinding): Outcome<ParsedDataBinding> {
   const inspected = parseWireValue(binding);
   if (!inspected.ok || !isPlainRecord(inspected.value)) {
     return failure('binding', 'A data binding is required.');
   }
-  const wireBinding = inspected.value as unknown as AeliqoDataBinding;
+  const wireBinding = inspected.value as unknown as VarendoDataBinding;
   if (wireBinding.result === null || typeof wireBinding.result !== 'object') {
     return failure('binding', 'The authorized Result descriptor is malformed.');
   }
@@ -309,9 +309,9 @@ function parseBinding(binding: AeliqoDataBinding): Outcome<ParsedDataBinding> {
 }
 
 function validateRowLimit(
-  rows: readonly AeliqoDataRecord[],
+  rows: readonly VarendoDataRecord[],
   result: Result,
-  options: AeliqoDataRegistryOptions,
+  options: VarendoDataRegistryOptions,
 ): Outcome<void> {
   const maxRows = options.maxRows ?? 10_000;
   if (!Number.isSafeInteger(maxRows) || maxRows < 0 || maxRows > 10_000 || rows.length > maxRows) {
@@ -324,9 +324,9 @@ function validateRowLimit(
 }
 
 function validateBinding(
-  binding: AeliqoDataBinding,
-  options: AeliqoDataRegistryOptions,
-): Outcome<AeliqoValidatedBinding> {
+  binding: VarendoDataBinding,
+  options: VarendoDataRegistryOptions,
+): Outcome<VarendoValidatedBinding> {
   const parsed = parseBinding(binding);
   if (!parsed.ok) return parsed;
   const limit = validateRowLimit(parsed.value.rows, parsed.value.result, options);
@@ -348,9 +348,9 @@ function validateBinding(
   };
 }
 
-export function validateAeliqoDataBinding(
-  binding: AeliqoDataBinding,
-  options: AeliqoDataRegistryOptions = {},
-): Outcome<AeliqoValidatedBinding> {
+export function validateVarendoDataBinding(
+  binding: VarendoDataBinding,
+  options: VarendoDataRegistryOptions = {},
+): Outcome<VarendoValidatedBinding> {
   return validateBinding(binding, options);
 }

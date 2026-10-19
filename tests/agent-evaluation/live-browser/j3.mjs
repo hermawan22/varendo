@@ -1,8 +1,8 @@
 import { toJSONSchema } from 'zod';
 import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { createPresentationRegistry, resolvePresentation } from '@varendo/core/presentation';
-import { createAeliqoRuntime, createLocalDataBinding } from '@varendo/runtime';
-import { createAeliqoPresentationRegistry } from '@varendo/web/region';
+import { createVarendoRuntime, createLocalDataBinding } from '@varendo/runtime';
+import { createVarendoPresentationRegistry } from '@varendo/web/region';
 import { createAppToolEndpoint } from '@varendo/agent/app';
 import {
   REGION,
@@ -33,7 +33,7 @@ function resultBindings(receipt) {
 }
 
 function presentationRegistry(descriptors, results, pattern) {
-  const registered = createAeliqoPresentationRegistry({
+  const registered = createVarendoPresentationRegistry({
     data: results.map((result, index) => ({ result: descriptors[index], rows: result.rows, columns: result.columns })),
     visualizations: results.map((result, index) => ({
       result: descriptors[index],
@@ -132,7 +132,7 @@ export async function openJ3(target) {
       authorize: () => ({ ok: true, value: { scopeDigest: 'attendance-scope', policyRevision: '1' } }),
     },
   });
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     runtimeId: 'live-j3-runtime',
     resources: [{ resource: feature.resource, data: binding.service }],
     intents,
@@ -159,7 +159,7 @@ export async function openJ3(target) {
   });
   const mounted = runtime.mount({ regionId: REGION, resourceId: feature.id });
   if (!mounted.ok) throw new Error(mounted.diagnostics[0]?.message ?? 'J3 mount failed.');
-  const element = document.createElement('aeliqo-region');
+  const element = document.createElement('varendo-region');
   target.append(element);
   const render = async ({ intent, signal }) => {
     if (

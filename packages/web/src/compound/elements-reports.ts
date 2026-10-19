@@ -1,13 +1,13 @@
 import { css, html, nothing } from 'lit';
 import type { ResultRef, Scalar, VisualizationSpec } from '@varendo/core';
 import type { VisualizationBindingContext } from '@varendo/core/visualization';
-import { AeliqoCompoundElement, aeliqoCompoundThemeStyles } from './base.js';
-import type { AeliqoCompoundStatus } from './types.js';
-import type { AeliqoDataColumn, AeliqoDataRecord, AeliqoDataScope, AeliqoSelectionDetail } from '../data/types.js';
+import { VarendoCompoundElement, varendoCompoundThemeStyles } from './base.js';
+import type { VarendoCompoundStatus } from './types.js';
+import type { VarendoDataColumn, VarendoDataRecord, VarendoDataScope, VarendoSelectionDetail } from '../data/types.js';
 import type { VisualizationDataset } from '../visualization/types.js';
 import { event, status } from './shared.js';
 
-export class AeliqoInvestigationElement extends AeliqoCompoundElement {
+export class VarendoInvestigationElement extends VarendoCompoundElement {
   static readonly properties = {
     trendContext: { attribute: false },
     trendDatasets: { attribute: false },
@@ -29,15 +29,15 @@ export class AeliqoInvestigationElement extends AeliqoCompoundElement {
     label: { type: String },
   };
   static readonly styles = [
-    ...aeliqoCompoundThemeStyles,
+    ...varendoCompoundThemeStyles,
     css`
       [part='trend'] {
         grid-column: 1 / -1;
       }
       [part='caution'] {
-        border-inline-start: 0.25rem solid var(--aeliqo-color-warning, #b54708);
+        border-inline-start: 0.25rem solid var(--varendo-color-warning, #b54708);
         overflow-wrap: anywhere;
-        padding-inline-start: var(--aeliqo-space-12, 0.75rem);
+        padding-inline-start: var(--varendo-space-12, 0.75rem);
       }
       [part='caution'] > span {
         display: block;
@@ -52,14 +52,14 @@ export class AeliqoInvestigationElement extends AeliqoCompoundElement {
   trend: VisualizationSpec | undefined;
   baseline: Scalar | undefined;
   events: VisualizationSpec | undefined;
-  detailRecord: AeliqoDataRecord | undefined;
-  detailFields: readonly AeliqoDataColumn[] = [];
+  detailRecord: VarendoDataRecord | undefined;
+  detailFields: readonly VarendoDataColumn[] = [];
   result: ResultRef | undefined;
   eventResult: ResultRef | undefined;
   identity: readonly string[] = [];
   entity = 'record';
-  scope: AeliqoDataScope | undefined;
-  status: AeliqoCompoundStatus = 'ready';
+  scope: VarendoDataScope | undefined;
+  status: VarendoCompoundStatus = 'ready';
   message = '';
   title = 'Investigation';
   label = 'Trend';
@@ -73,19 +73,19 @@ export class AeliqoInvestigationElement extends AeliqoCompoundElement {
       <div part="grid">
         <section part="trend" aria-label="Trend">
           <h3>${this.label}</h3>
-          ${this.trend ? html`<aeliqo-trend .visualization=${this.trend} .context=${this.trendContext} .datasets=${this.trendDatasets}></aeliqo-trend>` : html`<p part="hint">No trend is available.</p>`}
+          ${this.trend ? html`<varendo-trend .visualization=${this.trend} .context=${this.trendContext} .datasets=${this.trendDatasets}></varendo-trend>` : html`<p part="hint">No trend is available.</p>`}
         </section>
         <section part="baseline" aria-label="Baseline">
           <h3>Baseline</h3>
-          <aeliqo-metric label="Baseline" .value=${this.baseline}></aeliqo-metric>
+          <varendo-metric label="Baseline" .value=${this.baseline}></varendo-metric>
         </section>
         <section part="events" aria-label="Event timeline">
           <h3>Event timeline</h3>
-          ${this.events ? html`<aeliqo-timeline .visualization=${this.events} .context=${this.eventContext} .datasets=${this.eventDatasets}></aeliqo-timeline>` : html`<p part="hint">No events are available.</p>`}
+          ${this.events ? html`<varendo-timeline .visualization=${this.events} .context=${this.eventContext} .datasets=${this.eventDatasets}></varendo-timeline>` : html`<p part="hint">No events are available.</p>`}
         </section>
         <section part="detail">
           <h3>Detail</h3>
-          <aeliqo-detail
+          <varendo-detail
             .title=${'Investigation detail'}
             .record=${this.detailRecord}
             .fields=${this.detailFields}
@@ -93,7 +93,7 @@ export class AeliqoInvestigationElement extends AeliqoCompoundElement {
             .entity=${this.entity}
             .scope=${this.scope}
             .status=${current}
-          ></aeliqo-detail>
+          ></varendo-detail>
         </section>
       </div>
       <p part="caution">
@@ -104,8 +104,8 @@ export class AeliqoInvestigationElement extends AeliqoCompoundElement {
   }
 }
 
-export class AeliqoSearchResultsElement extends AeliqoCompoundElement {
-  static readonly styles = [...aeliqoCompoundThemeStyles];
+export class VarendoSearchResultsElement extends VarendoCompoundElement {
+  static readonly styles = [...varendoCompoundThemeStyles];
   static readonly properties = {
     detailRecord: { attribute: false },
     detailFields: { attribute: false },
@@ -124,19 +124,19 @@ export class AeliqoSearchResultsElement extends AeliqoCompoundElement {
     title: { type: String },
     count: { type: Number },
   };
-  detailRecord: AeliqoDataRecord | undefined;
-  detailFields: readonly AeliqoDataColumn[] = [];
+  detailRecord: VarendoDataRecord | undefined;
+  detailFields: readonly VarendoDataColumn[] = [];
   query = '';
   queryRevision = '';
   resultRevision = '';
-  rows: readonly AeliqoDataRecord[] = [];
-  columns: readonly AeliqoDataColumn[] = [];
+  rows: readonly VarendoDataRecord[] = [];
+  columns: readonly VarendoDataColumn[] = [];
   identity: readonly string[] = [];
   result: ResultRef | undefined;
-  scope: AeliqoDataScope | undefined;
+  scope: VarendoDataScope | undefined;
   selectedKey = '';
   entity = 'result';
-  status: AeliqoCompoundStatus = 'ready';
+  status: VarendoCompoundStatus = 'ready';
   message = '';
   title = 'Search results';
   count: number | undefined;
@@ -160,7 +160,7 @@ export class AeliqoSearchResultsElement extends AeliqoCompoundElement {
     const selectedKeys = this.selectedKey ? [this.selectedKey] : [];
     const countText = total === undefined ? 'Matching count unavailable' : total.toLocaleString() + ' matching results';
     return html`<p part="scope">${countText}</p>
-      <aeliqo-card-collection
+      <varendo-card-collection
         .rows=${this.rows}
         .columns=${this.columns}
         .identity=${this.identity}
@@ -169,15 +169,15 @@ export class AeliqoSearchResultsElement extends AeliqoCompoundElement {
         .result=${this.result}
         .scope=${this.scope}
         selection="single"
-        @aeliqo-card-selection=${this.forwardSelection}
-      ></aeliqo-card-collection>
+        @varendo-card-selection=${this.forwardSelection}
+      ></varendo-card-collection>
       ${this.renderDetail(current)}`;
   }
 
   private renderDetail(current: ReturnType<typeof status>) {
     if (this.detailRecord === undefined) return nothing;
     const fields = this.detailFields.length > 0 ? this.detailFields : this.columns;
-    return html`<aeliqo-detail
+    return html`<varendo-detail
       part="detail"
       .record=${this.detailRecord}
       .fields=${fields}
@@ -185,10 +185,10 @@ export class AeliqoSearchResultsElement extends AeliqoCompoundElement {
       .entity=${this.entity}
       .scope=${this.scope}
       .status=${current}
-    ></aeliqo-detail>`;
+    ></varendo-detail>`;
   }
   private readonly forwardSelection = (raw: Event): void => {
-    const detail = (raw as CustomEvent<AeliqoSelectionDetail>).detail;
-    if (detail) this.dispatchEvent(event('aeliqo-search-results-selection', detail));
+    const detail = (raw as CustomEvent<VarendoSelectionDetail>).detail;
+    if (detail) this.dispatchEvent(event('varendo-search-results-selection', detail));
   };
 }

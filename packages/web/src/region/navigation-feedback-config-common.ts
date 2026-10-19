@@ -2,10 +2,10 @@ import type { Outcome, VersionRef } from '@varendo/core';
 import type { InteractionPort } from '@varendo/core/interaction';
 import type { PresentationValues } from '@varendo/core/presentation';
 import type {
-  AeliqoNavigationFeedbackBindings,
-  AeliqoNavigationFeedbackContent,
-  AeliqoNavigationFeedbackRoute,
-  AeliqoNavigationFeedbackAction,
+  VarendoNavigationFeedbackBindings,
+  VarendoNavigationFeedbackContent,
+  VarendoNavigationFeedbackRoute,
+  VarendoNavigationFeedbackAction,
 } from './navigation-feedback-types.js';
 import type { RecordValue } from './navigation-feedback-support.js';
 import { bounded, fail, record, exactKeys } from './navigation-feedback-support.js';
@@ -20,7 +20,7 @@ export interface ResolvedPresentation {
 export function configRecord(
   values: PresentationValues,
   allowed: readonly string[],
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
 ): Outcome<{ readonly input: RecordValue; readonly bindingRef: string }> {
   const input = record(values);
   if (input === undefined || !exactKeys(input, allowed))
@@ -33,7 +33,7 @@ export function configRecord(
 }
 
 export function content(
-  contents: Map<string, AeliqoNavigationFeedbackContent>,
+  contents: Map<string, VarendoNavigationFeedbackContent>,
   id: string | undefined,
   field: string,
   required = true,
@@ -48,15 +48,15 @@ export function content(
     : { ok: true, value: value.text };
 }
 
-export function routeValue(route: AeliqoNavigationFeedbackRoute): RecordValue {
+export function routeValue(route: VarendoNavigationFeedbackRoute): RecordValue {
   return { route: route.route, params: route.params, href: route.href };
 }
 
-export function actionValue(action: AeliqoNavigationFeedbackAction): RecordValue {
+export function actionValue(action: VarendoNavigationFeedbackAction): RecordValue {
   return { action: action.action, input: action.input };
 }
 
-export function baseValues(bindings: AeliqoNavigationFeedbackBindings, bindingRef: string): RecordValue {
+export function baseValues(bindings: VarendoNavigationFeedbackBindings, bindingRef: string): RecordValue {
   return { bindingRevision: bindings.revision, bindingRef };
 }
 

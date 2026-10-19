@@ -1,14 +1,14 @@
-import type { AeliqoFilterPredicate } from './types.js';
-import type { AeliqoFilterClause } from './filter-builder-types.js';
+import type { VarendoFilterPredicate } from './types.js';
+import type { VarendoFilterClause } from './filter-builder-types.js';
 
-export type AeliqoFilterLogical = 'and' | 'or';
+export type VarendoFilterLogical = 'and' | 'or';
 
 export interface PredicateTraversal {
   nodes: number;
 }
 
 export interface PredicateProjection {
-  readonly clauses: readonly AeliqoFilterClause[];
-  readonly logical: AeliqoFilterLogical;
-  readonly unsupported?: AeliqoFilterPredicate;
+  readonly clauses: readonly VarendoFilterClause[];
+  readonly logical: VarendoFilterLogical;
+  readonly unsupported?: VarendoFilterPredicate;
 }

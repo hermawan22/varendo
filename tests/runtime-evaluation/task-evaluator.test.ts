@@ -728,7 +728,7 @@ describe('runtime named-output and cohort evaluation', () => {
       authenticate: () => ({ ok: true, value: { principal: 'principal-a' } }),
     });
     const http = createHttpDataService({
-      baseUrl: 'https://aeliqo.test',
+      baseUrl: 'https://varendo.test',
       fetch: async (input, init) => handler(new Request(input, init)),
     });
     const httpPlan = await http.plan(planRequest);

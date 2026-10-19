@@ -19,7 +19,7 @@ import {
 } from './workloads.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
-const timingEnabled = process.env.AELIQO_RUN_PERFORMANCE === '1';
+const timingEnabled = process.env.VARENDO_RUN_PERFORMANCE === '1';
 const sourceCommit = (() => {
   try {
     return execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
@@ -87,7 +87,7 @@ const report = {
   notes: [
     'Node probe exercises production package exports after the package builds.',
     'Browser standalone controls, local HTTP source fixture, DOM geometry, Chromium timeline trace and 100 mount/dispose cycles are in browser.spec.ts.',
-    'A skipped timing section is not a pass; run with AELIQO_RUN_PERFORMANCE=1 on an isolated runner for measurements.',
+    'A skipped timing section is not a pass; run with VARENDO_RUN_PERFORMANCE=1 on an isolated runner for measurements.',
   ],
 };
 if (
@@ -97,7 +97,7 @@ if (
     !report.workloads.cleanup.budgetAssertion)
 )
   process.exitCode = 1;
-const outputDirectory = process.env.AELIQO_PERFORMANCE_OUTPUT ?? join(root, 'artifacts/performance-workloads');
+const outputDirectory = process.env.VARENDO_PERFORMANCE_OUTPUT ?? join(root, 'artifacts/performance-workloads');
 await mkdir(outputDirectory, { recursive: true });
 const output = join(outputDirectory, `runtime-${Date.now()}.json`);
 await writeFile(output, `${JSON.stringify(report, null, 2)}\n`, 'utf8');

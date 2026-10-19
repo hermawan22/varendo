@@ -1,14 +1,14 @@
-import { AeliqoActionEvent, type AeliqoActionKind } from './events.js';
-import { AeliqoFoundationElement } from './base.js';
+import { VarendoActionEvent, type VarendoActionKind } from './events.js';
+import { VarendoFoundationElement } from './base.js';
 
-export type AeliqoActionType = 'button' | 'submit' | 'reset';
+export type VarendoActionType = 'button' | 'submit' | 'reset';
 
-export abstract class AeliqoActionElement extends AeliqoFoundationElement {
+export abstract class VarendoActionElement extends VarendoFoundationElement {
   static readonly formAssociated = true;
 
   disabled = false;
   pending = false;
-  type: AeliqoActionType = 'button';
+  type: VarendoActionType = 'button';
   name = '';
   value = '';
 
@@ -36,7 +36,7 @@ export abstract class AeliqoActionElement extends AeliqoFoundationElement {
   }
 
   /** Normalize attribute input before it reaches the native control or event wire. */
-  protected get actionType(): AeliqoActionType {
+  protected get actionType(): VarendoActionType {
     return this.type === 'submit' || this.type === 'reset' ? this.type : 'button';
   }
 
@@ -44,7 +44,7 @@ export abstract class AeliqoActionElement extends AeliqoFoundationElement {
     return this.internals?.form ?? undefined;
   }
 
-  protected handleActionClick = (event: Event, action: AeliqoActionKind): void => {
+  protected handleActionClick = (event: Event, action: VarendoActionKind): void => {
     if (this.actionDisabled || this.activationQueued) {
       event.preventDefault();
       return;
@@ -55,7 +55,7 @@ export abstract class AeliqoActionElement extends AeliqoFoundationElement {
     });
 
     const type = this.actionType;
-    const accepted = this.dispatchEvent(new AeliqoActionEvent({ source: 'user', action, type }));
+    const accepted = this.dispatchEvent(new VarendoActionEvent({ source: 'user', action, type }));
     if (!accepted) {
       event.preventDefault();
       return;

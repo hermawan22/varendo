@@ -1,16 +1,16 @@
 import { css, html, nothing, type PropertyValues } from 'lit';
 import type { VersionRef } from '@varendo/core';
-import { AeliqoCompoundElement, aeliqoCompoundThemeStyles } from './base.js';
+import { VarendoCompoundElement, varendoCompoundThemeStyles } from './base.js';
 import type {
-  AeliqoCompoundStatus,
-  AeliqoFormFlowCommitDetail,
-  AeliqoFormFlowStep,
-  AeliqoFormFlowStepDetail,
-  AeliqoRecordEditorCancelDetail,
-  AeliqoRecordEditorSaveDetail,
-  AeliqoQualityState,
+  VarendoCompoundStatus,
+  VarendoFormFlowCommitDetail,
+  VarendoFormFlowStep,
+  VarendoFormFlowStepDetail,
+  VarendoRecordEditorCancelDetail,
+  VarendoRecordEditorSaveDetail,
+  VarendoQualityState,
 } from './types.js';
-import { AeliqoFormElement } from '../input/form.js';
+import { VarendoFormElement } from '../input/form.js';
 import {
   appendDraftValue,
   collectCompoundValues,
@@ -28,7 +28,7 @@ import {
 
 const BUTTON_INPUT_TYPES: ReadonlySet<string> = new Set(['submit', 'reset', 'button', 'image']);
 
-export class AeliqoRecordEditorElement extends AeliqoCompoundElement {
+export class VarendoRecordEditorElement extends VarendoCompoundElement {
   static readonly properties = {
     entity: { type: String },
     entityKey: { attribute: 'entity-key', type: String },
@@ -43,11 +43,11 @@ export class AeliqoRecordEditorElement extends AeliqoCompoundElement {
     cancelLabel: { attribute: 'cancel-label', type: String },
   };
   static readonly styles = [
-    ...aeliqoCompoundThemeStyles,
+    ...varendoCompoundThemeStyles,
     css`
       [part='form'] {
         display: grid;
-        gap: var(--aeliqo-space-12, 0.75rem);
+        gap: var(--varendo-space-12, 0.75rem);
       }
     `,
   ];
@@ -55,7 +55,7 @@ export class AeliqoRecordEditorElement extends AeliqoCompoundElement {
   entityKey = '';
   entityRevision = '';
   action: VersionRef | undefined;
-  status: AeliqoCompoundStatus = 'ready';
+  status: VarendoCompoundStatus = 'ready';
   message = '';
   title = 'Edit record';
   disabled = false;
@@ -72,7 +72,7 @@ export class AeliqoRecordEditorElement extends AeliqoCompoundElement {
           ${this.entityKey ? `· ${this.entityKey}` : ''}${this.entityRevision ? ` · revision ${this.entityRevision}` : ''}</span
         >
       </div>
-      <aeliqo-form part="form" label=${this.title}>
+      <varendo-form part="form" label=${this.title}>
         <slot></slot>
         <div part="actions">
           <button type="button" ?disabled=${this.disabled} @click=${this.cancel}>${this.cancelLabel}</button
@@ -80,18 +80,18 @@ export class AeliqoRecordEditorElement extends AeliqoCompoundElement {
             ${this.saveLabel}
           </button>
         </div>
-      </aeliqo-form>
+      </varendo-form>
       ${this.message || current !== 'ready' ? html`<p part="status" role="status">${this.statusText(current, this.message)}</p>` : nothing}
     </section>`;
   }
   private readonly save = (): void => {
     if (this.disabled || this.invalid || !this.entityKey || !this.entityRevision) return;
-    const form = this.renderRoot.querySelector('aeliqo-form');
-    const formValid = form instanceof AeliqoFormElement ? form.reportValidity() : true;
+    const form = this.renderRoot.querySelector('varendo-form');
+    const formValid = form instanceof VarendoFormElement ? form.reportValidity() : true;
     const controlsValid = reportCompoundValidity(this);
     if (!formValid || !controlsValid) return;
     this.dispatchEvent(
-      event<AeliqoRecordEditorSaveDetail>('aeliqo-record-editor-save', {
+      event<VarendoRecordEditorSaveDetail>('varendo-record-editor-save', {
         source: 'user',
         entity: this.entity,
         key: this.entityKey,
@@ -104,7 +104,7 @@ export class AeliqoRecordEditorElement extends AeliqoCompoundElement {
   private readonly cancel = (): void => {
     if (!this.entityKey || !this.entityRevision) return;
     this.dispatchEvent(
-      event<AeliqoRecordEditorCancelDetail>('aeliqo-record-editor-cancel', {
+      event<VarendoRecordEditorCancelDetail>('varendo-record-editor-cancel', {
         source: 'user',
         entity: this.entity,
         key: this.entityKey,
@@ -115,7 +115,7 @@ export class AeliqoRecordEditorElement extends AeliqoCompoundElement {
   };
 }
 
-export class AeliqoFormFlowElement extends AeliqoCompoundElement {
+export class VarendoFormFlowElement extends VarendoCompoundElement {
   static readonly properties = {
     steps: { attribute: false },
     activeStep: { attribute: 'active-step', type: String },
@@ -129,14 +129,14 @@ export class AeliqoFormFlowElement extends AeliqoCompoundElement {
     commitLabel: { attribute: 'commit-label', type: String },
   };
   static readonly styles = [
-    ...aeliqoCompoundThemeStyles,
+    ...varendoCompoundThemeStyles,
     css`
       [part='step-list'] {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--aeliqo-space-8, 0.5rem);
+        gap: var(--varendo-space-8, 0.5rem);
         list-style: none;
-        margin: 0 0 var(--aeliqo-space-16, 1rem);
+        margin: 0 0 var(--varendo-space-16, 1rem);
         padding: 0;
       }
       [part='step'][data-active='true'] {
@@ -144,11 +144,11 @@ export class AeliqoFormFlowElement extends AeliqoCompoundElement {
       }
     `,
   ];
-  steps: readonly AeliqoFormFlowStep[] = [];
+  steps: readonly VarendoFormFlowStep[] = [];
   activeStep = '';
   draft: Readonly<Record<string, FormDraftValue>> = {};
   validation: Readonly<Record<string, string | undefined>> = {};
-  status: AeliqoCompoundStatus = 'ready';
+  status: VarendoCompoundStatus = 'ready';
   message = '';
   title = 'Form';
   nextLabel = 'Next';
@@ -369,7 +369,7 @@ export class AeliqoFormFlowElement extends AeliqoCompoundElement {
   }
 
   private dispatchStepChange(from: string, target: string, direction: 'next' | 'back'): void {
-    const change = event<AeliqoFormFlowStepDetail>('aeliqo-form-flow-step', {
+    const change = event<VarendoFormFlowStepDetail>('varendo-form-flow-step', {
       source: 'user',
       from,
       to: target,
@@ -385,7 +385,7 @@ export class AeliqoFormFlowElement extends AeliqoCompoundElement {
     if (!active) return;
     for (const step of this.steps) if (!this.stepValid(step.id, true)) return;
     this.dispatchEvent(
-      event<AeliqoFormFlowCommitDetail>('aeliqo-form-flow-commit', {
+      event<VarendoFormFlowCommitDetail>('varendo-form-flow-commit', {
         source: 'user',
         step: active,
         draft: this.captureDraft(),
@@ -394,7 +394,7 @@ export class AeliqoFormFlowElement extends AeliqoCompoundElement {
   };
 }
 
-export class AeliqoQualityPanelElement extends AeliqoCompoundElement {
+export class VarendoQualityPanelElement extends VarendoCompoundElement {
   static readonly properties = {
     source: { type: String },
     freshness: { type: String },
@@ -407,16 +407,16 @@ export class AeliqoQualityPanelElement extends AeliqoCompoundElement {
     state: { attribute: false },
   };
   static readonly styles = [
-    ...aeliqoCompoundThemeStyles,
+    ...varendoCompoundThemeStyles,
     css`
       dl {
         display: grid;
-        gap: var(--aeliqo-space-8, 0.5rem) var(--aeliqo-space-16, 1rem);
+        gap: var(--varendo-space-8, 0.5rem) var(--varendo-space-16, 1rem);
         grid-template-columns: minmax(8rem, max-content) minmax(0, 1fr);
         margin: 0;
       }
       dt {
-        color: var(--aeliqo-color-muted, #475569);
+        color: var(--varendo-color-muted, #475569);
         overflow-wrap: anywhere;
       }
       dd {
@@ -428,7 +428,7 @@ export class AeliqoQualityPanelElement extends AeliqoCompoundElement {
         overflow-wrap: anywhere;
       }
       ul {
-        margin-block: var(--aeliqo-space-8, 0.5rem) 0;
+        margin-block: var(--varendo-space-8, 0.5rem) 0;
         padding-inline-start: 1.25rem;
       }
       @media (max-width: 30rem) {
@@ -436,7 +436,7 @@ export class AeliqoQualityPanelElement extends AeliqoCompoundElement {
           grid-template-columns: minmax(0, 1fr);
         }
         dd:not(:last-child) {
-          margin-block-end: var(--aeliqo-space-12, 0.75rem);
+          margin-block-end: var(--varendo-space-12, 0.75rem);
         }
       }
     `,
@@ -446,10 +446,10 @@ export class AeliqoQualityPanelElement extends AeliqoCompoundElement {
   completeness = '';
   provenance: readonly string[] = [];
   unsupportedClaims: readonly string[] = [];
-  status: AeliqoCompoundStatus = 'ready';
+  status: VarendoCompoundStatus = 'ready';
   message = '';
   title = 'Data quality';
-  state: AeliqoQualityState | undefined;
+  state: VarendoQualityState | undefined;
   protected override render() {
     const values = this.qualityValues();
     const current = status(this.status);

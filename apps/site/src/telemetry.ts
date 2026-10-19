@@ -19,7 +19,7 @@ const ratingBounds: Readonly<Record<MetricName, readonly [number, number]>> = {
   TTFB: [1800, 3000],
 };
 
-export function isPublicAeliqoSite(location: PublicSiteLocation): boolean {
+export function isPublicVarendoSite(location: PublicSiteLocation): boolean {
   return location.protocol === 'https:' && PUBLIC_HOSTS.has(location.hostname);
 }
 
@@ -135,13 +135,13 @@ function observeBrowserVitals(report: (name: MetricName, value: number) => void)
 
 function createTelemetryRecorder(browser: Window, config: MonitoringConfig) {
   const resourceAttributes: Attribute[] = [
-    attribute('service.name', 'aeliqo-browser'),
-    attribute('service.namespace', 'aeliqo'),
+    attribute('service.name', 'varendo-browser'),
+    attribute('service.namespace', 'varendo'),
     attribute('deployment.environment', 'production'),
   ];
   if (config.version !== undefined) resourceAttributes.push(attribute('service.version', config.version));
   const resource = { attributes: resourceAttributes };
-  const scope = { name: 'aeliqo.browser.basic', version: '1' };
+  const scope = { name: 'varendo.browser.basic', version: '1' };
   let sends = 0;
   const send = (signal: 'metrics' | 'traces', payload: object): void => {
     if (sends >= 10) return;
@@ -251,7 +251,7 @@ function reportNavigation(
 
 /** Starts a bounded, same-origin, best-effort telemetry session for one document. */
 export function startBasicTelemetry(config: MonitoringConfig, browser: Window = window): boolean {
-  if (!config.enabled || !isPublicAeliqoSite(browser.location) || startedDocuments.has(browser)) return false;
+  if (!config.enabled || !isPublicVarendoSite(browser.location) || startedDocuments.has(browser)) return false;
   startedDocuments.add(browser);
   const telemetry = createTelemetryRecorder(browser, config);
   const report = createVitalReporter(telemetry.sendMetric);
@@ -263,7 +263,7 @@ export function startBasicTelemetry(config: MonitoringConfig, browser: Window = 
 }
 
 export async function startDeploymentTelemetry(browser: Window = window): Promise<boolean> {
-  if (!isPublicAeliqoSite(browser.location)) return false;
+  if (!isPublicVarendoSite(browser.location)) return false;
   try {
     const response = await browser.fetch(`${SITE_BASE}browser-monitoring.json`, {
       credentials: 'omit',

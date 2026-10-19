@@ -14,20 +14,20 @@ Use Node.js 24 and create a Vite TypeScript project:
 ```bash
 npm create vite@latest people-list -- --template vanilla-ts
 cd people-list
-npm install --save-exact @varendo/web@0.1.0
+npm install --save-exact @varendo/web@0.2.0
 ```
 
 Keep Vite's `#app` container. Replace `src/main.ts` with:
 
 ```ts
-import { AeliqoRecordListElement } from '@varendo/web/record-list';
+import { VarendoRecordListElement } from '@varendo/web/record-list';
 
-if (!customElements.get('aeliqo-record-list')) {
-  customElements.define('aeliqo-record-list', AeliqoRecordListElement);
+if (!customElements.get('varendo-record-list')) {
+  customElements.define('varendo-record-list', VarendoRecordListElement);
 }
 const target = document.querySelector<HTMLElement>('#app');
 if (!target) throw new Error('Missing app container.');
-const list = new AeliqoRecordListElement();
+const list = new VarendoRecordListElement();
 list.identity = ['id'];
 list.columns = [{ key: 'name', label: 'Name' }];
 list.rows = [{ id: 'ada', name: 'Ada Chen' }];

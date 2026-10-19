@@ -58,11 +58,11 @@ Any HTTP layer that can hand the handler a `Request` and send back its `Response
 
 ```ts
 import { createHttpDataService } from '@varendo/runtime/data';
-import { createAeliqoApp } from '@varendo/web/app';
+import { createVarendoApp } from '@varendo/web/app';
 
 const peopleData = createHttpDataService({ baseUrl: 'https://api.example.com' });
 
-const app = createAeliqoApp({
+const app = createVarendoApp({
   resources: [{ resource: people, data: peopleData }],
   authority, // your trusted adapter — see the permissions guide
 });

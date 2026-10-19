@@ -1,10 +1,10 @@
 import { css, html } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
 import { listenOutside, nextFrame, emitAction, safeElementId } from '../navigation/shared.js';
 import { OverlayFocus } from './focus-trap.js';
-import { aeliqoFeedbackStyles } from './shared.js';
+import { varendoFeedbackStyles } from './shared.js';
 
-export class AeliqoPopoverElement extends AeliqoFoundationElement {
+export class VarendoPopoverElement extends VarendoFoundationElement {
   static readonly properties = {
     label: { type: String },
     content: { type: String },
@@ -13,32 +13,32 @@ export class AeliqoPopoverElement extends AeliqoFoundationElement {
     closeOnOutside: { type: Boolean, attribute: 'close-on-outside' },
   };
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
-    ...aeliqoFeedbackStyles,
+    ...varendoFoundationThemeStyles,
+    ...varendoFeedbackStyles,
     css`
       :host {
         display: inline-block;
         position: relative;
       }
       [part='trigger'] {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: 0.0625rem solid var(--aeliqo-color-border, #64748b);
-        border-radius: var(--aeliqo-radius-small, 0.375rem);
+        background: var(--varendo-color-surface, #f8fafc);
+        border: 0.0625rem solid var(--varendo-color-border, #64748b);
+        border-radius: var(--varendo-radius-small, 0.375rem);
         cursor: pointer;
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
-        padding-inline: var(--aeliqo-space-12, 0.75rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
+        padding-inline: var(--varendo-space-12, 0.75rem);
       }
       [part='popover'] {
-        background: var(--aeliqo-color-surface, #f8fafc);
-        border: 0.0625rem solid var(--aeliqo-color-border, #64748b);
-        border-radius: var(--aeliqo-radius-medium, 0.625rem);
-        box-shadow: var(--aeliqo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
-        inset-block-start: calc(100% + var(--aeliqo-space-4, 0.25rem));
+        background: var(--varendo-color-surface, #f8fafc);
+        border: 0.0625rem solid var(--varendo-color-border, #64748b);
+        border-radius: var(--varendo-radius-medium, 0.625rem);
+        box-shadow: var(--varendo-elevation-raised, 0 0.25rem 0.75rem -0.5rem #0f172a33);
+        inset-block-start: calc(100% + var(--varendo-space-4, 0.25rem));
         inset-inline-start: 0;
         max-block-size: min(70vh, 32rem);
         max-inline-size: min(28rem, calc(100vw - 2rem));
         overflow: auto;
-        padding: var(--aeliqo-space-16, 1rem);
+        padding: var(--varendo-space-16, 1rem);
         position: absolute;
         width: max-content;
         z-index: 15;
@@ -58,11 +58,11 @@ export class AeliqoPopoverElement extends AeliqoFoundationElement {
         color: inherit;
         cursor: pointer;
         float: inline-end;
-        min-inline-size: var(--aeliqo-control-min-target, 2.75rem);
+        min-inline-size: var(--varendo-control-min-target, 2.75rem);
       }
       [part='close'],
       [part='trigger'] {
-        min-block-size: var(--aeliqo-control-min-target, 2.75rem);
+        min-block-size: var(--varendo-control-min-target, 2.75rem);
       }
     `,
   ];
@@ -128,7 +128,7 @@ export class AeliqoPopoverElement extends AeliqoFoundationElement {
     super.disconnectedCallback();
   }
   private close(): void {
-    if (emitAction(this, 'aeliqo-popover-close', {})) this.open = false;
+    if (emitAction(this, 'varendo-popover-close', {})) this.open = false;
   }
   private keydown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
@@ -148,7 +148,7 @@ export class AeliqoPopoverElement extends AeliqoFoundationElement {
   }
 
   protected override render() {
-    const id = safeElementId(`${this.id || 'aeliqo-popover'}-surface`, 'aeliqo-popover-surface');
+    const id = safeElementId(`${this.id || 'varendo-popover'}-surface`, 'varendo-popover-surface');
     const content = html`<button part="close" type="button" aria-label="Close" @click=${() => this.close()}>×</button>
       ${this.content || html`<slot></slot>`}`;
     return html`<button

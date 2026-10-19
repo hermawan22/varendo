@@ -3,7 +3,7 @@ import { basename, join, resolve } from 'node:path';
 import { COMPONENT_DIRECTIVES, COMPONENT_HEADINGS, parseComponentDocument } from './component-documents.mjs';
 import { filesAt } from './docs-lib.mjs';
 
-const componentClass = (component) => `Aeliqo${component.name}Element`;
+const componentClass = (component) => `Varendo${component.name}Element`;
 
 function unique(values) {
   return [...new Set(values)];
@@ -48,7 +48,7 @@ function auditComponentPage(source, component) {
     if (!headings.has(heading)) missingSections.push(heading);
   }
   for (const directive of COMPONENT_DIRECTIVES) {
-    if (!source.includes(`{{aeliqo:${directive}}}`)) missingDirectives.push(directive);
+    if (!source.includes(`{{varendo:${directive}}}`)) missingDirectives.push(directive);
   }
   let documentError;
   try {

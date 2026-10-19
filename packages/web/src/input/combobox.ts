@@ -1,20 +1,20 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
-import { AeliqoComboboxQueryEvent, AeliqoInputChangeEvent } from './events.js';
-import type { AeliqoOption } from './options.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
+import { VarendoComboboxQueryEvent, VarendoInputChangeEvent } from './events.js';
+import type { VarendoOption } from './options.js';
 import { validOptions } from './options.js';
 
-export type AeliqoOptionsLoader = (
+export type VarendoOptionsLoader = (
   query: string,
   signal: AbortSignal,
-) => readonly AeliqoOption[] | Promise<readonly AeliqoOption[]>;
+) => readonly VarendoOption[] | Promise<readonly VarendoOption[]>;
 
 const COMBOBOX_MAX_OPTIONS = 500;
 
 /** Searchable, bounded choice control with stale-result protection. */
-export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
+export class VarendoComboboxElement extends VarendoFieldElement<string> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     options: { attribute: false },
     optionsLoader: { attribute: false },
     value: { type: String, reflect: true },
@@ -25,8 +25,8 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
     minQueryLength: { attribute: 'min-query-length', type: Number },
   };
 
-  options: readonly AeliqoOption[] = [];
-  optionsLoader: AeliqoOptionsLoader | undefined;
+  options: readonly VarendoOption[] = [];
+  optionsLoader: VarendoOptionsLoader | undefined;
   value = '';
   defaultValue = '';
   query = '';
@@ -119,16 +119,16 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
     `;
   }
 
-  private activeOptionId(options: readonly AeliqoOption[]): string | typeof nothing {
+  private activeOptionId(options: readonly VarendoOption[]): string | typeof nothing {
     if (!this.open || this.activeIndex < 0 || options[this.activeIndex] === undefined) return nothing;
     return `option-${this.activeIndex}`;
   }
 
-  private isInvalidSelection(selected: AeliqoOption | undefined): boolean {
+  private isInvalidSelection(selected: VarendoOption | undefined): boolean {
     return this.error.length > 0 || (this.value.length > 0 && selected === undefined);
   }
 
-  private renderOptionList(options: readonly AeliqoOption[]) {
+  private renderOptionList(options: readonly VarendoOption[]) {
     if (!this.open) return nothing;
     return html`
       <ul id="options" part="listbox" role="listbox">
@@ -138,7 +138,7 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
     `;
   }
 
-  private renderOption(option: AeliqoOption, index: number) {
+  private renderOption(option: VarendoOption, index: number) {
     return html`<li
       id=${`option-${index}`}
       part="option"
@@ -221,7 +221,7 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
     this.handleEnterKey(event, options);
   };
 
-  private handleArrowKey(event: KeyboardEvent, options: readonly AeliqoOption[]): boolean {
+  private handleArrowKey(event: KeyboardEvent, options: readonly VarendoOption[]): boolean {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       this.open = true;
@@ -252,7 +252,7 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
     return false;
   }
 
-  private handleEnterKey(event: KeyboardEvent, options: readonly AeliqoOption[]): void {
+  private handleEnterKey(event: KeyboardEvent, options: readonly VarendoOption[]): void {
     if (event.key === 'Enter' && this.open && this.activeIndex >= 0) {
       const option = options[this.activeIndex];
       if (option !== undefined) {
@@ -262,13 +262,13 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
     }
   }
 
-  private choose(option: AeliqoOption): void {
+  private choose(option: VarendoOption): void {
     if (option.disabled === true || this.fieldDisabled || this.readOnly) return;
     this.value = option.value;
     this.query = option.label;
     this.open = false;
     this.activeIndex = -1;
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value: this.value }));
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value: this.value }));
     void this.validateProposed(this.value);
     this.syncNative();
     this.requestUpdate();
@@ -296,8 +296,8 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
   };
 
   private commitQueryInput(query: string): void {
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value: '' }));
-    this.dispatchEvent(new AeliqoComboboxQueryEvent({ source: 'user', query }));
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value: '' }));
+    this.dispatchEvent(new VarendoComboboxQueryEvent({ source: 'user', query }));
     void this.loadForQuery(query);
     this.syncNative();
     this.requestUpdate();
@@ -334,11 +334,11 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
     }
   }
 
-  private safeOptions(): readonly AeliqoOption[] {
+  private safeOptions(): readonly VarendoOption[] {
     return validOptions(this.options) ? this.options.slice(0, COMBOBOX_MAX_OPTIONS) : [];
   }
 
-  private filteredOptions(options: readonly AeliqoOption[]): readonly AeliqoOption[] {
+  private filteredOptions(options: readonly VarendoOption[]): readonly VarendoOption[] {
     const displayed = this.displayQuery();
     const selectedLabel = this.labelForValue(this.value);
     if (this.value.length > 0 && displayed === selectedLabel) return options;
@@ -359,11 +359,11 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
     return this.query;
   }
 
-  private firstEnabledIndex(options: readonly AeliqoOption[]): number {
+  private firstEnabledIndex(options: readonly VarendoOption[]): number {
     return options.findIndex((option) => option.disabled !== true);
   }
 
-  private nextEnabledIndex(options: readonly AeliqoOption[], current: number, direction: 1 | -1): number {
+  private nextEnabledIndex(options: readonly VarendoOption[], current: number, direction: 1 | -1): number {
     if (options.length === 0) return -1;
     const start = this.navigationStart(current, direction);
     for (let offset = 1; offset <= options.length; offset += 1) {
@@ -398,7 +398,7 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       :host {
         box-sizing: border-box;
@@ -408,10 +408,10 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
         position: relative;
       }
       [part='listbox'] {
-        background: var(--aeliqo-color-canvas, #fff);
-        border: 1px solid var(--aeliqo-color-border, #64748b);
-        border-radius: var(--aeliqo-radius-medium, 0.625rem);
-        box-shadow: var(--aeliqo-elevation-lg, 0 8px 24px rgb(15 23 42 / 0.12), 0 0 0 1px rgb(15 23 42 / 0.04));
+        background: var(--varendo-color-canvas, #fff);
+        border: 1px solid var(--varendo-color-border, #64748b);
+        border-radius: var(--varendo-radius-medium, 0.625rem);
+        box-shadow: var(--varendo-elevation-lg, 0 8px 24px rgb(15 23 42 / 0.12), 0 0 0 1px rgb(15 23 42 / 0.04));
         list-style: none;
         margin: 0.25rem 0 0;
         max-block-size: 16rem;
@@ -427,11 +427,11 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
         display: flex;
         gap: 0.5rem;
         justify-content: space-between;
-        min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
-        padding: var(--aeliqo-space-6, 0.375rem) var(--aeliqo-space-10, 0.625rem);
+        min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
+        padding: var(--varendo-space-6, 0.375rem) var(--varendo-space-10, 0.625rem);
       }
       [part='option'] {
-        border-radius: var(--aeliqo-radius-small, 0.375rem);
+        border-radius: var(--varendo-radius-small, 0.375rem);
         flex-direction: column;
         align-items: flex-start;
         position: relative;
@@ -444,34 +444,34 @@ export class AeliqoComboboxElement extends AeliqoFieldElement<string> {
         unicode-bidi: plaintext;
       }
       [part='option'] small {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
       }
       [part='option'].active {
         background: var(
-          --_aeliqo-accent-subtle,
-          color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 8%, var(--aeliqo-color-surface, #f8fafc))
+          --_varendo-accent-subtle,
+          color-mix(in srgb, var(--varendo-color-accent, #4338ca) 8%, var(--varendo-color-surface, #f8fafc))
         );
       }
       [part='option'][aria-selected='true'] {
         background: var(
-          --_aeliqo-accent-selected,
-          color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 14%, var(--aeliqo-color-surface, #f8fafc))
+          --_varendo-accent-selected,
+          color-mix(in srgb, var(--varendo-color-accent, #4338ca) 14%, var(--varendo-color-surface, #f8fafc))
         );
-        padding-inline-end: var(--aeliqo-space-32, 2rem);
+        padding-inline-end: var(--varendo-space-32, 2rem);
       }
       [part='option'][aria-selected='true']::after {
-        color: var(--aeliqo-color-accent, #4338ca);
+        color: var(--varendo-color-accent, #4338ca);
         content: '✓';
         inset-block-start: 50%;
-        inset-inline-end: var(--aeliqo-space-10, 0.625rem);
+        inset-inline-end: var(--varendo-space-10, 0.625rem);
         position: absolute;
         transform: translateY(-50%);
       }
       [part='option'][aria-selected='true'].active {
-        background: color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 20%, var(--aeliqo-color-surface, #f8fafc));
+        background: color-mix(in srgb, var(--varendo-color-accent, #4338ca) 20%, var(--varendo-color-surface, #f8fafc));
       }
       [part='option'][aria-disabled='true'] {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
       }
       @media (forced-colors: active) {
         [part='option'].active,

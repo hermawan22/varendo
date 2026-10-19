@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
   await page.goto('/tests/plot/index.html');
-  await page.locator('aeliqo-plot table').waitFor();
+  await page.locator('varendo-plot table').waitFor();
 });
 test('SVG and Canvas use the same coordinates and retain the missing interval', async ({ page }) => {
   const coordinates = await page
-    .locator('aeliqo-plot circle')
+    .locator('varendo-plot circle')
     .evaluateAll((nodes) => nodes.map((n) => ({ x: Number(n.getAttribute('cx')), y: Number(n.getAttribute('cy')) })));
   expect(coordinates).toHaveLength(2);
   await expect(page.getByRole('cell', { name: '1.123456789012345678', exact: true })).toBeVisible();
@@ -33,13 +33,13 @@ test('geometry budget keeps the data alternative and selection emits exact resul
   await page.evaluate(async () => {
     const p = (window as any).plot;
     p.maxMarks = 1;
-    p.addEventListener('aeliqo-plot-select', (event: any) => {
+    p.addEventListener('varendo-plot-select', (event: any) => {
       (window as any).selection = event.detail;
     });
     await p.updateComplete;
   });
   await expect(page.getByRole('status')).toContainText('exceeds the mark budget');
-  await expect(page.locator('aeliqo-plot svg')).toHaveCount(0);
+  await expect(page.locator('varendo-plot svg')).toHaveCount(0);
   await page.getByRole('button', { name: 'Select a', exact: true }).focus();
   await page.keyboard.press('Enter');
   await expect(page.getByRole('button', { name: 'Select a', exact: true })).toHaveAttribute('aria-pressed', 'false');
@@ -71,11 +71,11 @@ test('facet and layer compose real marks, data partitions and Canvas, then clear
     };
     await p.updateComplete;
   });
-  await expect(page.locator('aeliqo-plot [part=facet]')).toHaveCount(1);
-  await expect(page.locator('aeliqo-plot [part=layer]')).toHaveCount(3);
-  await expect(page.locator('aeliqo-plot table')).toHaveCount(6);
-  await expect(page.locator('aeliqo-plot tbody tr')).toHaveCount(6);
-  await expect(page.locator('aeliqo-plot circle')).toHaveCount(4);
+  await expect(page.locator('varendo-plot [part=facet]')).toHaveCount(1);
+  await expect(page.locator('varendo-plot [part=layer]')).toHaveCount(3);
+  await expect(page.locator('varendo-plot table')).toHaveCount(6);
+  await expect(page.locator('varendo-plot tbody tr')).toHaveCount(6);
+  await expect(page.locator('varendo-plot circle')).toHaveCount(4);
   await page.evaluate(async () => {
     const p = (window as any).plot;
     p.renderer = 'canvas';
@@ -83,7 +83,7 @@ test('facet and layer compose real marks, data partitions and Canvas, then clear
   });
   await expect(page.locator('canvas')).toHaveCount(4);
   for (const id of ['a', 'b', 'c']) {
-    const facet = page.locator(`aeliqo-plot [part=facet] > section[aria-label="id: ${id}"]`);
+    const facet = page.locator(`varendo-plot [part=facet] > section[aria-label="id: ${id}"]`);
     await expect(facet.locator('canvas')).toHaveCount(id === 'b' ? 0 : 2);
     await expect(facet.locator('table')).toHaveCount(2);
     await expect(facet.getByRole('button', { name: `Select ${id}`, exact: true })).toHaveCount(2);
@@ -108,7 +108,7 @@ test('facet and layer compose real marks, data partitions and Canvas, then clear
     p.results = [];
     await p.updateComplete;
   });
-  await expect(page.locator('aeliqo-plot table')).toHaveCount(0);
+  await expect(page.locator('varendo-plot table')).toHaveCount(0);
   await expect(page.locator('canvas')).toHaveCount(0);
 });
 
@@ -119,7 +119,7 @@ test('composition selection cannot resurrect under a replaced or revoked result 
     p.datasets = [{ result: p.result.ref, rows: p.rows }];
     p.spec = { version: '1', root: p.unit };
     await p.updateComplete;
-    p.addEventListener('aeliqo-plot-select', (e: any) => {
+    p.addEventListener('varendo-plot-select', (e: any) => {
       p.selectedIdentity = e.detail.identity;
     });
   });
@@ -140,6 +140,6 @@ test('composition selection cannot resurrect under a replaced or revoked result 
     p.results = [];
     await p.updateComplete;
   });
-  await expect(page.locator('aeliqo-plot table')).toHaveCount(0);
+  await expect(page.locator('varendo-plot table')).toHaveCount(0);
   expect(await page.evaluate(() => (window as any).plot.selectedIdentity)).toBe('');
 });

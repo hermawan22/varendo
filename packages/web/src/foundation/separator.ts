@@ -1,16 +1,16 @@
 import { css, html, nothing } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from './base.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from './base.js';
 
-export type AeliqoSeparatorOrientation = 'horizontal' | 'vertical';
+export type VarendoSeparatorOrientation = 'horizontal' | 'vertical';
 
 /** Native hr for semantic horizontal separation; a nonfocusable div for decorative/vertical rules. */
-export class AeliqoSeparatorElement extends AeliqoFoundationElement {
+export class VarendoSeparatorElement extends VarendoFoundationElement {
   static readonly properties = {
     orientation: { type: String, reflect: true },
     decorative: { type: Boolean, reflect: true },
   };
 
-  orientation: AeliqoSeparatorOrientation = 'horizontal';
+  orientation: VarendoSeparatorOrientation = 'horizontal';
   decorative = true;
 
   protected override render() {
@@ -25,22 +25,22 @@ export class AeliqoSeparatorElement extends AeliqoFoundationElement {
   }
 
   static readonly styles = [
-    ...aeliqoFoundationThemeStyles,
+    ...varendoFoundationThemeStyles,
     css`
       :host {
         display: block;
       }
       [part='separator'] {
-        background: var(--aeliqo-color-border, #64748b);
+        background: var(--varendo-color-border, #64748b);
         border: 0;
         margin: 0;
       }
       hr[part='separator'] {
-        block-size: var(--aeliqo-control-border-width, 0.0625rem);
+        block-size: var(--varendo-control-border-width, 0.0625rem);
         inline-size: 100%;
       }
       div[part='separator'] {
-        block-size: var(--aeliqo-control-border-width, 0.0625rem);
+        block-size: var(--varendo-control-border-width, 0.0625rem);
         inline-size: 100%;
       }
       :host([orientation='vertical']) {
@@ -48,7 +48,7 @@ export class AeliqoSeparatorElement extends AeliqoFoundationElement {
       }
       :host([orientation='vertical']) div[part='separator'] {
         block-size: 100%;
-        inline-size: var(--aeliqo-control-border-width, 0.0625rem);
+        inline-size: var(--varendo-control-border-width, 0.0625rem);
       }
     `,
   ];

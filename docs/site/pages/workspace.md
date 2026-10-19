@@ -7,7 +7,7 @@ description: 'Run one component, a three-output workspace, and a registered page
 ---
 
 <p class="lead">Use one mounted Region for a result view, a workspace, or an entire registered page. The host supplies the allowed goals, data, views, and layout patterns. The same <code>app.render</code> call evaluates and commits each request.</p>
-<aeliqo-release-status></aeliqo-release-status>
+<varendo-release-status></varendo-release-status>
 
 ## Try the progression
 
@@ -31,7 +31,7 @@ cd attendance-ui
 npm init -y
 npm pkg set type=module scripts.dev=vite
 npm install --save-dev --save-exact vite@8.2.2 typescript@7.0.2
-npm install --save-exact @varendo/core@0.1.0 @varendo/runtime@0.1.0 @varendo/web@0.1.0 lit@3.3.3 zod@4.5.4
+npm install --save-exact @varendo/core@0.2.0 @varendo/runtime@0.2.0 @varendo/web@0.2.0 lit@3.3.3 zod@4.5.4
 mkdir src
 ```
 
@@ -45,7 +45,7 @@ Create `src/goal.ts` from this complete source. It registers the attendance reso
 
 The compiler declares three required outputs: `summary`, `trend`, and `breakdown`. Each output groups the same authorized observations at its declared grain. Two Engineering observations produce a summary of **2 present employee-days**, daily values of **1** and **1**, and per-person values of **1** for Ada and Sam. This fixture does not calculate unique headcount or infer attendance anomalies.
 
-<aeliqo-source data-label="src/goal.ts" data-path="examples/vnext/workspace/goal.ts"></aeliqo-source>
+<varendo-source data-label="src/goal.ts" data-path="examples/vnext/workspace/goal.ts"></varendo-source>
 
 `overviewPattern()` binds each child to the exact result for its output ID. An unknown goal, missing required output, or incompatible result is rejected before publication. The runnable single-goal entry is also available in `examples/vnext/workspace-goal/main.ts`.
 
@@ -53,7 +53,7 @@ The compiler declares three required outputs: `summary`, `trend`, and `breakdown
 
 Create `src/page.ts` from the source below. Its `./goal.js` import points to the file from step 2; the remaining imports are public package exports.
 
-<aeliqo-source data-label="src/page.ts" data-path="examples/vnext/workspace/page.ts"></aeliqo-source>
+<varendo-source data-label="src/page.ts" data-path="examples/vnext/workspace/page.ts"></varendo-source>
 
 The page goal reuses the three registered data outputs. Its pattern wraps the existing workspace with four stable structural nodes: `page`, `page-header`, `page-body`, and `page-sidebar`. Each structural view declares its allowed child count and accepts no result of its own. `children()` renders the validated children supplied by the framework.
 
@@ -63,7 +63,7 @@ The host supplies the header text, navigation links, and responsive CSS. Replace
 
 Create `src/main.ts` from this runnable entry. Change its `../workspace/page.js` import to `./page.js` for the local file layout:
 
-<aeliqo-source data-label="src/main.ts" data-path="examples/vnext/page-goal/main.ts"></aeliqo-source>
+<varendo-source data-label="src/main.ts" data-path="examples/vnext/page-goal/main.ts"></varendo-source>
 
 This authority is a synthetic demo identity. Replace it with your application's current identity and permission checks before connecting private data. The selected goal never supplies grants.
 

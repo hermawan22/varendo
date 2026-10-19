@@ -1,14 +1,14 @@
 import { html, nothing } from 'lit';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
-import { AeliqoInputChangeEvent, AeliqoInputCommitEvent } from './events.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
+import { VarendoInputChangeEvent, VarendoInputCommitEvent } from './events.js';
 import { compareDateOnly, dateOnly } from './locale.js';
 
-export type AeliqoDateCalendar = 'gregory';
+export type VarendoDateCalendar = 'gregory';
 
 /** Calendar-date input. Values are YYYY-MM-DD strings and never timestamps. */
-export class AeliqoDateFieldElement extends AeliqoFieldElement<string> {
+export class VarendoDateFieldElement extends VarendoFieldElement<string> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     value: { type: String, reflect: true },
     defaultValue: { attribute: 'default-value', type: String },
     min: { type: String },
@@ -20,7 +20,7 @@ export class AeliqoDateFieldElement extends AeliqoFieldElement<string> {
   defaultValue = '';
   min = '';
   max = '';
-  calendar: AeliqoDateCalendar = 'gregory';
+  calendar: VarendoDateCalendar = 'gregory';
 
   override connectedCallback(): void {
     if (this.value.length === 0 && this.defaultValue.length > 0) this.value = dateOnly(this.defaultValue) ?? '';
@@ -81,13 +81,13 @@ export class AeliqoDateFieldElement extends AeliqoFieldElement<string> {
     }
     const next = dateOnly(input.value) ?? input.value;
     this.value = next;
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value: next }));
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value: next }));
     void this.validateProposed(next);
     this.syncNative();
   };
 
   private readonly handleCommit = (): void => {
-    this.dispatchEvent(new AeliqoInputCommitEvent({ source: 'user', value: this.value }));
+    this.dispatchEvent(new VarendoInputCommitEvent({ source: 'user', value: this.value }));
   };
 
   private isValid(value: string | undefined): boolean {
@@ -111,5 +111,5 @@ export class AeliqoDateFieldElement extends AeliqoFieldElement<string> {
     else this.updateValidity(this.native(), this.value.length === 0);
   }
 
-  static readonly styles = aeliqoInputStyles;
+  static readonly styles = varendoInputStyles;
 }

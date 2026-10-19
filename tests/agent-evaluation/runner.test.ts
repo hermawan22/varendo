@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { runEvaluation, parseConfig, parseCase } from './runner.js';
 import { developmentCase } from './development.js';
 it('runs an explicit baseline without credentials or network and labels live evaluation blocked', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-eval-preflight-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-eval-preflight-'));
   const corpus = join(directory, 'corpus.json');
   await writeFile(corpus, JSON.stringify([developmentCase]));
   const fetch = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Unexpected provider egress'));
@@ -26,7 +26,7 @@ it('runs an explicit baseline without credentials or network and labels live eva
   }
 });
 it('runs an exact predeclared corpus and model subset without weakening corpus authorization', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-eval-selection-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-eval-selection-'));
   const corpus = join(directory, 'corpus.json');
   const second = { ...developmentCase, id: 'second-development-records' };
   await writeFile(corpus, JSON.stringify([developmentCase, second]));
@@ -48,13 +48,13 @@ it('does not infer spend authorization or accept malformed corpus documents', ()
   expect(parseCase(developmentCase)?.partition).toBe('development');
 });
 it('pins live data egress to the exact owner-approved corpus bytes', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-eval-corpus-pin-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-eval-corpus-pin-'));
   const corpus = join(directory, 'corpus.json');
   const config = join(directory, 'config.json');
   const connection = {
     protocol: 'openai-compatible-chat',
     baseURL: 'https://provider.example/v1',
-    credentialEnvironment: 'AELIQO_EVAL_PROVIDER_SECRET',
+    credentialEnvironment: 'VARENDO_EVAL_PROVIDER_SECRET',
     auth: { scheme: 'bearer' },
     capabilities: ['tool-calls', 'usage', 'request-cancellation'],
   };
@@ -102,7 +102,7 @@ it('pins live data egress to the exact owner-approved corpus bytes', async () =>
       },
     }),
   );
-  vi.stubEnv('AELIQO_EVAL_PROVIDER_SECRET', 'synthetic-never-sent');
+  vi.stubEnv('VARENDO_EVAL_PROVIDER_SECRET', 'synthetic-never-sent');
   const fetch = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Unexpected provider egress'));
   try {
     expect(await runEvaluation(['--corpus', corpus, '--config', config, '--output', directory, '--live'])).toBe(2);
@@ -141,7 +141,7 @@ it('rejects unbounded or incomplete fixture execution budgets', () => {
 });
 
 it('records a real MCP explicit baseline separately from model-quality groups', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-eval-mcp-runner-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-eval-mcp-runner-'));
   const corpus = join(directory, 'corpus.json');
   await writeFile(corpus, JSON.stringify([developmentCase]));
   expect(await runEvaluation(['--corpus', corpus, '--output', directory, '--mcp-explicit'])).toBe(2);
@@ -168,7 +168,7 @@ it('records a real MCP explicit baseline separately from model-quality groups', 
 }, 30000);
 
 it('never persists model prose, tool payloads, response IDs, or configured credential values', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-eval-secret-report-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-eval-secret-report-'));
   const corpus = join(directory, 'corpus.json');
   const config = join(directory, 'config.json');
   const corpusBytes = JSON.stringify([developmentCase]);
@@ -176,7 +176,7 @@ it('never persists model prose, tool payloads, response IDs, or configured crede
   const connection = {
     protocol: 'openai-compatible-chat',
     baseURL: 'https://provider.example/v1',
-    credentialEnvironment: 'AELIQO_EVAL_PROVIDER_SECRET',
+    credentialEnvironment: 'VARENDO_EVAL_PROVIDER_SECRET',
     auth: { scheme: 'bearer' },
     capabilities: ['tool-calls', 'usage', 'request-cancellation'],
   };
@@ -225,7 +225,7 @@ it('never persists model prose, tool payloads, response IDs, or configured crede
       },
     }),
   );
-  vi.stubEnv('AELIQO_EVAL_PROVIDER_SECRET', secret);
+  vi.stubEnv('VARENDO_EVAL_PROVIDER_SECRET', secret);
   const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async (_input, init) => {
     const body = JSON.parse(String(init?.body));
     const model = body.model === 'synthetic-weak' ? 'reported-weak' : 'reported-strong';
@@ -263,7 +263,7 @@ it('rejects duplicate reported snapshots even when configured aliases differ', (
   const connection = {
     protocol: 'openai-compatible-chat',
     baseURL: 'https://provider.example/v1',
-    credentialEnvironment: 'AELIQO_EVAL_PROVIDER_SECRET',
+    credentialEnvironment: 'VARENDO_EVAL_PROVIDER_SECRET',
     auth: { scheme: 'bearer' },
     capabilities: ['tool-calls'],
   };
@@ -313,14 +313,14 @@ it('rejects duplicate reported snapshots even when configured aliases differ', (
 });
 
 it('keeps a mismatched provider snapshot out of the model score denominator', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'aeliqo-eval-model-pin-'));
+  const directory = await mkdtemp(join(tmpdir(), 'varendo-eval-model-pin-'));
   const corpus = join(directory, 'corpus.json');
   const config = join(directory, 'config.json');
   const corpusBytes = JSON.stringify([developmentCase]);
   const connection = {
     protocol: 'openai-compatible-chat',
     baseURL: 'https://provider.example/v1',
-    credentialEnvironment: 'AELIQO_EVAL_PROVIDER_SECRET',
+    credentialEnvironment: 'VARENDO_EVAL_PROVIDER_SECRET',
     auth: { scheme: 'bearer' },
     capabilities: ['tool-calls', 'usage'],
   };
@@ -370,7 +370,7 @@ it('keeps a mismatched provider snapshot out of the model score denominator', as
       budget,
     }),
   );
-  vi.stubEnv('AELIQO_EVAL_PROVIDER_SECRET', 'synthetic');
+  vi.stubEnv('VARENDO_EVAL_PROVIDER_SECRET', 'synthetic');
   const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async (_input, init) => {
     const body = JSON.parse(String(init?.body));
     const model = body.model === 'alias-weak' ? 'unexpected-snapshot' : 'reported-strong';

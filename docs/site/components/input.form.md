@@ -7,9 +7,9 @@ contract: 'Native submission semantics, draft validation, error summary and expl
 
 ## Import and live example
 
-{{aeliqo:fixture}}
+{{varendo:fixture}}
 
-{{aeliqo:example}}
+{{varendo:example}}
 
 ## Purpose
 
@@ -29,19 +29,19 @@ A native form boundary around slotted controls that emits a submit proposal afte
 
 ## Properties and defaults
 
-{{aeliqo:properties}}
+{{varendo:properties}}
 
 ## Events
 
-{{aeliqo:events}}
+{{varendo:events}}
 
 ## States and failure handling
 
 Relevant states:
 
-{{aeliqo:states}}
+{{varendo:states}}
 
-{{aeliqo:outcome}}
+{{varendo:outcome}}
 
 Form data and constraint validation follow native disabled-fieldset rules.
 Controls in the first legend of a disabled fieldset remain enabled unless
@@ -53,14 +53,14 @@ contributes both named endpoints to the form data.
 
 Keyboard behavior:
 
-{{aeliqo:keyboard}}
+{{varendo:keyboard}}
 
 An invalid submit focuses the rendered error summary after a slotted submit
 button click, Enter in a field, or `requestSubmit()`.
 
 Exposed semantics:
 
-{{aeliqo:semantics}}
+{{varendo:semantics}}
 
 ## Responsive behavior
 
@@ -68,9 +68,9 @@ Stack fields and submit actions on narrow screens. Preserve DOM order and keep v
 
 ## Style hooks
 
-{{aeliqo:style-hooks}}
+{{varendo:style-hooks}}
 
-{{aeliqo:performance}}
+{{varendo:performance}}
 
 ## Related components
 
@@ -79,7 +79,7 @@ Stack fields and submit actions on narrow screens. Preserve DOM order and keep v
 
 ## Generated TypeScript declaration
 
-{{aeliqo:declaration}}
+{{varendo:declaration}}
 
 ## Version
 

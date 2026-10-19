@@ -56,8 +56,8 @@ for (const width of [360, 768, 1440]) {
     await page.goto('/workspace-goal/');
     const workspace = page.getByTestId('goal-workspace');
     await expect(workspace).toHaveAttribute('data-node-results', 'summary:summary,trend:trend,breakdown:breakdown');
-    await expect(page.locator('aeliqo-region [data-aeliqo-node-id="summary"]')).toContainText('2');
-    await expect(page.locator('aeliqo-region [data-aeliqo-node-id="breakdown"]')).toContainText('Ada');
+    await expect(page.locator('varendo-region [data-varendo-node-id="summary"]')).toContainText('2');
+    await expect(page.locator('varendo-region [data-varendo-node-id="breakdown"]')).toContainText('Ada');
     await checkFrame(page, testInfo, 'j3-workspace');
 
     const anomaly = page.getByRole('button', { name: 'Request anomaly' });

@@ -37,7 +37,7 @@ import {
 import type { OwnedResultLease } from './result-handles.js';
 import { RegionHandleBase, type StageRecord } from './handle-base.js';
 
-const TOKEN_MARKER = Symbol('aeliqo-region-token');
+const TOKEN_MARKER = Symbol('varendo-region-token');
 
 function isStageInputObject(value: unknown): value is RegionStageInput {
   return value !== null && typeof value === 'object';

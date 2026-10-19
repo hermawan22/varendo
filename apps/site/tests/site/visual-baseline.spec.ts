@@ -30,7 +30,7 @@ for (const route of routes) {
 
         if (route.id === 'landing') {
           await expect(page.locator('#demo-status')).toContainText('4 of 4');
-          if (width === 1440) await expect(page.locator('#home-demo aeliqo-table')).toBeVisible();
+          if (width === 1440) await expect(page.locator('#home-demo varendo-table')).toBeVisible();
         }
         if (route.id === 'docs')
           await expect(page.getByRole('heading', { level: 1 })).toHaveText('Build interfaces that adapt to the task');

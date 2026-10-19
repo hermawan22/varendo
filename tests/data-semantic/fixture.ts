@@ -1,11 +1,11 @@
 import type { PresentationPlan, Result, ResultRef, VersionRef } from '../../packages/core/src/contracts/index.js';
 import type { PresentationContext, PresentationValues } from '../../packages/core/src/presentation/index.js';
 import {
-  AELIQO_CONFIG_SCHEMAS,
-  AELIQO_PRESENTATION_REFS,
-  type AeliqoPresentationRegistryOptions,
+  VARENDO_CONFIG_SCHEMAS,
+  VARENDO_PRESENTATION_REFS,
+  type VarendoPresentationRegistryOptions,
 } from '../../packages/web/src/region/registry.js';
-import { AELIQO_DATA_REFS, type AeliqoDataBinding } from '../../packages/web/src/region/data-registry.js';
+import { VARENDO_DATA_REFS, type VarendoDataBinding } from '../../packages/web/src/region/data-registry.js';
 
 export const resultRef = {
   id: 'result',
@@ -53,12 +53,12 @@ export const rows = [
   { id: 'b', name: 'Bea', amount: { decimal: '7.00' }, baseline: { decimal: '7.00' }, department: 'Design' },
 ] as const;
 
-export const binding: AeliqoDataBinding = { result, rows };
+export const binding: VarendoDataBinding = { result, rows };
 
 export const registryOptions = {
   data: [binding],
   resolveEntity: () => 'person',
-} satisfies AeliqoPresentationRegistryOptions;
+} satisfies VarendoPresentationRegistryOptions;
 
 export const dataConfigs: Readonly<Record<string, PresentationValues>> = {
   'data.metric': { field: 'amount', identityValues: { id: 'a' } },
@@ -72,14 +72,14 @@ export const dataConfigs: Readonly<Record<string, PresentationValues>> = {
 };
 
 export const dataManifestRefs: readonly VersionRef[] = [
-  AELIQO_DATA_REFS.metric,
-  AELIQO_DATA_REFS.delta,
-  AELIQO_DATA_REFS.keyValue,
-  AELIQO_DATA_REFS.detail,
-  AELIQO_DATA_REFS.recordList,
-  AELIQO_DATA_REFS.cardCollection,
-  AELIQO_DATA_REFS.filterBuilder,
-  AELIQO_DATA_REFS.selectionSummary,
+  VARENDO_DATA_REFS.metric,
+  VARENDO_DATA_REFS.delta,
+  VARENDO_DATA_REFS.keyValue,
+  VARENDO_DATA_REFS.detail,
+  VARENDO_DATA_REFS.recordList,
+  VARENDO_DATA_REFS.cardCollection,
+  VARENDO_DATA_REFS.filterBuilder,
+  VARENDO_DATA_REFS.selectionSummary,
 ];
 
 const dataRoles: readonly string[] = [
@@ -143,8 +143,8 @@ export function dataPresentationPlan(): PresentationPlan {
       {
         id: 'root',
         role: 'structure',
-        representation: AELIQO_PRESENTATION_REFS.stack,
-        config: { schema: AELIQO_CONFIG_SCHEMAS.stack, values: {} },
+        representation: VARENDO_PRESENTATION_REFS.stack,
+        config: { schema: VARENDO_CONFIG_SCHEMAS.stack, values: {} },
         children: leaves.map((node) => node.id),
       },
       ...leaves,
@@ -166,7 +166,7 @@ export function dataPresentationPlan(): PresentationPlan {
 }
 
 export function dataPresentationContext(): PresentationContext {
-  const representations = [AELIQO_PRESENTATION_REFS.stack, ...dataManifestRefs];
+  const representations = [VARENDO_PRESENTATION_REFS.stack, ...dataManifestRefs];
   return {
     task: {
       version: '1',

@@ -1,10 +1,10 @@
 import type { InteractionPayload, InteractionState, Result, ResultRef } from '@varendo/core';
 import type { ValidatedPresentation } from '@varendo/core/presentation';
 import { dataStatusMessage, materializedDataStatus } from '../data/shared.js';
-import { validateAeliqoDataBinding } from './data-registry.js';
-import type { AeliqoRegionResult } from './types.js';
-import type { AeliqoInputChangeDetail } from '../input/events.js';
-import type { AeliqoTableColumn, AeliqoTableRow, AeliqoTableSelectionDetail } from '../types.js';
+import { validateVarendoDataBinding } from './data-registry.js';
+import type { VarendoRegionResult } from './types.js';
+import type { VarendoInputChangeDetail } from '../input/events.js';
+import type { VarendoTableColumn, VarendoTableRow, VarendoTableSelectionDetail } from '../types.js';
 import { resultRefKey as refKey } from './registry-value.js';
 export { refKey };
 
@@ -69,7 +69,7 @@ function validSelectionKeys(mode: 'clear' | 'ids', keys: readonly string[]): boo
   return keys.length > 0;
 }
 
-export function tableSelectionDetail(event: Event): AeliqoTableSelectionDetail | undefined {
+export function tableSelectionDetail(event: Event): VarendoTableSelectionDetail | undefined {
   try {
     const candidate = record(customDetail(event));
     if (candidate === undefined || !validSelectionMode(candidate.mode)) return undefined;
@@ -89,7 +89,7 @@ export function tableSelectionDetail(event: Event): AeliqoTableSelectionDetail |
   }
 }
 
-export function inputChangeDetail(event: Event): AeliqoInputChangeDetail<string> | undefined {
+export function inputChangeDetail(event: Event): VarendoInputChangeDetail<string> | undefined {
   try {
     const candidate = record(customDetail(event));
     if (candidate === undefined || candidate.source !== 'user' || typeof candidate.value !== 'string') return undefined;
@@ -132,14 +132,14 @@ export function decimalText(value: unknown): string | undefined {
 
 export function resultFor(
   node: { readonly result: Result | undefined },
-  results: readonly AeliqoRegionResult[],
-): AeliqoRegionResult | undefined {
+  results: readonly VarendoRegionResult[],
+): VarendoRegionResult | undefined {
   try {
     if (node.result === undefined || !Array.isArray(results)) return undefined;
     const matches = results.filter((candidate) => refKey(candidate.ref) === refKey(node.result!.ref));
     if (matches.length !== 1) return undefined;
     const current = matches[0]!;
-    const checked = validateAeliqoDataBinding({
+    const checked = validateVarendoDataBinding({
       result: node.result,
       rows: current.rows,
       ...(current.columns === undefined ? {} : { columns: current.columns }),
@@ -147,7 +147,7 @@ export function resultFor(
     });
     if (!checked.ok) return undefined;
     const rows = checked.value.rows.map((source) => {
-      const row: Record<string, AeliqoTableRow[string]> = {};
+      const row: Record<string, VarendoTableRow[string]> = {};
       for (const [field, value] of Object.entries(source)) if (value !== undefined) row[field] = value;
       return row;
     });
@@ -165,8 +165,8 @@ export function resultFor(
 
 export function resultColumns(
   node: { readonly result: Result | undefined },
-  bound: AeliqoRegionResult | undefined,
-): readonly AeliqoTableColumn[] {
+  bound: VarendoRegionResult | undefined,
+): readonly VarendoTableColumn[] {
   if (bound?.columns !== undefined) return bound.columns;
   return node.result?.fields.map((field) => ({ key: field.id, label: field.label })) ?? [];
 }
@@ -188,7 +188,7 @@ export function tableSelectionMode(value: unknown): 'none' | 'single' | 'multipl
 
 export function tableDisplayState(
   node: ValidatedPresentation['nodes'][number],
-  bound: AeliqoRegionResult | undefined,
+  bound: VarendoRegionResult | undefined,
 ): { readonly emptyLabel: string; readonly status: string; readonly message: string } {
   const emptyLabel = bound === undefined ? 'Data unavailable.' : 'No rows to display.';
   const message = bound === undefined ? 'Data unavailable.' : '';
@@ -196,7 +196,7 @@ export function tableDisplayState(
   return { emptyLabel, status: materializedDataStatus(node.result), message };
 }
 
-export function trendSummary(bound: AeliqoRegionResult | undefined, result: Result | undefined): string {
+export function trendSummary(bound: VarendoRegionResult | undefined, result: Result | undefined): string {
   if (bound === undefined) return 'Data unavailable.';
   if (result === undefined) return '';
   return dataStatusMessage(materializedDataStatus(result)) ?? '';
@@ -226,8 +226,8 @@ export function filterPredicates(
 
 export function configColumns(
   values: Record<string, unknown>,
-  fallback: readonly AeliqoTableColumn[],
-): readonly AeliqoTableColumn[] {
+  fallback: readonly VarendoTableColumn[],
+): readonly VarendoTableColumn[] {
   if (!Array.isArray(values.columns)) return fallback;
   return values.columns.flatMap((value) => {
     const candidate = record(value);

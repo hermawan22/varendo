@@ -77,7 +77,7 @@ type StructureObservation = {
 };
 
 type AdverseVisualizationReport = {
-  readonly schema: 'aeliqo.performance.adverse-visualization.v1';
+  readonly schema: 'varendo.performance.adverse-visualization.v1';
   readonly sourceCommit: string;
   readonly environment: {
     readonly userAgent: string;
@@ -153,7 +153,7 @@ async function collectStructure(page: Page): Promise<StructureObservation> {
         uniqueIdentities: identitySet(api.bar).size,
         firstIdentity: JSON.stringify([JSON.stringify(['text', String(barRows[0]?.id)])]),
         firstPageRows: barRoot.querySelectorAll('tbody tr').length,
-        firstPageButtons: barRoot.querySelectorAll('button[data-aeliqo-row-identity]').length,
+        firstPageButtons: barRoot.querySelectorAll('button[data-varendo-row-identity]').length,
         idsMatchExpected:
           barIds.length === expectedIds.length && barIds.every((id, index) => id === expectedIds[index]),
         svgRectCount: barSvg.querySelectorAll('rect').length,
@@ -168,7 +168,7 @@ async function collectStructure(page: Page): Promise<StructureObservation> {
         nullValueCount: trendRows.filter((row) => row.value === null).length,
         uniqueIdentities: identitySet(api.trend).size,
         firstPageRows: trendRoot.querySelectorAll('tbody tr').length,
-        firstPageButtons: trendRoot.querySelectorAll('button[data-aeliqo-row-identity]').length,
+        firstPageButtons: trendRoot.querySelectorAll('button[data-varendo-row-identity]').length,
         idsMatchExpected:
           trendIds.length === expectedIds.length && trendIds.every((id, index) => id === expectedIds[index]),
         markPathCount: trendMarkPaths.length,
@@ -194,7 +194,7 @@ test('observes adverse dense and null-heavy visualization behavior with exact da
 }, testInfo) => {
   await openFixture(page);
   const structure = await collectStructure(page);
-  const sourceCommit = process.env.AELIQO_SOURCE_COMMIT ?? 'unknown';
+  const sourceCommit = process.env.VARENDO_SOURCE_COMMIT ?? 'unknown';
   const requestUrls: string[] = [];
   const requestListener = (request: { url(): string }) => requestUrls.push(request.url());
   page.on('request', requestListener);
@@ -205,7 +205,7 @@ test('observes adverse dense and null-heavy visualization behavior with exact da
       if (fixture?.ready !== true) throw new Error('Adverse visualization fixture is not ready.');
       return fixture.oscillate(40);
     });
-    const bar = page.locator('aeliqo-bar');
+    const bar = page.locator('varendo-bar');
     await bar.locator('details[part="data-details"] > summary').click();
     const next = bar.getByRole('button', { name: 'Next', exact: true });
     const previous = bar.getByRole('button', { name: 'Previous', exact: true });
@@ -227,7 +227,7 @@ test('observes adverse dense and null-heavy visualization behavior with exact da
   }
 
   const report: AdverseVisualizationReport = {
-    schema: 'aeliqo.performance.adverse-visualization.v1',
+    schema: 'varendo.performance.adverse-visualization.v1',
     sourceCommit,
     environment: await page.evaluate(() => ({
       userAgent: navigator.userAgent,

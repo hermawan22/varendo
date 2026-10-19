@@ -15,7 +15,7 @@ requests. For a complete read-only array already owned by React, start with
 the [local surface API](/guides/local-data/). If your screen already chooses its
 views and owns its interaction state, use [standalone components](/start/standalone-components/).
 
-<aeliqo-release-status></aeliqo-release-status>
+<varendo-release-status></varendo-release-status>
 
 ## 1. Create a React app
 
@@ -31,10 +31,10 @@ This creates a `people` project and moves you into it.
 Keep every Varendo package on the same exact version:
 
 ```bash
-npm install --save-exact @varendo/core@0.1.0 @varendo/runtime@0.1.0 @varendo/web@0.1.0 @varendo/react@0.1.0 zod@4.5.4
+npm install --save-exact @varendo/core@0.2.0 @varendo/runtime@0.2.0 @varendo/web@0.2.0 @varendo/react@0.2.0 zod@4.5.4
 ```
 
-You should see: all four Varendo packages at `0.1.0` in `package.json`.
+You should see: all four Varendo packages at `0.2.0` in `package.json`.
 
 ## 3. Describe your data
 
@@ -47,7 +47,7 @@ Create `src/people.ts`. This file answers three questions, once:
 ```ts
 import { defineResource } from '@varendo/core';
 import { createLocalDataService } from '@varendo/runtime/data';
-import { createAeliqoApp } from '@varendo/web/app';
+import { createVarendoApp } from '@varendo/web/app';
 import { z } from 'zod';
 
 const rows = [
@@ -81,7 +81,7 @@ export function createPeopleApp() {
     snapshot: { catalog: people.catalog, sourceRevision: '1', records: { people: rows } },
     authorize: () => ({ ok: true, value: access }),
   });
-  return createAeliqoApp({
+  return createVarendoApp({
     resources: [{ resource: people, data }],
     authority: {
       read: () => ({
@@ -111,7 +111,7 @@ It says nothing about markup. Replace `src/main.tsx` with this file:
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import type { Intent } from '@varendo/core';
-import { AeliqoProvider, AeliqoRegion } from '@varendo/react/app';
+import { VarendoProvider, VarendoRegion } from '@varendo/react/app';
 import { createPeopleApp } from './people';
 import './people.css';
 
@@ -148,7 +148,7 @@ const app = createPeopleApp();
 function App() {
   const [question, setQuestion] = useState<Question>('Everyone');
   return (
-    <AeliqoProvider app={app}>
+    <VarendoProvider app={app}>
       <main>
         <h1>People</h1>
         <div className="questions" role="group" aria-label="Ask about people">
@@ -158,9 +158,9 @@ function App() {
             </button>
           ))}
         </div>
-        <AeliqoRegion regionId="people" resourceId="people" intent={questions[question]} />
+        <VarendoRegion regionId="people" resourceId="people" intent={questions[question]} />
       </main>
-    </AeliqoProvider>
+    </VarendoProvider>
   );
 }
 

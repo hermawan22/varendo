@@ -1,7 +1,7 @@
-import type { AeliqoApp } from './types.js';
-import type { AeliqoSemanticInteractionRequest } from '../region/types.js';
+import type { VarendoApp } from './types.js';
+import type { VarendoSemanticInteractionRequest } from '../region/types.js';
 import { registerBaseElements } from '../register-base.js';
-import { AeliqoRegionElement } from '../region/aeliqo-region.js';
+import { VarendoRegionElement } from '../region/varendo-region.js';
 import { bridgeRuntimeState } from './lifecycle.js';
 import {
   ADAPTIVE_MEDIA_QUERIES,
@@ -13,8 +13,8 @@ import {
 } from './context.js';
 import type { WebMountInput } from './types.js';
 
-type MountResult = ReturnType<AeliqoApp['mount']>;
-type InteractionHandler = (region: WebRegion, request: AeliqoSemanticInteractionRequest) => Promise<void>;
+type MountResult = ReturnType<VarendoApp['mount']>;
+type InteractionHandler = (region: WebRegion, request: VarendoSemanticInteractionRequest) => Promise<void>;
 type AdaptRegion = (region: WebRegion) => Promise<unknown>;
 type ResizeObserverConstructor = new (callback: ResizeObserverCallback) => ResizeObserver;
 type WindowWithResizeObserver = Window & { readonly ResizeObserver?: ResizeObserverConstructor };
@@ -38,10 +38,10 @@ function registerElements(view: Window): boolean {
   }
 }
 
-function attachRegion(input: WebMountInput): AeliqoRegionElement | undefined {
+function attachRegion(input: WebMountInput): VarendoRegionElement | undefined {
   try {
-    const element = input.target.ownerDocument.createElement('aeliqo-region') as AeliqoRegionElement;
-    element.setAttribute('data-aeliqo-app-region', input.regionId);
+    const element = input.target.ownerDocument.createElement('varendo-region') as VarendoRegionElement;
+    element.setAttribute('data-varendo-app-region', input.regionId);
     input.target.append(element);
     return element;
   } catch {
@@ -49,7 +49,7 @@ function attachRegion(input: WebMountInput): AeliqoRegionElement | undefined {
   }
 }
 
-function createRegion(input: WebMountInput, element: AeliqoRegionElement): WebRegion {
+function createRegion(input: WebMountInput, element: VarendoRegionElement): WebRegion {
   return {
     id: input.regionId,
     resourceId: input.resourceId,
@@ -170,7 +170,7 @@ export function createMountHandler(
   context: WebAppContext,
   interaction: InteractionHandler,
   adapt: AdaptRegion,
-): AeliqoApp['mount'] {
+): VarendoApp['mount'] {
   return (input) => {
     if (context.disposed) return mountFailure('web.app.disposed', 'The Varendo app is disposed.');
     const view = targetWindow(input);

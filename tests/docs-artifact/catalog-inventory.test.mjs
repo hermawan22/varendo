@@ -35,7 +35,7 @@ test('inventory failures name the exact component and missing section', async ()
   const audit = auditCatalogInventory({
     ...inputs,
     examples: examples.filter((example) => `${example.family}.${example.id}` !== component.id),
-    declarations: inputs.declarations.filter(({ text }) => !text.includes('AeliqoButtonElement')),
+    declarations: inputs.declarations.filter(({ text }) => !text.includes('VarendoButtonElement')),
     pageContents,
   });
   const report = formatCatalogInventoryReport(audit);
@@ -43,7 +43,7 @@ test('inventory failures name the exact component and missing section', async ()
   assert.match(report, /foundation\.button: documentation parser error/u);
   assert.match(report, /foundation\.button: missing sections: Purpose/u);
   assert.match(report, /foundation\.button: missing runnable example/u);
-  assert.match(report, /foundation\.button: missing generated declaration AeliqoButtonElement/u);
+  assert.match(report, /foundation\.button: missing generated declaration VarendoButtonElement/u);
 });
 
 test('inventory rejects a Purpose section copied from the catalog contract', async () => {

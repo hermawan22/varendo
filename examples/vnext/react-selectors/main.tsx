@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import type { Intent } from '@varendo/core';
 import type { ScopeController, ScopeSnapshot, SurfaceController, SurfaceSnapshot } from '@varendo/runtime';
-import { AeliqoScope, useAeliqoScopeState, useSurfaceState } from '../../../packages/react/src/surface/index.js';
+import { VarendoScope, useVarendoScopeState, useSurfaceState } from '../../../packages/react/src/surface/index.js';
 
 type State = { readonly rows: readonly string[] };
 
@@ -66,7 +66,7 @@ function SurfaceProbe(): React.JSX.Element {
 }
 
 function ScopeProbe(): React.JSX.Element {
-  const selected = useAeliqoScopeState((snapshot) => [snapshot.selector?.id ?? 'none']);
+  const selected = useVarendoScopeState((snapshot) => [snapshot.selector?.id ?? 'none']);
   scopeRenders += 1;
   return <output data-testid="scope-selection">{`${selected.join(',')}:${scopeRenders}`}</output>;
 }
@@ -116,9 +116,9 @@ function App(): React.JSX.Element {
       <PrimitiveProbe />
       <ReferenceProbe />
       <SurfaceProbe />
-      <AeliqoScope scope={scope}>
+      <VarendoScope scope={scope}>
         <ScopeProbe />
-      </AeliqoScope>
+      </VarendoScope>
     </main>
   );
 }

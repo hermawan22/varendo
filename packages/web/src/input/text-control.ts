@@ -1,7 +1,7 @@
 import { css, html, noChange, nothing } from 'lit';
 import type { PropertyValues } from 'lit';
-import { AeliqoInputChangeEvent, AeliqoInputCommitEvent } from './events.js';
-import { AeliqoFieldElement, aeliqoInputStyles } from './base.js';
+import { VarendoInputChangeEvent, VarendoInputCommitEvent } from './events.js';
+import { VarendoFieldElement, varendoInputStyles } from './base.js';
 
 const BLOCKING_INPUT_TYPES = new Set([
   'text',
@@ -25,7 +25,7 @@ function isQueryRoot(root: Node): root is Document | DocumentFragment {
   return root instanceof Document || root instanceof DocumentFragment;
 }
 
-export type AeliqoTextFieldInputType =
+export type VarendoTextFieldInputType =
   | 'text'
   | 'search'
   | 'url'
@@ -40,9 +40,9 @@ export type AeliqoTextFieldInputType =
   | 'number';
 
 /** Shared controlled/uncontrolled, selection and IME implementation. */
-export abstract class AeliqoTextControlElement extends AeliqoFieldElement<string> {
+export abstract class VarendoTextControlElement extends VarendoFieldElement<string> {
   static readonly properties = {
-    ...AeliqoFieldElement.properties,
+    ...VarendoFieldElement.properties,
     value: { type: String, reflect: true },
     defaultValue: { attribute: 'default-value', type: String },
     inputType: { attribute: 'input-type', type: String },
@@ -57,7 +57,7 @@ export abstract class AeliqoTextControlElement extends AeliqoFieldElement<string
 
   value = '';
   defaultValue = '';
-  inputType: AeliqoTextFieldInputType = 'text';
+  inputType: VarendoTextFieldInputType = 'text';
   placeholder = '';
   maxLength = -1;
   minLength = -1;
@@ -157,7 +157,7 @@ export abstract class AeliqoTextControlElement extends AeliqoFieldElement<string
     `;
   }
 
-  private renderControl(describedBy: string, type: AeliqoTextFieldInputType) {
+  private renderControl(describedBy: string, type: VarendoTextFieldInputType) {
     if (this.multiline) return this.renderTextarea(describedBy);
     return this.renderInput(describedBy, type);
   }
@@ -188,7 +188,7 @@ export abstract class AeliqoTextControlElement extends AeliqoFieldElement<string
     ></textarea>`;
   }
 
-  private renderInput(describedBy: string, type: AeliqoTextFieldInputType) {
+  private renderInput(describedBy: string, type: VarendoTextFieldInputType) {
     return html`<input
       part="input"
       id="control"
@@ -267,11 +267,11 @@ export abstract class AeliqoTextControlElement extends AeliqoFieldElement<string
   };
 
   private readonly handleCommit = (): void => {
-    this.dispatchEvent(new AeliqoInputCommitEvent({ source: 'user', value: this.value }));
+    this.dispatchEvent(new VarendoInputCommitEvent({ source: 'user', value: this.value }));
   };
 
   private dispatchProposal(value: string): void {
-    this.dispatchEvent(new AeliqoInputChangeEvent({ source: 'user', value }));
+    this.dispatchEvent(new VarendoInputChangeEvent({ source: 'user', value }));
   }
 
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
@@ -331,7 +331,7 @@ export abstract class AeliqoTextControlElement extends AeliqoFieldElement<string
     let count = 0;
     for (const control of Array.from(form.elements)) {
       if (control.matches(':disabled')) continue;
-      if (control instanceof AeliqoTextControlElement) count += 1;
+      if (control instanceof VarendoTextControlElement) count += 1;
       else if (control instanceof HTMLInputElement && BLOCKING_INPUT_TYPES.has(control.type)) count += 1;
       if (count > 1) return false;
     }
@@ -370,12 +370,12 @@ export abstract class AeliqoTextControlElement extends AeliqoFieldElement<string
     return this.isControlled ? this.value === value : true;
   }
 
-  private safeInputType(): AeliqoTextFieldInputType {
+  private safeInputType(): VarendoTextFieldInputType {
     return BLOCKING_INPUT_TYPES.has(this.inputType) ? this.inputType : 'text';
   }
 
   static readonly styles = [
-    ...aeliqoInputStyles,
+    ...varendoInputStyles,
     css`
       textarea {
         min-block-size: 6rem;
@@ -383,7 +383,7 @@ export abstract class AeliqoTextControlElement extends AeliqoFieldElement<string
       }
       input::placeholder,
       textarea::placeholder {
-        color: var(--aeliqo-color-muted, #4b5563);
+        color: var(--varendo-color-muted, #4b5563);
         opacity: 1;
       }
     `,

@@ -5,24 +5,24 @@ import {
 } from '@varendo/core/presentation';
 import type { Diagnostic, Experience, ResourceDefinition, Result, CommitPreconditions } from '@varendo/core';
 import type {
-  AeliqoRuntime,
+  VarendoRuntime,
   RuntimeCommittedReceipt,
   RuntimeRegionState,
   RuntimeUnsubscribe,
 } from '@varendo/runtime/app';
-import type { AeliqoRegionElement } from '../region/aeliqo-region.js';
-import { createAeliqoPresentationRegistry, createSelectionIdentityMapping } from '../region/registry.js';
-import type { AeliqoInputBindings } from '../region/input-registry.js';
-import type { AeliqoRegionResult, AeliqoViewDefinition } from '../region/types.js';
+import type { VarendoRegionElement } from '../region/varendo-region.js';
+import { createVarendoPresentationRegistry, createSelectionIdentityMapping } from '../region/registry.js';
+import type { VarendoInputBindings } from '../region/input-registry.js';
+import type { VarendoRegionResult, VarendoViewDefinition } from '../region/types.js';
 import type { RecipeDefinition, RecipePresentationPolicy } from '../recipes/types.js';
 import { canonicalViewId, STANDARD_STATE_MAPPINGS } from '../recipes/standard.js';
-import type { AeliqoAppOptions, WebRenderReceipt } from './types.js';
+import type { VarendoAppOptions, WebRenderReceipt } from './types.js';
 
 export interface WebRegion {
   readonly id: string;
   readonly resourceId: string;
   readonly target: HTMLElement;
-  readonly element: AeliqoRegionElement;
+  readonly element: VarendoRegionElement;
   resize?: ResizeObserver;
   media?: {
     readonly lists: readonly MediaQueryList[];
@@ -50,9 +50,9 @@ export interface WebRegion {
   readonly drafts: Map<string, WebRegionDraft>;
   last?: {
     readonly receipt: RuntimeCommittedReceipt;
-    readonly results: readonly AeliqoRegionResult[];
+    readonly results: readonly VarendoRegionResult[];
     readonly descriptors: readonly Result[];
-    readonly inputs?: AeliqoInputBindings;
+    readonly inputs?: VarendoInputBindings;
   };
 }
 
@@ -67,11 +67,11 @@ type WebRegionValue = {
 type WebRegionDraft = Extract<import('@varendo/core').InteractionPayload, { readonly kind: 'draft' }>;
 
 export interface WebAppContext {
-  readonly options: AeliqoAppOptions;
-  readonly runtime: AeliqoRuntime;
+  readonly options: VarendoAppOptions;
+  readonly runtime: VarendoRuntime;
   readonly resources: ReadonlyMap<string, import('@varendo/core').ResourceDefinition>;
   readonly recipes: readonly RecipeDefinition[];
-  readonly views: readonly AeliqoViewDefinition[];
+  readonly views: readonly VarendoViewDefinition[];
   readonly patterns?: NonNullable<PresentationRegistry['patterns']>;
   readonly stateMappings?: NonNullable<PresentationRegistry['stateMappings']>;
   readonly regions: Map<string, WebRegion>;
@@ -112,8 +112,8 @@ function refKey(ref: Result['ref']): string {
 
 export function materialize(
   receipt: RuntimeCommittedReceipt,
-): { readonly results: readonly AeliqoRegionResult[]; readonly descriptors: readonly Result[] } | undefined {
-  const results: AeliqoRegionResult[] = [];
+): { readonly results: readonly VarendoRegionResult[]; readonly descriptors: readonly Result[] } | undefined {
+  const results: VarendoRegionResult[] = [];
   const descriptors: Result[] = [];
   for (const output of receipt.outputs) {
     const snapshot = output.handle.snapshot();
@@ -203,16 +203,16 @@ export function interactionLocked(region: WebRegion): boolean {
   if (region.composing || region.actionPending) return true;
   const active = deepActive(region.target.ownerDocument);
   if (active === null || !composedContains(region.element, active)) return false;
-  return active.matches('input, textarea, select, [contenteditable="true"], [data-aeliqo-dirty="true"]');
+  return active.matches('input, textarea, select, [contenteditable="true"], [data-varendo-dirty="true"]');
 }
 
 export function registryFor(
-  results: readonly AeliqoRegionResult[],
+  results: readonly VarendoRegionResult[],
   descriptors: readonly Result[],
-  views: readonly AeliqoViewDefinition[],
+  views: readonly VarendoViewDefinition[],
   resourceId: string,
-  inputs?: AeliqoInputBindings,
-  registrations: Pick<AeliqoAppOptions, 'patterns' | 'stateMappings'> = {},
+  inputs?: VarendoInputBindings,
+  registrations: Pick<VarendoAppOptions, 'patterns' | 'stateMappings'> = {},
 ): PresentationRegistry | undefined {
   const byRef = new Map(descriptors.map((descriptor) => [refKey(descriptor.ref), descriptor]));
   const visualizations = results.flatMap((binding) => {
@@ -226,7 +226,7 @@ export function registryFor(
       },
     ];
   });
-  const base = createAeliqoPresentationRegistry({
+  const base = createVarendoPresentationRegistry({
     ...(inputs === undefined ? {} : { inputs }),
     data: results.flatMap((binding) => {
       const result = byRef.get(refKey(binding.ref));
@@ -268,7 +268,7 @@ export function experience(
     (manifest.result === 'none' && manifest.operations.length === 0 && manifest.roles.includes('structure'));
   return {
     version: '1',
-    id: 'aeliqo.web.app',
+    id: 'varendo.web.app',
     revision,
     mode: (registry.patterns?.length ?? 0) > 0 ? 'composable' : 'adaptive',
     agentAllowed: true,

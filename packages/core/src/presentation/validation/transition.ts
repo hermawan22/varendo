@@ -95,7 +95,7 @@ function isIdentityTransfer(
     from.id === to.id &&
     from.role === to.role &&
     versionKey(from.representation) === versionKey(to.representation) &&
-    mapping.id === 'aeliqo.state.identity' &&
+    mapping.id === 'varendo.state.identity' &&
     mapping.revision === '1'
   );
 }

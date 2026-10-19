@@ -151,8 +151,8 @@ def run_commands(commands: list[dict], indexes: list[int], report: Path) -> int:
     LOGS.mkdir(parents=True, exist_ok=True)
     results: list[dict] = []
     write_report(source, "running", False, results, report)
-    with tempfile.TemporaryDirectory(prefix="aeliqo-build-reuse-") as reuse:
-        environment = {**os.environ, "AELIQO_BUILD_REUSE_DIRECTORY": reuse}
+    with tempfile.TemporaryDirectory(prefix="varendo-build-reuse-") as reuse:
+        environment = {**os.environ, "VARENDO_BUILD_REUSE_DIRECTORY": reuse}
         for position, index in enumerate(indexes):
             command = commands[index]
             output = LOGS / f"{index:02d}-{command['kind']}.log"

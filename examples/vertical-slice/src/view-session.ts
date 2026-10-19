@@ -11,10 +11,10 @@ import { createRegionStore, type RegionHandle, type RegionReadSet, type RegionSt
 import { createInteractionController, createInteractionGraph } from '@varendo/runtime/interaction';
 import type { MaterializedTaskOutput } from '@varendo/runtime/evaluation';
 import {
-  AELIQO_PRESENTATION_REFS,
-  createAeliqoPresentationRegistry,
-  type AeliqoRegionResult,
-  type AeliqoSemanticInteractionRequest,
+  VARENDO_PRESENTATION_REFS,
+  createVarendoPresentationRegistry,
+  type VarendoRegionResult,
+  type VarendoSemanticInteractionRequest,
 } from '@varendo/web/region';
 import { stableTableRowKey } from '@varendo/web/table';
 import { catalog, functionRegistry, initialTask } from './hr.js';
@@ -26,7 +26,7 @@ const experience: Experience = {
   revision: '1',
   mode: 'composable',
   agentAllowed: false,
-  allowedRepresentations: Object.values(AELIQO_PRESENTATION_REFS).map((ref) => ref.id),
+  allowedRepresentations: Object.values(VARENDO_PRESENTATION_REFS).map((ref) => ref.id),
   allowedPatterns: [],
   composition: { allowWithoutPreset: true, maxNodes: 12, maxExpansions: 24 },
   requiredOperations: [],
@@ -57,8 +57,8 @@ type OutputMap = Map<string, MaterializedTaskOutput>;
 type ContextFactory = (task: Task, current: CommitPreconditions, incumbent?: PresentationPlan) => PresentationContext;
 
 interface OutputAccess {
-  rankedRows(): AeliqoRegionResult['rows'];
-  rowKey(row: AeliqoRegionResult['rows'][number]): ReturnType<typeof stableTableRowKey>;
+  rankedRows(): VarendoRegionResult['rows'];
+  rowKey(row: VarendoRegionResult['rows'][number]): ReturnType<typeof stableTableRowKey>;
   refs(): ResultRef[];
 }
 
@@ -85,7 +85,7 @@ interface HrViewState {
 }
 
 function createOutputAccess(data: DataSession, outputs: OutputMap): OutputAccess {
-  const rowKey = (row: AeliqoRegionResult['rows'][number]) => stableTableRowKey(row, ['employee_id']);
+  const rowKey = (row: VarendoRegionResult['rows'][number]) => stableTableRowKey(row, ['employee_id']);
   return {
     rankedRows: () =>
       data.permitted
@@ -101,7 +101,7 @@ function createOutputAccess(data: DataSession, outputs: OutputMap): OutputAccess
 
 function createRegistry(data: DataSession): PresentationRegistry {
   return unwrap(
-    createAeliqoPresentationRegistry({
+    createVarendoPresentationRegistry({
       resolveEntity: (result) => {
         const handle = data.resolveResult(result.ref);
         if (!data.permitted || handle?.snapshot().descriptor === undefined) return undefined;
@@ -118,7 +118,7 @@ function createContextFactory(outputs: OutputMap): ContextFactory {
     results: [...outputs.values()].flatMap((output) => (output.descriptor === undefined ? [] : [output.descriptor])),
     current,
     environment: unknownEnvironment,
-    rendererCapabilities: Object.values(AELIQO_PRESENTATION_REFS),
+    rendererCapabilities: Object.values(VARENDO_PRESENTATION_REFS),
     ...(incumbent === undefined ? {} : { incumbent }),
   });
 }
@@ -301,7 +301,7 @@ function createReorderProposal(state: HrViewState) {
     stateTransfer: previous.nodes.map((node) => ({
       fromNode: node.id,
       toNode: node.id,
-      mapping: { id: 'aeliqo.state.identity', revision: '1' },
+      mapping: { id: 'varendo.state.identity', revision: '1' },
     })),
   };
   return { candidate, nextTask, expected: current.readSet, previous };
@@ -348,7 +348,7 @@ async function refuseStaleProposal(state: HrViewState) {
   return staged.diagnostics;
 }
 
-function dispatchInteraction(state: HrViewState, request: AeliqoSemanticInteractionRequest) {
+function dispatchInteraction(state: HrViewState, request: VarendoSemanticInteractionRequest) {
   const eventId = `user-${++state.serial.value}`;
   return state.interactions.dispatch(
     {
@@ -380,14 +380,14 @@ function createReadMethods(state: HrViewState) {
   };
 }
 
-function currentResults(outputs: OutputMap): readonly AeliqoRegionResult[] {
+function currentResults(outputs: OutputMap): readonly VarendoRegionResult[] {
   return [...outputs.values()].flatMap((output) =>
     output.handle.snapshot().descriptor === undefined
       ? []
       : [
           {
             ref: output.ref,
-            rows: output.handle.snapshot().batches.flatMap((batch) => batch.rows) as AeliqoRegionResult['rows'],
+            rows: output.handle.snapshot().batches.flatMap((batch) => batch.rows) as VarendoRegionResult['rows'],
           },
         ],
   );
@@ -395,7 +395,7 @@ function currentResults(outputs: OutputMap): readonly AeliqoRegionResult[] {
 
 function createCommandMethods(state: HrViewState) {
   return {
-    dispatch(request: AeliqoSemanticInteractionRequest) {
+    dispatch(request: VarendoSemanticInteractionRequest) {
       return dispatchInteraction(state, request);
     },
     reorder() {

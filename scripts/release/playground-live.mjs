@@ -25,8 +25,8 @@ export async function verifyNativePlayground(page) {
   await expect(page.locator('#pg-connect-status')).toContainText('API available');
   await page.getByRole('button', { name: 'Enable WebMCP' }).click();
   await expect(page.locator('#pg-connect-status')).toContainText('registered 3 tools');
-  assert.equal((await nativeCall(page, 'aeliqo_context', {})).value.state, 'accepted');
-  const component = await nativeCall(page, 'aeliqo_render', {
+  assert.equal((await nativeCall(page, 'varendo_context', {})).value.state, 'accepted');
+  const component = await nativeCall(page, 'varendo_render', {
     version: '1',
     id: 'release-people',
     kind: 'browse',
@@ -37,7 +37,7 @@ export async function verifyNativePlayground(page) {
   await expect(page.locator('#pg-region')).toContainText('Sam Rivera');
   await expect(page.locator('#pg-region')).not.toContainText('Ada Chen');
   for (const kind of ['overview', 'page', 'overview', 'page']) {
-    const result = await nativeCall(page, 'aeliqo_render', {
+    const result = await nativeCall(page, 'varendo_render', {
       version: '1',
       id: `release-${kind}`,
       kind: 'custom',
@@ -46,15 +46,15 @@ export async function verifyNativePlayground(page) {
       input: { team: 'Engineering' },
     });
     assert.equal(result.value.state, 'renderer-ready', JSON.stringify(result));
-    await expect(page.locator('#pg-region [data-aeliqo-node-id="summary"]')).toContainText('2');
-    await expect(page.locator('#pg-region [data-aeliqo-node-id="breakdown"]')).toContainText('Ada');
+    await expect(page.locator('#pg-region [data-varendo-node-id="summary"]')).toContainText('2');
+    await expect(page.locator('#pg-region [data-varendo-node-id="breakdown"]')).toContainText('Ada');
   }
   await expect(page.getByRole('navigation', { name: 'Registered page navigation' })).toBeVisible();
   await page.locator('#pg-menu > summary').click();
   await page.getByRole('button', { name: 'Reset playground' }).click();
   assert.deepEqual(
     await page.evaluate(async () =>
-      (await document.modelContext.getTools()).map((tool) => tool.name).filter((name) => name.startsWith('aeliqo_')),
+      (await document.modelContext.getTools()).map((tool) => tool.name).filter((name) => name.startsWith('varendo_')),
     ),
     [],
   );
@@ -78,14 +78,14 @@ export async function verifyManualLayouts(page) {
   ]) {
     await page.locator(`[data-journey="${journey}"]`).click();
     await expect(page.locator('#pg-receipt-state')).toHaveText('renderer-ready');
-    if (journey === 'attendance') await expect(page.locator('#pg-region aeliqo-chart')).toBeVisible();
+    if (journey === 'attendance') await expect(page.locator('#pg-region varendo-chart')).toBeVisible();
     else {
       const layout =
         journey === 'page'
           ? page.getByRole('region', { name: 'Registered attendance page', exact: true })
-          : page.locator(`#pg-region [data-aeliqo-node-id="${root}"]`);
+          : page.locator(`#pg-region [data-varendo-node-id="${root}"]`);
       await expect(layout).toBeVisible();
-      await expect(page.locator('#pg-region [data-aeliqo-node-id="breakdown"]')).toContainText('Ada');
+      await expect(page.locator('#pg-region [data-varendo-node-id="breakdown"]')).toContainText('Ada');
     }
     layouts.push({ journey, status: await page.locator('#pg-receipt-state').textContent() });
   }

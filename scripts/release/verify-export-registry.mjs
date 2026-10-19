@@ -68,9 +68,9 @@ async function main() {
   const output = flagValue(args, '--output');
   if (!/^\d+\.\d+\.\d+$/u.test(version ?? '') || !/^[0-9a-f]{40}$/u.test(sourceRevision ?? '') || !output)
     throw new Error('Pass --version <stable semver> --source <SHA> --output <report path>.');
-  const root = await mkdtemp(join(tmpdir(), 'aeliqo-export-registry-'));
+  const root = await mkdtemp(join(tmpdir(), 'varendo-export-registry-'));
   const report = {
-    schema: 'aeliqo.export-registry.v1',
+    schema: 'varendo.export-registry.v1',
     version,
     sourceRevision,
     registry,

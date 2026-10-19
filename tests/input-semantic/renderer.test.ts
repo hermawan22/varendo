@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
-  AeliqoFileChangeEvent,
-  AeliqoFormSubmitEvent,
-  AeliqoInputChangeEvent,
-  AeliqoInputCommitEvent,
-  AeliqoSearchEvent,
+  VarendoFileChangeEvent,
+  VarendoFormSubmitEvent,
+  VarendoInputChangeEvent,
+  VarendoInputCommitEvent,
+  VarendoSearchEvent,
 } from '../../packages/web/src/input/events.js';
 import {
   createInputPresentationManifests,
-  type AeliqoInputBindings,
+  type VarendoInputBindings,
 } from '../../packages/web/src/region/input-registry.js';
 import { resolveInputInteraction } from '../../packages/web/src/region/input-renderer.js';
 import type { PresentationManifest } from '../../packages/core/src/presentation/index.js';
@@ -41,7 +41,7 @@ const draft = {
 };
 
 function manifests(): ReturnType<typeof createInputPresentationManifests> {
-  const bindings: AeliqoInputBindings = {
+  const bindings: VarendoInputBindings = {
     revision: 'inputs-7',
     inputs: [
       { id: 'title', ref: { id: 'input.text-field', revision: '1' }, config: { label: 'Title' }, draft },
@@ -97,7 +97,7 @@ describe('semantic input renderer boundary', () => {
     const target = resolved('input.text-field', { ...draft, bindingRevision: 'inputs-7' }, [
       { id: 'draft', payload: 'draft', type: draft.type },
     ]);
-    const valid = resolveInputInteraction(target, new AeliqoInputCommitEvent({ source: 'user', value: 'updated' }));
+    const valid = resolveInputInteraction(target, new VarendoInputCommitEvent({ source: 'user', value: 'updated' }));
     expect(valid).toEqual([
       {
         portId: 'draft',
@@ -114,7 +114,7 @@ describe('semantic input renderer boundary', () => {
     expect(
       resolveInputInteraction(
         target,
-        new CustomEvent('aeliqo-input-commit', {
+        new CustomEvent('varendo-input-commit', {
           bubbles: true,
           composed: true,
           detail: { source: 'user', value: 'forged' },
@@ -124,7 +124,7 @@ describe('semantic input renderer boundary', () => {
     expect(
       resolveInputInteraction(
         target,
-        new AeliqoInputChangeEvent({ source: 'user', value: 'drafting', composing: true }),
+        new VarendoInputChangeEvent({ source: 'user', value: 'drafting', composing: true }),
       ),
     ).toEqual([]);
   });
@@ -148,25 +148,28 @@ describe('semantic input renderer boundary', () => {
     expect(
       resolveInputInteraction(
         target,
-        new AeliqoInputCommitEvent({ source: 'user', value: { text: 'bad', value: undefined, valid: false } } as never),
+        new VarendoInputCommitEvent({
+          source: 'user',
+          value: { text: 'bad', value: undefined, valid: false },
+        } as never),
       ),
     ).toEqual([]);
     expect(
       resolveInputInteraction(
         target,
-        new AeliqoInputCommitEvent({ source: 'user', value: { text: '13', value: '13', valid: true } }),
+        new VarendoInputCommitEvent({ source: 'user', value: { text: '13', value: '13', valid: true } }),
       ),
     ).toEqual([]);
     expect(
       resolveInputInteraction(
         target,
-        new AeliqoInputCommitEvent({ source: 'user', value: { text: '22', value: '22', valid: true } }),
+        new VarendoInputCommitEvent({ source: 'user', value: { text: '22', value: '22', valid: true } }),
       ),
     ).toEqual([]);
     expect(
       resolveInputInteraction(
         target,
-        new AeliqoInputCommitEvent({ source: 'user', value: { text: '12', value: '12', valid: true } }),
+        new VarendoInputCommitEvent({ source: 'user', value: { text: '12', value: '12', valid: true } }),
       ),
     ).toEqual([
       {
@@ -189,7 +192,7 @@ describe('semantic input renderer boundary', () => {
     expect(
       resolveInputInteraction(
         forgedType,
-        new AeliqoInputCommitEvent({ source: 'user', value: { text: '12', value: '12', valid: true } }),
+        new VarendoInputCommitEvent({ source: 'user', value: { text: '12', value: '12', valid: true } }),
       ),
     ).toEqual([]);
   });
@@ -216,19 +219,19 @@ describe('semantic input renderer boundary', () => {
     expect(
       resolveInputInteraction(
         target,
-        new AeliqoInputCommitEvent({ source: 'user', value: { value: 3, unit: '' } } as never),
+        new VarendoInputCommitEvent({ source: 'user', value: { value: 3, unit: '' } } as never),
       ),
     ).toEqual([]);
     expect(
       resolveInputInteraction(
         target,
-        new AeliqoInputCommitEvent({ source: 'user', value: { value: 12, unit: '' } } as never),
+        new VarendoInputCommitEvent({ source: 'user', value: { value: 12, unit: '' } } as never),
       ),
     ).toEqual([]);
     expect(
       resolveInputInteraction(
         target,
-        new AeliqoInputCommitEvent({ source: 'user', value: { value: 4, unit: '' } } as never),
+        new VarendoInputCommitEvent({ source: 'user', value: { value: 4, unit: '' } } as never),
       ),
     ).toEqual([
       {
@@ -242,11 +245,11 @@ describe('semantic input renderer boundary', () => {
     const target = resolved('input.search-field', { ...draft, field: 'query', bindingRevision: 'inputs-7' }, [
       { id: 'draft', payload: 'draft', type: draft.type },
     ]);
-    expect(resolveInputInteraction(target, new AeliqoSearchEvent({ source: 'user', query: 'Ada' }))).toHaveLength(1);
+    expect(resolveInputInteraction(target, new VarendoSearchEvent({ source: 'user', query: 'Ada' }))).toHaveLength(1);
     expect(
       resolveInputInteraction(
         target,
-        new CustomEvent('aeliqo-input-change', {
+        new CustomEvent('varendo-input-change', {
           bubbles: true,
           composed: true,
           detail: { source: 'user', value: 'Ada' },
@@ -266,23 +269,25 @@ describe('semantic input renderer boundary', () => {
       [{ id: 'submit', payload: 'action-request' }],
       [{ id: 'record.save', revision: '1' }],
     );
-    expect(resolveInputInteraction(form, new AeliqoFormSubmitEvent({ source: 'user', submitter: undefined }))).toEqual([
-      {
-        portId: 'submit',
-        payload: {
-          kind: 'action-request',
-          action: { id: 'record.save', revision: '1' },
-          input: { source: 'test', profile: { roles: ['admin', 'editor'] } },
+    expect(resolveInputInteraction(form, new VarendoFormSubmitEvent({ source: 'user', submitter: undefined }))).toEqual(
+      [
+        {
+          portId: 'submit',
+          payload: {
+            kind: 'action-request',
+            action: { id: 'record.save', revision: '1' },
+            input: { source: 'test', profile: { roles: ['admin', 'editor'] } },
+          },
         },
-      },
-    ]);
+      ],
+    );
     const missingOperation = resolved(
       'input.form',
       { action: { id: 'record.save', revision: '1' }, actionInput: { source: 'test' }, bindingRevision: 'inputs-7' },
       [{ id: 'submit', payload: 'action-request' }],
     );
     expect(
-      resolveInputInteraction(missingOperation, new AeliqoFormSubmitEvent({ source: 'user', submitter: undefined })),
+      resolveInputInteraction(missingOperation, new VarendoFormSubmitEvent({ source: 'user', submitter: undefined })),
     ).toEqual([]);
     const files = resolved(
       'input.file-input',
@@ -292,7 +297,7 @@ describe('semantic input renderer boundary', () => {
     expect(
       resolveInputInteraction(
         files,
-        new AeliqoFileChangeEvent({
+        new VarendoFileChangeEvent({
           source: 'user',
           files: [{ name: 'a.txt', size: 4, type: 'text/plain', lastModified: 2 }],
         }),
@@ -310,7 +315,7 @@ describe('semantic input renderer boundary', () => {
     expect(
       resolveInputInteraction(
         files,
-        new CustomEvent('aeliqo-file-change', {
+        new CustomEvent('varendo-file-change', {
           bubbles: true,
           composed: true,
           detail: {

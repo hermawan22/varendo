@@ -129,7 +129,7 @@ for (const item of candidate.packages) {
 }
 
 const report = {
-  schema: 'aeliqo.npm-publication.v2',
+  schema: 'varendo.npm-publication.v2',
   sourceRevision: candidate.sourceRevision,
   version: candidate.version,
   tag,

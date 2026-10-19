@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import * as z from 'zod';
 import { defineResource, type Intent } from '../../packages/core/src/index.js';
-import { createAeliqoRuntime } from '../../packages/runtime/src/index.js';
+import { createVarendoRuntime } from '../../packages/runtime/src/index.js';
 import { createLocalDataService } from '../../packages/runtime/src/data/index.js';
 
 const rows = [
@@ -27,7 +27,7 @@ function runtimeFor(functionRegistryDigest?: string) {
     snapshot: { catalog: people.catalog, sourceRevision: '1', records: { people: rows } },
     authorize: () => ({ ok: true, value: access }),
   });
-  const runtime = createAeliqoRuntime({
+  const runtime = createVarendoRuntime({
     resources: [{ resource: people, data }],
     authority: {
       read: () => ({

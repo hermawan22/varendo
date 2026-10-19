@@ -21,7 +21,7 @@ const root = resolve(import.meta.dirname, '../..');
 const outputDirectory = join(root, 'artifacts', 'meaning-consumers');
 await mkdir(outputDirectory, { recursive: true });
 const runDirectory = await mkdtemp(join(outputDirectory, 'run-'));
-const consumerDirectory = await mkdtemp(join(tmpdir(), 'aeliqo-meaning-consumer-'));
+const consumerDirectory = await mkdtemp(join(tmpdir(), 'varendo-meaning-consumer-'));
 const consumerReal = await realpath(consumerDirectory);
 
 function run(argv, cwd, encoding = 'utf8', env = process.env) {
@@ -69,7 +69,7 @@ const artifacts = [];
 for (const name of packageNames) {
   const directory = join(root, 'packages', name);
   const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
-  const tarball = join(runDirectory, `aeliqo-${name}-${RELEASE_VERSION}.tgz`);
+  const tarball = join(runDirectory, `varendo-${name}-${RELEASE_VERSION}.tgz`);
   const stage = await stagePackage(directory, manifest, name);
   run(['pnpm', 'pack', '--out', tarball], stage);
   const bytes = await readFile(tarball);

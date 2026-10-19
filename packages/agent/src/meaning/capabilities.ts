@@ -11,8 +11,8 @@ import type {
   MeaningProposalInput,
 } from './types.js';
 
-const PROPOSAL_REF: VersionRef = Object.freeze({ id: 'aeliqo.meaning.proposal', revision: '1' });
-const ACTIVATION_REF: VersionRef = Object.freeze({ id: 'aeliqo.meaning.activation', revision: '1' });
+const PROPOSAL_REF: VersionRef = Object.freeze({ id: 'varendo.meaning.proposal', revision: '1' });
+const ACTIVATION_REF: VersionRef = Object.freeze({ id: 'varendo.meaning.activation', revision: '1' });
 
 function failure<T>(code: string, message: string, path?: readonly (string | number)[]): Outcome<T> {
   return {

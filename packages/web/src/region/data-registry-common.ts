@@ -1,7 +1,7 @@
 import type { Outcome, Result, SemanticType } from '@varendo/core';
 import type { InteractionPort } from '@varendo/core/interaction';
-import type { AeliqoDataResolvedConfig } from './data-registry-types.js';
-import type { AeliqoSelectionMode } from '../data/index.js';
+import type { VarendoDataResolvedConfig } from './data-registry-types.js';
+import type { VarendoSelectionMode } from '../data/index.js';
 
 export const MAX_DATA_ITEMS = 128;
 const MAX_DATA_LABEL = 160;
@@ -70,7 +70,7 @@ export function identityFields(input: Readonly<Record<string, unknown>>, result:
   return checked;
 }
 
-export function selection(input: Readonly<Record<string, unknown>>): Outcome<AeliqoSelectionMode> {
+export function selection(input: Readonly<Record<string, unknown>>): Outcome<VarendoSelectionMode> {
   const value = input.selection ?? 'none';
   if (value !== 'none' && value !== 'single' && value !== 'multiple') {
     return failure('config', 'selection must be none, single or multiple.');
@@ -84,9 +84,9 @@ export function allowedKeys(input: Readonly<Record<string, unknown>>, keys: read
 
 export function commonConfig(
   input: Readonly<Record<string, unknown>>,
-  config: Pick<AeliqoDataResolvedConfig, 'fields' | 'columns' | 'identity' | 'selection'>,
+  config: Pick<VarendoDataResolvedConfig, 'fields' | 'columns' | 'identity' | 'selection'>,
   ports: readonly InteractionPort[] = [],
-): AeliqoDataResolvedConfig {
+): VarendoDataResolvedConfig {
   return {
     values: input,
     fields: config.fields,

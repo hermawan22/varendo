@@ -130,15 +130,15 @@ type RetainedModuleGraph = {
 
 async function waitForFixture(page: Page): Promise<void> {
   await page.waitForFunction(() => {
-    const api = (window as Window & { aeliqoStandalone?: { ready: boolean } }).aeliqoStandalone;
+    const api = (window as Window & { varendoStandalone?: { ready: boolean } }).varendoStandalone;
     return api?.ready === true;
   });
 }
 
 async function collect(page: Page): Promise<StandaloneObservation> {
   return page.evaluate(() => {
-    const api = (window as Window & { aeliqoStandalone?: { ready: boolean; collect: () => StandaloneObservation } })
-      .aeliqoStandalone;
+    const api = (window as Window & { varendoStandalone?: { ready: boolean; collect: () => StandaloneObservation } })
+      .varendoStandalone;
     if (api?.ready !== true) throw new Error('Standalone fixture is not ready.');
     return api.collect();
   });
@@ -265,7 +265,7 @@ test('captures standalone production fixture cold and warm browser observations'
   request,
 }, testInfo) => {
   if (baseURL === undefined) throw new Error('Playwright baseURL is required.');
-  const extended = process.env.AELIQO_RUN_PERFORMANCE === '1';
+  const extended = process.env.VARENDO_RUN_PERFORMANCE === '1';
   const coldSampleCount = extended ? EXTENDED_COLD_SAMPLE_COUNT : DEFAULT_COLD_SAMPLE_COUNT;
   const warmSampleCount = extended ? EXTENDED_WARM_SAMPLE_COUNT : DEFAULT_WARM_SAMPLE_COUNT;
   const cold = await captureColdSamples(browser, baseURL, coldSampleCount);
@@ -299,8 +299,8 @@ test('captures standalone production fixture cold and warm browser observations'
     note: 'Revalidation still incurs a request; it is reported separately from zero-transfer and disk-cache hits. Incomplete means the run exposed no qualifying cache evidence.',
   } as const;
   const report = {
-    schema: 'aeliqo.performance.standalone.v1',
-    sourceCommit: process.env.AELIQO_SOURCE_COMMIT ?? 'unknown',
+    schema: 'varendo.performance.standalone.v1',
+    sourceCommit: process.env.VARENDO_SOURCE_COMMIT ?? 'unknown',
     mode: extended ? 'extended-observation' : 'functional-smoke',
     environment: cold[0]?.observation.environment ?? warm.warmup.environment,
     fixture: { rowCount: 100, controlValue: 'ready', entrypoint: '@varendo/web/inputs + @varendo/web/table' },

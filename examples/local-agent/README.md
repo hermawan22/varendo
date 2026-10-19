@@ -13,8 +13,8 @@ pnpm dev
 ```
 
 Open http://127.0.0.1:4174/ and follow the terminal output. Startup makes no
-model request. Requires Node.js 24.20.0 and matching `0.1.0` packages. This
-checkout targets the 0.1.0 candidate; check the
+model request. Requires Node.js 24.20.0 and matching `0.2.0` packages. This
+checkout targets the unpublished 0.2.0 candidate; check the
 [package publication status](https://hermawan22.github.io/varendo/reference/packages/)
 before installing its registry dependencies.
 

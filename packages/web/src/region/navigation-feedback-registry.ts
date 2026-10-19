@@ -1,9 +1,9 @@
 import type { Outcome, VersionRef } from '@varendo/core';
 import type { PresentationManifest } from '@varendo/core/presentation';
-import type { AeliqoNavigationFeedbackBindings } from './navigation-feedback-types.js';
+import type { VarendoNavigationFeedbackBindings } from './navigation-feedback-types.js';
 import {
-  AELIQO_NAVIGATION_FEEDBACK_REFS,
-  AELIQO_NAVIGATION_FEEDBACK_OPERATION_REFS,
+  VARENDO_NAVIGATION_FEEDBACK_REFS,
+  VARENDO_NAVIGATION_FEEDBACK_OPERATION_REFS,
 } from './navigation-feedback-contracts.js';
 import { copyBindings } from './navigation-feedback-bindings.js';
 import { freeze, uniqueRefs } from './navigation-feedback-support.js';
@@ -17,11 +17,11 @@ import {
 import { feedbackConfig } from './navigation-feedback-config-feedback.js';
 
 export {
-  AELIQO_NAVIGATION_FEEDBACK_REFS,
-  AELIQO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS,
-  AELIQO_NAVIGATION_FEEDBACK_OPERATION_REFS,
+  VARENDO_NAVIGATION_FEEDBACK_REFS,
+  VARENDO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS,
+  VARENDO_NAVIGATION_FEEDBACK_OPERATION_REFS,
 } from './navigation-feedback-contracts.js';
-export type { AeliqoNavigationFeedbackBindings } from './navigation-feedback-types.js';
+export type { VarendoNavigationFeedbackBindings } from './navigation-feedback-types.js';
 
 function manifest(
   refValue: VersionRef,
@@ -46,7 +46,7 @@ function manifest(
 
 /** Create the registered semantic adapters for one immutable host binding table. */
 export function createNavigationFeedbackPresentationManifests(
-  input?: AeliqoNavigationFeedbackBindings,
+  input?: VarendoNavigationFeedbackBindings,
 ): Outcome<readonly PresentationManifest[]> {
   const copied = copyBindings(input);
   if (!copied.ok) return copied;
@@ -62,13 +62,13 @@ export function createNavigationFeedbackPresentationManifests(
 }
 
 function navigationManifests(
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
   routeRefs: readonly VersionRef[],
   navigationRefs: readonly VersionRef[],
 ): readonly PresentationManifest[] {
   return [
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.tabs,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.tabs,
       'navigation',
       { min: 0, max: 32 },
       'exclusive',
@@ -76,7 +76,7 @@ function navigationManifests(
       (values, _result, node) => tabsConfig(values, bindings, node),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.breadcrumb,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.breadcrumb,
       'navigation',
       { min: 0, max: 0 },
       'leaf',
@@ -84,18 +84,23 @@ function navigationManifests(
       (values) => breadcrumbConfig(values, bindings),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.pagination,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.pagination,
       'navigation',
       { min: 0, max: 0 },
       'leaf',
-      [AELIQO_NAVIGATION_FEEDBACK_OPERATION_REFS.page],
+      [VARENDO_NAVIGATION_FEEDBACK_OPERATION_REFS.page],
       (values) => paginationConfig(values, bindings),
     ),
-    manifest(AELIQO_NAVIGATION_FEEDBACK_REFS.menu, 'navigation', { min: 0, max: 0 }, 'leaf', navigationRefs, (values) =>
-      menuConfig(values, bindings),
+    manifest(
+      VARENDO_NAVIGATION_FEEDBACK_REFS.menu,
+      'navigation',
+      { min: 0, max: 0 },
+      'leaf',
+      navigationRefs,
+      (values) => menuConfig(values, bindings),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.treeNav,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.treeNav,
       'navigation',
       { min: 0, max: 0 },
       'leaf',
@@ -106,16 +111,16 @@ function navigationManifests(
 }
 
 function feedbackManifests(
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
   actionRefs: readonly VersionRef[],
 ): readonly PresentationManifest[] {
   return [...overlayFeedbackManifests(bindings), ...statusFeedbackManifests(bindings, actionRefs)];
 }
 
-function overlayFeedbackManifests(bindings: AeliqoNavigationFeedbackBindings): readonly PresentationManifest[] {
+function overlayFeedbackManifests(bindings: VarendoNavigationFeedbackBindings): readonly PresentationManifest[] {
   return [
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.tooltip,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.tooltip,
       'feedback',
       { min: 0, max: 0 },
       'leaf',
@@ -123,7 +128,7 @@ function overlayFeedbackManifests(bindings: AeliqoNavigationFeedbackBindings): r
       (values, _result, node) => feedbackConfig(values, 'tooltip', bindings, node),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.popover,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.popover,
       'feedback',
       { min: 0, max: 16 },
       'exclusive',
@@ -131,7 +136,7 @@ function overlayFeedbackManifests(bindings: AeliqoNavigationFeedbackBindings): r
       (values, _result, node) => feedbackConfig(values, 'popover', bindings, node),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.dialog,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.dialog,
       'feedback',
       { min: 0, max: 16 },
       'exclusive',
@@ -139,7 +144,7 @@ function overlayFeedbackManifests(bindings: AeliqoNavigationFeedbackBindings): r
       (values, _result, node) => feedbackConfig(values, 'dialog', bindings, node),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.drawer,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.drawer,
       'feedback',
       { min: 0, max: 16 },
       'exclusive',
@@ -150,12 +155,12 @@ function overlayFeedbackManifests(bindings: AeliqoNavigationFeedbackBindings): r
 }
 
 function statusFeedbackManifests(
-  bindings: AeliqoNavigationFeedbackBindings,
+  bindings: VarendoNavigationFeedbackBindings,
   actionRefs: readonly VersionRef[],
 ): readonly PresentationManifest[] {
   return [
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.toast,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.toast,
       'feedback',
       { min: 0, max: 0 },
       'leaf',
@@ -163,7 +168,7 @@ function statusFeedbackManifests(
       (values, _result, node) => feedbackConfig(values, 'toast', bindings, node),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.alert,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.alert,
       'feedback',
       { min: 0, max: 0 },
       'leaf',
@@ -171,7 +176,7 @@ function statusFeedbackManifests(
       (values, _result, node) => feedbackConfig(values, 'alert', bindings, node),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.progress,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.progress,
       'feedback',
       { min: 0, max: 0 },
       'leaf',
@@ -179,7 +184,7 @@ function statusFeedbackManifests(
       (values, _result, node) => feedbackConfig(values, 'progress', bindings, node),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.skeleton,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.skeleton,
       'feedback',
       { min: 0, max: 0 },
       'leaf',
@@ -187,7 +192,7 @@ function statusFeedbackManifests(
       (values, _result, node) => feedbackConfig(values, 'skeleton', bindings, node),
     ),
     manifest(
-      AELIQO_NAVIGATION_FEEDBACK_REFS.emptyState,
+      VARENDO_NAVIGATION_FEEDBACK_REFS.emptyState,
       'feedback',
       { min: 0, max: 0 },
       'leaf',

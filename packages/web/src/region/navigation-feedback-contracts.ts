@@ -1,6 +1,6 @@
 import type { VersionRef } from '@varendo/core';
 
-export const AELIQO_NAVIGATION_FEEDBACK_REFS = Object.freeze({
+export const VARENDO_NAVIGATION_FEEDBACK_REFS = Object.freeze({
   tabs: { id: 'navigation.tabs', revision: '1' },
   breadcrumb: { id: 'navigation.breadcrumb', revision: '1' },
   pagination: { id: 'navigation.pagination', revision: '1' },
@@ -17,15 +17,15 @@ export const AELIQO_NAVIGATION_FEEDBACK_REFS = Object.freeze({
   emptyState: { id: 'feedback.empty-state', revision: '1' },
 } satisfies Record<string, VersionRef>);
 
-export const AELIQO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS = Object.freeze(
+export const VARENDO_NAVIGATION_FEEDBACK_CONFIG_SCHEMAS = Object.freeze(
   Object.fromEntries(
-    Object.entries(AELIQO_NAVIGATION_FEEDBACK_REFS).map(([key, ref]) => [
+    Object.entries(VARENDO_NAVIGATION_FEEDBACK_REFS).map(([key, ref]) => [
       key,
       { id: `${ref.id}.config`, revision: '1' },
     ]),
-  ) as Record<keyof typeof AELIQO_NAVIGATION_FEEDBACK_REFS, VersionRef>,
+  ) as Record<keyof typeof VARENDO_NAVIGATION_FEEDBACK_REFS, VersionRef>,
 );
 
-export const AELIQO_NAVIGATION_FEEDBACK_OPERATION_REFS = Object.freeze({
+export const VARENDO_NAVIGATION_FEEDBACK_OPERATION_REFS = Object.freeze({
   page: { id: 'navigation.page', revision: '1' },
 } satisfies Record<string, VersionRef>);

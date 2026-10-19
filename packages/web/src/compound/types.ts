@@ -8,41 +8,41 @@ import type {
 } from '@varendo/core';
 import type { PresentationContext, PresentationRegistry } from '@varendo/core/presentation';
 import type {
-  AeliqoDataColumn,
-  AeliqoDataRecord,
-  AeliqoDataScope,
-  AeliqoDataStatus,
-  AeliqoFieldOption,
-  AeliqoFilterPredicate,
+  VarendoDataColumn,
+  VarendoDataRecord,
+  VarendoDataScope,
+  VarendoDataStatus,
+  VarendoFieldOption,
+  VarendoFilterPredicate,
 } from '../data/types.js';
 
-export type AeliqoCompoundStatus = AeliqoDataStatus;
+export type VarendoCompoundStatus = VarendoDataStatus;
 
 /** A result identity is always paired with its trusted semantic entity and scope. */
-export interface AeliqoCompoundResult {
+export interface VarendoCompoundResult {
   readonly result: ResultRef;
   readonly entity: string;
-  readonly scope?: AeliqoDataScope;
+  readonly scope?: VarendoDataScope;
 }
 
-export interface AeliqoCompoundIdentity extends AeliqoCompoundResult {
+export interface VarendoCompoundIdentity extends VarendoCompoundResult {
   readonly key: string;
 }
 
-export interface AeliqoCompoundAction {
+export interface VarendoCompoundAction {
   readonly id: string;
   readonly action: VersionRef;
   readonly label: string;
   readonly disabled?: boolean;
 }
 
-export interface AeliqoCompoundRecipeOptions {
+export interface VarendoCompoundRecipeOptions {
   readonly id: string;
   readonly revision: string;
   readonly preconditions: CommitPreconditions;
 }
 
-export interface AeliqoCompoundRecipeInput extends AeliqoCompoundRecipeOptions {
+export interface VarendoCompoundRecipeInput extends VarendoCompoundRecipeOptions {
   /** Host-configured shared primitive nodes. The macro never invents bindings. */
   readonly parts: PresentationPlan['nodes'];
   readonly links?: PresentationPlan['links'];
@@ -52,15 +52,15 @@ export interface AeliqoCompoundRecipeInput extends AeliqoCompoundRecipeOptions {
   readonly validation: { readonly context: PresentationContext; readonly registry: PresentationRegistry };
 }
 
-export type AeliqoExplorerRecipeInput = AeliqoCompoundRecipeInput;
-export interface AeliqoComparisonMetric {
+export type VarendoExplorerRecipeInput = VarendoCompoundRecipeInput;
+export interface VarendoComparisonMetric {
   readonly id: string;
   readonly label: string;
   readonly unit?: string;
   readonly values: Readonly<Record<string, Scalar | undefined>>;
 }
-export type AeliqoComparisonRecipeInput = AeliqoCompoundRecipeInput;
-export interface AeliqoBreakdownGroup {
+export type VarendoComparisonRecipeInput = VarendoCompoundRecipeInput;
+export interface VarendoBreakdownGroup {
   readonly key: string;
   readonly label: string;
   /** A value evaluated by the host's canonical meaning/query layer. */
@@ -70,42 +70,42 @@ export interface AeliqoBreakdownGroup {
   readonly unit?: string;
   readonly recordCount?: number;
 }
-export type AeliqoBreakdownRecipeInput = AeliqoCompoundRecipeInput;
-export type AeliqoInvestigationRecipeInput = AeliqoCompoundRecipeInput;
-export type AeliqoSearchResultsRecipeInput = AeliqoCompoundRecipeInput;
-export type AeliqoRecordEditorRecipeInput = AeliqoCompoundRecipeInput;
-export type AeliqoFormFlowRecipeInput = AeliqoCompoundRecipeInput;
-export type AeliqoQualityPanelRecipeInput = AeliqoCompoundRecipeInput;
+export type VarendoBreakdownRecipeInput = VarendoCompoundRecipeInput;
+export type VarendoInvestigationRecipeInput = VarendoCompoundRecipeInput;
+export type VarendoSearchResultsRecipeInput = VarendoCompoundRecipeInput;
+export type VarendoRecordEditorRecipeInput = VarendoCompoundRecipeInput;
+export type VarendoFormFlowRecipeInput = VarendoCompoundRecipeInput;
+export type VarendoQualityPanelRecipeInput = VarendoCompoundRecipeInput;
 
-export interface AeliqoCompoundRecipe {
+export interface VarendoCompoundRecipe {
   readonly plan: PresentationPlan;
   readonly childIds: readonly string[];
 }
 
-export interface AeliqoExplorerProps {
-  readonly fields: readonly AeliqoFieldOption[];
-  readonly predicate?: AeliqoFilterPredicate;
-  readonly rows: readonly AeliqoDataRecord[];
-  readonly columns: readonly AeliqoDataColumn[];
+export interface VarendoExplorerProps {
+  readonly fields: readonly VarendoFieldOption[];
+  readonly predicate?: VarendoFilterPredicate;
+  readonly rows: readonly VarendoDataRecord[];
+  readonly columns: readonly VarendoDataColumn[];
   readonly identity: readonly string[];
   readonly entity: string;
   readonly selectedKey?: string;
-  readonly detailRecord?: AeliqoDataRecord;
-  readonly detailFields?: readonly AeliqoDataColumn[];
+  readonly detailRecord?: VarendoDataRecord;
+  readonly detailFields?: readonly VarendoDataColumn[];
   readonly result?: ResultRef;
-  readonly scope?: AeliqoDataScope;
-  readonly status: AeliqoCompoundStatus;
+  readonly scope?: VarendoDataScope;
+  readonly status: VarendoCompoundStatus;
 }
 
-export interface AeliqoSearchResultState {
+export interface VarendoSearchResultState {
   readonly query: string;
   readonly queryRevision: string;
   readonly resultRevision?: string;
   readonly result?: ResultRef;
-  readonly scope?: AeliqoDataScope;
+  readonly scope?: VarendoDataScope;
 }
 
-export interface AeliqoQualityState {
+export interface VarendoQualityState {
   readonly source?: string;
   readonly freshness?: string;
   readonly completeness?: string;
@@ -113,22 +113,22 @@ export interface AeliqoQualityState {
   readonly unsupportedClaims?: readonly string[];
 }
 
-export interface AeliqoComparisonSetDetail {
+export interface VarendoComparisonSetDetail {
   readonly source: 'user';
   readonly entity: string;
   readonly keys: readonly string[];
   readonly result?: ResultRef;
-  readonly scope?: AeliqoDataScope;
+  readonly scope?: VarendoDataScope;
 }
-export interface AeliqoBreakdownGroupDetail {
+export interface VarendoBreakdownGroupDetail {
   readonly source: 'user';
   readonly entity: string;
   readonly key: string;
   readonly result?: ResultRef;
-  readonly scope?: AeliqoDataScope;
+  readonly scope?: VarendoDataScope;
 }
 
-export interface AeliqoRecordEditorSaveDetail {
+export interface VarendoRecordEditorSaveDetail {
   readonly source: 'user';
   readonly entity: string;
   readonly key: string;
@@ -137,7 +137,7 @@ export interface AeliqoRecordEditorSaveDetail {
   readonly values: Readonly<Record<string, string | readonly string[]>>;
   readonly action?: VersionRef;
 }
-export interface AeliqoRecordEditorCancelDetail {
+export interface VarendoRecordEditorCancelDetail {
   readonly source: 'user';
   readonly entity: string;
   readonly key: string;
@@ -146,33 +146,33 @@ export interface AeliqoRecordEditorCancelDetail {
 }
 
 /** Values captured from a form boundary, retaining repeated wire values. */
-export type AeliqoFormDraftValue = Scalar | readonly Scalar[];
+export type VarendoFormDraftValue = Scalar | readonly Scalar[];
 
-export interface AeliqoFormFlowStep {
+export interface VarendoFormFlowStep {
   readonly id: string;
   readonly label: string;
   /** Optional field names used to describe the step's draft boundary. */
   readonly fieldNames?: readonly string[];
 }
-export interface AeliqoFormFlowStepDetail {
+export interface VarendoFormFlowStepDetail {
   readonly source: 'user';
   readonly from: string;
   readonly to: string;
   readonly direction: 'next' | 'back';
-  readonly draft: Readonly<Record<string, AeliqoFormDraftValue>>;
+  readonly draft: Readonly<Record<string, VarendoFormDraftValue>>;
 }
-export interface AeliqoFormFlowCommitDetail {
+export interface VarendoFormFlowCommitDetail {
   readonly source: 'user';
   readonly step: string;
-  readonly draft: Readonly<Record<string, AeliqoFormDraftValue>>;
+  readonly draft: Readonly<Record<string, VarendoFormDraftValue>>;
 }
 
-export type AeliqoCompoundInteractionLink = InteractionLink;
+export type VarendoCompoundInteractionLink = InteractionLink;
 export type {
-  AeliqoDataColumn,
-  AeliqoDataRecord,
-  AeliqoDataScope,
-  AeliqoDataStatus,
-  AeliqoFieldOption,
-  AeliqoFilterPredicate,
+  VarendoDataColumn,
+  VarendoDataRecord,
+  VarendoDataScope,
+  VarendoDataStatus,
+  VarendoFieldOption,
+  VarendoFilterPredicate,
 };

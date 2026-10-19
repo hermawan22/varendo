@@ -15,4 +15,4 @@ export type {
   RecipePresentationPolicy,
   ViewInput,
 } from './recipes/index.js';
-export { AELIQO_WEB_VERSION, registerAeliqoElements } from './register.js';
+export { VARENDO_WEB_VERSION, registerVarendoElements } from './register.js';

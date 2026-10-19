@@ -19,7 +19,7 @@ import type {
   PresentationTargetEvidence,
 } from './types.js';
 
-const resolverRef = { id: 'aeliqo.presentation.resolver', revision: '1' } as const;
+const resolverRef = { id: 'varendo.presentation.resolver', revision: '1' } as const;
 const resolverIdSchema = z
   .string()
   .check(z.minLength(1), z.maxLength(WIRE_LIMITS.id), z.regex(/^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?$/u));

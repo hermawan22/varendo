@@ -82,7 +82,7 @@ async function readLayoutObservation(page: Page): Promise<LayoutObservation> {
       readonly records: RecordedShift[];
       readonly record: (entry: PerformanceEntry) => void;
     };
-    const state = (window as Window & { __aeliqoLayoutShiftState?: LayoutShiftState }).__aeliqoLayoutShiftState;
+    const state = (window as Window & { __varendoLayoutShiftState?: LayoutShiftState }).__varendoLayoutShiftState;
     if (state === undefined) throw new Error('Layout-shift PerformanceObserver was not installed before navigation.');
     for (const entry of state.observer.takeRecords()) state.record(entry);
     state.observer.disconnect();
@@ -167,7 +167,7 @@ test('all component documentation routes preserve static content and hydration l
       for (const entry of list.getEntries()) record(entry);
     });
     observer.observe({ type: 'layout-shift', buffered: true });
-    (window as Window & { __aeliqoLayoutShiftState?: LayoutShiftState }).__aeliqoLayoutShiftState = {
+    (window as Window & { __varendoLayoutShiftState?: LayoutShiftState }).__varendoLayoutShiftState = {
       observer,
       records,
       record,
@@ -182,7 +182,7 @@ test('all component documentation routes preserve static content and hydration l
       if (staticEvidence === undefined) throw new Error(`Missing no-JavaScript evidence for ${component.route}`);
       await page.goto(component.route, { waitUntil: 'domcontentloaded' });
       await expect(page.getByRole('heading', { level: 1, name: component.name, exact: true })).toBeVisible();
-      await expect(page.locator(`[data-component-preview] aeliqo-${component.id}`)).toBeAttached();
+      await expect(page.locator(`[data-component-preview] varendo-${component.id}`)).toBeAttached();
       await expect(page.getByText(/Expected result:/)).toBeVisible();
       await expect(page.locator(`[data-copy-example='${component.id}']`)).toBeEnabled();
       await page.evaluate(async (tagName) => {
@@ -191,7 +191,7 @@ test('all component documentation routes preserve static content and hydration l
           (HTMLElement & { updateComplete?: Promise<unknown> }) | null;
         await element?.updateComplete;
         await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-      }, `aeliqo-${component.id}`);
+      }, `varendo-${component.id}`);
       expect(browserErrors, `${component.route} must hydrate without production CSP or runtime errors`).toEqual([]);
 
       const hydrated = await boxes(page);
@@ -279,8 +279,8 @@ test('timeline preview reserves normal text and reflows enlarged content', async
         }
         const [staticPage, hydratedPage] = pages;
         if (staticPage === undefined || hydratedPage === undefined) throw new Error('Missing timeline pages');
-        await hydratedPage.locator('aeliqo-timeline').evaluate(async (element) => {
-          await customElements.whenDefined('aeliqo-timeline');
+        await hydratedPage.locator('varendo-timeline').evaluate(async (element) => {
+          await customElements.whenDefined('varendo-timeline');
           await (element as HTMLElement & { updateComplete: Promise<unknown> }).updateComplete;
           await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
         });
@@ -291,7 +291,7 @@ test('timeline preview reserves normal text and reflows enlarged content', async
           expectStable(before.componentPreview, after.componentPreview, `${label} preview`);
           expectStable(before.propertiesHeading, after.propertiesHeading, `${label} following content`);
         }
-        const content = await hydratedPage.locator('aeliqo-timeline').evaluate((element) => {
+        const content = await hydratedPage.locator('varendo-timeline').evaluate((element) => {
           const viewport = element.shadowRoot?.querySelector<HTMLElement>('[part="viewport"]');
           const shell = element.closest<HTMLElement>('[data-preview-mount]');
           if (viewport === undefined || viewport === null || shell === null)

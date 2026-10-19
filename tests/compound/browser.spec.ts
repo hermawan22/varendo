@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
 
 test('explorer forwards filter and stable identity selection to the host', async ({ page }) => {
   const explorer = page.locator('#explorer');
-  const filter = explorer.locator('aeliqo-filter-builder');
+  const filter = explorer.locator('varendo-filter-builder');
   await filter.locator('input[part=value]').fill('Ada');
   await filter.locator('button[part=apply]').click();
   await expect
@@ -18,13 +18,13 @@ test('explorer forwards filter and stable identity selection to the host', async
       page.evaluate(
         () =>
           (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-            (event) => event.type === 'aeliqo-explorer-filter',
+            (event) => event.type === 'varendo-explorer-filter',
           )?.detail.predicate,
       ),
     )
     .toEqual({ op: 'compare', entity: 'person', field: 'name', value: 'Ada', comparison: 'eq' });
 
-  const record = explorer.locator('aeliqo-record-list').locator('button[part=record-button]').first();
+  const record = explorer.locator('varendo-record-list').locator('button[part=record-button]').first();
   await record.focus();
   await page.keyboard.press('Enter');
   await expect
@@ -32,28 +32,28 @@ test('explorer forwards filter and stable identity selection to the host', async
       page.evaluate(
         () =>
           (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-            (event) => event.type === 'aeliqo-explorer-selection',
+            (event) => event.type === 'varendo-explorer-selection',
           )?.detail.keys,
       ),
     )
     .toEqual(['string:1:a']);
-  await expect(explorer.locator('aeliqo-detail').locator('[part=identity]')).toHaveCount(0);
-  await expect(explorer.locator('aeliqo-detail').locator('[part=detail]')).toHaveAttribute(
+  await expect(explorer.locator('varendo-detail').locator('[part=identity]')).toHaveCount(0);
+  await expect(explorer.locator('varendo-detail').locator('[part=detail]')).toHaveAttribute(
     'data-identity',
     'string:1:a',
   );
-  await expect(explorer.locator('aeliqo-detail')).toContainText('Authorized people');
+  await expect(explorer.locator('varendo-detail')).toContainText('Authorized people');
 });
 
 test('comparison and breakdown use shared bounded tables and host evaluated values', async ({ page }) => {
   const comparison = page.locator('#comparison');
-  await expect(comparison.locator('aeliqo-table')).toHaveCount(1);
-  await expect(comparison.locator('aeliqo-table').getByRole('columnheader')).toHaveCount(4);
-  await expect(comparison.locator('aeliqo-table').locator('[part=heading]').first()).toHaveText('Metric');
+  await expect(comparison.locator('varendo-table')).toHaveCount(1);
+  await expect(comparison.locator('varendo-table').getByRole('columnheader')).toHaveCount(4);
+  await expect(comparison.locator('varendo-table').locator('[part=heading]').first()).toHaveText('Metric');
   await expect
     .poll(() =>
       page.locator('#comparison').evaluate((element) => {
-        const table = (element as any).renderRoot.querySelector('aeliqo-table') as any;
+        const table = (element as any).renderRoot.querySelector('varendo-table') as any;
         return {
           identity: table.identity,
           columns: table.columns.map((column: { key: string }) => column.key),
@@ -72,18 +72,18 @@ test('comparison and breakdown use shared bounded tables and host evaluated valu
       page.evaluate(
         () =>
           (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-            (event) => event.type === 'aeliqo-comparison-set',
+            (event) => event.type === 'varendo-comparison-set',
           )?.detail,
       ),
     )
     .toMatchObject({ keys: ['b', 'metric'], scope: { label: 'Authorized people' } });
 
   const breakdown = page.locator('#breakdown');
-  await expect(breakdown.locator('aeliqo-table')).toHaveCount(1);
-  await expect(breakdown.locator('aeliqo-table')).toContainText('25%');
+  await expect(breakdown.locator('varendo-table')).toHaveCount(1);
+  await expect(breakdown.locator('varendo-table')).toContainText('25%');
   await expect
     .poll(() =>
-      breakdown.locator('aeliqo-table').evaluate((element) =>
+      breakdown.locator('varendo-table').evaluate((element) =>
         (element as any).rows.map((row: Record<string, unknown>) => ({
           group: row.group,
           metric: row.metric,
@@ -91,13 +91,13 @@ test('comparison and breakdown use shared bounded tables and host evaluated valu
       ),
     )
     .toEqual([{ group: 'North', metric: '25%' }]);
-  await breakdown.locator('aeliqo-table input[type=radio]').first().check();
+  await breakdown.locator('varendo-table input[type=radio]').first().check();
   await expect
     .poll(() =>
       page.evaluate(
         () =>
           (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-            (event) => event.type === 'aeliqo-breakdown-group',
+            (event) => event.type === 'varendo-breakdown-group',
           )?.detail,
       ),
     )
@@ -121,7 +121,7 @@ test('comparison interactions reject overflow and normalize duplicate keys', asy
       page.evaluate(
         () =>
           (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-            (event) => event.type === 'aeliqo-comparison-set',
+            (event) => event.type === 'varendo-comparison-set',
           )?.detail.keys,
       ),
     )
@@ -131,13 +131,13 @@ test('comparison interactions reject overflow and normalize duplicate keys', asy
 test('search results hide stale materialization and restore the matching revision', async ({ page }) => {
   const search = page.locator('#search');
   await expect(search).toContainText('out of date');
-  await expect(search.locator('aeliqo-card-collection')).toHaveCount(0);
+  await expect(search.locator('varendo-card-collection')).toHaveCount(0);
   await page.evaluate(async () => {
     const element = document.querySelector('#search') as any;
     element.resultRevision = element.queryRevision;
     await element.updateComplete;
   });
-  await expect(search.locator('aeliqo-card-collection')).toHaveCount(1);
+  await expect(search.locator('varendo-card-collection')).toHaveCount(1);
   await expect(search.locator('[part=scope]').first()).toContainText('2 matching results');
 });
 
@@ -148,14 +148,14 @@ test('current search detail retains its authorized scope', async ({ page }) => {
     host.resultRevision = host.queryRevision;
     host.detailRecord = host.rows[0];
   });
-  await expect(search.locator('aeliqo-detail')).toContainText('Authorized people');
+  await expect(search.locator('varendo-detail')).toContainText('Authorized people');
 });
 
 test('record editor validates slotted fields and includes the explicit draft receipt', async ({ page }) => {
   const editor = page.locator('#editor');
   await page.evaluate(async () => {
     const element = document.querySelector('#editor') as any;
-    const field = element.querySelector('aeliqo-text-field') as any;
+    const field = element.querySelector('varendo-text-field') as any;
     field.value = '';
     await field.updateComplete;
     await element.updateComplete;
@@ -165,19 +165,19 @@ test('record editor validates slotted fields and includes the explicit draft rec
     await page.evaluate(
       () =>
         (window as unknown as FixtureWindow).compoundFixture.events.filter(
-          (event) => event.type === 'aeliqo-record-editor-save',
+          (event) => event.type === 'varendo-record-editor-save',
         ).length,
     ),
   ).toBe(0);
-  await editor.locator('aeliqo-text-field').locator('input').fill('Ada Lovelace');
-  await page.evaluate(async () => await (document.querySelector('#editor aeliqo-date-range') as any).updateComplete);
+  await editor.locator('varendo-text-field').locator('input').fill('Ada Lovelace');
+  await page.evaluate(async () => await (document.querySelector('#editor varendo-date-range') as any).updateComplete);
   await editor.getByRole('button', { name: 'Save', exact: true }).click();
   await expect
     .poll(() =>
       page.evaluate(
         () =>
           (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-            (event) => event.type === 'aeliqo-record-editor-save',
+            (event) => event.type === 'varendo-record-editor-save',
           )?.detail,
       ),
     )
@@ -196,7 +196,7 @@ test('record editor validates slotted fields and includes the explicit draft rec
   expect(
     await page.evaluate(() => {
       const detail = (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-        (event) => event.type === 'aeliqo-record-editor-save',
+        (event) => event.type === 'varendo-record-editor-save',
       )?.detail as { values: Record<string, unknown> };
       return {
         keys: Object.keys(detail.values),
@@ -217,7 +217,7 @@ test('record editor validates slotted fields and includes the explicit draft rec
       page.evaluate(
         () =>
           (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-            (event) => event.type === 'aeliqo-record-editor-cancel',
+            (event) => event.type === 'varendo-record-editor-cancel',
           )?.detail,
       ),
     )
@@ -244,18 +244,18 @@ test('form flow keeps step scoped controls mounted, blocks invalid progression, 
     await page.evaluate(
       () =>
         (window as unknown as FixtureWindow).compoundFixture.events.filter(
-          (event) => event.type === 'aeliqo-form-flow-step',
+          (event) => event.type === 'varendo-form-flow-step',
         ).length,
     ),
   ).toBe(0);
   await expect(flow.locator('[part=step-panel]')).toHaveAttribute('data-step', 'one');
-  await flow.locator('aeliqo-text-field').locator('input').fill('Ada Lovelace');
+  await flow.locator('varendo-text-field').locator('input').fill('Ada Lovelace');
   await flow.getByRole('button', { name: 'Next', exact: true }).click();
   await expect(flow.locator('[part=step-panel]')).toHaveAttribute('data-step', 'two');
   await page.evaluate(async () => {
     const element = document.querySelector('#flow') as any;
     element.draft = { draftOnly: 'new' };
-    await (element.querySelector('aeliqo-date-range') as any).updateComplete;
+    await (element.querySelector('varendo-date-range') as any).updateComplete;
     await element.updateComplete;
   });
   await flow.getByRole('button', { name: 'Commit', exact: true }).click();
@@ -264,7 +264,7 @@ test('form flow keeps step scoped controls mounted, blocks invalid progression, 
       page.evaluate(
         () =>
           (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-            (event) => event.type === 'aeliqo-form-flow-commit',
+            (event) => event.type === 'varendo-form-flow-commit',
           )?.detail.draft,
       ),
     )
@@ -283,7 +283,7 @@ test('form flow keeps step scoped controls mounted, blocks invalid progression, 
   expect(
     await page.evaluate(() => {
       const draft = (window as unknown as FixtureWindow).compoundFixture.events.findLast(
-        (event) => event.type === 'aeliqo-form-flow-commit',
+        (event) => event.type === 'varendo-form-flow-commit',
       )?.detail.draft as Record<string, unknown>;
       return {
         keys: Object.keys(draft),
@@ -313,14 +313,14 @@ test('form flow keeps step scoped controls mounted, blocks invalid progression, 
 
 test('form flow preserves keyboard focus through forward and back navigation', async ({ page }) => {
   const flow = page.locator('#flow');
-  await flow.locator('aeliqo-text-field').locator('input').fill('Ada');
+  await flow.locator('varendo-text-field').locator('input').fill('Ada');
   await flow.getByRole('button', { name: 'Next', exact: true }).focus();
   await page.keyboard.press('Enter');
   await expect(flow.locator('[part="step-panel"]')).toHaveAttribute('data-step', 'two');
   await expect(flow.getByRole('radio', { name: 'Standard plan', exact: true })).toBeFocused();
   await flow.getByRole('button', { name: 'Back', exact: true }).focus();
   await page.keyboard.press('Enter');
-  await expect(flow.locator('aeliqo-text-field').locator('input')).toBeFocused();
+  await expect(flow.locator('varendo-text-field').locator('input')).toBeFocused();
   await flow.evaluate((element) => {
     element.querySelector('[slot="step-two"]')?.replaceChildren(document.createTextNode('Review draft'));
   });
@@ -336,9 +336,9 @@ test('compound states keep caution copy and remain accessible under RTL, zoom an
   });
   await page.emulateMedia({ forcedColors: 'active' });
   await expect(page.locator('#investigation')).toContainText('do not establish causal claims');
-  await expect(page.locator('#investigation aeliqo-trend [part=data] table')).toHaveCount(1);
+  await expect(page.locator('#investigation varendo-trend [part=data] table')).toHaveCount(1);
   await expect(page.locator('#quality')).toContainText('Unsupported claims are shown explicitly');
-  await expect(page.locator('#investigation aeliqo-detail')).toContainText('Authorized people');
+  await expect(page.locator('#investigation varendo-detail')).toContainText('Authorized people');
   const results = await new AxeBuilder({ page }).include('#fixture').analyze();
   expect(results.violations).toEqual([]);
   await page.screenshot({ path: 'artifacts/compound-browser/rtl-forced-colors.png', fullPage: true });

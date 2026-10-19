@@ -2,10 +2,10 @@ import { createQueryFunctionRegistry } from '@varendo/core/expressions';
 import { type Intent } from '@varendo/core';
 import { defineDataFeature } from '@varendo/core/features';
 import { connectAgent, type AgentClient } from '@varendo/agent/browser';
-import { createAeliqoRuntime, createLocalDataBinding, type ScopeBinding } from '@varendo/runtime';
+import { createVarendoRuntime, createLocalDataBinding, type ScopeBinding } from '@varendo/runtime';
 import { createLocalDataService } from '@varendo/runtime/data';
-import { createAeliqoApp, type WebRenderReceipt } from '@varendo/web/app';
-import { registerAeliqoElements } from '@varendo/web/register';
+import { createVarendoApp, type WebRenderReceipt } from '@varendo/web/app';
+import { registerVarendoElements } from '@varendo/web/register';
 import { z } from 'zod';
 import {
   JOB_CANCEL_REF,
@@ -17,7 +17,7 @@ import {
   type JobIntent,
 } from '../job/index.js';
 
-registerAeliqoElements();
+registerVarendoElements();
 
 const products = Object.freeze([
   Object.freeze({ id: 'p1', name: 'Field notebook', category: 'Stationery', price: 12 }),
@@ -57,7 +57,7 @@ function makeJourneyApp(regionId: string, target: HTMLElement, sourceRevision: s
             { code: 'journey.access-denied', message: 'Host denied this synthetic remote window.', retryable: false },
           ],
         };
-  const app = createAeliqoApp({
+  const app = createVarendoApp({
     resources: [
       {
         resource: productResource,
@@ -168,7 +168,7 @@ function productSurfaceBindings(sourceRevision: string) {
   });
 }
 
-function waitForActiveScope(scope: ReturnType<ReturnType<typeof createAeliqoRuntime>['createScope']>): Promise<void> {
+function waitForActiveScope(scope: ReturnType<ReturnType<typeof createVarendoRuntime>['createScope']>): Promise<void> {
   if (scope.getSnapshot().active) return Promise.resolve();
   return new Promise((resolve) => {
     const stop = scope.subscribe(() => {
@@ -218,7 +218,7 @@ const catalogStatus = document.querySelector<HTMLElement>('#catalog-status')!;
 const catalogIntent = document.querySelector<HTMLOutputElement>('#catalog-intent')!;
 const catalog = makeJourneyApp('catalog', document.querySelector<HTMLElement>('#catalog-view')!, 'catalog-remote-r1');
 const catalogBindings = productSurfaceBindings('catalog-bridge-r1');
-const catalogRuntime = createAeliqoRuntime({
+const catalogRuntime = createVarendoRuntime({
   runtimeId: 'catalog-agent-runtime',
   resources: [{ resource: productResource, data: catalogBindings.service }],
   authority: {
@@ -263,7 +263,7 @@ const catalogBridgeReady = catalogScopeReady.then(() => {
         calls: [
           {
             id: 'catalog-compare',
-            name: 'aeliqo_surface_render',
+            name: 'varendo_surface_render',
             input: { targetId: 'catalog-agent', intent: fixtureAgentIntent },
           },
         ],
@@ -365,7 +365,7 @@ const startJob = document.querySelector<HTMLButtonElement>('[data-action="job-st
 const progressJob = document.querySelector<HTMLButtonElement>('[data-action="job-progress"]')!;
 const cancelJob = document.querySelector<HTMLButtonElement>('[data-action="job-cancel"]')!;
 const jobBackend = new JobBackend();
-const jobRuntime = createAeliqoRuntime({
+const jobRuntime = createVarendoRuntime({
   runtimeId: 'journey-job-runtime',
   resources: [
     {

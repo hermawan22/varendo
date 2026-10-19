@@ -228,7 +228,7 @@ describe('cross-intent render continuity', () => {
           { ...presentationPlan.nodes[0], result: request.results[0]!.ref },
         ],
         stateTransfer: [
-          { fromNode: 'table-1', toNode: 'table-1', mapping: { id: 'aeliqo.state.identity', revision: '1' } },
+          { fromNode: 'table-1', toNode: 'table-1', mapping: { id: 'varendo.state.identity', revision: '1' } },
         ],
       },
       {

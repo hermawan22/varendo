@@ -1,14 +1,14 @@
 import { css, html, nothing } from 'lit';
 import type { TemplateResult } from 'lit';
-import { AeliqoFoundationElement, aeliqoFoundationThemeStyles } from '../foundation/base.js';
-import { AeliqoValidationEvent, type AeliqoValidationState } from './events.js';
+import { VarendoFoundationElement, varendoFoundationThemeStyles } from '../foundation/base.js';
+import { VarendoValidationEvent, type VarendoValidationState } from './events.js';
 
-export type AeliqoValidationResult = boolean | string | { readonly valid: boolean; readonly message?: string } | void;
+export type VarendoValidationResult = boolean | string | { readonly valid: boolean; readonly message?: string } | void;
 
-export type AeliqoValidator<T> = (
+export type VarendoValidator<T> = (
   value: T,
   signal: AbortSignal,
-) => AeliqoValidationResult | Promise<AeliqoValidationResult>;
+) => VarendoValidationResult | Promise<VarendoValidationResult>;
 
 const VALIDITY_FLAG_KEYS = [
   'badInput',
@@ -36,11 +36,11 @@ function nativeValidityMessage(anchor: HTMLElement | undefined): string {
   return 'Enter a valid value.';
 }
 
-export const aeliqoInputStyles = [
-  ...aeliqoFoundationThemeStyles,
+export const varendoInputStyles = [
+  ...varendoFoundationThemeStyles,
   css`
     :host {
-      color: var(--aeliqo-input-color, var(--aeliqo-color-text, #111827));
+      color: var(--varendo-input-color, var(--varendo-color-text, #111827));
       display: inline-block;
       max-inline-size: 100%;
       min-inline-size: min(100%, 12rem);
@@ -49,97 +49,98 @@ export const aeliqoInputStyles = [
 
     [part='field'] {
       display: grid;
-      gap: var(--aeliqo-space-8, 0.5rem);
+      gap: var(--varendo-space-8, 0.5rem);
       min-inline-size: 0;
     }
 
     [part='label'] {
       display: grid;
-      gap: var(--aeliqo-space-4, 0.25rem);
+      gap: var(--varendo-space-4, 0.25rem);
     }
 
     .label-text {
-      font-weight: var(--aeliqo-typography-font-weight-medium, 500);
+      font-weight: var(--varendo-typography-font-weight-medium, 500);
     }
 
     [part='description'],
     [part='error'],
     [part='pending'] {
-      font-size: var(--aeliqo-typography-font-size-sm, 0.875rem);
-      line-height: var(--aeliqo-typography-line-height-normal, 1.5);
+      font-size: var(--varendo-typography-font-size-sm, 0.875rem);
+      line-height: var(--varendo-typography-line-height-normal, 1.5);
     }
 
     [part='description'] {
-      color: var(--aeliqo-input-description, var(--aeliqo-color-muted, #4b5563));
+      color: var(--varendo-input-description, var(--varendo-color-muted, #4b5563));
     }
 
     [part='error'] {
-      color: var(--aeliqo-input-error, var(--aeliqo-color-danger, #b91c1c));
+      color: var(--varendo-input-error, var(--varendo-color-danger, #b91c1c));
     }
 
     [part='pending'] {
-      color: var(--aeliqo-color-muted, #4b5563);
+      color: var(--varendo-color-muted, #4b5563);
     }
 
     :is(input, textarea, select, button, [role='combobox']):focus-visible {
-      outline: var(--aeliqo-focus-width, 0.1875rem) solid var(--aeliqo-input-focus, var(--aeliqo-color-focus, #4338ca));
-      outline-offset: var(--aeliqo-focus-offset, 0.125rem);
+      outline: var(--varendo-focus-width, 0.1875rem) solid
+        var(--varendo-input-focus, var(--varendo-color-focus, #4338ca));
+      outline-offset: var(--varendo-focus-offset, 0.125rem);
       box-shadow: 0 0 0 0.25rem
-        color-mix(in srgb, var(--aeliqo-input-focus, var(--aeliqo-color-focus, #4338ca)) 16%, transparent);
+        color-mix(in srgb, var(--varendo-input-focus, var(--varendo-color-focus, #4338ca)) 16%, transparent);
     }
 
     :is(input, textarea, select) {
-      background: var(--aeliqo-input-background, var(--aeliqo-color-canvas, #fff));
-      border: var(--aeliqo-control-border-width, 0.0625rem) solid
-        var(--aeliqo-input-border, var(--_aeliqo-border-subtle, var(--aeliqo-color-border, #64748b)));
-      border-radius: var(--aeliqo-radius-medium, 0.625rem);
-      box-shadow: var(--aeliqo-elevation-xs, 0 1px 2px rgb(15 23 42 / 0.05));
+      background: var(--varendo-input-background, var(--varendo-color-canvas, #fff));
+      border: var(--varendo-control-border-width, 0.0625rem) solid
+        var(--varendo-input-border, var(--_varendo-border-subtle, var(--varendo-color-border, #64748b)));
+      border-radius: var(--varendo-radius-medium, 0.625rem);
+      box-shadow: var(--varendo-elevation-xs, 0 1px 2px rgb(15 23 42 / 0.05));
       box-sizing: border-box;
       color: inherit;
       font: inherit;
-      font-size: var(--aeliqo-typography-font-size-sm, 0.875rem);
+      font-size: var(--varendo-typography-font-size-sm, 0.875rem);
       inline-size: 100%;
-      min-block-size: max(var(--_aeliqo-coarse-target, 0px), var(--aeliqo-control-min-target, 2.75rem));
+      min-block-size: max(var(--_varendo-coarse-target, 0px), var(--varendo-control-min-target, 2.75rem));
       min-inline-size: 0;
-      padding: var(--aeliqo-space-6, 0.375rem) var(--aeliqo-control-inline-padding, 0.75rem);
+      padding: var(--varendo-space-6, 0.375rem) var(--varendo-control-inline-padding, 0.75rem);
     }
 
     :is(input, textarea, select):not(:disabled):hover:not([aria-invalid='true']) {
       border-color: color-mix(
         in srgb,
-        var(--aeliqo-color-accent, #4338ca) 52%,
-        var(--_aeliqo-border-subtle, var(--aeliqo-color-border, #64748b))
+        var(--varendo-color-accent, #4338ca) 52%,
+        var(--_varendo-border-subtle, var(--varendo-color-border, #64748b))
       );
     }
 
     :is(input[type='checkbox'], input[type='radio']) {
       box-shadow: none;
-      accent-color: var(--aeliqo-color-accent, #4338ca);
+      accent-color: var(--varendo-color-accent, #4338ca);
       cursor: pointer;
       min-block-size: 0;
       padding: 0;
     }
 
     :is(input, textarea, select):disabled {
-      background: var(--aeliqo-color-surface, #f8fafc);
-      color: var(--aeliqo-color-muted, #4b5563);
+      background: var(--varendo-color-surface, #f8fafc);
+      color: var(--varendo-color-muted, #4b5563);
       cursor: not-allowed;
       opacity: 1;
     }
 
     :is(input, textarea, select)[aria-invalid='true'] {
-      border-color: var(--aeliqo-color-danger, #b91c1c);
+      border-color: var(--varendo-color-danger, #b91c1c);
     }
 
     :is(input, textarea, select)[aria-invalid='true']:focus-visible {
-      box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--aeliqo-color-danger, #b91c1c) 16%, transparent);
-      outline-color: var(--aeliqo-color-danger, #b91c1c);
+      box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--varendo-color-danger, #b91c1c) 16%, transparent);
+      outline-color: var(--varendo-color-danger, #b91c1c);
     }
 
     input:focus-visible + .switch-track {
-      box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--aeliqo-color-focus, #4338ca) 16%, transparent);
-      outline: var(--aeliqo-focus-width, 0.1875rem) solid var(--aeliqo-color-focus, #4338ca);
-      outline-offset: var(--aeliqo-focus-offset, 0.125rem);
+      box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--varendo-color-focus, #4338ca) 16%, transparent);
+      outline: var(--varendo-focus-width, 0.1875rem) solid var(--varendo-color-focus, #4338ca);
+      outline-offset: var(--varendo-focus-offset, 0.125rem);
     }
 
     input:disabled + .switch-track {
@@ -147,15 +148,15 @@ export const aeliqoInputStyles = [
     }
 
     input:checked:disabled + .switch-track {
-      background: color-mix(in srgb, var(--aeliqo-color-accent, #4338ca) 48%, var(--aeliqo-color-surface, #f8fafc));
+      background: color-mix(in srgb, var(--varendo-color-accent, #4338ca) 48%, var(--varendo-color-surface, #f8fafc));
     }
 
     input:disabled + .switch-track + .choice-text {
-      color: var(--aeliqo-color-muted, #4b5563);
+      color: var(--varendo-color-muted, #4b5563);
     }
 
     :is(input, textarea)::placeholder {
-      color: var(--aeliqo-color-muted, #4b5563);
+      color: var(--varendo-color-muted, #4b5563);
       opacity: 0.78;
     }
 
@@ -168,7 +169,7 @@ export const aeliqoInputStyles = [
 ];
 
 /** Shared native form and validation boundary for every input primitive. */
-export abstract class AeliqoFieldElement<T = unknown> extends AeliqoFoundationElement {
+export abstract class VarendoFieldElement<T = unknown> extends VarendoFoundationElement {
   static readonly formAssociated = true;
 
   static readonly properties = {
@@ -194,15 +195,15 @@ export abstract class AeliqoFieldElement<T = unknown> extends AeliqoFoundationEl
   name = '';
   autocomplete = 'off';
   locale = 'en-US';
-  validationState: AeliqoValidationState = 'idle';
-  validator: AeliqoValidator<T> | undefined;
+  validationState: VarendoValidationState = 'idle';
+  validator: VarendoValidator<T> | undefined;
 
   protected formDisabled = false;
   protected readonly internals: ElementInternals | undefined;
   private currentFormValue: string | File | FormData | null = null;
   private validationSequence = 0;
   private validationAbort: AbortController | undefined;
-  private validationValidator: AeliqoValidator<T> | undefined;
+  private validationValidator: VarendoValidator<T> | undefined;
   private validationValue: T | undefined;
   private hasValidationValue = false;
   /**
@@ -399,7 +400,7 @@ export abstract class AeliqoFieldElement<T = unknown> extends AeliqoFoundationEl
     value: T,
     sequence: number,
     controller: AbortController,
-    result: AeliqoValidationResult,
+    result: VarendoValidationResult,
   ): void {
     if (!this.isActiveValidation(sequence, controller) || !this.acceptCurrentValidationValue(value)) return;
     const normalized = this.normalizeValidationResult(result);
@@ -480,7 +481,7 @@ export abstract class AeliqoFieldElement<T = unknown> extends AeliqoFoundationEl
     return true;
   }
 
-  private normalizeValidationResult(result: AeliqoValidationResult): {
+  private normalizeValidationResult(result: VarendoValidationResult): {
     readonly valid: boolean;
     readonly message: string;
   } {
@@ -490,7 +491,7 @@ export abstract class AeliqoFieldElement<T = unknown> extends AeliqoFoundationEl
     return { valid: result.valid, message: result.message ?? (result.valid ? '' : 'Value is invalid.') };
   }
 
-  private dispatchValidation(state: AeliqoValidationState, message: string): void {
-    this.dispatchEvent(new AeliqoValidationEvent({ source: 'user', state, message }));
+  private dispatchValidation(state: VarendoValidationState, message: string): void {
+    this.dispatchEvent(new VarendoValidationEvent({ source: 'user', state, message }));
   }
 }

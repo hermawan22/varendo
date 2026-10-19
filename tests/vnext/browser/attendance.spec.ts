@@ -10,7 +10,7 @@ test('J2 renders approved daily attendance as a trend with truthful coverage', a
     'Present eligible employee-days / eligible employee-days',
   );
   await expect(page.getByTestId('attendance-status')).toHaveText('renderer-ready:data.trend');
-  await expect(page.locator('#attendance-host aeliqo-chart')).toHaveCount(1);
+  await expect(page.locator('#attendance-host varendo-chart')).toHaveCount(1);
   await expect(page.getByTestId('daily-values')).toContainText('2026-09-01: 1');
   await expect(page.getByTestId('daily-values')).toContainText('2026-09-02: 0.5');
   await expect(page.getByTestId('daily-values')).toContainText('2026-09-03: 1');
