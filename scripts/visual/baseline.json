@@ -1,8 +1,8 @@
 {
   "status": "approved",
-  "baselineSHA": "e50eda3f3b34a2957e5cd1f9f9228c32d3e4c84a",
-  "fixtureSHA": "52ceca6a23fcecd6f12db7e6cb32a3b2cafa3074bb1048e4287ae2a523295113",
-  "review": "docs/testing/0.1.0-visual-reference.md",
+  "baselineSHA": "761f57e85bff9af61ab3fc4d154154514794f829",
+  "fixtureSHA": "813b3594d04c614b233716275f3de529c7247b7fd0f60a3e2d35aea293d2ae2c",
+  "review": "docs/testing/0.2.0-visual-reference.md",
   "runner": {
     "container": "sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7",
     "hostImage": null,

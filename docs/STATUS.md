@@ -33,9 +33,9 @@ new names. Publication needs the owner's approval, a same-SHA full-matrix
 main push, and the RC and stable procedure in
 [the maintainer guide](releasing-varendo.md). Until then npm `latest` remains
 0.1.0 and the 0.2.0 install commands in current documentation do not resolve.
-The rename changes the visual fixture and performance workload digests, so the
-advisory references below need an owner-dispatched probe and review before
-strict comparisons can pass on 0.2.0 source.
+The rename changed the visual fixture and performance workload digests; the
+advisory references below now bind the renamed source after an owner-dispatched
+probe showed every visual capture byte-identical to the pre-rename source.
 
 **All five npm packages are published and verified; the Varendo container image
 remains unpublished.** Public documentation is live at
@@ -125,29 +125,31 @@ explicit receipts above.
 
 ## Advisory reference renewal
 
-The maintainer requested completion of visual and paired-performance acceptance
-on 12 October 2026. Both reference records now bind reachable Varendo source
-`e50eda3f3b34a2957e5cd1f9f9228c32d3e4c84a`, rather than commits present only in
-the preserved upstream Git archive. The owner-dispatched
-[reference probe](https://github.com/hermawan22/varendo/actions/runs/38230522021)
+Both advisory reference records bind the renamed 0.2.0 source
+`761f57e85bff9af61ab3fc4d154154514794f829`. The rename changed the fixture and
+workload digests, which the strict comparisons correctly rejected; it changed
+no other measured input. The owner-dispatched
+[reference probe](https://github.com/hermawan22/varendo/actions/runs/39310401938)
 passed all 93 functional commands and the release contract, all three complete
 visual probes and their aggregate, and the three-pair performance probe.
 
-The [visual review](testing/0.1.0-visual-reference.md) records 1,830 tests and
-2,862 unique PNGs with identical repeated captures, actual image inspection,
-archive digests and the unchanged runner. The
-[performance review](testing/0.1.0-performance-reference.md) records independent
-source-manifest and raw-sample verification, three alternating pairs, the
-unchanged 20% **and** 2 ms comparison policy, 4 ms reducer p95 and 100-row limit.
-Probe artifacts retain their unapproved diagnostic results; acceptance is
-recorded separately in the reviewed metadata. No workload, hash exclusion,
-comparison threshold or workflow gate was weakened.
+The [visual review](testing/0.2.0-visual-reference.md) records 1,830 tests and
+2,862 unique PNGs with identical repeated captures, archive digests and the
+unchanged runner. Every capture is byte-identical to the pre-rename source that
+passed the strict zero-diff comparison against the earlier
+[0.1.0 reference](testing/0.1.0-visual-reference.md), so the rename changed no
+rendered pixel. The [performance review](testing/0.2.0-performance-reference.md)
+records independent source-manifest and raw-sample verification, three
+alternating pairs, the unchanged 20% **and** 2 ms comparison policy, 4 ms
+reducer p95 and 100-row limit. Probe artifacts retain their unapproved
+diagnostic results; acceptance is recorded separately in the reviewed metadata.
+No workload, hash exclusion, comparison threshold or workflow gate was weakened.
 
 Ordinary strict comparisons use that fixed source for subsequent candidates;
 their per-revision results remain available in
 [main quality runs](https://github.com/hermawan22/varendo/actions/workflows/quality.yml?query=branch%3Amain).
 These reference receipts are separate from the immutable npm publication above
-and do not authorize an Aeliqo music-app change or a new package publication.
+and do not authorize an Aeliqo music-app change or a 0.2.0 package publication.
 
 ## Release completion and legacy retirement
 
